@@ -776,8 +776,6 @@ void UParticleSystemComponent::ComputeTickComponent_Concurrent()
 }
 ```
 
-```
-
 ```c++
 // 下面这个就是Tick实例,UE的注释很清晰了  
 void FParticleEmitterInstance::Tick(float DeltaTime, bool bSuppressSpawning)  

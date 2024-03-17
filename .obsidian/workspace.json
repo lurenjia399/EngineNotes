@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "f43750e7c971b866",
+        "id": "9cf9531156037d9c",
         "type": "tabs",
         "children": [
           {
-            "id": "3b4ab9886a48ed8a",
+            "id": "74642b91665029b1",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -18,16 +18,16 @@
                 "source": false
               }
             },
-            "group": "6445416ebf61711b"
+            "group": "7a5a33d9f2bb0298"
           }
         ]
       },
       {
-        "id": "a0f8bd4f2f272293",
+        "id": "1532361baa74696f",
         "type": "tabs",
         "children": [
           {
-            "id": "73a17d44d6b63996",
+            "id": "6b322ea7f4c325cf",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -37,7 +37,7 @@
                 "source": false
               }
             },
-            "group": "6445416ebf61711b"
+            "group": "7a5a33d9f2bb0298"
           }
         ]
       }
@@ -89,7 +89,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "b75e1d3959dca6c2",
@@ -166,20 +167,20 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3ae8bc6d82a4ab6a",
+  "active": "6b322ea7f4c325cf",
   "lastOpenFiles": [
-    "UE.md",
-    "note/特效系统/特效系统Cascade.md",
-    "note/特效系统/Image/Pasted image 20240317135245.png",
+    "note/特效系统/Image/image-20240305171609637.png",
+    "note/特效系统/Image/image-20240304173036847.png",
     "note/特效系统/Image/image-20240304172808296.png",
+    "note/特效系统/特效系统Cascade.md",
+    "UE.md",
+    "note/特效系统/Image/Pasted image 20240317135245.png",
     "note/特效系统/Image/Pasted image 20240317134712.png",
     "note/特效系统/Image",
     "note/Image/Pasted image 20240317134514.png",
     "Pasted image 20240317134354.png",
     "note/特效系统",
     "note/Image",
-    "note/特效系统/Image/image-20240305171609637.png",
-    "note/特效系统/Image/image-20240304173036847.png",
     "note",
     "索引",
     "Image"
