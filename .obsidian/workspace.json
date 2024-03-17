@@ -1,0 +1,187 @@
+{
+  "main": {
+    "id": "74bb49a48bdfe685",
+    "type": "split",
+    "children": [
+      {
+        "id": "f43750e7c971b866",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3b4ab9886a48ed8a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "note/特效系统/特效系统Cascade.md",
+                "mode": "source",
+                "source": false
+              }
+            },
+            "group": "6445416ebf61711b"
+          }
+        ]
+      },
+      {
+        "id": "a0f8bd4f2f272293",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "73a17d44d6b63996",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "note/特效系统/特效系统Cascade.md",
+                "mode": "preview",
+                "source": false
+              }
+            },
+            "group": "6445416ebf61711b"
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "1d5460adbedd1299",
+    "type": "split",
+    "children": [
+      {
+        "id": "0ac7bdd1879a0f34",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0e5ed17f692dddcb",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7caaf53be78acb5c",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7a2c3a2b79b5c98d",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "b75e1d3959dca6c2",
+    "type": "split",
+    "children": [
+      {
+        "id": "3d525b3ccaaeb852",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3ae8bc6d82a4ab6a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "note/特效系统/特效系统Cascade.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "dc3dd64c9ff9f87e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "note/特效系统/特效系统Cascade.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "813025287aa6090b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "0f970b5fd823eafd",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "note/特效系统/特效系统Cascade.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "3ae8bc6d82a4ab6a",
+  "lastOpenFiles": [
+    "UE.md",
+    "note/特效系统/特效系统Cascade.md",
+    "note/特效系统/Image/Pasted image 20240317135245.png",
+    "note/特效系统/Image/image-20240304172808296.png",
+    "note/特效系统/Image/Pasted image 20240317134712.png",
+    "note/特效系统/Image",
+    "note/Image/Pasted image 20240317134514.png",
+    "Pasted image 20240317134354.png",
+    "note/特效系统",
+    "note/Image",
+    "note/特效系统/Image/image-20240305171609637.png",
+    "note/特效系统/Image/image-20240304173036847.png",
+    "note",
+    "索引",
+    "Image"
+  ]
+}
