@@ -580,7 +580,10 @@ void UParticleSystemComponent::InitParticles()
                     if (Instance)  
                     {  
                         Instance->bEnabled = true;  
-                        // 设置一些参数, SpriteTemplate, Component  
+                        // 设置一些参数, SpriteTemplate, Component 
+                        // 1 设置了SpriteTemplate
+                        // 2 设置了Component
+                        // 3  
                         Instance->InitParameters(Emitter, this);  
                         // 初始化数据啥的吧，里面有个InstanceData数组，里面存储了EmitterInstance所需的所有ParticleModuleInstance的数据  
                         // 通过偏移拿到具体ParticleModuleInstance的数据  
