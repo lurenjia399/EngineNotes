@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "note/反射/反射.md",
+                "file": "note/特效系统/特效系统Cascade.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,8 +32,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "note/反射/反射.md",
-                "mode": "preview",
+                "file": "note/特效系统/特效系统Cascade.md",
+                "mode": "source",
                 "source": false
               }
             },
@@ -105,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "note/反射/反射.md",
+                "file": "note/特效系统/特效系统Cascade.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "note/反射/反射.md",
+                "file": "note/特效系统/特效系统Cascade.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "note/反射/反射.md"
+                "file": "note/特效系统/特效系统Cascade.md"
               }
             }
           }
@@ -166,7 +166,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "aa1e8a0a86ed5295",
+  "active": "0e5ed17f692dddcb",
   "lastOpenFiles": [
     "note/反射/反射.md",
     "note/特效系统/特效系统Cascade.md",
