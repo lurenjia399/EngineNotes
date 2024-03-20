@@ -11,9 +11,11 @@
             "id": "c346a4c87d253950",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "note/特效系统/Image/Init.jpg"
+                "file": "note/特效系统/特效系统Cascade.md",
+                "mode": "source",
+                "source": false
               }
             },
             "group": "cc73833f21b0e1a5"
@@ -38,9 +40,11 @@
             "id": "8c2d84269c6d9d6e",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "note/特效系统/Image/Init.jpg"
+                "file": "note/特效系统/特效系统Cascade.md",
+                "mode": "source",
+                "source": false
               }
             },
             "group": "cc73833f21b0e1a5"
@@ -111,7 +115,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "note/特效系统/Image/Init.jpg",
+                "file": "note/特效系统/特效系统Cascade.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,7 +132,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "note/特效系统/Image/Init.jpg",
+                "file": "note/特效系统/特效系统Cascade.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -151,7 +155,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "note/特效系统/Image/Init.jpg"
+                "file": "note/特效系统/特效系统Cascade.md"
               }
             }
           }
@@ -172,14 +176,14 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "8c2d84269c6d9d6e",
+  "active": "c346a4c87d253950",
   "lastOpenFiles": [
     "note/特效系统/Image/Tick.png",
-    "note/特效系统/Image/Tick.jpg",
     "note/特效系统/特效系统Cascade.md",
+    "note/特效系统/Image/Init.jpg",
+    "note/特效系统/Image/Tick.jpg",
     "!Tick.jpg.md",
     "note/特效系统/1 索引.md",
-    "note/特效系统/Image/Init.jpg",
     "note/特效系统/Image/Class.jpg",
     "note/反射/反射.md",
     "note/反射",
