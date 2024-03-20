@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "54733156e873e2a9",
+        "id": "6d9ebc9f2b1729e3",
         "type": "tabs",
         "children": [
           {
-            "id": "5d85d47b6238c340",
+            "id": "c346a4c87d253950",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -18,26 +18,26 @@
                 "source": false
               }
             },
-            "group": "220abfc5ec3ddae6"
+            "group": "965265ba32278605"
           }
         ]
       },
       {
-        "id": "a9de985d97568d10",
+        "id": "b8016ff52466c5cd",
         "type": "tabs",
         "children": [
           {
-            "id": "aa1e8a0a86ed5295",
+            "id": "de099bd0f75a4d37",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "note/特效系统/特效系统Cascade.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               }
             },
-            "group": "220abfc5ec3ddae6"
+            "group": "965265ba32278605"
           }
         ]
       }
@@ -166,10 +166,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0e5ed17f692dddcb",
+  "active": "de099bd0f75a4d37",
   "lastOpenFiles": [
-    "note/反射/反射.md",
     "note/特效系统/特效系统Cascade.md",
+    "note/反射/反射.md",
     "note/反射",
     "note/特效系统/Image/image-20240305171609637.png",
     "note/特效系统/Image/image-20240304173036847.png",
