@@ -11,46 +11,39 @@
             "id": "c346a4c87d253950",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "note/特效系统/1 索引.md",
-                "mode": "source",
-                "source": false
+                "file": "note/特效系统/Image/Init.jpg"
               }
-            }
+            },
+            "group": "cc73833f21b0e1a5"
           },
           {
             "id": "1f544f1c04d05e91",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
-                "mode": "source",
-                "source": false
+                "file": "note/特效系统/Image/Class.jpg"
               }
-            },
-            "group": "35a97138db0d4399"
+            }
           }
-        ],
-        "currentTab": 1
+        ]
       },
       {
-        "id": "c58e56d1406e9986",
+        "id": "e2326aaecd9f4834",
         "type": "tabs",
         "children": [
           {
-            "id": "addda9ba14624941",
+            "id": "8c2d84269c6d9d6e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
-                "mode": "preview",
-                "source": false
+                "file": "note/特效系统/Image/Init.jpg"
               }
             },
-            "group": "35a97138db0d4399"
+            "group": "cc73833f21b0e1a5"
           }
         ]
       }
@@ -118,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
+                "file": "note/特效系统/Image/Init.jpg",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -135,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
+                "file": "note/特效系统/Image/Init.jpg",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -158,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md"
+                "file": "note/特效系统/Image/Init.jpg"
               }
             }
           }
@@ -179,10 +172,15 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "addda9ba14624941",
+  "active": "8c2d84269c6d9d6e",
   "lastOpenFiles": [
-    "note/特效系统/1 索引.md",
+    "note/特效系统/Image/Tick.png",
+    "note/特效系统/Image/Tick.jpg",
     "note/特效系统/特效系统Cascade.md",
+    "!Tick.jpg.md",
+    "note/特效系统/1 索引.md",
+    "note/特效系统/Image/Init.jpg",
+    "note/特效系统/Image/Class.jpg",
     "note/反射/反射.md",
     "note/反射",
     "note/特效系统/Image/image-20240305171609637.png",
@@ -193,7 +191,6 @@
     "note/特效系统/Image/Pasted image 20240317134712.png",
     "note/特效系统/Image",
     "note/Image/Pasted image 20240317134514.png",
-    "Pasted image 20240317134354.png",
     "note/特效系统",
     "note/Image",
     "note",

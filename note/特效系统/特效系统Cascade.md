@@ -672,6 +672,7 @@ void UParticleSystemComponent::ActivateSystem(...)
 ​
 ```
 ### 7 Viewport窗口中的粒子Tick
+![[Tick.jpg]]
 
 ```c++
 void UParticleSystemComponent::TickComponent(...)  
