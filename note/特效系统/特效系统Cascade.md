@@ -48,7 +48,7 @@
 */
 ```
 
-### 1 创建新的发射器 OnNewEmitter
+### 2 创建新的发射器 OnNewEmitter
 
 ```c++
 void FCascade::OnNewEmitter()  
@@ -172,7 +172,7 @@ void FCascade::OnNewEmitter()
 
 剩下的四个模块都是在ParticleComponents.cpp的UParticleSpriteEmitter::SetToSensibleDefaults()方法里创建的。
 
-### 2 创建新的模块 OnNewModule
+### 3 创建新的模块 OnNewModule
 
 ```c++
 // 传进来的参数是，我们想添加的module，在缓存数组中的索引是多少  
@@ -313,7 +313,7 @@ void FCascade::OnNewModule(int32 Idx)
 }
 ```
 
-### 3 初始化Cascade
+### 4 初始化Cascade
 
 ```c++
 // 传进来的参数  
@@ -427,7 +427,7 @@ void FCascade::InitCascade(const EToolkitMode::Type Mode, const TSharedPtr< clas
 }
 ```
 
-### 4 打开Cascade界面流程
+### 5 打开Cascade界面流程
 
 ```c++
 void FAssetTypeActions_ParticleSystem::OpenAssetEditor(...)  
@@ -437,7 +437,7 @@ void FAssetTypeActions_ParticleSystem::OpenAssetEditor(...)
    -> // 一些编辑器更新的方法
 ```
 
-### 5 Viewport窗口中的粒子生成
+### 6 Viewport窗口中的粒子生成
 
 这个部分我们先看编辑器中Viewport这个窗口里的如何生成的
 
@@ -671,7 +671,7 @@ void UParticleSystemComponent::ActivateSystem(...)
 }  
 ​
 ```
-### 6 Viewport窗口中的粒子Tick
+### 7 Viewport窗口中的粒子Tick
 
 ```c++
 void UParticleSystemComponent::TickComponent(...)  

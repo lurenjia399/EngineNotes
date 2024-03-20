@@ -13,21 +13,34 @@
             "state": {
               "type": "markdown",
               "state": {
+                "file": "note/特效系统/1 索引.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "1f544f1c04d05e91",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
                 "file": "note/特效系统/特效系统Cascade.md",
                 "mode": "source",
                 "source": false
               }
             },
-            "group": "965265ba32278605"
+            "group": "35a97138db0d4399"
           }
-        ]
+        ],
+        "currentTab": 1
       },
       {
-        "id": "b8016ff52466c5cd",
+        "id": "c58e56d1406e9986",
         "type": "tabs",
         "children": [
           {
-            "id": "de099bd0f75a4d37",
+            "id": "addda9ba14624941",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -37,7 +50,7 @@
                 "source": false
               }
             },
-            "group": "965265ba32278605"
+            "group": "35a97138db0d4399"
           }
         ]
       }
@@ -166,8 +179,9 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "de099bd0f75a4d37",
+  "active": "addda9ba14624941",
   "lastOpenFiles": [
+    "note/特效系统/1 索引.md",
     "note/特效系统/特效系统Cascade.md",
     "note/反射/反射.md",
     "note/反射",
