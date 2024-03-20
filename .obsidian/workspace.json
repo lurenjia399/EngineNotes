@@ -11,11 +11,9 @@
             "id": "c346a4c87d253950",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
-                "mode": "source",
-                "source": false
+                "file": "note/特效系统/Image/Class.jpg"
               }
             },
             "group": "cc73833f21b0e1a5"
@@ -40,11 +38,9 @@
             "id": "8c2d84269c6d9d6e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
-                "mode": "source",
-                "source": false
+                "file": "note/特效系统/Image/Class.jpg"
               }
             },
             "group": "cc73833f21b0e1a5"
@@ -115,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
+                "file": "note/特效系统/Image/Class.jpg",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -132,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md",
+                "file": "note/特效系统/Image/Class.jpg",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -155,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "note/特效系统/特效系统Cascade.md"
+                "file": "note/特效系统/Image/Class.jpg"
               }
             }
           }
@@ -178,23 +174,24 @@
   },
   "active": "c346a4c87d253950",
   "lastOpenFiles": [
-    "note/特效系统/1 索引.md",
+    "note/特效系统/Image/Class.png",
+    "note/特效系统/Image/Class.jpg",
+    "Image/Class.png",
+    "note/特效系统/Image/image-20240304172808296.png",
     "note/特效系统/特效系统Cascade.md",
+    "note/特效系统/1 索引.md",
     "note/特效系统/Image/Tick.png",
     "note/特效系统/Image/Init.jpg",
     "note/特效系统/Image/Tick.jpg",
     "!Tick.jpg.md",
-    "note/特效系统/Image/Class.jpg",
     "note/反射/反射.md",
     "note/反射",
     "note/特效系统/Image/image-20240305171609637.png",
     "note/特效系统/Image/image-20240304173036847.png",
-    "note/特效系统/Image/image-20240304172808296.png",
     "UE.md",
     "note/特效系统/Image/Pasted image 20240317135245.png",
     "note/特效系统/Image/Pasted image 20240317134712.png",
     "note/特效系统/Image",
-    "note/Image/Pasted image 20240317134514.png",
     "note/特效系统",
     "note/Image",
     "note",
