@@ -1,5 +1,8 @@
 # 3 particle System 粒子特效系统
 
+### 类图
+
+
 ## 1 编辑器界面
 ![[image-20240304172808296.png]]
 
@@ -438,6 +441,7 @@ void FAssetTypeActions_ParticleSystem::OpenAssetEditor(...)
 ```
 
 ### 6 Viewport窗口中的粒子生成
+![[Init.jpg]]
 
 这个部分我们先看编辑器中Viewport这个窗口里的如何生成的
 
