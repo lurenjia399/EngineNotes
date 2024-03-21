@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "索引.md",
+                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,7 +32,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "索引.md",
+                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
                 "mode": "source",
                 "source": false
               }
@@ -105,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "索引.md",
+                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "索引.md",
+                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "索引.md"
+                "file": "2 note/2 Tick逻辑/Tick逻辑.md"
               }
             }
           }
@@ -168,30 +168,33 @@
   },
   "active": "0e5ed17f692dddcb",
   "lastOpenFiles": [
-    "note/特效系统/1 索引.md",
-    "索引.md",
-    "note/特效系统/特效系统Cascade.md",
-    "note/未命名",
-    "note/特效系统/Image/Tick.jpg",
-    "note/特效系统/Image/Init.jpg",
-    "note/特效系统/Image/Class.jpg",
+    "2 note/1 特效系统/ParticleSystem.mdj",
+    "1 索引/索引.md",
+    "1 索引",
+    "2 note/2 Tick逻辑/Tick逻辑.md",
+    "2 note/1 特效系统/1 索引.md",
+    "2 note/1 特效系统/特效系统Cascade.md",
+    "Image/Class.png",
+    "2 note/2 Tick逻辑",
+    "2 note/1 特效系统/Image/Tick.jpg",
+    "2 note/1 特效系统/Image/Init.jpg",
+    "2 note/1 特效系统/Image/Class.jpg",
     "note/特效系统/Image/jpg/Collaboration1!Interaction1!SequenceDiagram1_3.jpg",
     "note/特效系统/Image/jpg/Init!Init!Init_2.jpg",
     "note/特效系统/Image/jpg/Tick!Tick!Tick_1.jpg",
     "note/特效系统/Image/jpg/Class!Class_0.jpg",
     "note/特效系统/Image/jpg",
     "note/特效系统/Image/Class.png",
-    "note/特效系统/Image/Pasted image 20240320175516.png",
-    "Image/Class.jpg",
+    "2 note/1 特效系统/Image/Pasted image 20240320175516.png",
     "!Tick.jpg.md",
     "note/反射/反射.md",
     "note/反射",
     "UE.md",
-    "note/特效系统/Image",
-    "note/特效系统",
+    "2 note/1 特效系统/Image",
+    "2 note/1 特效系统",
     "note/Image",
-    "note",
+    "2 note",
     "索引",
-    "Image"
+    "3 Image"
   ]
 }
