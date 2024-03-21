@@ -33,7 +33,7 @@
               "type": "markdown",
               "state": {
                 "file": "note/特效系统/特效系统Cascade.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false
               }
             },
@@ -168,11 +168,11 @@
   },
   "active": "ff02ddbdc6e9526b",
   "lastOpenFiles": [
-    "note/特效系统/1 索引.md",
-    "note/特效系统/特效系统Cascade.md",
-    "note/特效系统/Image/Init.jpg",
     "note/特效系统/Image/Tick.jpg",
+    "note/特效系统/Image/Init.jpg",
     "note/特效系统/Image/Class.jpg",
+    "note/特效系统/特效系统Cascade.md",
+    "note/特效系统/1 索引.md",
     "note/特效系统/Image/jpg/Collaboration1!Interaction1!SequenceDiagram1_3.jpg",
     "note/特效系统/Image/jpg/Init!Init!Init_2.jpg",
     "note/特效系统/Image/jpg/Tick!Tick!Tick_1.jpg",
