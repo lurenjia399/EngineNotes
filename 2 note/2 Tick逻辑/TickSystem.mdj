@@ -1437,7 +1437,7 @@
 											"font": "Arial;13;1",
 											"left": 93,
 											"top": 703,
-											"width": 82.10693359375,
+											"width": 159.78955078125,
 											"height": 13,
 											"text": "FTickContext"
 										},
@@ -1481,7 +1481,7 @@
 									"font": "Arial;13;0",
 									"left": 88,
 									"top": 696,
-									"width": 92.10693359375,
+									"width": 169.78955078125,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGOYPr5AKimVg8="
@@ -1505,14 +1505,36 @@
 									"model": {
 										"$ref": "AAAAAAGOYPr5AKiiE2M="
 									},
+									"subViews": [
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGOYRXkMr211wA=",
+											"_parent": {
+												"$ref": "AAAAAAGOYPr5AKiqI0Y="
+											},
+											"model": {
+												"$ref": "AAAAAAGOYRXkK72v3hc="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 93,
+											"top": 726,
+											"width": 159.78955078125,
+											"height": 13,
+											"text": "+TickGroup: ETickingGroup",
+											"horizontalAlignment": 0
+										}
+									],
 									"lineColor": "#457b9d",
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 88,
 									"top": 721,
-									"width": 92.10693359375,
-									"height": 10
+									"width": 169.78955078125,
+									"height": 23
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -1528,8 +1550,8 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 88,
-									"top": 731,
-									"width": 92.10693359375,
+									"top": 744,
+									"width": 169.78955078125,
 									"height": 10
 								},
 								{
@@ -1578,8 +1600,8 @@
 							"containerChangeable": true,
 							"left": 88,
 							"top": 696,
-							"width": 92.10693359375,
-							"height": 45,
+							"width": 169.78955078125,
+							"height": 58,
 							"nameCompartment": {
 								"$ref": "AAAAAAGOYPr5AKilv28="
 							},
@@ -1620,8 +1642,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 254,
-									"top": 673,
+									"left": 292,
+									"top": 672,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -1644,8 +1666,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 251,
-									"top": 658,
+									"left": 289,
+									"top": 657,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -1668,8 +1690,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 259,
-									"top": 702,
+									"left": 299,
+									"top": 701,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -1692,8 +1714,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 202,
-									"top": 683,
+									"left": 279,
+									"top": 676,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -1716,8 +1738,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 202,
-									"top": 669,
+									"left": 278,
+									"top": 662,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -1740,8 +1762,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 203,
-									"top": 711,
+									"left": 282,
+									"top": 703,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -1765,7 +1787,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 306,
-									"top": 663,
+									"top": 669,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -1787,8 +1809,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 301,
-									"top": 650,
+									"left": 300,
+									"top": 657,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -1811,7 +1833,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 316,
-									"top": 689,
+									"top": 695,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -1865,7 +1887,7 @@
 								"$ref": "AAAAAAGOYPr5AKikPwg="
 							},
 							"lineStyle": 1,
-							"points": "180:709;335:679",
+							"points": "258:703;335:684",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGOYPsWfKm2sm0="
@@ -2838,6 +2860,18 @@
 								},
 								"aggregation": "shared"
 							}
+						}
+					],
+					"attributes": [
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGOYRXkK72v3hc=",
+							"_parent": {
+								"$ref": "AAAAAAGOYPr5AKiiE2M="
+							},
+							"name": "TickGroup",
+							"documentation": "1 记录当前tick的TickGroup\n2 ",
+							"type": "ETickingGroup"
 						}
 					]
 				},
