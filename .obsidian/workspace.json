@@ -166,8 +166,9 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0e5ed17f692dddcb",
+  "active": "ff02ddbdc6e9526b",
   "lastOpenFiles": [
+    "2 note/2 Tick逻辑/TickSystem.mdj",
     "2 note/1 特效系统/ParticleSystem.mdj",
     "1 索引/索引.md",
     "1 索引",
@@ -194,7 +195,6 @@
     "2 note/1 特效系统",
     "note/Image",
     "2 note",
-    "索引",
-    "3 Image"
+    "索引"
   ]
 }
