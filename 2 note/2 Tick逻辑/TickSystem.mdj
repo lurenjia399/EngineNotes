@@ -7810,7 +7810,7 @@
 													"fillColor": "#a8d9db",
 													"fontColor": "#4a3575",
 													"font": "Arial;13;0",
-													"left": -176,
+													"left": -192,
 													"height": 13
 												},
 												{
@@ -7823,7 +7823,7 @@
 													"fillColor": "#a8d9db",
 													"fontColor": "#4a3575",
 													"font": "Arial;13;1",
-													"left": 37,
+													"left": 29,
 													"top": 47,
 													"width": 90.412109375,
 													"height": 13,
@@ -7840,7 +7840,7 @@
 													"fillColor": "#a8d9db",
 													"fontColor": "#4a3575",
 													"font": "Arial;13;0",
-													"left": -176,
+													"left": -192,
 													"width": 106.20263671875,
 													"height": 13,
 													"text": "(from Interaction1)"
@@ -7856,7 +7856,7 @@
 													"fillColor": "#a8d9db",
 													"fontColor": "#4a3575",
 													"font": "Arial;13;0",
-													"left": -176,
+													"left": -192,
 													"height": 13,
 													"horizontalAlignment": 1
 												}
@@ -7865,7 +7865,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 32,
+											"left": 24,
 											"top": 40,
 											"width": 100.412109375,
 											"height": 40,
@@ -7895,7 +7895,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 82,
+											"left": 74,
 											"top": 80,
 											"width": 1,
 											"height": 1001
@@ -7905,7 +7905,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 32,
+									"left": 24,
 									"top": 40,
 									"width": 100.412109375,
 									"height": 1041,
@@ -8076,7 +8076,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 126,
+											"left": 122,
 											"top": 154,
 											"width": 83.078125,
 											"height": 13,
@@ -8102,7 +8102,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 167,
+											"left": 163,
 											"top": 139,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -8126,7 +8126,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 167,
+											"left": 163,
 											"top": 174,
 											"height": 13,
 											"alpha": -1.5707963267948966,
@@ -8165,7 +8165,7 @@
 									"tail": {
 										"$ref": "AAAAAAGOZUHWRfj9Kxc="
 									},
-									"points": "82:170;253:170",
+									"points": "74:170;253:170",
 									"nameLabel": {
 										"$ref": "AAAAAAGOZUKxrfo0ISc="
 									},
@@ -9747,7 +9747,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 114,
+											"left": 110,
 											"top": 844,
 											"width": 107.65625,
 											"height": 13,
@@ -9773,7 +9773,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 167,
+											"left": 163,
 											"top": 829,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -9797,7 +9797,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 167,
+											"left": 163,
 											"top": 864,
 											"height": 13,
 											"alpha": -1.5707963267948966,
@@ -9836,7 +9836,7 @@
 									"tail": {
 										"$ref": "AAAAAAGOZUHWRfj9Kxc="
 									},
-									"points": "82:860;253:860",
+									"points": "74:860;253:860",
 									"nameLabel": {
 										"$ref": "AAAAAAGOZVb4o/utNRE="
 									},
@@ -10922,9 +10922,9 @@
 													"font": "Arial;13;1",
 													"left": 1741,
 													"top": 47,
-													"width": 62.736328125,
+													"width": 76.94873046875,
 													"height": 13,
-													"text": "Lifeline1"
+													"text": "TaskGraph"
 												},
 												{
 													"_type": "LabelView",
@@ -10962,7 +10962,7 @@
 											"font": "Arial;13;0",
 											"left": 1736,
 											"top": 40,
-											"width": 72.736328125,
+											"width": 86.94873046875,
 											"height": 40,
 											"stereotypeLabel": {
 												"$ref": "AAAAAAGOZVwV8vy8nyA="
@@ -10990,7 +10990,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 1772,
+											"left": 1779,
 											"top": 80,
 											"width": 1,
 											"height": 1385
@@ -11002,7 +11002,7 @@
 									"font": "Arial;13;0",
 									"left": 1736,
 									"top": 40,
-									"width": 72.736328125,
+									"width": 86.94873046875,
 									"height": 1425,
 									"nameCompartment": {
 										"$ref": "AAAAAAGOZVwV8vy7ljY="
@@ -11034,7 +11034,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 1539,
+											"left": 1542,
 											"top": 1152,
 											"width": 173.42431640625,
 											"height": 13,
@@ -11060,7 +11060,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 1625,
+											"left": 1628,
 											"top": 1137,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -11084,7 +11084,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 1625,
+											"left": 1628,
 											"top": 1172,
 											"height": 13,
 											"alpha": -1.5707963267948966,
@@ -11107,7 +11107,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 1765,
+											"left": 1772,
 											"top": 1168,
 											"width": 14,
 											"height": 57
@@ -11123,7 +11123,7 @@
 									"tail": {
 										"$ref": "AAAAAAGOZVsYMfyGpBc="
 									},
-									"points": "1485:1168;1765:1168",
+									"points": "1485:1168;1772:1168",
 									"nameLabel": {
 										"$ref": "AAAAAAGOZVxtv/zcLH8="
 									},
@@ -11767,7 +11767,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGOZUHAA/i2KOc="
 							},
-							"name": "Lifeline1",
+							"name": "TaskGraph",
 							"represent": {
 								"$ref": "AAAAAAGOZVwV8vy4Ysg="
 							},

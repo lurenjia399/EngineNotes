@@ -4,25 +4,6 @@
     "type": "split",
     "children": [
       {
-        "id": "eb21e1527ae918c5",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "ff02ddbdc6e9526b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
-                "mode": "source",
-                "source": false
-              }
-            },
-            "group": "dc0e891a572f2ca0"
-          }
-        ]
-      },
-      {
         "id": "5ed4282196b48824",
         "type": "tabs",
         "children": [
@@ -30,14 +11,11 @@
             "id": "bdfdb4c42db43e20",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
-                "mode": "source",
-                "source": false
+                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg"
               }
-            },
-            "group": "dc0e891a572f2ca0"
+            }
           }
         ]
       }
@@ -105,7 +83,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
+                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +100,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
+                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +123,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md"
+                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg"
               }
             }
           }
@@ -166,13 +144,17 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "ff02ddbdc6e9526b",
+  "active": "bdfdb4c42db43e20",
   "lastOpenFiles": [
+    "2 note/2 Tick逻辑/Tick逻辑.md",
+    "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
+    "2 note/2 Tick逻辑/Image/SequenceDiagram1.png",
+    "2 note/2 Tick逻辑/Image",
+    "2 note/2 Tick逻辑/新建文件夹",
     "2 note/2 Tick逻辑/TickSystem.mdj",
     "2 note/1 特效系统/ParticleSystem.mdj",
     "1 索引/索引.md",
     "1 索引",
-    "2 note/2 Tick逻辑/Tick逻辑.md",
     "2 note/1 特效系统/1 索引.md",
     "2 note/1 特效系统/特效系统Cascade.md",
     "Image/Class.png",
@@ -185,16 +167,11 @@
     "note/特效系统/Image/jpg/Tick!Tick!Tick_1.jpg",
     "note/特效系统/Image/jpg/Class!Class_0.jpg",
     "note/特效系统/Image/jpg",
-    "note/特效系统/Image/Class.png",
-    "2 note/1 特效系统/Image/Pasted image 20240320175516.png",
     "!Tick.jpg.md",
     "note/反射/反射.md",
     "note/反射",
     "UE.md",
     "2 note/1 特效系统/Image",
-    "2 note/1 特效系统",
-    "note/Image",
-    "2 note",
-    "索引"
+    "2 note/1 特效系统"
   ]
 }
