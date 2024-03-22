@@ -12502,8 +12502,8 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 8,
-									"width": 1073,
-									"height": 913,
+									"width": 1049,
+									"height": 865,
 									"nameLabel": {
 										"$ref": "AAAAAAGOZW6u/P4kOvk="
 									},
@@ -13811,6 +13811,132 @@
 									"activation": {
 										"$ref": "AAAAAAGOZYYyqyMzsSs="
 									}
+								},
+								{
+									"_type": "UMLSeqMessageView",
+									"_id": "AAAAAAGOZZb5qiNGYd4=",
+									"_parent": {
+										"$ref": "AAAAAAGOZW6u/P4iBK0="
+									},
+									"model": {
+										"$ref": "AAAAAAGOZZb5qiNF7es="
+									},
+									"subViews": [
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGOZZb5qiNHcQY=",
+											"_parent": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"model": {
+												"$ref": "AAAAAAGOZZb5qiNF7es="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 697,
+											"top": 504,
+											"width": 114.40380859375,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"edgePosition": 1,
+											"text": "7 : AddTickFunction"
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGOZZb5qiNIXck=",
+											"_parent": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"model": {
+												"$ref": "AAAAAAGOZZb5qiNF7es="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 754,
+											"top": 489,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 25,
+											"hostEdge": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGOZZb5qiNJpsA=",
+											"_parent": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"model": {
+												"$ref": "AAAAAAGOZZb5qiNF7es="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 754,
+											"top": 524,
+											"height": 13,
+											"alpha": -1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "UMLActivationView",
+											"_id": "AAAAAAGOZZb5qiNK8g0=",
+											"_parent": {
+												"$ref": "AAAAAAGOZZb5qiNGYd4="
+											},
+											"model": {
+												"$ref": "AAAAAAGOZZb5qiNF7es="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 859,
+											"top": 520,
+											"width": 14,
+											"height": 29
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"head": {
+										"$ref": "AAAAAAGOZYCUKiKtk3g="
+									},
+									"tail": {
+										"$ref": "AAAAAAGOZYYDRCMTcac="
+									},
+									"points": "650:520;859:520",
+									"nameLabel": {
+										"$ref": "AAAAAAGOZZb5qiNHcQY="
+									},
+									"stereotypeLabel": {
+										"$ref": "AAAAAAGOZZb5qiNIXck="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAGOZZb5qiNJpsA="
+									},
+									"activation": {
+										"$ref": "AAAAAAGOZZb5qiNK8g0="
+									}
 								}
 							]
 						}
@@ -13899,6 +14025,20 @@
 							},
 							"target": {
 								"$ref": "AAAAAAGOZYYDQyMMz8I="
+							}
+						},
+						{
+							"_type": "UMLMessage",
+							"_id": "AAAAAAGOZZb5qiNF7es=",
+							"_parent": {
+								"$ref": "AAAAAAGOZW6u/P4hfpE="
+							},
+							"name": "AddTickFunction",
+							"source": {
+								"$ref": "AAAAAAGOZYYDQyMMz8I="
+							},
+							"target": {
+								"$ref": "AAAAAAGOZYCUKiKmF+k="
 							}
 						}
 					],
