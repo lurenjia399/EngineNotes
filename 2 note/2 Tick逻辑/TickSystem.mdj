@@ -7720,7 +7720,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGOZUHAA/i2KOc="
 							},
-							"name": "SequenceDiagram1",
+							"name": "world执行tick流程图",
 							"ownedViews": [
 								{
 									"_type": "UMLFrameView",
@@ -7744,9 +7744,9 @@
 											"font": "Arial;13;0",
 											"left": 24.72998046875,
 											"top": 13,
-											"width": 115.9052734375,
+											"width": 116.5654296875,
 											"height": 13,
-											"text": "SequenceDiagram1"
+											"text": "world执行tick流程图"
 										},
 										{
 											"_type": "LabelView",
@@ -11843,6 +11843,94 @@
 					},
 					"name": "Role8",
 					"type": ""
+				}
+			]
+		},
+		{
+			"_type": "UMLCollaboration",
+			"_id": "AAAAAAGOZW6u/P4gylw=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "Collaboration2",
+			"ownedElements": [
+				{
+					"_type": "UMLInteraction",
+					"_id": "AAAAAAGOZW6u/P4hfpE=",
+					"_parent": {
+						"$ref": "AAAAAAGOZW6u/P4gylw="
+					},
+					"name": "Interaction1",
+					"ownedElements": [
+						{
+							"_type": "UMLSequenceDiagram",
+							"_id": "AAAAAAGOZW6u/P4iBK0=",
+							"_parent": {
+								"$ref": "AAAAAAGOZW6u/P4hfpE="
+							},
+							"name": "AActor或Component注册流程图",
+							"ownedViews": [
+								{
+									"_type": "UMLFrameView",
+									"_id": "AAAAAAGOZW6u/P4je/k=",
+									"_parent": {
+										"$ref": "AAAAAAGOZW6u/P4iBK0="
+									},
+									"model": {
+										"$ref": "AAAAAAGOZW6u/P4iBK0="
+									},
+									"subViews": [
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGOZW6u/P4kOvk=",
+											"_parent": {
+												"$ref": "AAAAAAGOZW6u/P4je/k="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 32.72998046875,
+											"top": 13,
+											"width": 185.2216796875,
+											"height": 13,
+											"text": "AActor或Component注册流程图"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGOZW6u/P4liVY=",
+											"_parent": {
+												"$ref": "AAAAAAGOZW6u/P4je/k="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;1",
+											"left": 13,
+											"top": 13,
+											"width": 14.72998046875,
+											"height": 13,
+											"text": "sd"
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 8,
+									"top": 8,
+									"width": 692,
+									"height": 592,
+									"nameLabel": {
+										"$ref": "AAAAAAGOZW6u/P4kOvk="
+									},
+									"frameTypeLabel": {
+										"$ref": "AAAAAAGOZW6u/P4liVY="
+									}
+								}
+							]
+						}
+					]
 				}
 			]
 		}
