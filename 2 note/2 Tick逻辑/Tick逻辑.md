@@ -131,6 +131,7 @@ void AddTickFunction(FTickFunction* TickFunction)
 	}
 ```
 4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面，绑定的具体操作就是把TickFunction保存到相应的数组中去。
+5 注意Actor的Tick和Component的Tick没有顺序关系，他们都是通过FTickFunction::RegisterTickFunction这个方法来将TickFunction绑定到Level里面的。
 ### Tick时机
 ```cpp
 void AActor::InitializeDefaults()
