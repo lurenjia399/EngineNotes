@@ -1,4 +1,5 @@
 {
   "attachmentFolderPath": "./Image",
-  "promptDelete": false
+  "promptDelete": false,
+  "autoConvertHtml": true
 }
