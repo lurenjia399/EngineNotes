@@ -173,6 +173,26 @@
 											"height": 13,
 											"text": "+TickGroup: TEnumAsByte<enum ETickingGroup>",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGOaoliVSa8PdA=",
+											"_parent": {
+												"$ref": "AAAAAAGOYOcjs54/N+Y="
+											},
+											"model": {
+												"$ref": "AAAAAAGOaoliTSa598Q="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 37,
+											"top": 741,
+											"width": 294.1884765625,
+											"height": 13,
+											"text": "+Prerequisites: TArray<struct FTickPrerequisite>",
+											"horizontalAlignment": 0
 										}
 									],
 									"lineColor": "#457b9d",
@@ -182,7 +202,7 @@
 									"left": 32,
 									"top": 721,
 									"width": 304.1884765625,
-									"height": 23
+									"height": 38
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -198,7 +218,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 32,
-									"top": 744,
+									"top": 759,
 									"width": 304.1884765625,
 									"height": 10
 								},
@@ -249,7 +269,7 @@
 							"left": 32,
 							"top": 696,
 							"width": 304.1884765625,
-							"height": 58,
+							"height": 73,
 							"nameCompartment": {
 								"$ref": "AAAAAAGOYOcjsp46WPg="
 							},
@@ -3846,7 +3866,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 212,
+									"left": 216,
 									"top": 657,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -3870,7 +3890,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 200,
+									"left": 204,
 									"top": 648,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -3894,7 +3914,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 235,
+									"left": 239,
 									"top": 676,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -3918,7 +3938,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 210,
+									"left": 215,
 									"top": 659,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -3942,7 +3962,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 202,
+									"left": 205,
 									"top": 649,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -3966,8 +3986,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 229,
-									"top": 680,
+									"left": 234,
+									"top": 679,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -3990,8 +4010,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 213,
-									"top": 655,
+									"left": 217,
+									"top": 656,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -4013,8 +4033,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 202,
-									"top": 648,
+									"left": 205,
+									"top": 650,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -4036,7 +4056,7 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 237,
+									"left": 241,
 									"top": 669,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -4095,7 +4115,7 @@
 								"$ref": "AAAAAAGOYOcjsp45cu0="
 							},
 							"lineStyle": 1,
-							"points": "206:695;242:651",
+							"points": "211:695;245:651",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGOYSlNAhG/+Ms="
@@ -5129,7 +5149,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 169,
-									"top": 798,
+									"top": 805,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -5153,7 +5173,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 154,
-									"top": 798,
+									"top": 805,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -5177,7 +5197,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 198,
-									"top": 797,
+									"top": 806,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -5198,7 +5218,7 @@
 								"$ref": "AAAAAAGOZXBzWQpogXA="
 							},
 							"lineStyle": 1,
-							"points": "185:855;183:754",
+							"points": "185:855;184:769",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGOZXCQIQ9B29g="
@@ -5258,6 +5278,15 @@
 							},
 							"name": "TickGroup",
 							"type": "TEnumAsByte<enum ETickingGroup>"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGOaoliTSa598Q=",
+							"_parent": {
+								"$ref": "AAAAAAGOYOcjsZ43wis="
+							},
+							"name": "Prerequisites",
+							"type": "TArray<struct FTickPrerequisite>"
 						}
 					]
 				},

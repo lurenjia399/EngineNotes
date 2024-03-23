@@ -148,4 +148,10 @@ void AActor::InitializeDefaults()
 
 ```
 ### Tick顺序和依赖关系
+1 依赖关系的构建主要是通过TickFunction中的Prerequisites这个数组来决定。我们拿AController，UPawnMovementComponent和APawn之间的Tick顺序来进行展示。
+```cpp
+
+
+```
+
 
