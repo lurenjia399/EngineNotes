@@ -177,6 +177,8 @@ void AController::AddPawnTickDependency(APawn* NewPawn)
 			PawnMovement->PrimaryComponentTick.AddPrerequisite(this, this->PrimaryActorTick);//
 
 			// Don't need a prereq on the pawn if the movement component already sets up a prereq.
+			// bTickBeforeOwner 这个标志位是Movementcomponent特有的，因为MovementComponent
+			// 的tick是在
 			if (PawnMovement->bTickBeforeOwner || NewPawn->PrimaryActorTick.GetPrerequisites().Contains(FTickPrerequisite(PawnMovement, PawnMovement->PrimaryComponentTick)))
 			{
 				bNeedsPawnPrereq = false;
@@ -191,3 +193,4 @@ void AController::AddPawnTickDependency(APawn* NewPawn)
 }
 ```
 3 先设置UPawnMovementComponent的Tick依赖AController的Tick，如果APawn的Tick不依赖UPawnMovementComponent的Tick，那么就在设置APawn的Tick依赖AController的Tick。
+
