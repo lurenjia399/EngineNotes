@@ -91,9 +91,10 @@ void FTickFunction::RegisterTickFunction(ULevel* Level)
 	   }   
     }   
 	else  
-	{  
+	{
 	    check(FTickTaskManager::Get().HasTickFunction(Level, this));  
 	}
+
 }
 
 ```
