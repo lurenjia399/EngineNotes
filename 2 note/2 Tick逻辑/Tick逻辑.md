@@ -178,7 +178,7 @@ void AController::AddPawnTickDependency(APawn* NewPawn)
 
 			// Don't need a prereq on the pawn if the movement component already sets up a prereq.
 			// bTickBeforeOwner 这个标志位是Movementcomponent特有的，因为MovementComponent
-			// 的tick是在
+			// 的tick可以设置为Owner之前
 			if (PawnMovement->bTickBeforeOwner || NewPawn->PrimaryActorTick.GetPrerequisites().Contains(FTickPrerequisite(PawnMovement, PawnMovement->PrimaryComponentTick)))
 			{
 				bNeedsPawnPrereq = false;
@@ -193,4 +193,24 @@ void AController::AddPawnTickDependency(APawn* NewPawn)
 }
 ```
 3 先设置UPawnMovementComponent的Tick依赖AController的Tick，如果APawn的Tick不依赖UPawnMovementComponent的Tick，那么就在设置APawn的Tick依赖AController的Tick。
+```cpp
+// 这里就是UMovementComponent注册TickFunction的地方
+void UMovementComponent::RegisterComponentTickFunctions(bool bRegister)
+{
+	Super::RegisterComponentTickFunctions(bRegister);
 
+	// Super may start up the tick function when we don't want to.
+	UpdateTickRegistration();
+
+	// If the owner ticks, make sure we tick first
+	AActor* Owner = GetOwner();
+	// 在构造函数中bTickBeforeOwner这个是true，不过可以在蓝图中设成false
+	if (bTickBeforeOwner && bRegister && PrimaryComponentTick.bCanEverTick && Owner && Owner->CanEverTick())
+	{
+		Owner->PrimaryActorTick.AddPrerequisite(this, PrimaryComponentTick);
+	}
+}
+
+```
+
+4 在UMovementComponent构造函数中bTickBeforeOwner这个是true，不过可以在蓝图中设成false，它的作用就是绑定Owner和UMovementComponent之间的依赖关系，Owner的Tick在UMovementComponent的Tick之后。
