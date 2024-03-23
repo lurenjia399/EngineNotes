@@ -1,5 +1,5 @@
 # Actor 或 Component的Tick
-### Actor/Component注册
+### Actor/Component Tick注册
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
 1 从AActor::Beginplay开始注册的
@@ -131,6 +131,19 @@ void AddTickFunction(FTickFunction* TickFunction)
 	}
 ```
 4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面，绑定的具体操作就是把TickFunction保存到相应的数组中去。
+### Tick时机
+```cpp
+void AActor::InitializeDefaults()
+{
+	PrimaryActorTick.TickGroup = TG_PrePhysics; // 这里设置了TickGroup
+	// Default to no tick function, but if we set 'never ticks' to false (so there is a tick function) it is enabled by default
+	//这个为true，才会注册Tick，所以我们写的actor就可以设置这个来决定是否可以tick
+	PrimaryActorTick.bCanEverTick = false; 
+	PrimaryActorTick.bStartWithTickEnabled = true;//可以开始Tick的标志位
+	PrimaryActorTick.SetTickFunctionEnable(false); // 设置TickFunction的状态
+	bAsyncPhysicsTickEnabled = false;//什么同步物理tick的标志位
+}
 
+```
 
 
