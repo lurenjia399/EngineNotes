@@ -58,8 +58,8 @@ void AActor::RegisterActorTickFunctions(bool bRegister)
 	   if(PrimaryActorTick.bCanEverTick)  
       {         
 	     PrimaryActorTick.Target = this;//设置TickFunction的Target
-         PrimaryActorTick.SetTickFunctionEnable(PrimaryActorTick.bStartWithTickEnabled                || PrimaryActorTick.IsTickFunctionEnabled());  
-         PrimaryActorTick.RegisterTickFunction(GetLevel());  
+         PrimaryActorTick.SetTickFunctionEnable(PrimaryActorTick.bStartWithTickEnabled                || PrimaryActorTick.IsTickFunctionEnabled());//设置状态
+         PrimaryActorTick.RegisterTickFunction(GetLevel());//注册进去
       }   
     }   
     else  
@@ -71,9 +71,6 @@ void AActor::RegisterActorTickFunctions(bool bRegister)
     }  
    FActorThreadContext::Get().TestRegisterTickFunctions = this; // we will verify the super call chain is intact. Don't copy and paste this to another actor class!  
 }
-```
-3 最终会走到RegisterActorTickFunctions这个方法种注册，也就是给PrimaryActorTick(它就是AActor里面的TickFunction)赋值。然后就是通过SetTickFunctionEnable设置TickFunctionEnable的状态为ETickState::Enabled，如果已经注册过就删掉再重新注册。最后就是RegisterTickFunction注册方法。
-```cpp
 void FTickFunction::RegisterTickFunction(ULevel* Level)
 {
 	if (!IsTickFunctionRegistered())
@@ -86,7 +83,7 @@ void FTickFunction::RegisterTickFunction(ULevel* Level)
 			{
 				InternalData.Reset(new FInternalData());
 			}
-			FTickTaskManager::Get().AddTickFunction(Level, this);
+			FTickTaskManager::Get().AddTickFunction(Level, this);//下文介绍下
 			InternalData->bRegistered = true;
 		}
 	}
@@ -96,3 +93,17 @@ void FTickFunction::RegisterTickFunction(ULevel* Level)
 	}
 }
 ```
+3 最终会走到RegisterActorTickFunctions这个方法种注册，也就是给PrimaryActorTick(它就是AActor里面的TickFunction)赋值。然后就是通过SetTickFunctionEnable设置TickFunctionEnable的状态为ETickState::Enabled，如果已经注册过就删掉再重新注册。最后就是RegisterTickFunction注册方法，通过FTickTaskManager的单例实际绑定Actor的TickFunction，注册完后设置标志位。
+```cpp
+// FTickTaskManager的方法
+void AddTickFunction(ULevel* InLevel, FTickFunction* TickFunction)
+	{
+		check(TickFunction->TickGroup >= 0 && TickFunction->TickGroup < TG_NewlySpawned); // You may not schedule a tick in the newly spawned group...they can only end up there if they are spawned late in a frame.
+		FTickTaskLevel* Level = TickTaskLevelForLevel(InLevel);
+		Level->AddTickFunction(TickFunction);
+		TickFunction->InternalData->TickTaskLevel = Level;
+	}
+
+```
+将Actor的TickFunction绑定到Actor所处的Level
+
