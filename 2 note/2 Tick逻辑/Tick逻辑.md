@@ -30,24 +30,45 @@ void AActor::RegisterAllActorTickFunctions(bool bRegister, bool bDoComponents)
    if(!IsTemplate())  
    {      // Prevent repeated redundant attempts  
       if (bTickFunctionsRegistered != bRegister)  
-      {         FActorThreadContext& ThreadContext = FActorThreadContext::Get();  
-         check(ThreadContext.TestRegisterTickFunctions == nullptr);  
+      {         
+	     FActorThreadContext& ThreadContext = FActorThreadContext::Get();  
+ 
          RegisterActorTickFunctions(bRegister);  
          bTickFunctionsRegistered = bRegister;  
-         checkf(ThreadContext.TestRegisterTickFunctions == this, TEXT("Failed to route Actor RegisterTickFunctions (%s)"), *GetFullName());  
+
          ThreadContext.TestRegisterTickFunctions = nullptr;  
       }  
       if (bDoComponents)  
-      {         for (UActorComponent* Component : GetComponents())  
-         {            if (Component)  
-            {               Component->RegisterAllComponentTickFunctions(bRegister);  
-            }         }      }  
-      if (bAsyncPhysicsTickEnabled)  
-      {         if (FPhysScene_Chaos* Scene = static_cast<FPhysScene_Chaos*>(GetWorld()->GetPhysicsScene()))  
-         {            if (bRegister)  
-            {               Scene->RegisterAsyncPhysicsTickActor(this);  
-            }            else  
-            {  
-               Scene->UnregisterAsyncPhysicsTickActor(this);  
-            }         }      }   }}
+      {         
+	      for (UActorComponent* Component : GetComponents())  
+         {            
+	         if (Component)  
+            {               
+		        Component->RegisterAllComponentTickFunctions(bRegister);  
+            }        
+          }      
+       }
+       // 省略了异步物理tick，不知道干啥的
+    }
+}
+void AActor::RegisterActorTickFunctions(bool bRegister)  
+{  
+   if(bRegister)  
+   {      
+	   if(PrimaryActorTick.bCanEverTick)  
+      {         
+	      PrimaryActorTick.Target = this;  
+         PrimaryActorTick.SetTickFunctionEnable(PrimaryActorTick.bStartWithTickEnabled || PrimaryActorTick.IsTickFunctionEnabled());  
+         PrimaryActorTick.RegisterTickFunction(GetLevel());  
+      }   
+    }   
+    else  
+	{  
+      if(PrimaryActorTick.IsTickFunctionRegistered())  
+      {         
+	      PrimaryActorTick.UnRegisterTickFunction();         
+      }  
+    }  
+   FActorThreadContext::Get().TestRegisterTickFunctions = this; // we will verify the super call chain is intact. Don't copy and paste this to another actor class!  
+}
 ```
