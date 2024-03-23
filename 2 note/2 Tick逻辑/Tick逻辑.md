@@ -1,5 +1,5 @@
 # Actor 或 Component的Tick
-### Actor注册
+### Actor/Component注册
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
 1 从AActor::Beginplay开始注册的
@@ -105,7 +105,7 @@ void AddTickFunction(ULevel* InLevel, FTickFunction* TickFunction)
 		check(TickFunction->TickGroup >= 0 && TickFunction->TickGroup < TG_NewlySpawned); // You may not schedule a tick in the newly spawned group...they can only end up there if they are spawned late in a frame.
 		FTickTaskLevel* Level = TickTaskLevelForLevel(InLevel);
 		Level->AddTickFunction(TickFunction);
-		TickFunction->InternalData->TickTaskLevel = Level;
+		TickFunction->InternalData->TickTaskLevel = Level;//这边加个关联，取得时候好取吧
 	}
 
 // FTickTaskLevel的方法
