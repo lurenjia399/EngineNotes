@@ -441,7 +441,7 @@ void FAssetTypeActions_ParticleSystem::OpenAssetEditor(...)
 ```
 
 ### 6 Viewport窗口中的粒子生成
-![[Init.jpg]]
+![Init](https://gitee.com/lurenjia399/image/raw/master/image/202403231757583.jpg)
 
 这个部分我们先看编辑器中Viewport这个窗口里的如何生成的
 
@@ -676,7 +676,7 @@ void UParticleSystemComponent::ActivateSystem(...)
 ​
 ```
 ### 7 Viewport窗口中的粒子Tick
-![[Tick.jpg]]
+![Tick](https://gitee.com/lurenjia399/image/raw/master/image/202403231756940.jpg)
 
 ```c++
 void UParticleSystemComponent::TickComponent(...)  
