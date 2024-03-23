@@ -96,6 +96,8 @@ void FTickFunction::RegisterTickFunction(ULevel* Level)
 3 最终会走到RegisterActorTickFunctions这个方法种注册，也就是给PrimaryActorTick(它就是AActor里面的TickFunction)赋值。然后就是通过SetTickFunctionEnable设置TickFunctionEnable的状态为ETickState::Enabled，如果已经注册过就删掉再重新注册。最后就是RegisterTickFunction注册方法，通过FTickTaskManager的单例实际绑定Actor的TickFunction，注册完后设置标志位。
 ```cpp
 // FTickTaskManager的方法
+// ULevel* InLevel ->>>>>>>>> actor所处的Level
+// FTickFunction* TickFunction ->>>>>>>> actor身上挂着的TickFunction
 void AddTickFunction(ULevel* InLevel, FTickFunction* TickFunction)
 	{
 		check(TickFunction->TickGroup >= 0 && TickFunction->TickGroup < TG_NewlySpawned); // You may not schedule a tick in the newly spawned group...they can only end up there if they are spawned late in a frame.
@@ -104,6 +106,24 @@ void AddTickFunction(ULevel* InLevel, FTickFunction* TickFunction)
 		TickFunction->InternalData->TickTaskLevel = Level;
 	}
 
+// FTickTaskLevel的方法
+void AddTickFunction(FTickFunction* TickFunction)
+	{
+		check(!HasTickFunction(TickFunction));
+		if (TickFunction->TickState == FTickFunction::ETickState::Enabled)
+		{
+			AllEnabledTickFunctions.Add(TickFunction);
+			if (bTickNewlySpawned)
+			{
+				NewlySpawnedTickFunctions.Add(TickFunction);
+			}
+		}
+		else
+		{
+			check(TickFunction->TickState == FTickFunction::ETickState::Disabled);
+			AllDisabledTickFunctions.Add(TickFunction);
+		}
+	}
 ```
-将Actor的TickFunction绑定到Actor所处的Level
+4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面
 
