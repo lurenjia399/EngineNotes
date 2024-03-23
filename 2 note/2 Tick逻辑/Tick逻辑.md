@@ -112,18 +112,21 @@ void AddTickFunction(FTickFunction* TickFunction)
 		check(!HasTickFunction(TickFunction));
 		if (TickFunction->TickState == FTickFunction::ETickState::Enabled)
 		{
-			AllEnabledTickFunctions.Add(TickFunction);
+			// 保存到最主要的ticktasklevel里面的所有能够tick的TickFunctions数组
+			AllEnabledTickFunctions.Add(TickFunction);// 把tickfunction保存到数组中
 			if (bTickNewlySpawned)
 			{
-				NewlySpawnedTickFunctions.Add(TickFunction);
+				// 这个看上去就是再tick的时候添加了tickFunction,就把它也添加到这里里面
+				NewlySpawnedTickFunctions.Add(TickFunction);// 把tickfunction保存到数组中
 			}
 		}
 		else
 		{
 			check(TickFunction->TickState == FTickFunction::ETickState::Disabled);
-			AllDisabledTickFunctions.Add(TickFunction);
+			// 这个当前就是不进行tick的TickFunctions数组
+			AllDisabledTickFunctions.Add(TickFunction);// 把tickfunction保存到数组中
 		}
 	}
 ```
-4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面
+4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面，绑定的具体操作就是把TickFunction保存到相应的数组中去
 
