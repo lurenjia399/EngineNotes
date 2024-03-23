@@ -148,10 +148,47 @@ void AActor::InitializeDefaults()
 
 ```
 ### Tick顺序和依赖关系
+
 1 依赖关系的构建主要是通过TickFunction中的Prerequisites这个数组来决定。我们拿AController，UPawnMovementComponent和APawn之间的Tick顺序来进行展示。
 ```cpp
+void AController::SetPawn(APawn* InPawn)
+{
+	RemovePawnTickDependency(Pawn);
 
+	Pawn = InPawn;
+	Character = (Pawn ? Cast<ACharacter>(Pawn) : NULL);
 
+	AttachToPawn(Pawn);
+
+	AddPawnTickDependency(Pawn); // 这里设置Tick依赖
+}
+
+```
+2 我们在controller中的SetPawn方法中设置的Tick依赖，什么时候执行的SetPawn就后面在整理他的逻辑了。
+```cpp
+void AController::AddPawnTickDependency(APawn* NewPawn)
+{
+	if (NewPawn != NULL)
+	{
+		bool bNeedsPawnPrereq = true;
+		UPawnMovementComponent* PawnMovement = NewPawn->GetMovementComponent();
+		if (PawnMovement && PawnMovement->PrimaryComponentTick.bCanEverTick)
+		{
+			PawnMovement->PrimaryComponentTick.AddPrerequisite(this, this->PrimaryActorTick);
+
+			// Don't need a prereq on the pawn if the movement component already sets up a prereq.
+			if (PawnMovement->bTickBeforeOwner || NewPawn->PrimaryActorTick.GetPrerequisites().Contains(FTickPrerequisite(PawnMovement, PawnMovement->PrimaryComponentTick)))
+			{
+				bNeedsPawnPrereq = false;
+			}
+		}
+		
+		if (bNeedsPawnPrereq)
+		{
+			NewPawn->PrimaryActorTick.AddPrerequisite(this, this->PrimaryActorTick);
+		}
+	}
+}
 ```
 
 
