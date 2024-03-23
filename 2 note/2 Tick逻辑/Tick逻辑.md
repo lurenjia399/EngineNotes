@@ -33,7 +33,7 @@ void AActor::RegisterAllActorTickFunctions(bool bRegister, bool bDoComponents)
       {         
 	     FActorThreadContext& ThreadContext = FActorThreadContext::Get();  
  
-         RegisterActorTickFunctions(bRegister);  
+         RegisterActorTickFunctions(bRegister);// 这里实际调用的方法
          bTickFunctionsRegistered = bRegister;  
 
          ThreadContext.TestRegisterTickFunctions = nullptr;  
@@ -57,8 +57,8 @@ void AActor::RegisterActorTickFunctions(bool bRegister)
    {      
 	   if(PrimaryActorTick.bCanEverTick)  
       {         
-	      PrimaryActorTick.Target = this;  
-         PrimaryActorTick.SetTickFunctionEnable(PrimaryActorTick.bStartWithTickEnabled || PrimaryActorTick.IsTickFunctionEnabled());  
+	     PrimaryActorTick.Target = this;//设置TickFunction的Target
+         PrimaryActorTick.SetTickFunctionEnable(PrimaryActorTick.bStartWithTickEnabled                || PrimaryActorTick.IsTickFunctionEnabled());  
          PrimaryActorTick.RegisterTickFunction(GetLevel());  
       }   
     }   
@@ -72,3 +72,4 @@ void AActor::RegisterActorTickFunctions(bool bRegister)
    FActorThreadContext::Get().TestRegisterTickFunctions = this; // we will verify the super call chain is intact. Don't copy and paste this to another actor class!  
 }
 ```
+3 最终会走到RegisterActorTickFunctions这个方法种注册，也就是给PrimaryActorTick(它就是AActor里面的TickFunction)赋值，然后就是设置TickFunctionEnable的状态
