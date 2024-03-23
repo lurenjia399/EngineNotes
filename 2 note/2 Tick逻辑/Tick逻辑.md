@@ -21,5 +21,3 @@ void AActor::BeginPlay()
 	}
 }
 ```
-SecretId:AKIDRziTFxgJt04rxR6b9fBscPgtXIyVzRgO SecretKey:qQ4pWAgLNTWl5MYfiyaEAINPQOSTmS8n
-⚠️upload failed, check dev console
