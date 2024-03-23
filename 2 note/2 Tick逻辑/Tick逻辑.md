@@ -11,8 +11,9 @@ void AActor::BeginPlay()
 	{  
 	   // bHasBegunPlay will be true for the component if the component was renamed and moved to a new outer during initialization  
 	   if (Component->IsRegistered() && !Component->HasBegunPlay())  
-	   {      Component->RegisterAllComponentTickFunctions(true);  
-	      Component->BeginPlay();  
+	   {      
+		   Component->RegisterAllComponentTickFunctions(true);  
+		   Component->BeginPlay();  
 	   }   else  
 	   {  
 	      // When an Actor begins play we expect only the not bAutoRegister false components to not be registered  
