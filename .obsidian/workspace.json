@@ -11,9 +11,11 @@
             "id": "bdfdb4c42db43e20",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg"
+                "file": "2 note/1 特效系统/特效系统Cascade.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -83,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
+                "file": "2 note/1 特效系统/特效系统Cascade.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
+                "file": "2 note/1 特效系统/特效系统Cascade.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg"
+                "file": "2 note/1 特效系统/特效系统Cascade.md"
               }
             }
           }
@@ -146,6 +148,9 @@
   },
   "active": "bdfdb4c42db43e20",
   "lastOpenFiles": [
+    "1 索引/索引.md",
+    "2 note/1 特效系统/特效系统Cascade.md",
+    "2 note/1 特效系统/1 索引.md",
     "2 note/2 Tick逻辑/Tick逻辑.md",
     "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
     "2 note/2 Tick逻辑/Image/SequenceDiagram1.png",
@@ -153,10 +158,7 @@
     "2 note/2 Tick逻辑/新建文件夹",
     "2 note/2 Tick逻辑/TickSystem.mdj",
     "2 note/1 特效系统/ParticleSystem.mdj",
-    "1 索引/索引.md",
     "1 索引",
-    "2 note/1 特效系统/1 索引.md",
-    "2 note/1 特效系统/特效系统Cascade.md",
     "Image/Class.png",
     "2 note/2 Tick逻辑",
     "2 note/1 特效系统/Image/Tick.jpg",
