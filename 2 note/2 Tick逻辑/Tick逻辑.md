@@ -190,4 +190,4 @@ void AController::AddPawnTickDependency(APawn* NewPawn)
 	}
 }
 ```
-3 UPawnMovementComponent的Tick依赖AController的Tick，APawn的Tick依赖UPawnMovementComponent的Tick
+3 先设置UPawnMovementComponent的Tick依赖AController的Tick，如果APawn的Tick不依赖UPawnMovementComponent的Tick，那么就在设置APawn的Tick依赖AController的Tick。
