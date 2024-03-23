@@ -146,4 +146,5 @@ void AActor::InitializeDefaults()
 
 ```
 
+Tick顺序和依赖关系
 
