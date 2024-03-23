@@ -1,13 +1,13 @@
 # 3 particle System 粒子特效系统
 
 ## 类图
-![[Class.jpg]]
+![Class](https://gitee.com/lurenjia399/image/raw/master/image/202403231751546.jpg)
 
 ## 1 编辑器界面
-![[image-20240304172808296.png]]
+![image-20240304172808296](https://gitee.com/lurenjia399/image/raw/master/image/202403231751189.png)
 
 我们就按照这个界面讲述，首先看下界面的布局：
-![[image-20240304173036847.png]]
+![image-20240304173036847](https://gitee.com/lurenjia399/image/raw/master/image/202403231751733.png)
 
 其中
 
@@ -170,7 +170,7 @@ void FCascade::OnNewEmitter()
 ```
 
 这个方法执行完之后就会创建出一个默认的Emitters，如图
-![[image-20240305171609637.png]]
+![image-20240305171609637](https://gitee.com/lurenjia399/image/raw/master/image/202403231751122.png)
 其中Required和Spawn都是在UParticleEmitter::CreateLODLevel()方法里创建Emitter必须要有的
 
 剩下的四个模块都是在ParticleComponents.cpp的UParticleSpriteEmitter::SetToSensibleDefaults()方法里创建的。
