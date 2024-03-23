@@ -1,5 +1,7 @@
 # Actor 或 Component的Tick
-### 注册
+### Actor注册
+流程图
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
 1 从AActor::Beginplay开始注册的
 ``` cpp
 void AActor::BeginPlay()  
@@ -129,4 +131,6 @@ void AddTickFunction(FTickFunction* TickFunction)
 	}
 ```
 4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面，绑定的具体操作就是把TickFunction保存到相应的数组中去。
+
+
 
