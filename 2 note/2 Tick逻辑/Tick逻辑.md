@@ -72,4 +72,28 @@ void AActor::RegisterActorTickFunctions(bool bRegister)
    FActorThreadContext::Get().TestRegisterTickFunctions = this; // we will verify the super call chain is intact. Don't copy and paste this to another actor class!  
 }
 ```
-3 最终会走到RegisterActorTickFunctions这个方法种注册，也就是给PrimaryActorTick(它就是AActor里面的TickFunction)赋值，然后就是设置TickFunctionEnable的状态
+3 最终会走到RegisterActorTickFunctions这个方法种注册，也就是给PrimaryActorTick(它就是AActor里面的TickFunction)赋值。然后就是通过SetTickFunctionEnable设置TickFunctionEnable的状态为ETickState::Enabled，如果已经注册过就删掉再重新注册。最后就是RegisterTickFunction注册方法。
+```cpp
+void FTickFunction::RegisterTickFunction(ULevel* Level)  
+{  
+   if (!IsTickFunctionRegistered())  
+   {      
+   // Only allow registration of tick if we are are allowed on dedicated server, or we are not a dedicated server  
+      const UWorld* World = Level ? Level->GetWorld() : nullptr;  
+      if(bAllowTickOnDedicatedServer || !(World && World->IsNetMode(NM_DedicatedServer)))  
+      {         
+	      if (InternalData == nullptr)  
+	      {            
+	         InternalData.Reset(new FInternalData());  
+	      }         
+		  FTickTaskManager::Get().AddTickFunction(Level, this);  
+	      InternalData->bRegistered = true;  
+	   }   
+    }   
+	else  
+	{  
+	    check(FTickTaskManager::Get().HasTickFunction(Level, this));  
+	}
+}
+
+```
