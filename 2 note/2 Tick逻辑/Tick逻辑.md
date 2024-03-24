@@ -225,6 +225,11 @@ void UMovementComponent::RegisterComponentTickFunctions(bool bRegister)
 // LaunchWindows.cpp，windows平台的main函数
 int32 WINAPI WinMain(...)
 ->LaunchWindowsStartup(...)
+->int32 GuardedMain(...)
+	->EngineTick(void)//Launch.cpp文件中
+		->FEngineLoop::Tick()
+			->UGameEngine::Tick(...)
+				->UWorld::Tick(...)
 
 
 ```
