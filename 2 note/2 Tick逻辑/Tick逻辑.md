@@ -286,7 +286,7 @@ void QueueAllTicks()
 		{
 			FTickFunction* TickFunction = *It;
 			TickFunction->QueueTickFunction(TTS, Context); // 关键方法
-			//当前这个Tickfunction还不能Tick，Tick时间还没到，放到TickFunctionsToReschedule数组里面，在World::tick的最后一行会执行EndFrame方法会对TickFunctionsToReschedule数组进行处理，按照链表的的形式将其添加到AllCoolingDownTickFunctions这个中，其中AllCoolingDownTickFunctions.Head是头指针
+			//当前这个Tickfunction还不能Tick，Tick时间还没到，放到TickFunctionsToReschedule数组里面，在World::tick的最后一行会执行EndFrame方法会对TickFunctionsToReschedule数组进行处理，通过TickFunctions中的InternalData这个结构的next指针串成链表的形式，链表的头指针是AllCoolingDownTickFunctions.Head是头指针
 			if (TickFunction->TickInterval > 0.f)
 			{
 				It.RemoveCurrent();
@@ -319,4 +319,82 @@ void RescheduleForInterval(FTickFunction* TickFunction, float InInterval)
 		TickFunctionsToReschedule.Add(FTickScheduleDetails(TickFunction, InInterval));
 	}
 ```
-4 首先会遍历所有可Tick的TickFunctions，执行QueueTickFunction方法，然后将为到时间的TickFunction放到TickFunctionsToReschedule数组中（在World::tick的最后一行会执行EndFrame方法会对TickFunctionsToReschedule数组进行处理，按照链表的的形式将其添加到AllCoolingDownTickFunctions这个中，其中AllCoolingDownTickFunctions.Head是头指针），然后遍历AllCoolingDownTickFunctions这个链表，都执行一遍QueueTickFunction方法。
+4 首先会遍历所有可Tick的TickFunctions，执行QueueTickFunction方法，然后将为到时间的TickFunction放到TickFunctionsToReschedule数组中（在World::tick的最后一行会执行EndFrame方法会对TickFunctionsToReschedule数组进行处理，通过TickFunctions中的InternalData这个结构的next指针串成链表的形式，链表的头指针是AllCoolingDownTickFunctions.Head是头指针），然后遍历AllCoolingDownTickFunctions这个链表，都执行一遍QueueTickFunction方法。
+```cpp
+void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTickContext& TickContext)
+{
+	checkSlow(TickContext.Thread == ENamedThreads::GameThread); // we assume same thread here
+	check(IsTickFunctionRegistered());
+
+	if (InternalData->TickVisitedGFrameCounter != GFrameCounter)
+	{
+		InternalData->TickVisitedGFrameCounter = GFrameCounter;
+		if (TickState != FTickFunction::ETickState::Disabled)
+		{
+			ETickingGroup MaxPrerequisiteTickGroup =  ETickingGroup(0);
+
+			FGraphEventArray TaskPrerequisites;
+			for (int32 PrereqIndex = 0; PrereqIndex < Prerequisites.Num(); PrereqIndex++)
+			{
+				FTickFunction* Prereq = Prerequisites[PrereqIndex].Get();
+				if (!Prereq)
+				{
+					// stale prereq, delete it
+					Prerequisites.RemoveAtSwap(PrereqIndex--);
+				}
+				else if (Prereq->IsTickFunctionRegistered())
+				{
+					// recursive call to make sure my prerequisite is set up so I can use its completion handle
+					Prereq->QueueTickFunction(TTS, TickContext);
+					if (Prereq->InternalData->TickQueuedGFrameCounter != GFrameCounter)
+					{
+						// this must be up the call stack, therefore this is a cycle
+						UE_LOG(LogTick, Warning, TEXT("While processing prerequisites for %s, could use %s because it would form a cycle."),*DiagnosticMessage(), *Prereq->DiagnosticMessage());
+					}
+					else if (!Prereq->InternalData->TaskPointer)
+					{
+						//ok UE_LOG(LogTick, Warning, TEXT("While processing prerequisites for %s, could use %s because it is disabled."),*DiagnosticMessage(), *Prereq->DiagnosticMessage());
+					}
+					else
+					{
+						MaxPrerequisiteTickGroup =  FMath::Max<ETickingGroup>(MaxPrerequisiteTickGroup, Prereq->InternalData->ActualStartTickGroup.GetValue());
+						TaskPrerequisites.Add(Prereq->GetCompletionHandle());
+					}
+				}
+			}
+
+			// tick group is the max of the prerequisites, the current tick group, and the desired tick group
+			ETickingGroup MyActualTickGroup =  FMath::Max<ETickingGroup>(MaxPrerequisiteTickGroup, FMath::Max<ETickingGroup>(TickGroup.GetValue(),TickContext.TickGroup));
+			if (MyActualTickGroup != TickGroup)
+			{
+				// if the tick was "demoted", make sure it ends up in an ordinary tick group.
+				while (!CanDemoteIntoTickGroup(MyActualTickGroup))
+				{
+					MyActualTickGroup = ETickingGroup(MyActualTickGroup + 1);
+				}
+			}
+			InternalData->ActualStartTickGroup = MyActualTickGroup;
+			InternalData->ActualEndTickGroup = MyActualTickGroup;
+			if (EndTickGroup > MyActualTickGroup)
+			{
+				check(EndTickGroup <= TG_NewlySpawned);
+				ETickingGroup TestTickGroup = ETickingGroup(MyActualTickGroup + 1);
+				while (TestTickGroup <= EndTickGroup)
+				{
+					if (CanDemoteIntoTickGroup(TestTickGroup))
+					{
+						InternalData->ActualEndTickGroup = TestTickGroup;
+					}
+					TestTickGroup = ETickingGroup(TestTickGroup + 1);
+				}
+			}
+
+			if (TickState == FTickFunction::ETickState::Enabled)
+			{
+				TTS.QueueTickTask(&TaskPrerequisites, this, TickContext);
+			}
+		}
+		InternalData->TickQueuedGFrameCounter = GFrameCounter;
+	}
+}
+```
