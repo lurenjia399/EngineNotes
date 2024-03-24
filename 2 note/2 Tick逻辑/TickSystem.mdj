@@ -10360,7 +10360,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 110,
-											"top": 612,
+											"top": 652,
 											"width": 107.65625,
 											"height": 13,
 											"alpha": 1.5707956125091824,
@@ -10386,7 +10386,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 163,
-											"top": 601,
+											"top": 641,
 											"height": 13,
 											"alpha": 1.5707963267948966,
 											"distance": 25,
@@ -10410,7 +10410,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 163,
-											"top": 636,
+											"top": 676,
 											"height": 13,
 											"alpha": -1.5707963267948966,
 											"distance": 10,
@@ -10433,9 +10433,9 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 253,
-											"top": 632,
+											"top": 672,
 											"width": 14,
-											"height": 117
+											"height": 65
 										}
 									],
 									"lineColor": "#457b9d",
@@ -10448,7 +10448,7 @@
 									"tail": {
 										"$ref": "AAAAAAGOZUHWRfj9Kxc="
 									},
-									"points": "74:632;253:632",
+									"points": "74:672;253:672",
 									"nameLabel": {
 										"$ref": "AAAAAAGOZVb4o/utNRE="
 									},

@@ -1,4 +1,3 @@
-# Actor 或 Component的Tick
 ### 1 Actor/Component Tick注册
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
@@ -215,10 +214,10 @@ void UMovementComponent::RegisterComponentTickFunctions(bool bRegister)
 
 4 在UMovementComponent构造函数中bTickBeforeOwner这个是true，不过可以在蓝图中设成false，它的作用就是绑定Owner和UMovementComponent之间的依赖关系，Owner的Tick在UMovementComponent的Tick之后。
 
-# 2 TickFunction执行
+### 4 TickFunction执行
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241521828.png)
-## 1 执行到World::Tick之前的流程：
+1 执行到World::Tick之前的流程：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241524671.png)
 
 ```cpp
@@ -231,4 +230,86 @@ int32 WINAPI WinMain(...)
 			->UGameEngine::Tick(...)
 				->UWorld::Tick(...)
 ```
+2 UWorld::Tick在执行前会先收集需要Tick的TickFunction，也就是StartFrame方法
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241539734.png)
 
+```cpp
+virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTickType, const TArray<ULevel*>& LevelsToTick) override
+	{
+		SCOPE_CYCLE_COUNTER(STAT_QueueTicks);
+		CSV_SCOPED_TIMING_STAT_EXCLUSIVE(QueueTicks);
+
+#if !UE_BUILD_SHIPPING
+		if (CVarStallStartFrame.GetValueOnGameThread() > 0.0f)
+		{
+			QUICK_SCOPE_CYCLE_COUNTER(STAT_Tick_Intentional_Stall);
+			FPlatformProcess::Sleep(CVarStallStartFrame.GetValueOnGameThread() / 1000.0f);
+		}
+#endif
+		Context.TickGroup = ETickingGroup(0); // reset this to the start tick group
+		Context.DeltaSeconds = InDeltaSeconds;
+		Context.TickType = InTickType;
+		Context.Thread = ENamedThreads::GameThread;
+		Context.World = InWorld;
+
+		bTickNewlySpawned = true;
+		TickTaskSequencer.StartFrame();
+		FillLevelList(LevelsToTick);
+
+		int32 NumWorkerThread = 0;
+		bool bConcurrentQueue = false;
+#if !PLATFORM_WINDOWS && !PLATFORM_ANDROID
+		// some schedulers will hang for seconds trying to do this algorithm, threads starve even though other threads are calling sleep(0)
+		if (!FTickTaskSequencer::SingleThreadedMode())
+		{
+			bConcurrentQueue = !!CVarAllowConcurrentQueue.GetValueOnGameThread();
+		}
+#endif
+
+		if (!bConcurrentQueue)
+		{
+			int32 TotalTickFunctions = 0;
+			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+			{
+				TotalTickFunctions += LevelList[LevelIndex]->StartFrame(Context);
+			}
+			INC_DWORD_STAT_BY(STAT_TicksQueued, TotalTickFunctions);
+			CSV_CUSTOM_STAT(Basic, TicksQueued, TotalTickFunctions, ECsvCustomStatOp::Accumulate);
+			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+			{
+				LevelList[LevelIndex]->QueueAllTicks();
+			}
+		}
+		else
+		{
+			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+			{
+				LevelList[LevelIndex]->StartFrameParallel(Context, AllTickFunctions);
+			}
+			INC_DWORD_STAT_BY(STAT_TicksQueued, AllTickFunctions.Num());
+			CSV_CUSTOM_STAT(Basic, TicksQueued, AllTickFunctions.Num(), ECsvCustomStatOp::Accumulate);
+			FTickTaskSequencer& TTS = FTickTaskSequencer::Get();
+			TTS.SetupAddTickTaskCompletionParallel(AllTickFunctions.Num());
+			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+			{
+				LevelList[LevelIndex]->ReserveTickFunctionCooldowns(AllTickFunctions.Num());
+			}
+			ParallelFor(AllTickFunctions.Num(),
+				[this](int32 Index)
+				{
+					FTickFunction* TickFunction = AllTickFunctions[Index];
+
+					TArray<FTickFunction*, TInlineAllocator<8> > StackForCycleDetection;
+					TickFunction->QueueTickFunctionParallel(Context, StackForCycleDetection);
+				}
+			);
+			AllTickFunctions.Reset();
+
+			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+			{
+				LevelList[LevelIndex]->DoDeferredRemoves();
+			}
+		}
+	}
+
+```
