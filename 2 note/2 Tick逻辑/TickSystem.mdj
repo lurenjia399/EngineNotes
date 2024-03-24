@@ -5329,7 +5329,7 @@
 								"$ref": "AAAAAAGOYPYg7KV7Y3U="
 							},
 							"name": "LevelList",
-							"documentation": "1 是在FillLevelList里面存储的，就是把Level里面的TickTaskLevel存储起来",
+							"documentation": "1 是在FillLevelList里面存储的，就是把Level里面的TickTaskLevel存储起来\n2 starFrame方法中赋值",
 							"type": "TArray<FTickTaskLevel*>"
 						},
 						{

@@ -257,44 +257,19 @@ virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTick
 			int32 TotalTickFunctions = 0;
 			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
 			{
+				// 这里是执行保存的TickTaskLevel中的StartFrame，也是执行写初始化吧
 				TotalTickFunctions += LevelList[LevelIndex]->StartFrame(Context);
 			}
-			INC_DWORD_STAT_BY(STAT_TicksQueued, TotalTickFunctions);
-			CSV_CUSTOM_STAT(Basic, TicksQueued, TotalTickFunctions, ECsvCustomStatOp::Accumulate);
+			// 省略了两个有关统计的宏
 			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
 			{
+				// 这里是执行保存的TickTaskLevel中的QueueAllTicks，下面介绍下
 				LevelList[LevelIndex]->QueueAllTicks();
 			}
 		}
 		else
 		{
-			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
-			{
-				LevelList[LevelIndex]->StartFrameParallel(Context, AllTickFunctions);
-			}
-			INC_DWORD_STAT_BY(STAT_TicksQueued, AllTickFunctions.Num());
-			CSV_CUSTOM_STAT(Basic, TicksQueued, AllTickFunctions.Num(), ECsvCustomStatOp::Accumulate);
-			FTickTaskSequencer& TTS = FTickTaskSequencer::Get();
-			TTS.SetupAddTickTaskCompletionParallel(AllTickFunctions.Num());
-			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
-			{
-				LevelList[LevelIndex]->ReserveTickFunctionCooldowns(AllTickFunctions.Num());
-			}
-			ParallelFor(AllTickFunctions.Num(),
-				[this](int32 Index)
-				{
-					FTickFunction* TickFunction = AllTickFunctions[Index];
-
-					TArray<FTickFunction*, TInlineAllocator<8> > StackForCycleDetection;
-					TickFunction->QueueTickFunctionParallel(Context, StackForCycleDetection);
-				}
-			);
-			AllTickFunctions.Reset();
-
-			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
-			{
-				LevelList[LevelIndex]->DoDeferredRemoves();
-			}
+			// 这个else就不看了，反正windows平台肯定会走上边
 		}
 	}
 
