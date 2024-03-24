@@ -413,4 +413,8 @@ FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGro
 
 ```
 8 将7中创建的Task保存到HiPriTickTasks或者是TickTasks数组中，还用了placement的方式在TickCompletionEvents数组的地方new了FGraphEventRef。
-9 还有点小问题，EndTickGroup有什么用？
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241755877.png)
+
+9 这个是 https://zhuanlan.zhihu.com/p/412418542 这个里面的图，也画出了我描述的StartFrame的过程借用一下
+
+10 还有点小问题，EndTickGroup有什么用？可能和具体task什么时候执行有关?后面看多线程的时候在总结下。
