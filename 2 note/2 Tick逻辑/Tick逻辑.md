@@ -293,6 +293,7 @@ void QueueAllTicks()
 				RescheduleForInterval(TickFunction, TickFunction->TickInterval);
 			}
 		}
+		// 下面这个是对在cd中的TickFunction的操作，还不知道cdTick
 		int32 EnabledCooldownTicks = 0;
 		float CumulativeCooldown = 0.f;
 		while (FTickFunction* TickFunction = AllCoolingDownTickFunctions.Head)
