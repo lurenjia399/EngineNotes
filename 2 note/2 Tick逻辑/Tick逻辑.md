@@ -337,32 +337,10 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 			// 这部分代码很多省略掉
 			// 这部分执行的代码很多，总的来说就是一个后序的递归遍历，目的是得到两个变量MaxPrerequisiteTickGroup和TaskPrerequisites，这两个变量是Prerequisites中最大的TickGroup和（里面存的是TickFunction的Task指针）
 
-			// tick group is the max of the prerequisites, the current tick group, and the desired tick group
-			ETickingGroup MyActualTickGroup =  FMath::Max<ETickingGroup>(MaxPrerequisiteTickGroup, FMath::Max<ETickingGroup>(TickGroup.GetValue(),TickContext.TickGroup));
-			if (MyActualTickGroup != TickGroup)
-			{
-				// if the tick was "demoted", make sure it ends up in an ordinary tick group.
-				while (!CanDemoteIntoTickGroup(MyActualTickGroup))
-				{
-					MyActualTickGroup = ETickingGroup(MyActualTickGroup + 1);
-				}
-			}
-			InternalData->ActualStartTickGroup = MyActualTickGroup;
-			InternalData->ActualEndTickGroup = MyActualTickGroup;
-			if (EndTickGroup > MyActualTickGroup)
-			{
-				check(EndTickGroup <= TG_NewlySpawned);
-				ETickingGroup TestTickGroup = ETickingGroup(MyActualTickGroup + 1);
-				while (TestTickGroup <= EndTickGroup)
-				{
-					if (CanDemoteIntoTickGroup(TestTickGroup))
-					{
-						InternalData->ActualEndTickGroup = TestTickGroup;
-					}
-					TestTickGroup = ETickingGroup(TestTickGroup + 1);
-				}
-			}
+			// 这部分代码很多省略掉
+			// 下面这一个大部分就是计算ActualStartTickGroup和ActualEndTickGroup变量，这两个变量需要考虑Prerequisites中的值，所以有可能和开始设置时不符
 
+			// 这边时最终的核心方法，后面介绍下
 			if (TickState == FTickFunction::ETickState::Enabled)
 			{
 				TTS.QueueTickTask(&TaskPrerequisites, this, TickContext);
@@ -371,4 +349,17 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 		InternalData->TickQueuedGFrameCounter = GFrameCounter;
 	}
 }
+```
+5 通过递归的方式遍历TickFunction中的Prerequisites数组，找到其最大的TickGroup并复制给ActualStartTickGroup和ActualEndTickGroup，其中还有写细微的调整。
+```cpp
+	// FTickTaskSequencerz
+	FORCEINLINE void QueueTickTask(const FGraphEventArray* Prerequisites, FTickFunction* TickFunction, const FTickContext& TickContext)
+	{
+		checkSlow(TickFunction->InternalData);
+		checkSlow(TickContext.Thread == ENamedThreads::GameThread);
+		StartTickTask(Prerequisites, TickFunction, TickContext);
+		TGraphTask<FTickFunctionTask>* Task = (TGraphTask<FTickFunctionTask>*)TickFunction->InternalData->TaskPointer;
+		AddTickTaskCompletion(TickFunction->InternalData->ActualStartTickGroup, TickFunction->InternalData->ActualEndTickGroup, Task, TickFunction->bHighPriority);
+	}
+
 ```
