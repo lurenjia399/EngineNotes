@@ -236,16 +236,9 @@ int32 WINAPI WinMain(...)
 ```cpp
 virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTickType, const TArray<ULevel*>& LevelsToTick) override
 	{
-		SCOPE_CYCLE_COUNTER(STAT_QueueTicks);
-		CSV_SCOPED_TIMING_STAT_EXCLUSIVE(QueueTicks);
-
-#if !UE_BUILD_SHIPPING
-		if (CVarStallStartFrame.GetValueOnGameThread() > 0.0f)
-		{
-			QUICK_SCOPE_CYCLE_COUNTER(STAT_Tick_Intentional_Stall);
-			FPlatformProcess::Sleep(CVarStallStartFrame.GetValueOnGameThread() / 1000.0f);
-		}
-#endif
+		//省略了无关的
+		
+		// 这些就是设置Tick上下文的一些参数
 		Context.TickGroup = ETickingGroup(0); // reset this to the start tick group
 		Context.DeltaSeconds = InDeltaSeconds;
 		Context.TickType = InTickType;
@@ -253,19 +246,12 @@ virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTick
 		Context.World = InWorld;
 
 		bTickNewlySpawned = true;
-		TickTaskSequencer.StartFrame();
-		FillLevelList(LevelsToTick);
+		TickTaskSequencer.StartFrame();//初始化TickTaskSequencer的一些参数
+		FillLevelList(LevelsToTick);//这个方法是将Level中的TickTaskLevel保存起来
 
 		int32 NumWorkerThread = 0;
 		bool bConcurrentQueue = false;
-#if !PLATFORM_WINDOWS && !PLATFORM_ANDROID
-		// some schedulers will hang for seconds trying to do this algorithm, threads starve even though other threads are calling sleep(0)
-		if (!FTickTaskSequencer::SingleThreadedMode())
-		{
-			bConcurrentQueue = !!CVarAllowConcurrentQueue.GetValueOnGameThread();
-		}
-#endif
-
+		// 这里省略了对bConcurrentQueue的赋值，在windows就是false
 		if (!bConcurrentQueue)
 		{
 			int32 TotalTickFunctions = 0;
