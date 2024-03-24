@@ -234,6 +234,7 @@ int32 WINAPI WinMain(...)
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241539734.png)
 
 ```cpp
+// FTickTaskManager中的方法
 virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTickType, const TArray<ULevel*>& LevelsToTick) override
 	{
 		//省略了无关的
@@ -272,5 +273,41 @@ virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTick
 			// 这个else就不看了，反正windows平台肯定会走上边
 		}
 	}
+```
+3 首先会对Context进行个赋值，初始化TickTaskSequencer这个变量，然后将参数中的Level中TickTaskLevel保存到LevelList变量中，然后对其执行StartFrame和QueueAllTicks方法。
+```cpp
+// FTickTaskLevel中的方法
+void QueueAllTicks()
+	{
+		FTickTaskSequencer& TTS = FTickTaskSequencer::Get();
+		// 遍历AllEnabledTickFunctions数组，这个数组是在注册的是否赋值的
+		// [[Tick逻辑#1 Actor/Component Tick注册]]
+		for (TSet<FTickFunction*>::TIterator It(AllEnabledTickFunctions); It; ++It)
+		{
+			FTickFunction* TickFunction = *It;
+			TickFunction->QueueTickFunction(TTS, Context);
 
+			if (TickFunction->TickInterval > 0.f)
+			{
+				It.RemoveCurrent();
+				RescheduleForInterval(TickFunction, TickFunction->TickInterval);
+			}
+		}
+		int32 EnabledCooldownTicks = 0;
+		float CumulativeCooldown = 0.f;
+		while (FTickFunction* TickFunction = AllCoolingDownTickFunctions.Head)
+		{
+			if (TickFunction->TickState == FTickFunction::ETickState::Enabled)
+			{
+				CumulativeCooldown += TickFunction->InternalData->RelativeTickCooldown;
+				TickFunction->QueueTickFunction(TTS, Context);
+				RescheduleForInterval(TickFunction, TickFunction->TickInterval - (Context.DeltaSeconds - CumulativeCooldown)); // Give credit for any overrun
+				AllCoolingDownTickFunctions.Head = TickFunction->InternalData->Next;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
 ```
