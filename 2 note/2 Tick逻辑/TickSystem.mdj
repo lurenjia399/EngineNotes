@@ -6800,7 +6800,7 @@
 								"$ref": "AAAAAAGOb7BaPT8L8Ig="
 							},
 							"name": "TickVisitedGFrameCounter",
-							"documentation": "1 TickFunction的帧号",
+							"documentation": "1 TickFunction的帧号，开始遍历TickFunction时的帧号",
 							"type": "int32"
 						},
 						{
@@ -6810,6 +6810,7 @@
 								"$ref": "AAAAAAGOb7BaPT8L8Ig="
 							},
 							"name": "TickQueuedGFrameCounter",
+							"documentation": "1 TickFunction的帧号，遍历TickFunction完成时的帧号",
 							"type": "std::atomic<int32>"
 						},
 						{
