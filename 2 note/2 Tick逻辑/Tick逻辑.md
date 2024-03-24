@@ -334,35 +334,8 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 			ETickingGroup MaxPrerequisiteTickGroup =  ETickingGroup(0);
 
 			FGraphEventArray TaskPrerequisites;
-			for (int32 PrereqIndex = 0; PrereqIndex < Prerequisites.Num(); PrereqIndex++)
-			{
-				FTickFunction* Prereq = Prerequisites[PrereqIndex].Get();
-				if (!Prereq)
-				{
-					// stale prereq, delete it
-					Prerequisites.RemoveAtSwap(PrereqIndex--);
-				}
-				else if (Prereq->IsTickFunctionRegistered())
-				{
-					// recursive call to make sure my prerequisite is set up so I can use its completion handle
-					Prereq->QueueTickFunction(TTS, TickContext);
-					if (Prereq->InternalData->TickQueuedGFrameCounter != GFrameCounter)
-					{
-						// this must be up the call stack, therefore this is a cycle
-						UE_LOG(LogTick, Warning, TEXT("While processing prerequisites for %s, could use %s because it would form a cycle."),*DiagnosticMessage(), *Prereq->DiagnosticMessage());
-					}
-					else if (!Prereq->InternalData->TaskPointer)
-					{
-						//ok UE_LOG(LogTick, Warning, TEXT("While processing prerequisites for %s, could use %s because it is disabled."),*DiagnosticMessage(), *Prereq->DiagnosticMessage());
-					}
-					else
-					{
-						MaxPrerequisiteTickGroup =  FMath::Max<ETickingGroup>(MaxPrerequisiteTickGroup, Prereq->InternalData->ActualStartTickGroup.GetValue());
-						TaskPrerequisites.Add(Prereq->GetCompletionHandle());
-					}
-				}
-			}
-			// 这部分执行的代码很多，总的来说就是一个
+			// 这部分代码很多省略掉
+			// 这部分执行的代码很多，总的来说就是一个后序的递归遍历，目的是得到两个变量MaxPrerequisiteTickGroup和TaskPrerequisites，这两个变量是Prerequisites中最大的TickGroup和（里面存的是TickFunction的Task指针）
 
 			// tick group is the max of the prerequisites, the current tick group, and the desired tick group
 			ETickingGroup MyActualTickGroup =  FMath::Max<ETickingGroup>(MaxPrerequisiteTickGroup, FMath::Max<ETickingGroup>(TickGroup.GetValue(),TickContext.TickGroup));
