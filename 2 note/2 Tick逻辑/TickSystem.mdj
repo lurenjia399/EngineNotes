@@ -6822,6 +6822,7 @@
 								"$ref": "AAAAAAGOb7BaPT8L8Ig="
 							},
 							"name": "TaskPointer",
+							"documentation": "1 对应的Task的指针,在StartTickTask赋值的，FTickTaskSequencer里面的方法",
 							"type": "FBaseGraphTask*"
 						},
 						{

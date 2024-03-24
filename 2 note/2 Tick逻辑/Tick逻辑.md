@@ -352,14 +352,48 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 ```
 5 通过递归的方式遍历TickFunction中的Prerequisites数组，找到其最大的TickGroup并复制给ActualStartTickGroup和ActualEndTickGroup，其中还有写细微的调整。
 ```cpp
-	// FTickTaskSequencerz
+	// FTickTaskSequencer中的方法
 	FORCEINLINE void QueueTickTask(const FGraphEventArray* Prerequisites, FTickFunction* TickFunction, const FTickContext& TickContext)
 	{
-		checkSlow(TickFunction->InternalData);
-		checkSlow(TickContext.Thread == ENamedThreads::GameThread);
 		StartTickTask(Prerequisites, TickFunction, TickContext);
 		TGraphTask<FTickFunctionTask>* Task = (TGraphTask<FTickFunctionTask>*)TickFunction->InternalData->TaskPointer;
 		AddTickTaskCompletion(TickFunction->InternalData->ActualStartTickGroup, TickFunction->InternalData->ActualEndTickGroup, Task, TickFunction->bHighPriority);
 	}
 
 ```
+6
+
+
+```cpp
+// FTickTaskSequencer中的方法
+	FORCEINLINE void StartTickTask(const FGraphEventArray* Prerequisites, FTickFunction* TickFunction, const FTickContext& TickContext)
+	{
+		checkSlow(TickFunction->InternalData);
+		checkSlow(TickFunction->InternalData->ActualStartTickGroup >=0 && TickFunction->InternalData->ActualStartTickGroup < TG_MAX);
+
+		FTickContext UseContext = TickContext;
+
+		bool bIsOriginalTickGroup = (TickFunction->InternalData->ActualStartTickGroup == TickFunction->TickGroup);
+
+		// 确定使用的线程
+		if (TickFunction->bRunOnAnyThread && bAllowConcurrentTicks && bIsOriginalTickGroup)
+		{
+			if (TickFunction->bHighPriority)
+			{
+				UseContext.Thread = CPrio_HiPriAsyncTickTaskPriority.Get();
+			}
+			else
+			{
+				UseContext.Thread = CPrio_NormalAsyncTickTaskPriority.Get();
+			}
+		}
+		else
+		{
+			UseContext.Thread = ENamedThreads::SetTaskPriority(ENamedThreads::GameThread, TickFunction->bHighPriority ? ENamedThreads::HighTaskPriority : ENamedThreads::NormalTaskPriority);
+		}
+		// 创建新的Task并将指针赋值给TaskPointer
+		TickFunction->InternalData->TaskPointer = TGraphTask<FTickFunctionTask>::CreateTask(Prerequisites, TickContext.Thread).ConstructAndHold(TickFunction, &UseContext, bLogTicks, bLogTicksShowPrerequistes);
+	}
+
+```
+
