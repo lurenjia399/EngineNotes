@@ -6842,6 +6842,7 @@
 								"$ref": "AAAAAAGOb7BaPT8L8Ig="
 							},
 							"name": "RelativeTickCooldown",
+							"documentation": "1 TickFunctions相对的cd，也就是从执行TickFunction开始算，到现在的时间",
 							"type": "float"
 						},
 						{

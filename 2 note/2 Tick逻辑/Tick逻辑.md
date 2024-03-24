@@ -132,7 +132,7 @@ void AddTickFunction(FTickFunction* TickFunction)
 4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面，绑定的具体操作就是把TickFunction保存到相应的数组中去。
 5 注意Actor的Tick和Component的Tick没有顺序关系，他们都是通过FTickFunction::RegisterTickFunction这个方法来将TickFunction绑定到Level里面的，Actor和身上挂的Component之间的Tick也没有关系，要是有关系MovementComponent也不会在注册的时候绑定和Owner之间的依赖了。
 6 还有个注册时机是再AActor::IncrementalRegisterComponents方法里面，说是跟切换场景相关，后续再看下
-### 2 Tick时机
+### 2 TickFunction初始化设置
 ```cpp
 void AActor::InitializeDefaults()
 {
@@ -146,7 +146,7 @@ void AActor::InitializeDefaults()
 }
 
 ```
-### 3 Tick顺序和依赖关系
+### 3 TickFunction顺序和依赖关系
 
 1 依赖关系的构建主要是通过TickFunction中的Prerequisites这个数组来决定。我们拿AController，UPawnMovementComponent和APawn之间的Tick顺序来进行展示。
 ```cpp
