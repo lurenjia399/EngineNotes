@@ -362,6 +362,7 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 					}
 				}
 			}
+			// 这部分执行的代码很多，总的来说就是一个
 
 			// tick group is the max of the prerequisites, the current tick group, and the desired tick group
 			ETickingGroup MyActualTickGroup =  FMath::Max<ETickingGroup>(MaxPrerequisiteTickGroup, FMath::Max<ETickingGroup>(TickGroup.GetValue(),TickContext.TickGroup));

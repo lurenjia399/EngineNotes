@@ -6792,6 +6792,7 @@
 								"$ref": "AAAAAAGOb7BaPT8L8Ig="
 							},
 							"name": "ActualEndTickGroup",
+							"documentation": "1 实际执行的EndTickGroup，可能和TickFunction开始时设置的不同",
 							"type": "TEnumAsByte<enum ETickingGroup>"
 						},
 						{
