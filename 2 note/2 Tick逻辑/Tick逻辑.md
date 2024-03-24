@@ -293,7 +293,7 @@ void QueueAllTicks()
 				RescheduleForInterval(TickFunction, TickFunction->TickInterval);
 			}
 		}
-		// 
+		// 处理一遍处在cd的TickFunction,如果还在
 		int32 EnabledCooldownTicks = 0;
 		float CumulativeCooldown = 0.f;
 		while (FTickFunction* TickFunction = AllCoolingDownTickFunctions.Head)
@@ -310,5 +310,12 @@ void QueueAllTicks()
 				break;
 			}
 		}
+	}
+
+// 设置标志位，缓存到数组中
+void RescheduleForInterval(FTickFunction* TickFunction, float InInterval)
+	{
+		TickFunction->InternalData->bWasInterval = true;
+		TickFunctionsToReschedule.Add(FTickScheduleDetails(TickFunction, InInterval));
 	}
 ```
