@@ -6782,6 +6782,7 @@
 								"$ref": "AAAAAAGOb7BaPT8L8Ig="
 							},
 							"name": "ActualStartTickGroup",
+							"documentation": "1 实际的TickGroup，可能和设置TickFunction时的TickGroup不同，实际Group里包括了Prerequisites的TickGroup，取了个最大值。",
 							"type": "TEnumAsByte<enum ETickingGroup>"
 						},
 						{
