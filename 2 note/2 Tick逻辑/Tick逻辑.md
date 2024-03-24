@@ -216,3 +216,15 @@ void UMovementComponent::RegisterComponentTickFunctions(bool bRegister)
 4 在UMovementComponent构造函数中bTickBeforeOwner这个是true，不过可以在蓝图中设成false，它的作用就是绑定Owner和UMovementComponent之间的依赖关系，Owner的Tick在UMovementComponent的Tick之后。
 
 ### 4 TickFunction执行
+流程图
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241521828.png)
+执行到World::Tick之前的流程：
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241524671.png)
+
+```cpp
+// LaunchWindows.cpp，windows平台的main函数
+int32 WINAPI WinMain(...)
+->LaunchWindowsStartup(...)
+
+
+```
