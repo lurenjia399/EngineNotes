@@ -285,7 +285,7 @@ void QueueAllTicks()
 		for (TSet<FTickFunction*>::TIterator It(AllEnabledTickFunctions); It; ++It)
 		{
 			FTickFunction* TickFunction = *It;
-			TickFunction->QueueTickFunction(TTS, Context);
+			TickFunction->QueueTickFunction(TTS, Context); // 关键方法
 			//当前这个Tickfunction还不能Tick，Tick时间还没到，放到TickFunctionsToReschedule数组里面，在World::tick的最后一行会执行EndFrame方法会对TickFunctionsToReschedule数组进行处理，按照链表的的形式将其添加到AllCoolingDownTickFunctions这个中，其中AllCoolingDownTickFunctions.Head是头指针
 			if (TickFunction->TickInterval > 0.f)
 			{
@@ -293,7 +293,7 @@ void QueueAllTicks()
 				RescheduleForInterval(TickFunction, TickFunction->TickInterval);
 			}
 		}
-		// 处理一遍处在cd的TickFunction,如果还在
+		// 处理一遍处在cd的TickFunction
 		int32 EnabledCooldownTicks = 0;
 		float CumulativeCooldown = 0.f;
 		while (FTickFunction* TickFunction = AllCoolingDownTickFunctions.Head)
@@ -301,7 +301,7 @@ void QueueAllTicks()
 			if (TickFunction->TickState == FTickFunction::ETickState::Enabled)
 			{
 				CumulativeCooldown += TickFunction->InternalData->RelativeTickCooldown;
-				TickFunction->QueueTickFunction(TTS, Context);
+				TickFunction->QueueTickFunction(TTS, Context);// 关键方法
 				RescheduleForInterval(TickFunction, TickFunction->TickInterval - (Context.DeltaSeconds - CumulativeCooldown)); // Give credit for any overrun
 				AllCoolingDownTickFunctions.Head = TickFunction->InternalData->Next;
 			}
@@ -319,3 +319,4 @@ void RescheduleForInterval(FTickFunction* TickFunction, float InInterval)
 		TickFunctionsToReschedule.Add(FTickScheduleDetails(TickFunction, InInterval));
 	}
 ```
+4 首先会遍历所有可Tick的TickFunctions，执行QueueTickFunction方法，然后将为到时间的TickFunction放到TickFunctionsToReschedule数组中（在World::tick的最后一行会执行EndFrame方法会对TickFunctionsToReschedule数组进行处理，按照链表的的形式将其添加到AllCoolingDownTickFunctions这个中，其中AllCoolingDownTickFunctions.Head是头指针），然后遍历AllCoolingDownTickFunctions这个链表，都执行一遍QueueTickFunction方法。
