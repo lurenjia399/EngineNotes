@@ -361,8 +361,7 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 	}
 
 ```
-6
-
+6 执行了StartTickTask和AddTickTaskCompletion方法，前者创建了Task后者将Task存储到TickTasks或者是HiPriTickTasks数组中。
 
 ```cpp
 // FTickTaskSequencer中的方法
@@ -394,6 +393,23 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 		// 创建新的Task并将指针赋值给TaskPointer
 		TickFunction->InternalData->TaskPointer = TGraphTask<FTickFunctionTask>::CreateTask(Prerequisites, TickContext.Thread).ConstructAndHold(TickFunction, &UseContext, bLogTicks, bLogTicksShowPrerequistes);
 	}
+```
+7 这段有点复杂看不太懂，多线程的智识，知道是设置线程，创建Task。
+```cpp
+// FTickTaskSequencer中的方法
+FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGroup EndTickGroup, TGraphTask<FTickFunctionTask>* Task, bool bHiPri)
+	{
+		checkSlow(StartTickGroup >=0 && StartTickGroup < TG_MAX && EndTickGroup >=0 && EndTickGroup < TG_MAX && StartTickGroup <= EndTickGroup);
+		if (bHiPri)
+		{
+			HiPriTickTasks[StartTickGroup][EndTickGroup].Add(Task);
+		}
+		else
+		{
+			TickTasks[StartTickGroup][EndTickGroup].Add(Task);
+		}
+		new (TickCompletionEvents[EndTickGroup]) FGraphEventRef(Task->GetCompletionEvent());
+	}
 
 ```
-
+8 将7中创建的Task保存到HiPriTickTasks或者是TickTasks数组中，还用了placement的方式在TickCompletionEvents数组的地方new了FGraphEventRef。
