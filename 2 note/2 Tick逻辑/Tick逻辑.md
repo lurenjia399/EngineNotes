@@ -286,14 +286,14 @@ void QueueAllTicks()
 		{
 			FTickFunction* TickFunction = *It;
 			TickFunction->QueueTickFunction(TTS, Context);
-
+			//当前这个Tickfunction还不能Tick，Tick时间还没到，就先移除，放到TickFunctionsToReschedule数组里面
 			if (TickFunction->TickInterval > 0.f)
 			{
 				It.RemoveCurrent();
 				RescheduleForInterval(TickFunction, TickFunction->TickInterval);
 			}
 		}
-		// 下面这个是对在cd中的TickFunction的操作，还不知道cdTick
+		// 下面这个是对在cd中的TickFunction的操作，还不知道cdTickFunction什么时候赋值的
 		int32 EnabledCooldownTicks = 0;
 		float CumulativeCooldown = 0.f;
 		while (FTickFunction* TickFunction = AllCoolingDownTickFunctions.Head)
