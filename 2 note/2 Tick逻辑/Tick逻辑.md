@@ -614,7 +614,6 @@ virtual void EnqueueFromThisThread(int32 QueueIndex, FBaseGraphTask* Task) overr
 5 最后就是把我们的Task压入到Queue里面。这个队列是什么无锁优先级队列
 
 ##### WaitUntilTasksComplete
-
 ```cpp
 //FTaskGraphImplementation中的方法
 virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread) final override
@@ -652,6 +651,7 @@ virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads
 
 			// named thread process tasks while we wait
 			TGraphTask<FReturnGraphTask>::CreateTask(&Tasks, CurrentThread).ConstructAndDispatchWhenReady(CurrentThread);
+			// 具体执行线程中队列的方法
 			ProcessThreadUntilRequestReturn(CurrentThread);
 		}
 		else
@@ -660,3 +660,5 @@ virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads
 		}
 	}
 ```
+
+
