@@ -660,5 +660,29 @@ virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads
 		}
 	}
 ```
+1 执行ProcessThreadUntilRequestReturn方法
+```cpp
+//FTaskGraphImplementation的方法
+virtual void ProcessThreadUntilRequestReturn(ENamedThreads::Type CurrentThread) final override
+	{
+		int32 QueueIndex = ENamedThreads::GetQueueIndex(CurrentThread);
+		CurrentThread = ENamedThreads::GetThreadIndex(CurrentThread);
+		Thread(CurrentThread).ProcessTasksUntilQuit(QueueIndex);
+	}
+// FNamedTaskThread的方法
+virtual void ProcessTasksUntilQuit(int32 QueueIndex) override
+	{
+		check(Queue(QueueIndex).StallRestartEvent); // make sure we are started up
 
-
+		Queue(QueueIndex).QuitForReturn = false;
+		verify(++Queue(QueueIndex).RecursionGuard == 1);
+		const bool bIsMultiThread = FTaskGraphInterface::IsMultithread();
+		do
+		{
+			const bool bAllowStall = bIsMultiThread;
+			ProcessTasksNamedThread(QueueIndex, bAllowStall);
+		} while (!Queue(QueueIndex).QuitForReturn && !Queue(QueueIndex).QuitForShutdown && bIsMultiThread); // @Hack - quit now when running with only one thread.
+		verify(!--Queue(QueueIndex).RecursionGuard);
+	}
+```
+2 执行FNamedTaskThread的ProcessTasksUntilQuit这个方法，
