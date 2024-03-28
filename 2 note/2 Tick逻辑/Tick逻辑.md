@@ -511,3 +511,43 @@ FTaskGraphInterface::Get().ProcessThreadUntilIdle(ENamedThreads::GameThread);
 	}
 ```
 1 ReleaseTickGroup这个方法分为两部分，第一部分是执行当前这个TickGroup，如果是单线程的话就直接调用DispatchTickGroup这个方法，如果是多线程就创建Task，现在还不太了解这个。第二部分是判断是否需要等待前面的TickGroup执行完（也就是bBlockTillComplete这个标志位），如果需要等待，就调用WaitUntilTasksComplete方法，等待执行完。下面我们看下DispatchTickGroup这个方法。
+```cpp
+void DispatchTickGroup(ENamedThreads::Type CurrentThread, ETickingGroup WorldTickGroup)
+	{
+		// 处理高优先级TickTask
+		for (int32 IndexInner = 0; IndexInner < TG_MAX; IndexInner++)
+		{
+			TArray<TGraphTask<FTickFunctionTask>*>& TickArray = HiPriTickTasks[WorldTickGroup][IndexInner]; //-V781
+			if (IndexInner < WorldTickGroup)
+			{
+				check(TickArray.Num() == 0); // makes no sense to have and end TG before the start TG
+			}
+			else
+			{
+				for (int32 Index = 0; Index < TickArray.Num(); Index++)
+				{
+					TickArray[Index]->Unlock(CurrentThread);
+				}
+			}
+			TickArray.Reset();
+		}
+		// 处理普通优先级TickTask
+		for (int32 IndexInner = 0; IndexInner < TG_MAX; IndexInner++)
+		{
+			TArray<TGraphTask<FTickFunctionTask>*>& TickArray = TickTasks[WorldTickGroup][IndexInner]; //-V781
+			if (IndexInner < WorldTickGroup)
+			{
+				check(TickArray.Num() == 0); // makes no sense to have and end TG before the start TG
+			}
+			else
+			{
+				for (int32 Index = 0; Index < TickArray.Num(); Index++)
+				{
+					TickArray[Index]->Unlock(CurrentThread);
+				}
+			}
+			TickArray.Reset();
+		}
+	}
+```
+2 整体分成了两部分，一部分处理高优先级TickTask，一部分出普通优先级TickTask，处理方式是一样的，遍历所有的TickGroup，找到当前TickGroup的Task然后调用UnLock方法执行。
