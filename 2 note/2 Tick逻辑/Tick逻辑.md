@@ -551,3 +551,29 @@ void DispatchTickGroup(ENamedThreads::Type CurrentThread, ETickingGroup WorldTic
 	}
 ```
 2 整体分成了两部分，一部分处理高优先级TickTask，一部分出普通优先级TickTask，处理方式是一样的，遍历所有的TickGroup，找到当前TickGroup的Task然后调用UnLock方法执行。
+```cpp
+void Unlock(ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread)
+	{
+		// 这个感觉和Debug相关？不知道干嘛的
+		TaskTrace::Launched(GetTraceId(), nullptr, Subsequents.IsValid(), ((TTask*)&TaskStorage)->GetDesiredThread(), sizeof(*this));
+
+		bool bWakeUpWorker = true;
+		ConditionalQueueTask(CurrentThreadIfKnown, bWakeUpWorker);
+	}
+	
+void ConditionalQueueTask(ENamedThreads::Type CurrentThread, bool& bWakeUpWorker)
+	{
+		if (NumberOfPrerequistitesOutstanding.Decrement()==0)
+		{
+			QueueTask(CurrentThread, bWakeUpWorker);
+			bWakeUpWorker = true;
+		}
+	}
+void QueueTask(ENamedThreads::Type CurrentThreadIfKnown, bool bWakeUpWorker)
+	{
+		TaskTrace::Scheduled(GetTraceId());
+		// 最终会调用到这个QueueTask方法里面
+		FTaskGraphInterface::Get().QueueTask(this, bWakeUpWorker, ThreadToExecuteOn, CurrentThreadIfKnown);
+	}
+```
+3 经过一系列的过渡调用，最终会调用到FTaskGraphImplementation这个类的这个QueueTask这个方法里面，
