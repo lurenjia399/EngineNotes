@@ -215,6 +215,7 @@ void UMovementComponent::RegisterComponentTickFunctions(bool bRegister)
 4 在UMovementComponent构造函数中bTickBeforeOwner这个是true，不过可以在蓝图中设成false，它的作用就是绑定Owner和UMovementComponent之间的依赖关系，Owner的Tick在UMovementComponent的Tick之后。
 
 ### 4 TickFunction执行
+#### StartFrame
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241521828.png)
 1 执行到World::Tick之前的流程：
@@ -418,3 +419,6 @@ FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGro
 9 这个是 https://zhuanlan.zhihu.com/p/412418542 这个里面的图，也画出了我描述的StartFrame的过程借用一下
 
 10 还有点小问题，EndTickGroup有什么用？可能和具体task什么时候执行有关?后面看多线程的时候在总结下。
+
+#### RunTickGroup
+1 
