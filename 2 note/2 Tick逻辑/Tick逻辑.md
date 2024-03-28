@@ -609,4 +609,4 @@ virtual void EnqueueFromThisThread(int32 QueueIndex, FBaseGraphTask* Task) overr
 	}
 
 ```
-5 最后就是把我们的Task压入到Queue里面。
+5 最后就是把我们的Task压入到Queue里面。这个队列是什么无锁优先级队列
