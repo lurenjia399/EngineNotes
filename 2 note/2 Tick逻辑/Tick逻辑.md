@@ -776,5 +776,28 @@ void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletio
 		Target->InternalData->TaskPointer = nullptr;  // This is stale and a good time to clear it for safety
 	}
 ```
-5 然后就会执行到Target->ExecuteTick方法，也就是执行到Tickfunction的ExecuteTick的方法。
+5 然后就会执行到Target->ExecuteTick方法，也就是执行到Tickfunction的ExecuteTick的方法。下面拿Actor举例。
+```cpp
+void FActorTickFunction::ExecuteTick(float DeltaTime, enum ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
+{
+	if (Target && IsValidChecked(Target) && !Target->IsUnreachable())
+	{
+		if (TickType != LEVELTICK_ViewportsOnly || Target->ShouldTickIfViewportsOnly())
+		{
+			Target->TickActor(DeltaTime*Target->CustomTimeDilation, TickType, *this);
+		}
+	}
+}
+void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunction& ThisTickFunction )
+{
+	//root of tick hierarchy
 
+	// Non-player update.
+	// If an Actor has been Destroyed or its level has been unloaded don't execute any queued ticks
+	if (IsValidChecked(this) && GetWorld())
+	{
+		Tick(DeltaSeconds);	// perform any tick functions unique to an actor subclass
+	}
+}
+```
+6 最终通过Actor身上的PrimaryActorTick这个成员变量，执行到FActorTickFunction::ExecuteTick这个方法，进而执行到AActor::TickActor这个方法，也就是Actor的Tick。
