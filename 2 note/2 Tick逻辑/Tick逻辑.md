@@ -614,3 +614,49 @@ virtual void EnqueueFromThisThread(int32 QueueIndex, FBaseGraphTask* Task) overr
 5 最后就是把我们的Task压入到Queue里面。这个队列是什么无锁优先级队列
 
 ##### WaitUntilTasksComplete
+
+```cpp
+//FTaskGraphImplementation中的方法
+virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread) final override
+	{
+		ENamedThreads::Type CurrentThread = CurrentThreadIfKnown;
+		if (ENamedThreads::GetThreadIndex(CurrentThreadIfKnown) == ENamedThreads::AnyThread)
+		{
+		//这部分全省略了，tick这部分使用GameThread来执行的，不属于AnyThred
+		}
+		else
+		{
+			// 赋值下线程的类型
+			CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(CurrentThreadIfKnown);
+		}
+
+		if (CurrentThreadIfKnown != ENamedThreads::AnyThread && CurrentThreadIfKnown < NumNamedThreads && !IsThreadProcessingTasks(CurrentThread))
+		{
+			if (Tasks.Num() < 8)
+			{
+				bool bAnyPending = false;
+				for (int32 Index = 0; Index < Tasks.Num(); Index++)
+				{
+					FGraphEvent* Task = Tasks[Index].GetReference();
+					if (Task && !Task->IsComplete())
+					{
+						bAnyPending = true;
+						break;
+					}
+				}
+				if (!bAnyPending)
+				{
+					return;
+				}
+			}
+
+			// named thread process tasks while we wait
+			TGraphTask<FReturnGraphTask>::CreateTask(&Tasks, CurrentThread).ConstructAndDispatchWhenReady(CurrentThread);
+			ProcessThreadUntilRequestReturn(CurrentThread);
+		}
+		else
+		{
+			// 这部分在tick不关键，省略了
+		}
+	}
+```
