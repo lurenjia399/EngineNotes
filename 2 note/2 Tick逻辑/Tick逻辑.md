@@ -464,3 +464,51 @@ virtual void RunTickGroup(ETickingGroup Group, bool bBlockTillComplete ) overrid
 		}
 	}
 ```
+我们首先看下这个ReleaseTickGroup方法，具体如何执行TickGroup的。
+
+```cpp
+void ReleaseTickGroup(ETickingGroup WorldTickGroup, bool bBlockTillComplete)
+	{
+		{
+			// 判断条件是否是单线程的
+			if (SingleThreadedMode()|| CVarAllowAsyncTickDispatch.GetValueOnGameThread() == 0)
+			{
+				DispatchTickGroup(ENamedThreads::GameThread, WorldTickGroup);
+			}
+			else
+			{
+				// dispatch the tick group on another thread, that way, the game thread can be processing ticks while ticks are being queued by another thread
+				FTaskGraphInterface::Get().WaitUntilTaskCompletes(
+					TGraphTask<FDipatchTickGroupTask>::CreateTask(nullptr, ENamedThreads::GameThread).ConstructAndDispatchWhenReady(*this, WorldTickGroup));
+			}
+		}
+
+		if (bBlockTillComplete || SingleThreadedMode())
+		{
+			SCOPE_CYCLE_COUNTER(STAT_ReleaseTickGroup_Block);
+			for (ETickingGroup Block = WaitForTickGroup; Block <= WorldTickGroup; Block = ETickingGroup(Block + 1))
+			{
+				CA_SUPPRESS(6385);
+				if (TickCompletionEvents[Block].Num())
+				{
+					TRACE_CPUPROFILER_EVENT_SCOPE(TickCompletionEvents);
+					FTaskGraphInterface::Get().WaitUntilTasksComplete(TickCompletionEvents[Block], ENamedThreads::GameThread);
+					if (SingleThreadedMode() || Block == TG_NewlySpawned || CVarAllowAsyncTickCleanup.GetValueOnGameThread() == 0 || TickCompletionEvents[Block].Num() < 50)
+					{
+						ResetTickGroup(Block);
+					}
+					else
+					{
+CleanupTasks.Add(TGraphTask<FResetTickGroupTask>::CreateTask(nullptr, ENamedThreads::GameThread).ConstructAndDispatchWhenReady(*this, Block));
+					}
+				}
+			}
+			WaitForTickGroup = ETickingGroup(WorldTickGroup + (WorldTickGroup == TG_NewlySpawned ? 0 : 1)); // don't advance for newly spawned
+		}
+		else
+		{
+FTaskGraphInterface::Get().ProcessThreadUntilIdle(ENamedThreads::GameThread);
+			check(WorldTickGroup + 1 < TG_MAX && WorldTickGroup != TG_NewlySpawned);
+		}
+	}
+```
