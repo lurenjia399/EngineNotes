@@ -511,7 +511,9 @@ FTaskGraphInterface::Get().ProcessThreadUntilIdle(ENamedThreads::GameThread);
 		}
 	}
 ```
-1 ReleaseTickGroup这个方法分为两部分，第一部分是执行当前这个TickGroup，如果是单线程的话就直接调用DispatchTickGroup这个方法，如果是多线程就创建Task，现在还不太了解这个。第二部分是判断是否需要等待前面的TickGroup执行完（也就是bBlockTillComplete这个标志位），如果需要等待，就调用WaitUntilTasksComplete方法，等待执行完。下面我们看下DispatchTickGroup这个方法。
+1 ReleaseTickGroup这个方法分为两部分，第一部分是DispatchTickGroup，如果是单线程的话就直接调用DispatchTickGroup这个方法，如果是多线程就创建Task，现在还不太了解这个。第二部分是判断是否需要等待前面的TickGroup执行完（也就是bBlockTillComplete这个标志位），如果需要等待，就调用WaitUntilTasksComplete方法，等待执行完。
+##### DispatchTickGroup
+这个是将我们的Task压入到对应线程的无所优先级队列里
 ```cpp
 void DispatchTickGroup(ENamedThreads::Type CurrentThread, ETickingGroup WorldTickGroup)
 	{
@@ -610,3 +612,5 @@ virtual void EnqueueFromThisThread(int32 QueueIndex, FBaseGraphTask* Task) overr
 
 ```
 5 最后就是把我们的Task压入到Queue里面。这个队列是什么无锁优先级队列
+
+##### WaitUntilTasksComplete
