@@ -579,3 +579,34 @@ void QueueTask(ENamedThreads::Type CurrentThreadIfKnown, bool bWakeUpWorker)
 	}
 ```
 3 经过一系列的过渡调用，最终会调用到FTaskGraphImplementation这个类的这个QueueTask这个方法里面。
+```cpp
+void QueueTask(class FBaseGraphTask* Task, bool bWakeUpWorker, ENamedThreads::Type InThreadToExecuteOn, ENamedThreads::Type InCurrentThreadIfKnown) override
+	{
+		// 前面的部分都省略掉了，最关键的就是这一部分
+		{
+			int32 QueueToExecuteOn = ENamedThreads::GetQueueIndex(InThreadToExecuteOn);
+			InThreadToExecuteOn = ENamedThreads::GetThreadIndex(InThreadToExecuteOn);
+			FTaskThreadBase* Target = &Thread(InThreadToExecuteOn);
+			if (InThreadToExecuteOn == ENamedThreads::GetThreadIndex(CurrentThreadIfKnown))
+			{
+				Target->EnqueueFromThisThread(QueueToExecuteOn, Task);
+			}
+			else
+			{
+				Target->EnqueueFromOtherThread(QueueToExecuteOn, Task);
+			}
+		}
+	}
+```
+4 看上去就是拿到我们要的线程，然后就执行EnqueueFromThisThread这个方法，参数QueueToExecuteOn应该是个偏移啥的把，Task这个就是我们的TickTask吧。
+```cpp
+virtual void EnqueueFromThisThread(int32 QueueIndex, FBaseGraphTask* Task) override
+	{
+		uint32 PriIndex = ENamedThreads::GetTaskPriority(Task->GetThreadToExecuteOn()) ? 0 : 1;
+		int32 ThreadToStart = Queue(QueueIndex).StallQueue.Push(Task, PriIndex);
+		check(ThreadToStart < 0); // if I am stalled, then how can I be queueing a task?
+	}
+
+```
+
+5 
