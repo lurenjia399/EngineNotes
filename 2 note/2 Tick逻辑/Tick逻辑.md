@@ -477,7 +477,6 @@ void ReleaseTickGroup(ETickingGroup WorldTickGroup, bool bBlockTillComplete)
 			}
 			else
 			{
-				// dispatch the tick group on another thread, that way, the game thread can be processing ticks while ticks are being queued by another thread
 				FTaskGraphInterface::Get().WaitUntilTaskCompletes(
 					TGraphTask<FDipatchTickGroupTask>::CreateTask(nullptr, ENamedThreads::GameThread).ConstructAndDispatchWhenReady(*this, WorldTickGroup));
 			}
@@ -485,7 +484,6 @@ void ReleaseTickGroup(ETickingGroup WorldTickGroup, bool bBlockTillComplete)
 
 		if (bBlockTillComplete || SingleThreadedMode())
 		{
-			SCOPE_CYCLE_COUNTER(STAT_ReleaseTickGroup_Block);
 			for (ETickingGroup Block = WaitForTickGroup; Block <= WorldTickGroup; Block = ETickingGroup(Block + 1))
 			{
 				CA_SUPPRESS(6385);
@@ -512,4 +510,4 @@ FTaskGraphInterface::Get().ProcessThreadUntilIdle(ENamedThreads::GameThread);
 		}
 	}
 ```
-1 ReleaseTickGroup这个方法分为lia
+1 ReleaseTickGroup这个方法分为两部分，第一部分是执行当前这个TickGroup，如果是单线程的话就直接调用DispatchTickGroup这个方法，如果是多线程就创建Task，现在还不太了解这个。第二部分是判断是否需要等待前面的TickGroup执行完（也就是bBlockTillComplete这个标志位），如果需要等待，就调用WaitUntilTasksComplete方法，等待执行完。下面我们看下DispatchTickGroup这个方法。
