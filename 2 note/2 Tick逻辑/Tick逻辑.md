@@ -421,4 +421,46 @@ FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGro
 10 还有点小问题，EndTickGroup有什么用？可能和具体task什么时候执行有关?后面看多线程的时候在总结下。
 
 #### RunTickGroup
-1 
+
+在StartFrame之后就会进行每个Group的Tick。
+```cpp
+virtual void RunTickGroup(ETickingGroup Group, bool bBlockTillComplete ) override
+	{
+		// 这个方法就是执行当前这个TickGroup
+		TickTaskSequencer.ReleaseTickGroup(Group, bBlockTillComplete);
+		
+		Context.TickGroup = ETickingGroup(Context.TickGroup + 1); // new actors go into the next tick group because this one is already gone
+		if (bBlockTillComplete) // we don't deal with newly spawned ticks within the async tick group, they wait until after the async stuff
+		{
+			QUICK_SCOPE_CYCLE_COUNTER(STAT_TickTask_RunTickGroup_BlockTillComplete);
+
+			bool bFinished = false;
+			for (int32 Iterations = 0;Iterations < 101; Iterations++)
+			{
+				int32 Num = 0;
+				for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+				{
+					Num += LevelList[LevelIndex]->QueueNewlySpawned(Context.TickGroup);
+				}
+				if (Num && Context.TickGroup == TG_NewlySpawned)
+				{
+					SCOPE_CYCLE_COUNTER(STAT_TG_NewlySpawned);
+					TickTaskSequencer.ReleaseTickGroup(TG_NewlySpawned, true);
+				}
+				else
+				{
+					bFinished = true;
+					break;
+				}
+			}
+			if (!bFinished)
+			{
+				// this is runaway recursive spawning.
+				for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
+				{
+					LevelList[LevelIndex]->LogAndDiscardRunawayNewlySpawned(Context.TickGroup);
+				}
+			}
+		}
+	}
+```
