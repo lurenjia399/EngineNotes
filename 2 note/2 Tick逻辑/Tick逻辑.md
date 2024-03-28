@@ -512,3 +512,4 @@ FTaskGraphInterface::Get().ProcessThreadUntilIdle(ENamedThreads::GameThread);
 		}
 	}
 ```
+1 ReleaseTickGroup这个方法分为lia
