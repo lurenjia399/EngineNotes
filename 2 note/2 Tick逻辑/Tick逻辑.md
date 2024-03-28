@@ -413,7 +413,7 @@ FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGro
 	}
 
 ```
-8 将7中创建的Task保存到HiPriTickTasks或者是TickTasks数组中，还用了placement的方式在TickCompletionEvents数组的地方new了FGraphEventRef。
+8 将7中创建的Task保存到HiPriTickTasks或者是TickTasks数组中（这两个二维数组的索引是StartTickGroup和EndTickGroup），还用了placement的方式在TickCompletionEvents数组（这个一维数组的索引是EndTickGroup）的地方new了FGraphEventRef。
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241755877.png)
 
 9 这个是 https://zhuanlan.zhihu.com/p/412418542 这个里面的图，也画出了我描述的StartFrame的过程借用一下
