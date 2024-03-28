@@ -659,6 +659,12 @@ virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads
 			// 这部分在tick不关键，省略了
 		}
 	}
+// 创建，赋值了TaskStorage
+FGraphEventRef ConstructAndDispatchWhenReady(T&&... Args)
+	{
+		new ((void *)&Owner->TaskStorage) TTask(Forward<T>(Args)...);
+		return Owner->Setup(Prerequisites, CurrentThreadIfKnown);
+	}
 ```
 1 执行ProcessThreadUntilRequestReturn方法
 ```cpp
@@ -750,4 +756,4 @@ void ExecuteTask(TArray<FBaseGraphTask*>& NewTasks, ENamedThreads::Type CurrentT
 		}
 	}
 ```
-4 
+4 会执行FReturnGraphTask中的DoTask方法
