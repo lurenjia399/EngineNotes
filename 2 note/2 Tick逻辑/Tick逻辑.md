@@ -723,4 +723,31 @@ FORCEINLINE void Execute(TArray<FBaseGraphTask*>& NewTasks, ENamedThreads::Type 
 		ExecuteTask(NewTasks, CurrentThread, bDeleteOnCompletion);
 	}
 ```
-3 就是一个中转把，会执行到ExecuteTask这个xu'han'shu方法
+3 就是一个中转把，会执行到ExecuteTask这个虚方法。
+```cpp
+// TGraphTask 中的方法
+void ExecuteTask(TArray<FBaseGraphTask*>& NewTasks, ENamedThreads::Type CurrentThread, bool bDeleteOnCompletion) override
+	{
+		// 一些检查的东西，省略掉
+		
+		TTask& Task = *(TTask*)&TaskStorage;
+		{
+			TaskTrace::FTaskTimingEventScope TaskEventScope(GetTraceId());
+			FScopeCycleCounter Scope(Task.GetStatId(), true);
+			// 最关键的DoTask方法
+			Task.DoTask(CurrentThread, Subsequents);
+			Task.~TTask();
+		}
+		
+		TaskConstructed = false;
+
+		// 一些设置吧,不看了
+
+		// Task执行完成后，删除
+		if (bDeleteOnCompletion)
+		{
+			DeleteTask();
+		}
+	}
+```
+4 
