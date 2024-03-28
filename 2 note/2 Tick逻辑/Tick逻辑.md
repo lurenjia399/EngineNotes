@@ -684,5 +684,43 @@ virtual void ProcessTasksUntilQuit(int32 QueueIndex) override
 		} while (!Queue(QueueIndex).QuitForReturn && !Queue(QueueIndex).QuitForShutdown && bIsMultiThread); // @Hack - quit now when running with only one thread.
 		verify(!--Queue(QueueIndex).RecursionGuard);
 	}
+
+uint64 ProcessTasksNamedThread(int32 QueueIndex, bool bAllowStall)
+	{
+		// 把前边这些宏全都省略了
+		while (!Queue(QueueIndex).QuitForReturn)
+		{
+			const bool bIsRenderThreadAndPolling = bIsRenderThreadMainQueue && (GRenderThreadPollPeriodMs >= 0);
+			const bool bStallQueueAllowStall = bAllowStall && !bIsRenderThreadAndPolling;
+			// 从我们线程中的无锁队列中弹出Task
+			FBaseGraphTask* Task = Queue(QueueIndex).StallQueue.Pop(0, bStallQueueAllowStall);
+			TestRandomizedThreads();
+			if (!Task)
+			{
+				// 这边Task不存在走，不看了
+			}
+			else
+			{
+				// 关键的执行方法
+				Task->Execute(NewTasks, ENamedThreads::Type(ThreadId | (QueueIndex << ENamedThreads::QueueIndexShift)), true);
+				ProcessedTasks++;
+				TestRandomizedThreads();
+			}
+		}
+		// 省略掉性能统计的
+		return ProcessedTasks;
+	}
 ```
-2 执行FNamedTaskThread的ProcessTasksUntilQuit这个方法，
+2 执行FNamedTaskThread的ProcessTasksUntilQuit这个方法，然后执行到Task的Execute方法。
+```cpp
+// FBaseGraphTask中的方法
+FORCEINLINE void Execute(TArray<FBaseGraphTask*>& NewTasks, ENamedThreads::Type CurrentThread, bool bDeleteOnCompletion)
+	{
+		checkThreadGraph(LifeStage.Increment() == int32(LS_Executing));
+
+		UE::FInheritedContextScope InheritedContextScope = RestoreInheritedContext();
+		// 执行Task
+		ExecuteTask(NewTasks, CurrentThread, bDeleteOnCompletion);
+	}
+```
+3 就是一个中转把，会执行到ExecuteTask这个xu'han'shu方法
