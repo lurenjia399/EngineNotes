@@ -757,3 +757,24 @@ void ExecuteTask(TArray<FBaseGraphTask*>& NewTasks, ENamedThreads::Type CurrentT
 	}
 ```
 4 会执行Task.DoTask这个方法，这个Task是FTickFunctionTask这个类型的，是在StartFrame中创建然后存储到数组中的Task，
+```cpp
+// FTickFunctionTask中的方法
+void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
+	{
+		if (bLogTick)
+		{
+			if (bLogTicksShowPrerequistes)
+			{
+				Target->ShowPrerequistes();
+			}
+		}
+		if (Target->IsTickFunctionEnabled())
+		{
+			// 关键的执行Tick方法
+			Target->ExecuteTick(Target->CalculateDeltaTime(Context), Context.TickType, CurrentThread, MyCompletionGraphEvent);
+		}
+		Target->InternalData->TaskPointer = nullptr;  // This is stale and a good time to clear it for safety
+	}
+```
+5 然后就会执行到Target->ExecuteTick方法，也就是执行到Tickfunction的ExecuteTick的方法。
+
