@@ -895,8 +895,34 @@ bool FORCEINLINE HasBeenTickedThisFrame() const
 	return (LastTickedFrame == GFrameCounter);
 }
 ```
-3 主要目的是创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧已经执行过TimerManager的Tick了，就添加到ActiveTimerHeap这个数组里（可能是个堆结构）让其下一帧执行，如果当前帧还没执行过TimerManager，就添加到PendingTimerSet这个数组里，等到当前帧执行的时候在添加到ActiveTimerHeap这个数组里让其下一帧执行。
+3 主要目的是通过AddTimer创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧已经执行过TimerManager的Tick了，就添加到ActiveTimerHeap这个数组里（可能是个堆结构）让其下一帧执行，如果当前帧还没执行过TimerManager，就添加到PendingTimerSet这个数组里，等到当前帧执行的时候在添加到ActiveTimerHeap这个数组里让其下一帧执行。
 
+```cpp
+FTimerHandle FTimerManager::AddTimer(FTimerData&& TimerData)
+{
+	// 绑定Timer代理的那个UObject
+	const void* TimerIndicesByObjectKey = TimerData.TimerDelegate.GetBoundObject();
+	TimerData.TimerIndicesByObjectKey = TimerIndicesByObjectKey;
+
+	// 将timerData添加到timers数组里
+	int32 NewIndex = Timers.Add(MoveTemp(TimerData));
+
+	FTimerHandle Result = GenerateHandle(NewIndex);
+	Timers[NewIndex].Handle = Result;
+
+	if (TimerIndicesByObjectKey)
+	{
+		// 添加一个map，key是UObject，value是TimerHandle
+		TSet<FTimerHandle>& HandleSet = ObjectToTimers.FindOrAdd(TimerIndicesByObjectKey);
+
+		bool bAlreadyExists = false;
+		HandleSet.Add(Result, &bAlreadyExists);
+	}
+
+	return Result;
+}
+```
+4 字面意思，不复杂，就是添加进缓存，取得时候方便。
 # 7 TimerManager执行Tick
 
 1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是Level的CollectionType得是ELevelCollectionType::DynamicSourceLevels这种类型，具体什么样的Level符合要求后面再看。
@@ -993,16 +1019,17 @@ while (ActiveTimerHeap.Num() > 0)
 		FTimerHandle TopHandle = ActiveTimerHeap.HeapTop();
 
 		// Test for expired timers
+		// 拿到堆顶的TimerData
 		int32 TopIndex = TopHandle.GetIndex();
 		FTimerData* Top = &Timers[TopIndex];
-
+		// 如果是ActivePendingRemoval这种状态就移除timer
 		if (Top->Status == ETimerStatus::ActivePendingRemoval)
 		{
 			ActiveTimerHeap.HeapPop(TopHandle, FTimerHeapOrder(Timers), /*bAllowShrinking=*/ false);
 			RemoveTimer(TopHandle);
 			continue;
 		}
-
+		// 如果当前
 		if (InternalTime > Top->ExpireTime)
 		{
 			// Timer has expired! Fire the delegate, then handle potential looping.
