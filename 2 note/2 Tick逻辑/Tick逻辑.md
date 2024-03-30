@@ -395,7 +395,7 @@ void FTickFunction::QueueTickFunction(FTickTaskSequencer& TTS, const struct FTic
 		TickFunction->InternalData->TaskPointer = TGraphTask<FTickFunctionTask>::CreateTask(Prerequisites, TickContext.Thread).ConstructAndHold(TickFunction, &UseContext, bLogTicks, bLogTicksShowPrerequistes);
 	}
 ```
-7 这段有点复杂看不太懂，多线程的智识，知道是设置线程，创建Task。
+7 这段有点复杂看不太懂，多线程的知识，知道是设置线程，创建Task。
 ```cpp
 // FTickTaskSequencer中的方法
 FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGroup EndTickGroup, TGraphTask<FTickFunctionTask>* Task, bool bHiPri)
@@ -413,7 +413,7 @@ FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGro
 	}
 
 ```
-8 将7中创建的Task保存到HiPriTickTasks或者是TickTasks数组中（这两个二维数组的索引是StartTickGroup和EndTickGroup），还用了placement的方式在TickCompletionEvents数组（这个一维数组的索引是EndTickGroup）的地方new了FGraphEventRef。
+8 将7中创建的Task保存到HiPriTickTasks或者是TickTasks数组中（这两个二维数组的索引是StartTickGroup和EndTickGroup），还用了placement的方式在TickCompletionEvents数组（这个一维数组的索引是EndTickGroup）的地方new了FGraphEventRef，作用感觉上是保存了Task是否完成的事件？。
 
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241755877.png)
 
@@ -553,7 +553,7 @@ void DispatchTickGroup(ENamedThreads::Type CurrentThread, ETickingGroup WorldTic
 		}
 	}
 ```
-2 整体分成了两部分，一部分处理高优先级TickTask，一部分出普通优先级TickTask，处理方式是一样的，遍历所有的TickGroup，找到当前TickGroup的Task然后调用UnLock方法执行。
+2 整体分成了两部分，一部分处理高优先级TickTask，一部分处理普通优先级TickTask，处理方式是一样的，遍历所有的TickGroup，找到当前TickGroup的Task然后调用UnLock方法执行。
 ```cpp
 // TGraphTask类的
 void Unlock(ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread)
