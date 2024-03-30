@@ -807,7 +807,7 @@ void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunct
 2 当我们World进行Tick的时候，会首先执行StartFrame方法，这个就是从1中保存的数组中拿到TickFunction，然后创建出对应的TickFunctionTask，保存到Task数组中。
 3 然后执行RunTickGroup方法，根据不同的TickGroup来执行，首先将2中保存的Task压入到对应线程的无锁优先级队列中。最终执行就是从队列中pop出来TickFunctionTask，然后执行这个TickFunctionTask::DoTask方法，最终执行到TickFunction的ExecuteTick方法。
 
-# 6 TimerManager
+# 6 TimerManager添加
 1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是Level的CollectionType得是ELevelCollectionType::DynamicSourceLevels这种类型，具体什么样的Level符合要求后面再看。
 ```cpp
 /** Indicates the type of a level collection, used in FLevelCollection. */
@@ -833,6 +833,27 @@ enum class ELevelCollectionType : uint8
 };
 ```
 2 这是这个ELevelCollectionType枚举。
+
+```cpp
+UGameInstance::UGameInstance(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+	, TimerManager(new FTimerManager(this))
+	, LatentActionManager(new FLatentActionManager())
+{
+}
+```
+3 我们会在GameInstance初始化的时候创建一个TimerManager类
+```cpp
+// 函数定义
+FORCEINLINE void SetTimer(FTimerHandle& InOutHandle, FTimerDelegate const& InDelegate, float InRate, bool InbLoop, float InFirstDelay = -1.f)
+	{
+		InternalSetTimer(InOutHandle, FTimerUnifiedDelegate(InDelegate), InRate, InbLoop, InFirstDelay);
+	}
+// 这样调用
+GetWorld()->GetTimerManager().SetTimer(newTimer, FTimerDelegate::CreateUObject(this, &UUserWidget::AnimationTimerFinished, InAnimation), TotalTime, false);
+```
+4 通过SetTimer来进行调用，第一个参数是FTimerHandle用来标识这个Timer的，第二个参数是Delegate用来timer结束回调的，第三个参数Timer的间隔，第四个参数是否循环，第五个参数是否立即启动Timer。
+
 ```cpp
 if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
 {
