@@ -1,4 +1,4 @@
-### 1 Actor/Component Tick注册
+### 1 TickFunction注册
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
 1 从AActor::Beginplay开始注册的
