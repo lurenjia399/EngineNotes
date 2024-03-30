@@ -1074,7 +1074,7 @@ while (ActiveTimerHeap.Num() > 0)
 		if (Top)
 		{
 			// if timer requires a delegate, make sure it's still validly bound (i.e. the delegate's object didn't get deleted or something)
-			// 
+			// 如果循环Timer，就更改Timer的过期时间，在添加回ActiveTimerHeap数组中
 			if (Top->bLoop && (!Top->bRequiresDelegate || Top->TimerDelegate.IsBound()))
 			{
 				// Put this timer back on the heap
@@ -1084,6 +1084,7 @@ while (ActiveTimerHeap.Num() > 0)
 			}
 			else
 			{
+				// 不是循环timer，就直接移除掉了
 				RemoveTimer(CurrentlyExecutingTimer);
 			}
 
@@ -1092,6 +1093,7 @@ while (ActiveTimerHeap.Num() > 0)
 	}
 	else
 	{
+		// Top的timer的时间都没到，后面的timer肯定也到不了，就结束ActiveTimerHeap遍历
 		// no need to go further down the heap, we can be finished
 		break;
 	}
@@ -1099,8 +1101,5 @@ while (ActiveTimerHeap.Num() > 0)
 ```
 
 
-```cpp
-
-```
 
 
