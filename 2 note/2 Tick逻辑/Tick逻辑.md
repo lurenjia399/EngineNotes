@@ -804,5 +804,5 @@ void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunct
 
 #### 总结
 1 我们Actor里会有一个FActorTickFunction类型的成员变量PrimaryActorTick，他会在Actor::Begin的时候把自己注册到Level里面（具体是在Level里的TicktaskLevel里的AllEnabledTickFunction里）
-2 当我们World进行Tick的时候，会首先执行StartFrame方法，这个就是从1中保存的数组中拿到TickFunction，然后创建出对应的Task，保存到Task数组中。
-3 然后执行RunTickGroup方法，根据不同的TickGroup来执行，首先将2中保存的Task压入到对应线程的无锁优先级队列中，最终zhi'xi
+2 当我们World进行Tick的时候，会首先执行StartFrame方法，这个就是从1中保存的数组中拿到TickFunction，然后创建出对应的TickFunctionTask，保存到Task数组中。
+3 然后执行RunTickGroup方法，根据不同的TickGroup来执行，首先将2中保存的Task压入到对应线程的无锁优先级队列中。最终执行就是从队列中pop出来TickFunctionTask，然后执行这个TickFunctionTask::DoTask方法，最终执行到TickFunction的ExecuteTick方法。
