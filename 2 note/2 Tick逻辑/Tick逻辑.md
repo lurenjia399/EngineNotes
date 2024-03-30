@@ -853,6 +853,67 @@ FORCEINLINE void SetTimer(FTimerHandle& InOutHandle, FTimerDelegate const& InDel
 GetWorld()->GetTimerManager().SetTimer(newTimer, FTimerDelegate::CreateUObject(this, &UUserWidget::AnimationTimerFinished, InAnimation), TotalTime, false);
 ```
 4 通过SetTimer来进行调用，第一个参数是FTimerHandle用来标识这个Timer的，第二个参数是Delegate用来timer结束回调的，第三个参数Timer的间隔，第四个参数是否循环，第五个参数是否立即启动Timer。
+```cpp
+void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDelegate&& InDelegate, float InRate, bool InbLoop, float InFirstDelay)
+{
+	SCOPE_CYCLE_COUNTER(STAT_SetTimer);
+
+	// not currently threadsafe
+	check(IsInGameThread());
+
+	if (FindTimer(InOutHandle))
+	{
+		// if the timer is already set, just clear it and we'll re-add it, since 
+		// there's no data to maintain.
+		InternalClearTimer(InOutHandle);
+	}
+
+	if (InRate > 0.f)
+	{
+		// set up the new timer
+		// 创建个FTimerData并组装
+		FTimerData NewTimerData;
+		NewTimerData.TimerDelegate = MoveTemp(InDelegate);
+
+		NewTimerData.Rate = InRate;
+		NewTimerData.bLoop = InbLoop;
+		NewTimerData.bRequiresDelegate = NewTimerData.TimerDelegate.IsBound();
+
+		// Set level collection
+		const UWorld* const OwningWorld = OwningGameInstance ? OwningGameInstance->GetWorld() : nullptr;
+		if (OwningWorld && OwningWorld->GetActiveLevelCollection())
+		{
+			NewTimerData.LevelCollection = OwningWorld->GetActiveLevelCollection()->GetType();
+		}
+
+		const float FirstDelay = (InFirstDelay >= 0.f) ? InFirstDelay : InRate;
+
+		FTimerHandle NewTimerHandle;
+		if (HasBeenTickedThisFrame())
+		{
+			NewTimerData.ExpireTime = InternalTime + FirstDelay;
+			NewTimerData.Status = ETimerStatus::Active;
+			NewTimerHandle = AddTimer(MoveTemp(NewTimerData));
+			ActiveTimerHeap.HeapPush(NewTimerHandle, FTimerHeapOrder(Timers));
+		}
+		else
+		{
+			// Store time remaining in ExpireTime while pending
+			NewTimerData.ExpireTime = FirstDelay;
+			NewTimerData.Status = ETimerStatus::Pending;
+			NewTimerHandle = AddTimer(MoveTemp(NewTimerData));
+			PendingTimerSet.Add(NewTimerHandle);
+		}
+
+		InOutHandle = NewTimerHandle;
+	}
+	else
+	{
+		InOutHandle.Invalidate();
+	}
+}
+```
+
 
 ```cpp
 if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
