@@ -18,16 +18,16 @@
                 "source": false
               }
             },
-            "group": "8e1b469df1a5bfe1"
+            "group": "70df3764e63030f6"
           }
         ]
       },
       {
-        "id": "5c376cef4ac3a09a",
+        "id": "be3194a74a47865e",
         "type": "tabs",
         "children": [
           {
-            "id": "a873b309c18441fd",
+            "id": "27d83f353f38217d",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -37,7 +37,7 @@
                 "source": false
               }
             },
-            "group": "8e1b469df1a5bfe1"
+            "group": "70df3764e63030f6"
           }
         ]
       }
@@ -166,7 +166,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "9de9ee2b8d02a23d",
+  "active": "27d83f353f38217d",
   "lastOpenFiles": [
     "1 索引/索引.md",
     "2 note/2 Tick逻辑/Tick逻辑.md",
