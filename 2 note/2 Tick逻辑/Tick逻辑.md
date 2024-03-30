@@ -905,7 +905,7 @@ void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDel
 			NewTimerHandle = AddTimer(MoveTemp(NewTimerData));
 			PendingTimerSet.Add(NewTimerHandle);
 		}
-
+		// 返回Handle
 		InOutHandle = NewTimerHandle;
 	}
 	else
@@ -914,7 +914,222 @@ void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDel
 	}
 }
 ```
-5 主要目的是
+5 主要目的是创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧调进来，就添加到ActiveTimerHeap这个数组里（可能是个堆结构），如果当前帧已经过了，就添加到PendingTimerSet这个数组里。
+
+# 7 TimerManager执行Tick
+
+```cpp
+void FTimerManager::Tick(float DeltaTime)
+{
+	// zhe'yi'zhen
+	if (HasBeenTickedThisFrame())
+	{
+		return;
+	}
+
+#if UE_ENABLE_TRACKING_TIMER_SOURCES
+	if ((TimerSourceList == nullptr) != (GBuildTimerSourceList == 0))
+	{
+		if (TimerSourceList == nullptr)
+		{
+			TimerSourceList.Reset(new FTimerSourceList);
+			TimerSourceList->OwningGameInstance = OwningGameInstance;
+		}
+		else
+		{
+			TimerSourceList.Reset();
+		}
+	}
+#endif
+
+	const double StartTime = FPlatformTime::Seconds();
+	bool bDumpTimerLogsThresholdExceeded = false;
+	int32 NbExpiredTimers = 0;
+
+	InternalTime += DeltaTime;
+
+	UWorld* const OwningWorld = OwningGameInstance ? OwningGameInstance->GetWorld() : nullptr;
+	UWorld* const LevelCollectionWorld = OwningWorld;
+
+#if UE_ENABLE_DUMPALLTIMERLOGSTHRESHOLD
+	// Dump timer info to logs if we have way too many timers active.
+	UE_SUPPRESS(LogEngine, Warning,
+	{
+		if (DumpAllTimerLogsThreshold > 0 && ActiveTimerHeap.Num() > DumpAllTimerLogsThreshold)
+		{
+			static bool bAlreadyLogged = false;
+			if(!bAlreadyLogged)
+			{
+				bAlreadyLogged = true;
+			
+				UE_LOG(LogEngine, Warning, TEXT("Number of active Timers (%d) has exceeded DumpAllTimerLogsThreshold (%d)!  Dumping all timer info to log:"), ActiveTimerHeap.Num(), DumpAllTimerLogsThreshold);
+
+				TArray<const FTimerData*> ValidActiveTimers;
+				ValidActiveTimers.Reserve(ActiveTimerHeap.Num());
+				for (FTimerHandle Handle : ActiveTimerHeap)
+				{
+					if (const FTimerData* Data = FindTimer(Handle))
+					{
+						ValidActiveTimers.Add(Data);
+					}
+				}
+
+				for (const FTimerData* Data : ValidActiveTimers)
+				{
+					DescribeFTimerDataSafely(*GLog, *Data);
+				}
+			}
+		}
+	});
+#endif // #if UE_ENABLE_DUMPALLTIMERLOGSTHRESHOLD
+
+	while (ActiveTimerHeap.Num() > 0)
+	{
+		FTimerHandle TopHandle = ActiveTimerHeap.HeapTop();
+
+		// Test for expired timers
+		int32 TopIndex = TopHandle.GetIndex();
+		FTimerData* Top = &Timers[TopIndex];
+
+		if (Top->Status == ETimerStatus::ActivePendingRemoval)
+		{
+			ActiveTimerHeap.HeapPop(TopHandle, FTimerHeapOrder(Timers), /*bAllowShrinking=*/ false);
+			RemoveTimer(TopHandle);
+			continue;
+		}
+
+		if (InternalTime > Top->ExpireTime)
+		{
+			// Timer has expired! Fire the delegate, then handle potential looping.
+
+			if (bDumpTimerLogsThresholdExceeded)
+			{
+				++NbExpiredTimers;
+				if (NbExpiredTimers <= MaxExpiredTimersToLog)
+				{
+					DescribeFTimerDataSafely(*GLog, *Top);
+				}
+			}
+
+			// Set the relevant level context for this timer
+			const int32 LevelCollectionIndex = OwningWorld ? OwningWorld->FindCollectionIndexByType(Top->LevelCollection) : INDEX_NONE;
+			
+			FScopedLevelCollectionContextSwitch LevelContext(LevelCollectionIndex, LevelCollectionWorld);
+
+			// Remove it from the heap and store it while we're executing
+			ActiveTimerHeap.HeapPop(CurrentlyExecutingTimer, FTimerHeapOrder(Timers), /*bAllowShrinking=*/ false);
+			Top->Status = ETimerStatus::Executing;
+
+			// Determine how many times the timer may have elapsed (e.g. for large DeltaTime on a short looping timer)
+			int32 const CallCount = Top->bLoop ? 
+				FMath::TruncToInt( (InternalTime - Top->ExpireTime) / Top->Rate ) + 1
+				: 1;
+
+#if UE_ENABLE_TRACKING_TIMER_SOURCES
+			if (TimerSourceList.IsValid())
+			{
+				//@TODO: The actual call count may be less, e.g., if the delegate clears itself during the loop below
+				TimerSourceList->AddEntry(*Top, CallCount);
+			}
+#endif
+
+			// Now call the function
+			for (int32 CallIdx=0; CallIdx<CallCount; ++CallIdx)
+			{ 
+#if DO_TIMEGUARD && 0
+				FTimerNameDelegate NameFunction = FTimerNameDelegate::CreateLambda([&] { 
+						return FString::Printf(TEXT("FTimerManager slowtick from delegate %s "), *Top->TimerDelegate.ToString());
+					});
+				// no delegate should take longer then 2ms to run 
+				SCOPE_TIME_GUARD_DELEGATE_MS(NameFunction, 2);
+#endif
+#if DO_TIMEGUARD && 0
+				RunTimerDelegates.Add(Top->TimerDelegate);
+#endif
+
+				checkf(!WillRemoveTimerAssert(CurrentlyExecutingTimer), TEXT("RemoveTimer(CurrentlyExecutingTimer) - due to fail before Execute()"));
+				Top->TimerDelegate.Execute();
+
+				// Update Top pointer, in case it has been invalidated by the Execute call
+				Top = FindTimer(CurrentlyExecutingTimer);
+				checkf(!Top || !WillRemoveTimerAssert(CurrentlyExecutingTimer), TEXT("RemoveTimer(CurrentlyExecutingTimer) - due to fail after Execute()"));
+				if (!Top || Top->Status != ETimerStatus::Executing)
+				{
+					break;
+				}
+			}
+
+			if (DumpTimerLogsThreshold > 0.f && !bDumpTimerLogsThresholdExceeded)
+			{
+				// help us hunt down outliers that cause our timer manager times to spike.  Recommended that users set meaningful DumpTimerLogsThresholds in appropriate ini files if they are seeing spikes in the timer manager.
+				const double DeltaT = (FPlatformTime::Seconds() - StartTime) * 1000.f;
+				if (DeltaT >= DumpTimerLogsThreshold)
+				{
+					bDumpTimerLogsThresholdExceeded = true;
+                    ++NbExpiredTimers;
+					UE_LOG(LogEngine, Log, TEXT("TimerManager's time threshold of %.2fms exceeded with a deltaT of %.4f, dumping current timer data."), DumpTimerLogsThreshold, DeltaT);
+
+					if (Top)
+					{
+						DescribeFTimerDataSafely(*GLog, *Top);
+					}
+					else
+					{
+						UE_LOG(LogEngine, Log, TEXT("There was no timer data for the first timer after exceeding the time threshold!"));
+					}
+				}
+			}
+
+			// test to ensure it didn't get cleared during execution
+			if (Top)
+			{
+				// if timer requires a delegate, make sure it's still validly bound (i.e. the delegate's object didn't get deleted or something)
+				if (Top->bLoop && (!Top->bRequiresDelegate || Top->TimerDelegate.IsBound()))
+				{
+					// Put this timer back on the heap
+					Top->ExpireTime += CallCount * Top->Rate;
+					Top->Status = ETimerStatus::Active;
+					ActiveTimerHeap.HeapPush(CurrentlyExecutingTimer, FTimerHeapOrder(Timers));
+				}
+				else
+				{
+					RemoveTimer(CurrentlyExecutingTimer);
+				}
+
+				CurrentlyExecutingTimer.Invalidate();
+			}
+		}
+		else
+		{
+			// no need to go further down the heap, we can be finished
+			break;
+		}
+	}
+
+	if (NbExpiredTimers > MaxExpiredTimersToLog)
+	{
+		UE_LOG(LogEngine, Log, TEXT("TimerManager's caught %d Timers exceeding the time threshold. Only the first %d were logged."), NbExpiredTimers, MaxExpiredTimersToLog);
+	}
+
+	// Timer has been ticked.
+	LastTickedFrame = GFrameCounter;
+
+	// If we have any Pending Timers, add them to the Active Queue.
+	if( PendingTimerSet.Num() > 0 )
+	{
+		for (FTimerHandle Handle : PendingTimerSet)
+		{
+			FTimerData& TimerToActivate = GetTimer(Handle);
+
+			// Convert from time remaining back to a valid ExpireTime
+			TimerToActivate.ExpireTime += InternalTime;
+			TimerToActivate.Status = ETimerStatus::Active;
+			ActiveTimerHeap.HeapPush( Handle, FTimerHeapOrder(Timers) );
+		}
+		PendingTimerSet.Reset();
+	}
+}
+```
 
 ```cpp
 if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
