@@ -888,8 +888,14 @@ void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDel
 		InOutHandle.Invalidate();
 	}
 }
+
+// 判断当前帧是否执行过Tick了
+bool FORCEINLINE HasBeenTickedThisFrame() const
+{
+	return (LastTickedFrame == GFrameCounter);
+}
 ```
-3 主要目的是创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧调进来，就添加到ActiveTimerHeap这个数组里（可能是个堆结构），如果当前帧已经过了，就添加到PendingTimerSet这个数组里。
+3 主要目的是创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧已经执行过TimerManager的Tick了，就添加到ActiveTimerHeap这个数组里（可能是个堆结构）让其下一帧执行，如果当前帧还没执行过TimerManager，就添加到PendingTimerSet这个数组里，等到当前帧执行的时候在添加到ActiveTimerHeap这个数组里让其下一帧执行。
 
 # 7 TimerManager执行Tick
 
@@ -978,7 +984,11 @@ void FTimerManager::Tick(float DeltaTime)
 	}
 }
 ```
-4 执行Tick的逻辑，显示处理激活的Timer，然后记录当前帧号，处理当前帧没来得及处理的Timer，将其放入ActiveTimerHeap数组中，等待下一帧执行。
+4 执行Tick的逻辑，先是处理激活的Timer（ActiveTimerHeap），然后记录当前帧号，处理当前帧没来得及处理的Timer（PendingTimerSet这个数组里的），将其放入ActiveTimerHeap数组中，等待下一帧执行。
+
+```cpp
+
+```
 
 
 ```cpp
