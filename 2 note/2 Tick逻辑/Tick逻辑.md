@@ -852,7 +852,7 @@ FORCEINLINE void SetTimer(FTimerHandle& InOutHandle, FTimerDelegate const& InDel
 // 这样调用
 GetWorld()->GetTimerManager().SetTimer(newTimer, FTimerDelegate::CreateUObject(this, &UUserWidget::AnimationTimerFinished, InAnimation), TotalTime, false);
 ```
-4 通过SetTimer来进行调用，第一个参数是FTimerHandle用来标识这个Timer的，第二个参数是Delegate用来timer结束回调的，第三个参数Timer的间隔，第四个参数是否循环，第五个参数是否立即启动Timer。
+4 通过SetTimer来进行调用，第一个参数是FTimerHandle用来标识这个Timer的，第二个参数是Delegate用来timer结束回调的，第三个参数Timer的间隔，第四个参数是否循环，第五个参数是首次启动延迟多长时间。
 ```cpp
 void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDelegate&& InDelegate, float InRate, bool InbLoop, float InFirstDelay)
 {
@@ -888,6 +888,7 @@ void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDel
 
 		const float FirstDelay = (InFirstDelay >= 0.f) ? InFirstDelay : InRate;
 
+		// 创建FTimerHandle并组装
 		FTimerHandle NewTimerHandle;
 		if (HasBeenTickedThisFrame())
 		{
@@ -913,7 +914,7 @@ void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDel
 	}
 }
 ```
-
+5 主要目的是
 
 ```cpp
 if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
