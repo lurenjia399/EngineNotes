@@ -803,4 +803,5 @@ void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunct
 6 最终通过Actor身上的PrimaryActorTick这个成员变量，执行到FActorTickFunction::ExecuteTick这个方法，进而执行到AActor::TickActor这个方法，也就是Actor的Tick。
 
 #### 总结
-1 我们Actor里会有一个FActorTickFunction类型的成员变量PrimaryActorTick，他会在Actor::Begin
+1 我们Actor里会有一个FActorTickFunction类型的成员变量PrimaryActorTick，他会在Actor::Begin的时候把自己注册到Level里面（具体是在Level里的TicktaskLevel里的AllEnabledTickFunction里）
+2 当我们World进行Tick的时候，会首先从
