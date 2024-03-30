@@ -132,7 +132,7 @@ void AddTickFunction(FTickFunction* TickFunction)
 4 通过AddTickFunction方法将Actor的TickFunction绑定到Actor所处的Level的TickTaskLevel上面，绑定的具体操作就是把TickFunction保存到相应的数组中去。
 5 注意Actor的Tick和Component的Tick没有顺序关系，他们都是通过FTickFunction::RegisterTickFunction这个方法来将TickFunction绑定到Level里面的，Actor和身上挂的Component之间的Tick也没有关系，要是有关系MovementComponent也不会在注册的时候绑定和Owner之间的依赖了。
 6 还有个注册时机是再AActor::IncrementalRegisterComponents方法里面，说是跟切换场景相关，后续再看下
-### 2 TickFunction初始化设置
+# 2 TickFunction初始化设置
 ```cpp
 void AActor::InitializeDefaults()
 {
@@ -146,7 +146,7 @@ void AActor::InitializeDefaults()
 }
 
 ```
-### 3 TickFunction顺序和依赖关系
+# 3 TickFunction顺序和依赖关系
 
 1 依赖关系的构建主要是通过TickFunction中的Prerequisites这个数组来决定。我们拿AController，UPawnMovementComponent和APawn之间的Tick顺序来进行展示。
 ```cpp
@@ -214,8 +214,8 @@ void UMovementComponent::RegisterComponentTickFunctions(bool bRegister)
 
 4 在UMovementComponent构造函数中bTickBeforeOwner这个是true，不过可以在蓝图中设成false，它的作用就是绑定Owner和UMovementComponent之间的依赖关系，Owner的Tick在UMovementComponent的Tick之后。
 
-### 4 TickFunction执行
-#### StartFrame
+# 4 TickFunction执行
+## StartFrame
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403241521828.png)
 1 执行到World::Tick之前的流程：
@@ -421,7 +421,7 @@ FORCEINLINE void AddTickTaskCompletion(ETickingGroup StartTickGroup, ETickingGro
 
 10 还有点小问题，EndTickGroup有什么用？可能和具体task什么时候执行有关?后面看多线程的时候在总结下。
 
-#### RunTickGroup
+## RunTickGroup
 
 在StartFrame之后就会进行每个Group的Tick。
 ```cpp
@@ -512,7 +512,7 @@ FTaskGraphInterface::Get().ProcessThreadUntilIdle(ENamedThreads::GameThread);
 	}
 ```
 1 ReleaseTickGroup这个方法分为两部分，第一部分是DispatchTickGroup，如果是单线程的话就直接调用DispatchTickGroup这个方法，如果是多线程就创建Task，现在还不太了解这个。第二部分是判断是否需要等待前面的TickGroup执行完（也就是bBlockTillComplete这个标志位），如果需要等待，就调用WaitUntilTasksComplete方法，等待执行完。
-##### DispatchTickGroup
+### DispatchTickGroup
 这个是将我们的Task压入到对应线程的无所优先级队列里
 ```cpp
 void DispatchTickGroup(ENamedThreads::Type CurrentThread, ETickingGroup WorldTickGroup)
@@ -613,7 +613,7 @@ virtual void EnqueueFromThisThread(int32 QueueIndex, FBaseGraphTask* Task) overr
 ```
 5 最后就是把我们的Task压入到Queue里面。这个队列是什么无锁优先级队列，每个线程都有两个Queue，一个优先级高一个低，里面真正存储数据的队列是这个StallQueue。
 
-##### WaitUntilTasksComplete
+### WaitUntilTasksComplete
 ```cpp
 //FTaskGraphImplementation中的方法
 virtual void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread) final override
@@ -802,9 +802,12 @@ void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunct
 ```
 6 最终通过Actor身上的PrimaryActorTick这个成员变量，执行到FActorTickFunction::ExecuteTick这个方法，进而执行到AActor::TickActor这个方法，也就是Actor的Tick。
 
-#### 5 TickFunction总结
+# 5 TickFunction总结
 1 我们Actor里会有一个FActorTickFunction类型的成员变量PrimaryActorTick，他会在Actor::Begin的时候把自己注册到Level里面（具体是在Level里的TicktaskLevel里的AllEnabledTickFunction里）
 2 当我们World进行Tick的时候，会首先执行StartFrame方法，这个就是从1中保存的数组中拿到TickFunction，然后创建出对应的TickFunctionTask，保存到Task数组中。
 3 然后执行RunTickGroup方法，根据不同的TickGroup来执行，首先将2中保存的Task压入到对应线程的无锁优先级队列中。最终执行就是从队列中pop出来TickFunctionTask，然后执行这个TickFunctionTask::DoTask方法，最终执行到TickFunction的ExecuteTick方法。
+
+# 6 TimerManager
+1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是
 
 
