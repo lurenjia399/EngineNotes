@@ -1029,19 +1029,10 @@ while (ActiveTimerHeap.Num() > 0)
 			RemoveTimer(TopHandle);
 			continue;
 		}
-		// 如果当前
+		// 如果当前累计的事件 > Timer的过期事件，也就是到时间了可以执行Timer了
 		if (InternalTime > Top->ExpireTime)
 		{
-			// Timer has expired! Fire the delegate, then handle potential looping.
-
-			if (bDumpTimerLogsThresholdExceeded)
-			{
-				++NbExpiredTimers;
-				if (NbExpiredTimers <= MaxExpiredTimersToLog)
-				{
-					DescribeFTimerDataSafely(*GLog, *Top);
-				}
-			}
+			// 这几行不关键也不知道干嘛的
 
 			// Set the relevant level context for this timer
 			const int32 LevelCollectionIndex = OwningWorld ? OwningWorld->FindCollectionIndexByType(Top->LevelCollection) : INDEX_NONE;
@@ -1049,7 +1040,9 @@ while (ActiveTimerHeap.Num() > 0)
 			FScopedLevelCollectionContextSwitch LevelContext(LevelCollectionIndex, LevelCollectionWorld);
 
 			// Remove it from the heap and store it while we're executing
+			// 从堆中pop出我们timer
 			ActiveTimerHeap.HeapPop(CurrentlyExecutingTimer, FTimerHeapOrder(Timers), /*bAllowShrinking=*/ false);
+			// 改变我们Timer的状态
 			Top->Status = ETimerStatus::Executing;
 
 			// Determine how many times the timer may have elapsed (e.g. for large DeltaTime on a short looping timer)
