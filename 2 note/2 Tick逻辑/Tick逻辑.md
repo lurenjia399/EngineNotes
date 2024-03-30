@@ -1057,43 +1057,24 @@ while (ActiveTimerHeap.Num() > 0)
 		// Now call the function
 		for (int32 CallIdx=0; CallIdx<CallCount; ++CallIdx)
 		{ 
-			// guang'bo
+			// 广播我们的那个TimerDelegate，在创建时候绑定的
 			Top->TimerDelegate.Execute();
 
 			// Update Top pointer, in case it has been invalidated by the Execute call
+			// 看英文注释意思是，更新当前的TimerData指针，防止Delegate里面把Top弄没
 			Top = FindTimer(CurrentlyExecutingTimer);
-			checkf(!Top || !WillRemoveTimerAssert(CurrentlyExecutingTimer), TEXT("RemoveTimer(CurrentlyExecutingTimer) - due to fail after Execute()"));
+			
+			// 如果Timer没有了或者是状态不对就结束执行
 			if (!Top || Top->Status != ETimerStatus::Executing)
 			{
 				break;
 			}
 		}
-
-		if (DumpTimerLogsThreshold > 0.f && !bDumpTimerLogsThresholdExceeded)
-		{
-			// help us hunt down outliers that cause our timer manager times to spike.  Recommended that users set meaningful DumpTimerLogsThresholds in appropriate ini files if they are seeing spikes in the timer manager.
-			const double DeltaT = (FPlatformTime::Seconds() - StartTime) * 1000.f;
-			if (DeltaT >= DumpTimerLogsThreshold)
-			{
-				bDumpTimerLogsThresholdExceeded = true;
-				++NbExpiredTimers;
-				UE_LOG(LogEngine, Log, TEXT("TimerManager's time threshold of %.2fms exceeded with a deltaT of %.4f, dumping current timer data."), DumpTimerLogsThreshold, DeltaT);
-
-				if (Top)
-				{
-					DescribeFTimerDataSafely(*GLog, *Top);
-				}
-				else
-				{
-					UE_LOG(LogEngine, Log, TEXT("There was no timer data for the first timer after exceeding the time threshold!"));
-				}
-			}
-		}
-
 		// test to ensure it didn't get cleared during execution
 		if (Top)
 		{
 			// if timer requires a delegate, make sure it's still validly bound (i.e. the delegate's object didn't get deleted or something)
+			// 
 			if (Top->bLoop && (!Top->bRequiresDelegate || Top->TimerDelegate.IsBound()))
 			{
 				// Put this timer back on the heap
