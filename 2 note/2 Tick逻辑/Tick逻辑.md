@@ -808,6 +808,39 @@ void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunct
 3 然后执行RunTickGroup方法，根据不同的TickGroup来执行，首先将2中保存的Task压入到对应线程的无锁优先级队列中。最终执行就是从队列中pop出来TickFunctionTask，然后执行这个TickFunctionTask::DoTask方法，最终执行到TickFunction的ExecuteTick方法。
 
 # 6 TimerManager
-1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是
+1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是Level的CollectionType得是ELevelCollectionType::DynamicSourceLevels这种类型，具体什么样的Level符合要求后面再看。
+```cpp
+/** Indicates the type of a level collection, used in FLevelCollection. */
+enum class ELevelCollectionType : uint8
+{
+	/**
+	 * The dynamic levels that are used for normal gameplay and the source for any duplicated collections.
+	 * Will contain a world's persistent level and any streaming levels that contain dynamic or replicated gameplay actors.
+	 */
+	DynamicSourceLevels,
+
+	/** Gameplay relevant levels that have been duplicated from DynamicSourceLevels if requested by the game. */
+	DynamicDuplicatedLevels,
+
+	/**
+	 * These levels are shared between the source levels and the duplicated levels, and should contain
+	 * only static geometry and other visuals that are not replicated or affected by gameplay.
+	 * These will not be duplicated in order to save memory.
+	 */
+	StaticLevels,
+
+	MAX
+};
+```
+2 这是这个ELevelCollectionType枚举。
+```cpp
+if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
+{
+	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TimerManager"), 5);
+	STAT(FScopeCycleCounter Context(GetTimerManager().GetStatId());)
+	// 具体执行Tick的起始
+	GetTimerManager().Tick(DeltaSeconds);
+}
+```
 
 
