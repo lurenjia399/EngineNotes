@@ -808,31 +808,6 @@ void AActor::TickActor( float DeltaSeconds, ELevelTick TickType, FActorTickFunct
 3 然后执行RunTickGroup方法，根据不同的TickGroup来执行，首先将2中保存的Task压入到对应线程的无锁优先级队列中。最终执行就是从队列中pop出来TickFunctionTask，然后执行这个TickFunctionTask::DoTask方法，最终执行到TickFunction的ExecuteTick方法。
 
 # 6 TimerManager添加
-1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是Level的CollectionType得是ELevelCollectionType::DynamicSourceLevels这种类型，具体什么样的Level符合要求后面再看。
-```cpp
-/** Indicates the type of a level collection, used in FLevelCollection. */
-enum class ELevelCollectionType : uint8
-{
-	/**
-	 * The dynamic levels that are used for normal gameplay and the source for any duplicated collections.
-	 * Will contain a world's persistent level and any streaming levels that contain dynamic or replicated gameplay actors.
-	 */
-	DynamicSourceLevels,
-
-	/** Gameplay relevant levels that have been duplicated from DynamicSourceLevels if requested by the game. */
-	DynamicDuplicatedLevels,
-
-	/**
-	 * These levels are shared between the source levels and the duplicated levels, and should contain
-	 * only static geometry and other visuals that are not replicated or affected by gameplay.
-	 * These will not be duplicated in order to save memory.
-	 */
-	StaticLevels,
-
-	MAX
-};
-```
-2 这是这个ELevelCollectionType枚举。
 
 ```cpp
 UGameInstance::UGameInstance(const FObjectInitializer& ObjectInitializer)
@@ -842,7 +817,7 @@ UGameInstance::UGameInstance(const FObjectInitializer& ObjectInitializer)
 {
 }
 ```
-3 我们会在GameInstance初始化的时候创建一个TimerManager类
+1 我们会在GameInstance初始化的时候创建一个TimerManager类
 ```cpp
 // 函数定义
 FORCEINLINE void SetTimer(FTimerHandle& InOutHandle, FTimerDelegate const& InDelegate, float InRate, bool InbLoop, float InFirstDelay = -1.f)
@@ -852,7 +827,7 @@ FORCEINLINE void SetTimer(FTimerHandle& InOutHandle, FTimerDelegate const& InDel
 // 这样调用
 GetWorld()->GetTimerManager().SetTimer(newTimer, FTimerDelegate::CreateUObject(this, &UUserWidget::AnimationTimerFinished, InAnimation), TotalTime, false);
 ```
-4 通过SetTimer来进行调用，第一个参数是FTimerHandle用来标识这个Timer的，第二个参数是Delegate用来timer结束回调的，第三个参数Timer的间隔，第四个参数是否循环，第五个参数是首次启动延迟多长时间。
+2 通过SetTimer来进行调用，第一个参数是FTimerHandle用来标识这个Timer的，第二个参数是Delegate用来timer结束回调的，第三个参数Timer的间隔，第四个参数是否循环，第五个参数是首次启动延迟多长时间。
 ```cpp
 void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDelegate&& InDelegate, float InRate, bool InbLoop, float InFirstDelay)
 {
@@ -914,9 +889,46 @@ void FTimerManager::InternalSetTimer(FTimerHandle& InOutHandle, FTimerUnifiedDel
 	}
 }
 ```
-5 主要目的是创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧调进来，就添加到ActiveTimerHeap这个数组里（可能是个堆结构），如果当前帧已经过了，就添加到PendingTimerSet这个数组里。
+3 主要目的是创建FTimerHandle，并为其组装参数。需要注意的可能就是如果在当前帧调进来，就添加到ActiveTimerHeap这个数组里（可能是个堆结构），如果当前帧已经过了，就添加到PendingTimerSet这个数组里。
 
 # 7 TimerManager执行Tick
+
+1 这种TimerTick的方式是在RunTickGroup之后执行，也是在World::Tick的方法里面，但是Level的CollectionType得是ELevelCollectionType::DynamicSourceLevels这种类型，具体什么样的Level符合要求后面再看。
+```cpp
+/** Indicates the type of a level collection, used in FLevelCollection. */
+enum class ELevelCollectionType : uint8
+{
+	/**
+	 * The dynamic levels that are used for normal gameplay and the source for any duplicated collections.
+	 * Will contain a world's persistent level and any streaming levels that contain dynamic or replicated gameplay actors.
+	 */
+	DynamicSourceLevels,
+
+	/** Gameplay relevant levels that have been duplicated from DynamicSourceLevels if requested by the game. */
+	DynamicDuplicatedLevels,
+
+	/**
+	 * These levels are shared between the source levels and the duplicated levels, and should contain
+	 * only static geometry and other visuals that are not replicated or affected by gameplay.
+	 * These will not be duplicated in order to save memory.
+	 */
+	StaticLevels,
+
+	MAX
+};
+```
+2 这是这个ELevelCollectionType枚举。
+
+```cpp
+if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
+{
+	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TimerManager"), 5);
+	STAT(FScopeCycleCounter Context(GetTimerManager().GetStatId());)
+	// 具体执行Tick的起始
+	GetTimerManager().Tick(DeltaSeconds);
+}
+```
+3 具体执行Tick的方法，在RunTickGroup之后进行。
 
 ```cpp
 void FTimerManager::Tick(float DeltaTime)
@@ -950,6 +962,7 @@ void FTimerManager::Tick(float DeltaTime)
 	LastTickedFrame = GFrameCounter;
 
 	// If we have any Pending Timers, add them to the Active Queue.
+	// 把PendingTimerSet数组里的数据添加到ActiveTimerHeap数组中
 	if( PendingTimerSet.Num() > 0 )
 	{
 		for (FTimerHandle Handle : PendingTimerSet)
@@ -965,15 +978,11 @@ void FTimerManager::Tick(float DeltaTime)
 	}
 }
 ```
+4 执行Tick的逻辑，显示处理激活的Timer，然后记录当前帧号，处理当前帧没来得及处理的Timer，将其放入ActiveTimerHeap数组中，等待下一帧执行。
+
 
 ```cpp
-if (TickType != LEVELTICK_TimeOnly && !bIsPaused)
-{
-	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TimerManager"), 5);
-	STAT(FScopeCycleCounter Context(GetTimerManager().GetStatId());)
-	// 具体执行Tick的起始
-	GetTimerManager().Tick(DeltaSeconds);
-}
+
 ```
 
 
