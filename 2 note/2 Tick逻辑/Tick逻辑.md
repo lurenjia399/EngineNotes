@@ -1100,11 +1100,6 @@ while (ActiveTimerHeap.Num() > 0)
 }
 ```
 5 这个方法就是执行Timer的部分，总的来说就是获取堆顶的Timer，然后判断时间是否到期然后执行对应的Delegate，还需要判断Timer是否循环，如果循环就更新ExpireTime时间。
-
-
-
-
-
 # 8 TickableGameObject添加
 1 这个添加部分就先就是继承FTickableGameObject这个类，然后会在构造函数时添加
 ```cpp
