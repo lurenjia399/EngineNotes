@@ -1106,4 +1106,19 @@ while (ActiveTimerHeap.Num() > 0)
 
 
 # 8 TickableGameObject添加
-这个
+1 这个添加部分就先就是继承FTickableGameObject这个类，然后会在构造函数时添加：
+```cpp
+FTickableGameObject::FTickableGameObject()
+{
+	FTickableStatics& Statics = FTickableStatics::Get();
+
+	if (UObjectInitialized())
+	{
+		Statics.QueueTickableObjectForAdd(this);
+	}
+	else
+	{
+		AddTickableObject(Statics.TickableObjects, this);
+	}
+}
+```
