@@ -1122,3 +1122,4 @@ FTickableGameObject::FTickableGameObject()
 	}
 }
 ```
+2 首先获取个静态变量
