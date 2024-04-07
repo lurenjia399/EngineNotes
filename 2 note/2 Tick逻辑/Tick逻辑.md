@@ -1112,26 +1112,29 @@ struct FTickableStatics
 {
 	// TickableObjects互斥量
 	FCriticalSection TickableObjectsCritical;
-	// 保存TickableObject的数组，每个元素时简化版的
+	// 保存TickableObject的数组，每个元素时简化版的FTickableGameObject
 	TArray<FTickableObjectBase::FTickableObjectEntry> TickableObjects;
 	// NewTickableObjects的互斥量
 	FCriticalSection NewTickableObjectsCritical;
+	// 保存NewTickableObject的数组，每个元素是FTickableGameObject指针
 	TSet<FTickableGameObject*> NewTickableObjects;
 
 	bool bIsTickingObjects = false;
-
+	// 向NewTickableObjects数组中添加数据
 	void QueueTickableObjectForAdd(FTickableGameObject* InTickable)
 	{
+		// 给互斥量上锁，感觉上类似
+		// std::lock_guard<std::mutex> lk(NewTickableObjectsCritical)
 		FScopeLock NewTickableObjectsLock(&NewTickableObjectsCritical);
 		NewTickableObjects.Add(InTickable);
 	}
-
+	// 向NewTickableObjects数组中移除
 	void RemoveTickableObjectFromNewObjectsQueue(FTickableGameObject* InTickable)
 	{
 		FScopeLock NewTickableObjectsLock(&NewTickableObjectsCritical);
 		NewTickableObjects.Remove(InTickable);
 	}
-
+	// 获取单例
 	static FTickableStatics& Get()
 	{
 		static FTickableStatics Singleton;
@@ -1152,4 +1155,4 @@ FTickableGameObject::FTickableGameObject()
 	}
 }
 ```
-2 首先获取个静态变量，是个静态单例，充当个容器的作用，保存FTickableGameObject。然后添加到
+2 首先获取个静态变量，是个静态单例，充当个容器的作用，保存FTickableGameObject。然后通过这个UObject是否初始化来添加到不同的数组里面。
