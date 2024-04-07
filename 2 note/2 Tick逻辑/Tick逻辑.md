@@ -1106,8 +1106,38 @@ while (ActiveTimerHeap.Num() > 0)
 
 
 # 8 TickableGameObject添加
-1 这个添加部分就先就是继承FTickableGameObject这个类，然后会在构造函数时添加：
+1 这个添加部分就先就是继承FTickableGameObject这个类，然后会在构造函数时添加
 ```cpp
+struct FTickableStatics
+{
+	// TickableObjects互斥量
+	FCriticalSection TickableObjectsCritical;
+	// 保存TickableObject的数组，每个元素时简化版的
+	TArray<FTickableObjectBase::FTickableObjectEntry> TickableObjects;
+	// NewTickableObjects的互斥量
+	FCriticalSection NewTickableObjectsCritical;
+	TSet<FTickableGameObject*> NewTickableObjects;
+
+	bool bIsTickingObjects = false;
+
+	void QueueTickableObjectForAdd(FTickableGameObject* InTickable)
+	{
+		FScopeLock NewTickableObjectsLock(&NewTickableObjectsCritical);
+		NewTickableObjects.Add(InTickable);
+	}
+
+	void RemoveTickableObjectFromNewObjectsQueue(FTickableGameObject* InTickable)
+	{
+		FScopeLock NewTickableObjectsLock(&NewTickableObjectsCritical);
+		NewTickableObjects.Remove(InTickable);
+	}
+
+	static FTickableStatics& Get()
+	{
+		static FTickableStatics Singleton;
+		return Singleton;
+	}
+};
 FTickableGameObject::FTickableGameObject()
 {
 	FTickableStatics& Statics = FTickableStatics::Get();
@@ -1122,4 +1152,4 @@ FTickableGameObject::FTickableGameObject()
 	}
 }
 ```
-2 首先获取个静态变量
+2 首先获取个静态变量，是个静态单例，充当个容器的作用，保存FTickableGameObject。然后添加到
