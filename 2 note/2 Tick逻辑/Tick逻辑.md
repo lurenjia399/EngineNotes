@@ -1211,21 +1211,26 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 			if (FTickableGameObject* TickableObject = static_cast<FTickableGameObject*>(TickableEntry.TickableObject))
 			{
 				// If it is tickable and in this world
-				// 
+				// 条件判断
+				// Tick类型是总是Tick or IsTickable
+				// TickableGameObjectWorld的world是当前world
+				// TickableObject允许Tick
 				if (((TickableEntry.TickType == ETickableTickType::Always) || TickableObject->IsTickable()) 
 					&& (TickableObject->GetTickableGameObjectWorld() == World)
 					&& TickableObject->IsAllowedToTick())
 				{
 					const bool bIsGameWorld = InTickType == LEVELTICK_All || (World && World->IsGameWorld());
-					// If we are in editor and it is editor tickable, always tick
-					// If this is a game world then tick if we are not doing a time only (paused) update and we are not paused or the object is tickable when paused
+					// 一堆条件判断
 					if ((GIsEditor && TickableObject->IsTickableInEditor()) ||
 						(bIsGameWorld && ((!bIsPaused && TickType != LEVELTICK_TimeOnly) || (bIsPaused && TickableObject->IsTickableWhenPaused()))))
 					{
+						// 性能统计的？不知道干啥的
 						FScopeCycleCounter Context(TickableObject->GetStatId());
+						// 执行TickableObject的Tick方法
 						TickableObject->Tick(DeltaSeconds);
 
 						// In case it was removed during tick
+						// 如果在Tick过程中，被删掉了
 						if (TickableEntry.TickableObject == nullptr)
 						{
 							bNeedsCleanup = true;
@@ -1238,13 +1243,14 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 				bNeedsCleanup = true;
 			}
 		}
-
+		// 移除所有的TickableObject
 		if (bNeedsCleanup)
 		{
 			Statics.TickableObjects.RemoveAll([](const FTickableObjectEntry& Entry) { return Entry.TickableObject == nullptr; });
 		}
-
+		// 改变正在Tick的标志位
 		Statics.bIsTickingObjects = false;
 	}
 }
 ```
+2 逻辑很清晰简单，总的来说就是遍历TickableObjects这个数组，做一些
