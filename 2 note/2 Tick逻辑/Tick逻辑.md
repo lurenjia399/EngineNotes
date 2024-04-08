@@ -1185,6 +1185,7 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 	FScopeLock LockTickableObjects(&Statics.TickableObjectsCritical);
 
 	{
+		// 首先对NewTickableObjectsCritical上锁
 		FScopeLock NewTickableObjectsLock(&Statics.NewTickableObjectsCritical);
 		for (FTickableGameObject* NewTickableObject : Statics.NewTickableObjects)
 		{
