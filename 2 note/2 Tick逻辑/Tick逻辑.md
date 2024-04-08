@@ -1113,7 +1113,7 @@ struct FTickableStatics
 	FCriticalSection NewTickableObjectsCritical;
 	// 保存NewTickableObject的数组，每个元素是FTickableGameObject指针
 	TSet<FTickableGameObject*> NewTickableObjects;
-
+	// 标志位，标记这个TickGameObject是否正在Tick
 	bool bIsTickingObjects = false;
 	// 向NewTickableObjects数组中添加数据
 	void QueueTickableObjectForAdd(FTickableGameObject* InTickable)
@@ -1185,28 +1185,33 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 	FScopeLock LockTickableObjects(&Statics.TickableObjectsCritical);
 
 	{
-		// 首先对NewTickableObjectsCritical上锁
+		// 首先对NewTickableObjectsCritical上锁，防止被修改
 		FScopeLock NewTickableObjectsLock(&Statics.NewTickableObjectsCritical);
+		// 遍历NewTickableObjects数组，将里面的全都放到TickableObjects这个数组里面
 		for (FTickableGameObject* NewTickableObject : Statics.NewTickableObjects)
 		{
 			AddTickableObject(Statics.TickableObjects, NewTickableObject);
 		}
+		// 清空NewTickableObjects数组
 		Statics.NewTickableObjects.Empty();
-	}
+	}// 这行执行完后，解锁NewTickableObjectsCritical
 
+	// 判断Tick数据里是否为空
 	if (Statics.TickableObjects.Num() > 0)
 	{
 		check(!Statics.bIsTickingObjects);
+		// 修改标志位
 		Statics.bIsTickingObjects = true;
 
 		bool bNeedsCleanup = false;
 		const ELevelTick TickType = (ELevelTick)InTickType;
-
+		// 开始遍历数组
 		for (const FTickableObjectEntry& TickableEntry : Statics.TickableObjects)
 		{
 			if (FTickableGameObject* TickableObject = static_cast<FTickableGameObject*>(TickableEntry.TickableObject))
 			{
 				// If it is tickable and in this world
+				// 
 				if (((TickableEntry.TickType == ETickableTickType::Always) || TickableObject->IsTickable()) 
 					&& (TickableObject->GetTickableGameObjectWorld() == World)
 					&& TickableObject->IsAllowedToTick())
