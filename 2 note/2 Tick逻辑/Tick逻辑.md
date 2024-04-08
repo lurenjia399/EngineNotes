@@ -1151,3 +1151,94 @@ FTickableGameObject::FTickableGameObject()
 }
 ```
 2 首先获取个静态变量，是个静态单例，充当个容器的作用，保存FTickableGameObject。然后通过这个UObject是否初始化来添加到不同的数组里面。
+
+```cpp
+FTickableGameObject::~FTickableGameObject()
+{
+	FTickableStatics& Statics = FTickableStatics::Get();	
+	Statics.RemoveTickableObjectFromNewObjectsQueue(this);	
+	FScopeLock LockTickableObjects(&Statics.TickableObjectsCritical);
+	RemoveTickableObject(Statics.TickableObjects, this, Statics.bIsTickingObjects);
+}
+```
+3 他还有个虚构函数，就是简单的从static数组中移除先前添加进去的GameObject。
+# 9 TickableGameObject执行
+
+```cpp
+{
+	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TickObjects"), 5);
+	FTickableGameObject::TickObjects(this, TickType, bIsPaused, DeltaSeconds);
+}
+```
+1 具体执行tick是在RunTickGroup和TimerManager的Tick之后执行。
+```cpp
+void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, const bool bIsPaused, const float DeltaSeconds)
+{
+	SCOPE_CYCLE_COUNTER(STAT_TickableGameObjectsTime);
+	CSV_SCOPED_TIMING_STAT_EXCLUSIVE(Tickables);
+
+	FTickableStatics& Statics = FTickableStatics::Get();
+
+	check(IsInGameThread());
+
+	// It's a long lock but it's ok, the only thing we can block here is the GC worker thread that destroys UObjects
+	FScopeLock LockTickableObjects(&Statics.TickableObjectsCritical);
+
+	{
+		FScopeLock NewTickableObjectsLock(&Statics.NewTickableObjectsCritical);
+		for (FTickableGameObject* NewTickableObject : Statics.NewTickableObjects)
+		{
+			AddTickableObject(Statics.TickableObjects, NewTickableObject);
+		}
+		Statics.NewTickableObjects.Empty();
+	}
+
+	if (Statics.TickableObjects.Num() > 0)
+	{
+		check(!Statics.bIsTickingObjects);
+		Statics.bIsTickingObjects = true;
+
+		bool bNeedsCleanup = false;
+		const ELevelTick TickType = (ELevelTick)InTickType;
+
+		for (const FTickableObjectEntry& TickableEntry : Statics.TickableObjects)
+		{
+			if (FTickableGameObject* TickableObject = static_cast<FTickableGameObject*>(TickableEntry.TickableObject))
+			{
+				// If it is tickable and in this world
+				if (((TickableEntry.TickType == ETickableTickType::Always) || TickableObject->IsTickable()) 
+					&& (TickableObject->GetTickableGameObjectWorld() == World)
+					&& TickableObject->IsAllowedToTick())
+				{
+					const bool bIsGameWorld = InTickType == LEVELTICK_All || (World && World->IsGameWorld());
+					// If we are in editor and it is editor tickable, always tick
+					// If this is a game world then tick if we are not doing a time only (paused) update and we are not paused or the object is tickable when paused
+					if ((GIsEditor && TickableObject->IsTickableInEditor()) ||
+						(bIsGameWorld && ((!bIsPaused && TickType != LEVELTICK_TimeOnly) || (bIsPaused && TickableObject->IsTickableWhenPaused()))))
+					{
+						FScopeCycleCounter Context(TickableObject->GetStatId());
+						TickableObject->Tick(DeltaSeconds);
+
+						// In case it was removed during tick
+						if (TickableEntry.TickableObject == nullptr)
+						{
+							bNeedsCleanup = true;
+						}
+					}
+				}
+			}
+			else
+			{
+				bNeedsCleanup = true;
+			}
+		}
+
+		if (bNeedsCleanup)
+		{
+			Statics.TickableObjects.RemoveAll([](const FTickableObjectEntry& Entry) { return Entry.TickableObject == nullptr; });
+		}
+
+		Statics.bIsTickingObjects = false;
+	}
+}
+```
