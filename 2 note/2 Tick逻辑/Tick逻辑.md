@@ -1253,4 +1253,4 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 	}
 }
 ```
-2 逻辑很清晰简单，总的来说就是遍历TickableObjects这个数组，做一些
+2 逻辑很清晰简单，总的来说就是遍历TickableObjects这个数组，做一些能否Tick的条件判断，如果能Tick就执行TickableObject的Tick方法了。

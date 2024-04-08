@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
+                "file": "1 索引/索引.md",
                 "mode": "source",
                 "source": false
               }
@@ -57,7 +57,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
+                "file": "1 索引/索引.md",
                 "mode": "preview",
                 "source": false
               }
@@ -130,7 +130,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
+                "file": "1 索引/索引.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -147,7 +147,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md",
+                "file": "1 索引/索引.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -170,7 +170,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/2 Tick逻辑/Tick逻辑.md"
+                "file": "1 索引/索引.md"
               }
             }
           }
@@ -193,8 +193,8 @@
   },
   "active": "369e27d3ae505de4",
   "lastOpenFiles": [
-    "1 索引/索引.md",
     "2 note/2 Tick逻辑/Tick逻辑.md",
+    "1 索引/索引.md",
     "2 note/1 特效系统/特效系统Cascade.md",
     "2 note/2 Tick逻辑/Image/tick执行.pdf",
     "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
