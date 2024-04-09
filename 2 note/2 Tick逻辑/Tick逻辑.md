@@ -228,7 +228,7 @@ int32 WINAPI WinMain(...)
 ->int32 GuardedMain(...)
 	->EngineTick(void)//Launch.cpp文件中
 		->FEngineLoop::Tick()
-			->UEditorEngine::Tick(...)//
+			->UGameEngine::Tick(...)//
 				->UWorld::Tick(...)
 ```
 2 UWorld::Tick在执行前会先收集需要Tick的TickFunction，也就是StartFrame方法
