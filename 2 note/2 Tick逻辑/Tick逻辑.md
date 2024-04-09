@@ -1163,6 +1163,7 @@ FTickableGameObject::~FTickableGameObject()
 ```
 3 他还有个虚构函数，就是简单的从static数组中移除先前添加进去的GameObject。
 # 9 TickableGameObject执行
+1 EditorEngine和GameEngine执行在不同的地方，如果是在EditorEngine是
 
 ```cpp
 {
