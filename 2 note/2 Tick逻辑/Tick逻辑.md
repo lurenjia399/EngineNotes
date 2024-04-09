@@ -1180,14 +1180,14 @@ if (bAWorldTicked)
 	FTickableGameObject::TickObjects(this, TickType, bIsPaused, DeltaSeconds);
 }
 ```
-1 有三处执行的地方，都一一列举出来了，
+1 有三处执行的地方，都一一列举出来了，需要注意的可能就是wold为nullptr的情况，分成了Editor和Game两个执行的地方。
 ```cpp
 {
 	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TickObjects"), 5);
 	FTickableGameObject::TickObjects(this, TickType, bIsPaused, DeltaSeconds);
 }
 ```
-1 具体执行tick是在RunTickGroup和TimerManager的Tick之后执行。
+2 具体执行tick是在RunTickGroup和TimerManager的Tick之后执行。
 ```cpp
 void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, const bool bIsPaused, const float DeltaSeconds)
 {
@@ -1270,4 +1270,4 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 	}
 }
 ```
-2 逻辑很清晰简单，总的来说就是遍历TickableObjects这个数组，做一些能否Tick的条件判断，如果能Tick就执行TickableObject的Tick方法了。
+3 逻辑很清晰简单，总的来说就是遍历TickableObjects这个数组，做一些能否Tick的条件判断，如果能Tick就执行TickableObject的Tick方法了。
