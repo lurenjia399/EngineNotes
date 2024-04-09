@@ -1163,8 +1163,24 @@ FTickableGameObject::~FTickableGameObject()
 ```
 3 他还有个虚构函数，就是简单的从static数组中移除先前添加进去的GameObject。
 # 9 TickableGameObject执行
-1 EditorEngine和GameEngine执行在不同的地方，如果是在EditorEngine是
-
+```cpp
+// EditotEngine中执行
+if (bAWorldTicked)
+{
+	FTickableGameObject::TickObjects(nullptr, TickType, false, DeltaSeconds);
+}
+// GameEngine中执行
+{  
+   SCOPE_TIME_GUARD(TEXT("UGameEngine::Tick - TickObjects"));  
+   FTickableGameObject::TickObjects(nullptr, LEVELTICK_All, false, DeltaSeconds);  
+}
+// World::Tick中RunTickGroup之后执行
+{
+	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TickObjects"), 5);
+	FTickableGameObject::TickObjects(this, TickType, bIsPaused, DeltaSeconds);
+}
+```
+1 有三处执行的地方，都一一列举出来了，
 ```cpp
 {
 	SCOPE_TIME_GUARD_MS(TEXT("UWorld::Tick - TickObjects"), 5);
