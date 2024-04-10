@@ -1,4 +1,5 @@
 # 1 TickFunction注册
+贴个文章，写的很多很详细 https://www.cnblogs.com/kekec/p/14781454.html
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
 1 从AActor::Beginplay开始注册的
