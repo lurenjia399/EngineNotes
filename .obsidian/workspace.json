@@ -101,7 +101,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 229.5
   },
   "right": {
     "id": "b75e1d3959dca6c2",
@@ -180,9 +180,12 @@
   },
   "active": "eee9679542304eb5",
   "lastOpenFiles": [
+    "2 note/FLatentActionManager/FLatentActionManager.md",
+    "2 note/Actor逻辑/Actor.md",
+    "2 note/FLatentActionManager/Image",
+    "2 note/FLatentActionManager",
     "2 note/Actor逻辑/Image",
     "1 索引/索引.md",
-    "2 note/Actor逻辑/Actor.md",
     "2 note/Tick逻辑/Image/tick执行.pdf",
     "2 note/Tick逻辑/Image/AActor或Component注册流程图.png",
     "2 note/Tick逻辑/Image/SequenceDiagram1.jpg",
@@ -201,9 +204,6 @@
     "2024-03-23.md",
     "2 note/1 特效系统/1 索引.md",
     "2 note/2 Tick逻辑/Image/SequenceDiagram1.png",
-    "2 note/2 Tick逻辑/Image",
-    "2 note/2 Tick逻辑/新建文件夹",
-    "2 note/2 Tick逻辑/TickSystem.mdj",
     "Image/Class.png",
     "2 note/特效系统/Image/Tick.jpg",
     "2 note/特效系统/Image/Init.jpg",
