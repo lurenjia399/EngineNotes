@@ -1272,3 +1272,7 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 ```
 3 逻辑很清晰简单，总的来说就是遍历TickableObjects这个数组，做一些能否Tick的条件判断，如果能Tick就执行TickableObject的Tick方法了。
 # 10 TickableGameObject使用
+1 游戏中技能cd就是通过TickableGameObject这个实现的
+2 我们创建自己的类FLuaCoolDownUserObject 继承 FTickableGameObject，然后重写Tick方法
+3 FLuaCoolDownUserObject还可以继承FUserObject，FUserObject这个是UImage中的内部类
+4 在Tick中
