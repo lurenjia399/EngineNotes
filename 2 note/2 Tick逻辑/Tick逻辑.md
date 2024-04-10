@@ -1275,4 +1275,5 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 1 游戏中技能cd就是通过TickableGameObject这个实现的
 2 我们创建自己的类FLuaCoolDownUserObject 继承 FTickableGameObject，然后重写Tick方法
 3 FLuaCoolDownUserObject还可以继承FUserObject，FUserObject这个是UImage中的内部类
-4 在Tick中
+4 在Tick中通过id获取CoolDownItem这个类，然后通过CoolDownItem里面的数据更新UImage
+5 CoolDownItem这个里面的数据是通过监听OnWorldTickStart这个代理来更新的，也就是World开始Tick的时候就会更新cd的时间数据，然后再通过TickableGameObject的Tick来更新cd的图标
