@@ -56,4 +56,5 @@ void FLatentActionManager::AddNewAction(UObject* InActionObject, int32 UUID, FPe
 }
 ```
 3 这个方法就是添加新的Action，很简单，就是添加到ObjectToActionListMap这个map数组里面，然后还会发个广播。
+# 2 FLatentActionManager的Tick
 
