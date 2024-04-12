@@ -1,7 +1,7 @@
 https://zhuanlan.zhihu.com/p/675932469
 先给个文章，后面看这部分，先记录下
 
-# 1 FDelayAction
+# 1 FDelayAction的添加
 我们先从简单的开始，拿蓝图中Delay接口举例。
 ```cpp
 void UKismetSystemLibrary::Delay(const UObject* WorldContextObject, float Duration, FLatentActionInfo LatentInfo )
@@ -55,4 +55,4 @@ void FLatentActionManager::AddNewAction(UObject* InActionObject, int32 UUID, FPe
 	LatentActionsChangedDelegate.Broadcast(InActionObject, ELatentActionChangeType::ActionsAdded);
 }
 ```
-3 这个方法就是添加新的Action，
+3 这个方法就是添加新的Action，很简单，就是添加到ObjectToActionListMap这个map数组里面，然后还会发个广播。
