@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/Actor逻辑/Actor.md",
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
                 "mode": "source",
                 "source": false
               }
@@ -44,7 +44,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/Actor逻辑/Actor.md",
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
                 "mode": "preview",
                 "source": false
               }
@@ -117,7 +117,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/Actor逻辑/Actor.md",
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -134,7 +134,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/Actor逻辑/Actor.md",
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -157,7 +157,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/Actor逻辑/Actor.md"
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md"
               }
             }
           }
@@ -180,9 +180,9 @@
   },
   "active": "eee9679542304eb5",
   "lastOpenFiles": [
+    "2 note/Actor逻辑/Actor.md",
     "2 note/Actor逻辑/Actor.mdj",
     "2 note/FLatentActionManager/FLatentActionManager.md",
-    "2 note/Actor逻辑/Actor.md",
     "2 note/FLatentActionManager/Image",
     "2 note/FLatentActionManager",
     "2 note/Actor逻辑/Image",
@@ -198,7 +198,6 @@
     "未命名",
     "2 note/2 Tick逻辑/Tick逻辑.md",
     "2 note/特效系统/特效系统Cascade.md",
-    "2 note/2 Tick逻辑/Image/tick执行.pdf",
     "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
     "2 note/2 Tick逻辑/Image/AActor或Component注册流程图.png",
     "未命名.canvas",
