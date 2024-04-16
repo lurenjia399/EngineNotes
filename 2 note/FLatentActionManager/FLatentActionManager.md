@@ -68,3 +68,72 @@ if( !bIsPaused )
 }
 ```
 2 就是拿到当前的latentActionManager然后调用ProcessLatentActions方法。
+```cpp
+void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTime)
+{
+	if (InObject && !InObject->GetClass()->HasAnyClassFlags(CLASS_CompiledFromBlueprint))
+	{
+		return;
+	}
+
+#if LATENT_ACTION_PROFILING_ENABLED
+	GLatentActionStats.Reset();
+	const double StartTime = FPlatformTime::Seconds();
+#endif // LATENT_ACTION_PROFILING_ENABLED
+
+	if (!ActionsToRemoveMap.IsEmpty())
+	{
+		// 这个部分就是看是否可以出的Action还有
+	}
+
+	if (InObject)
+	{
+		// 这部分就是看是否传进来了Action，world::tick里面是没有的
+	}
+	else if (!ObjectToActionListMap.IsEmpty())
+	{
+		SCOPE_CYCLE_COUNTER(STAT_TickLatentActions);
+		for (FObjectToActionListMap::TIterator ObjIt(ObjectToActionListMap); ObjIt; ++ObjIt)
+		{	
+			TWeakObjectPtr<UObject> WeakPtr = ObjIt.Key();
+			UObject* Object = WeakPtr.Get();
+			FObjectActions* ObjectActions = ObjIt.Value().Get();
+			check(ObjectActions);
+			FActionList& ObjectActionList = ObjectActions->ActionList;
+
+			if (Object)
+			{
+				// Tick all outstanding actions for this object
+				if (!ObjectActions->bProcessedThisFrame && ObjectActionList.Num() > 0)
+				{
+#if LATENT_ACTION_PROFILING_ENABLED
+					FScopedLatentActionTimer Timer(Object);
+#endif // LATENT_ACTION_PROFILING_ENABLED
+					TickLatentActionForObject(DeltaTime, ObjectActionList, Object);
+					ensure(ObjectActions == ObjIt.Value().Get());
+					ObjectActions->bProcessedThisFrame = true;
+				}
+			}
+			else
+			{
+				// Terminate all outstanding actions for this object, which has been GCed
+				for (TMultiMap<int32, FPendingLatentAction*>::TConstIterator It(ObjectActionList); It; ++It)
+				{
+					if (FPendingLatentAction* Action = It.Value())
+					{
+						Action->NotifyObjectDestroyed();
+						delete Action;
+					}
+				}
+				ObjectActionList.Reset();
+			}
+
+			// Remove the entry if there are no pending actions remaining for this object (or if the object was NULLed and cleaned up)
+			if (ObjectActionList.Num() == 0)
+			{
+				ObjIt.RemoveCurrent();
+			}
+		}
+	}
+}
+```
