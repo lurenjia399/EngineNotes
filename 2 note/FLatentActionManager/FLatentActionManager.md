@@ -146,3 +146,66 @@ void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTi
 	}
 }
 ```
+3 Tick的流程，遍历ObjectToActionListMap数组，找到具体的ActionList（也就是个map，key是LatentAction的唯一id，value是LatentAction）和Object（调用回调的UObject）。然后调用TickLatentActionForObject方法。
+```cpp
+void FLatentActionManager::TickLatentActionForObject(float DeltaTime, FActionList& ObjectActionList, UObject* InObject)
+{
+	typedef TPair<int32, FPendingLatentAction*> FActionListPair;
+	TArray<FActionListPair, TInlineAllocator<4>> ItemsToRemove;
+	
+	FLatentResponse Response(DeltaTime);
+	for (TMultiMap<int32, FPendingLatentAction*>::TConstIterator It(ObjectActionList); It; ++It)
+	{
+		FPendingLatentAction* Action = It.Value();
+
+		Response.bRemoveAction = false;
+
+		Action->UpdateOperation(Response);
+
+		if (Response.bRemoveAction)
+		{
+			ItemsToRemove.Emplace(It.Key(), Action);
+		}
+	}
+
+	// Remove any items that were deleted
+	for (const FActionListPair& ItemPair : ItemsToRemove)
+	{
+		const int32 ItemIndex = ItemPair.Key;
+		FPendingLatentAction* DyingAction = ItemPair.Value;
+		ObjectActionList.Remove(ItemIndex, DyingAction);
+		delete DyingAction;
+	}
+
+	if (ItemsToRemove.Num() > 0)
+	{
+		LatentActionsChangedDelegate.Broadcast(InObject, ELatentActionChangeType::ActionsRemoved);
+	}
+
+	// Trigger any pending execution links
+	for (FLatentResponse::FExecutionInfo& LinkInfo : Response.LinksToExecute)
+	{
+		if (LinkInfo.LinkID != INDEX_NONE)
+		{
+			if (UObject* CallbackTarget = LinkInfo.CallbackTarget.Get())
+			{
+				check(CallbackTarget == InObject);
+
+				if (UFunction* ExecutionFunction = CallbackTarget->FindFunction(LinkInfo.ExecutionFunction))
+				{
+					CallbackTarget->ProcessEvent(ExecutionFunction, &(LinkInfo.LinkID));
+				}
+				else
+				{
+					UE_LOG(LogScript, Warning, TEXT("FLatentActionManager::ProcessLatentActions: Could not find latent action resume point named '%s' on '%s' called by '%s'"),
+						*LinkInfo.ExecutionFunction.ToString(), *(CallbackTarget->GetPathName()), *(InObject->GetPathName()));
+				}
+			}
+			else
+			{
+				UE_LOG(LogScript, Warning, TEXT("FLatentActionManager::ProcessLatentActions: CallbackTarget is None."));
+			}
+		}
+	}
+}
+```
