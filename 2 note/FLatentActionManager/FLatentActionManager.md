@@ -93,14 +93,18 @@ void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTi
 	else if (!ObjectToActionListMap.IsEmpty())
 	{
 		SCOPE_CYCLE_COUNTER(STAT_TickLatentActions);
+		// 遍历这个ObjectToActionListMap数组，这个数组就是添加进去的Action
 		for (FObjectToActionListMap::TIterator ObjIt(ObjectToActionListMap); ObjIt; ++ObjIt)
 		{	
+			// 拥有这个Action的UObject的Weak_ptr
 			TWeakObjectPtr<UObject> WeakPtr = ObjIt.Key();
+			// 通过weak_ptr获取Uobject
 			UObject* Object = WeakPtr.Get();
+			// 拿到Action
 			FObjectActions* ObjectActions = ObjIt.Value().Get();
 			check(ObjectActions);
+			// 拿到ActionList,也就是map，key是唯一id，value是具体的LatentAction
 			FActionList& ObjectActionList = ObjectActions->ActionList;
-
 			if (Object)
 			{
 				// Tick all outstanding actions for this object
