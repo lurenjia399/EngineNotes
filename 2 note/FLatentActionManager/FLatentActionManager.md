@@ -124,6 +124,7 @@ void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTi
 			else
 			{
 				// Terminate all outstanding actions for this object, which has been GCed
+				// 看上去应该是拥有Action的Object销毁了，但Action还没销毁，就发个销毁通知
 				for (TMultiMap<int32, FPendingLatentAction*>::TConstIterator It(ObjectActionList); It; ++It)
 				{
 					if (FPendingLatentAction* Action = It.Value())
@@ -136,6 +137,7 @@ void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTi
 			}
 
 			// Remove the entry if there are no pending actions remaining for this object (or if the object was NULLed and cleaned up)
+			// 如果当前没有ActionList，就移除
 			if (ObjectActionList.Num() == 0)
 			{
 				ObjIt.RemoveCurrent();
