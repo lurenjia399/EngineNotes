@@ -152,8 +152,9 @@ void FLatentActionManager::TickLatentActionForObject(float DeltaTime, FActionLis
 {
 	typedef TPair<int32, FPendingLatentAction*> FActionListPair;
 	TArray<FActionListPair, TInlineAllocator<4>> ItemsToRemove;
-	
+	// 创建这个Response
 	FLatentResponse Response(DeltaTime);
+	// 遍历我们的ActionList，拿到具体了LatentAction，执行其UpdateOperation方法
 	for (TMultiMap<int32, FPendingLatentAction*>::TConstIterator It(ObjectActionList); It; ++It)
 	{
 		FPendingLatentAction* Action = It.Value();
@@ -169,6 +170,7 @@ void FLatentActionManager::TickLatentActionForObject(float DeltaTime, FActionLis
 	}
 
 	// Remove any items that were deleted
+	// 遍历移除数组，将里面的东西从ActionList中移除
 	for (const FActionListPair& ItemPair : ItemsToRemove)
 	{
 		const int32 ItemIndex = ItemPair.Key;
@@ -177,12 +179,14 @@ void FLatentActionManager::TickLatentActionForObject(float DeltaTime, FActionLis
 		delete DyingAction;
 	}
 
+	// 如果移除数组中有东西的话，就向回调UObject广播个Delegate
 	if (ItemsToRemove.Num() > 0)
 	{
 		LatentActionsChangedDelegate.Broadcast(InObject, ELatentActionChangeType::ActionsRemoved);
 	}
 
 	// Trigger any pending execution links
+	// 下边这个是触发执行回调的逻辑
 	for (FLatentResponse::FExecutionInfo& LinkInfo : Response.LinksToExecute)
 	{
 		if (LinkInfo.LinkID != INDEX_NONE)
