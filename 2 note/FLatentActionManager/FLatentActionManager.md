@@ -98,9 +98,9 @@ void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTi
 		{	
 			// 拥有这个Action的UObject的Weak_ptr
 			TWeakObjectPtr<UObject> WeakPtr = ObjIt.Key();
-			// 通过weak_ptr获取Uobject
+			// 通过weak_ptr获取Uobject,这个就是需要调用callback的UObject
 			UObject* Object = WeakPtr.Get();
-			// 拿到Action
+			// 拿到FObjectActions,里面是ActionList和标志位bProcessedThisFrame
 			FObjectActions* ObjectActions = ObjIt.Value().Get();
 			check(ObjectActions);
 			// 拿到ActionList,也就是map，key是唯一id，value是具体的LatentAction
@@ -108,13 +108,16 @@ void FLatentActionManager::ProcessLatentActions(UObject* InObject, float DeltaTi
 			if (Object)
 			{
 				// Tick all outstanding actions for this object
+				// 判断标志位 && ActionList里面有具体的LatentAction
 				if (!ObjectActions->bProcessedThisFrame && ObjectActionList.Num() > 0)
 				{
 #if LATENT_ACTION_PROFILING_ENABLED
 					FScopedLatentActionTimer Timer(Object);
 #endif // LATENT_ACTION_PROFILING_ENABLED
+					// 执行具体的Tick方法
 					TickLatentActionForObject(DeltaTime, ObjectActionList, Object);
 					ensure(ObjectActions == ObjIt.Value().Get());
+					// Tick完了之后改变标志位
 					ObjectActions->bProcessedThisFrame = true;
 				}
 			}
