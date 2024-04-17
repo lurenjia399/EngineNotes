@@ -57,7 +57,7 @@ void FLatentActionManager::AddNewAction(UObject* InActionObject, int32 UUID, FPe
 ```
 3 这个方法就是添加新的Action，很简单，就是添加到ObjectToActionListMap这个map数组里面，然后还会发个广播。
 # 2 FLatentActionManager的Tick
-
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202404171437456.png)
 1 FLatentActionManager的Tick也是在World::Tick的里面，是在RunTickGroup之后，在TimerManager和TickableGameObject之前。
 ```cpp
 if( !bIsPaused )
