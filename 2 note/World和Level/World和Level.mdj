@@ -618,6 +618,269 @@
 									"activation": {
 										"$ref": "AAAAAAGO6tx/3hpbop0="
 									}
+								},
+								{
+									"_type": "UMLSeqLifelineView",
+									"_id": "AAAAAAGO6t8uUxpwuME=",
+									"_parent": {
+										"$ref": "AAAAAAGO6tqnOhn2DBE="
+									},
+									"model": {
+										"$ref": "AAAAAAGO6t8uUxpv4SM="
+									},
+									"subViews": [
+										{
+											"_type": "UMLNameCompartmentView",
+											"_id": "AAAAAAGO6t8uUxpxHho=",
+											"_parent": {
+												"$ref": "AAAAAAGO6t8uUxpwuME="
+											},
+											"model": {
+												"$ref": "AAAAAAGO6t8uUxpv4SM="
+											},
+											"subViews": [
+												{
+													"_type": "LabelView",
+													"_id": "AAAAAAGO6t8uUxpy8UA=",
+													"_parent": {
+														"$ref": "AAAAAAGO6t8uUxpxHho="
+													},
+													"visible": false,
+													"lineColor": "#457b9d",
+													"fillColor": "#a8d9db",
+													"fontColor": "#4a3575",
+													"font": "Arial;13;0",
+													"left": -32,
+													"height": 13
+												},
+												{
+													"_type": "LabelView",
+													"_id": "AAAAAAGO6t8uUxpzF18=",
+													"_parent": {
+														"$ref": "AAAAAAGO6t8uUxpxHho="
+													},
+													"lineColor": "#457b9d",
+													"fillColor": "#a8d9db",
+													"fontColor": "#4a3575",
+													"font": "Arial;13;1",
+													"left": 269,
+													"top": 47,
+													"width": 93.0400390625,
+													"height": 13,
+													"text": "FEngineLoop"
+												},
+												{
+													"_type": "LabelView",
+													"_id": "AAAAAAGO6t8uUxp0G/8=",
+													"_parent": {
+														"$ref": "AAAAAAGO6t8uUxpxHho="
+													},
+													"visible": false,
+													"lineColor": "#457b9d",
+													"fillColor": "#a8d9db",
+													"fontColor": "#4a3575",
+													"font": "Arial;13;0",
+													"left": -32,
+													"width": 106.20263671875,
+													"height": 13,
+													"text": "(from Interaction1)"
+												},
+												{
+													"_type": "LabelView",
+													"_id": "AAAAAAGO6t8uUxp1BKY=",
+													"_parent": {
+														"$ref": "AAAAAAGO6t8uUxpxHho="
+													},
+													"visible": false,
+													"lineColor": "#457b9d",
+													"fillColor": "#a8d9db",
+													"fontColor": "#4a3575",
+													"font": "Arial;13;0",
+													"left": -32,
+													"height": 13,
+													"horizontalAlignment": 1
+												}
+											],
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 264,
+											"top": 40,
+											"width": 103.0400390625,
+											"height": 40,
+											"stereotypeLabel": {
+												"$ref": "AAAAAAGO6t8uUxpy8UA="
+											},
+											"nameLabel": {
+												"$ref": "AAAAAAGO6t8uUxpzF18="
+											},
+											"namespaceLabel": {
+												"$ref": "AAAAAAGO6t8uUxp0G/8="
+											},
+											"propertyLabel": {
+												"$ref": "AAAAAAGO6t8uUxp1BKY="
+											}
+										},
+										{
+											"_type": "UMLLinePartView",
+											"_id": "AAAAAAGO6t8uUxp2RdA=",
+											"_parent": {
+												"$ref": "AAAAAAGO6t8uUxpwuME="
+											},
+											"model": {
+												"$ref": "AAAAAAGO6t8uUxpv4SM="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 316,
+											"top": 80,
+											"width": 1,
+											"height": 361
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 264,
+									"top": 40,
+									"width": 103.0400390625,
+									"height": 401,
+									"nameCompartment": {
+										"$ref": "AAAAAAGO6t8uUxpxHho="
+									},
+									"linePart": {
+										"$ref": "AAAAAAGO6t8uUxp2RdA="
+									}
+								},
+								{
+									"_type": "UMLSeqMessageView",
+									"_id": "AAAAAAGO6t9V7hqRdRI=",
+									"_parent": {
+										"$ref": "AAAAAAGO6tqnOhn2DBE="
+									},
+									"model": {
+										"$ref": "AAAAAAGO6t9V7hqQhFI="
+									},
+									"subViews": [
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGO6t9V7hqS82Q=",
+											"_parent": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"model": {
+												"$ref": "AAAAAAGO6t9V7hqQhFI="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 187,
+											"top": 288,
+											"width": 78.04443359375,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"edgePosition": 1,
+											"text": "4 : Init"
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGO6t9V7hqT9bk=",
+											"_parent": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"model": {
+												"$ref": "AAAAAAGO6t9V7hqQhFI="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 226,
+											"top": 273,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 25,
+											"hostEdge": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGO6t9V7hqUS+8=",
+											"_parent": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"model": {
+												"$ref": "AAAAAAGO6t9V7hqQhFI="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 226,
+											"top": 308,
+											"height": 13,
+											"alpha": -1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "UMLActivationView",
+											"_id": "AAAAAAGO6t9V7hqVV4U=",
+											"_parent": {
+												"$ref": "AAAAAAGO6t9V7hqRdRI="
+											},
+											"model": {
+												"$ref": "AAAAAAGO6t9V7hqQhFI="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 309,
+											"top": 304,
+											"width": 14,
+											"height": 29
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"head": {
+										"$ref": "AAAAAAGO6t8uUxp2RdA="
+									},
+									"tail": {
+										"$ref": "AAAAAAGO6trqaBoMrnw="
+									},
+									"points": "143:304;309:304",
+									"nameLabel": {
+										"$ref": "AAAAAAGO6t9V7hqS82Q="
+									},
+									"stereotypeLabel": {
+										"$ref": "AAAAAAGO6t9V7hqT9bk="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAGO6t9V7hqUS+8="
+									},
+									"activation": {
+										"$ref": "AAAAAAGO6t9V7hqVV4U="
+									}
 								}
 							]
 						}
@@ -664,6 +927,21 @@
 							"target": {
 								"$ref": "AAAAAAGO6trqZxoFs1E="
 							}
+						},
+						{
+							"_type": "UMLMessage",
+							"_id": "AAAAAAGO6t9V7hqQhFI=",
+							"_parent": {
+								"$ref": "AAAAAAGO6tqnOhn1l2o="
+							},
+							"name": "Init",
+							"documentation": "1 这个方法里会根据判断创建出对应的Engine，有EditorEngine和GameEngine的区别",
+							"source": {
+								"$ref": "AAAAAAGO6trqZxoFs1E="
+							},
+							"target": {
+								"$ref": "AAAAAAGO6t8uUxpv4SM="
+							}
 						}
 					],
 					"participants": [
@@ -676,6 +954,18 @@
 							"name": "LaunchWindows.cpp",
 							"represent": {
 								"$ref": "AAAAAAGO6trqZxoEsRw="
+							},
+							"isMultiInstance": false
+						},
+						{
+							"_type": "UMLLifeline",
+							"_id": "AAAAAAGO6t8uUxpv4SM=",
+							"_parent": {
+								"$ref": "AAAAAAGO6tqnOhn1l2o="
+							},
+							"name": "FEngineLoop",
+							"represent": {
+								"$ref": "AAAAAAGO6t8uUxpuvvs="
 							},
 							"isMultiInstance": false
 						}
@@ -691,6 +981,14 @@
 					},
 					"name": "Role1",
 					"type": ""
+				},
+				{
+					"_type": "UMLAttribute",
+					"_id": "AAAAAAGO6t8uUxpuvvs=",
+					"_parent": {
+						"$ref": "AAAAAAGO6tqnOhn0gG8="
+					},
+					"name": "Role2"
 				}
 			]
 		}
