@@ -14,7 +14,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
                 "mode": "source",
                 "source": false
               }
@@ -46,8 +46,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
-                "mode": "preview",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
+                "mode": "source",
                 "source": false
               }
             },
@@ -119,7 +119,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -136,7 +136,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -159,7 +159,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/World和Level/World和Level.md"
+                "file": "2 note/Tick逻辑/Tick逻辑.md"
               }
             }
           }
@@ -180,14 +180,15 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0e5ed17f692dddcb",
+  "active": "eee9679542304eb5",
   "lastOpenFiles": [
-    "2 note/World和Level/Image",
+    "2 note/Tick逻辑/Image/tick执行.pdf",
     "2 note/Tick逻辑/Tick逻辑.md",
+    "1 索引/索引.md",
     "2 note/World和Level/World和Level.md",
+    "2 note/World和Level/Image",
     "2 note/World和Level",
     "未命名",
-    "1 索引/索引.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
     "2 note/FLatentActionManager/LatentActionManager.mdj",
     "2 note/Actor逻辑/Actor.md",
@@ -195,11 +196,9 @@
     "2 note/FLatentActionManager/Image",
     "2 note/FLatentActionManager",
     "2 note/Actor逻辑/Image",
-    "2 note/Tick逻辑/Image/tick执行.pdf",
     "2 note/Tick逻辑/Image/AActor或Component注册流程图.png",
     "2 note/Tick逻辑/Image/SequenceDiagram1.jpg",
     "2 note/Tick逻辑/TickSystem.mdj",
-    "2 note/Tick逻辑/Image",
     "2 note/2 Tick逻辑/Tick逻辑.md",
     "2 note/特效系统/特效系统Cascade.md",
     "2 note/2 Tick逻辑/Image/SequenceDiagram1.jpg",
