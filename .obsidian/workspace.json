@@ -4,54 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "a3fb596c69b2275f",
+        "id": "19054910895cd298",
         "type": "tabs",
-        "dimension": 50.72904009720535,
         "children": [
           {
-            "id": "eee9679542304eb5",
+            "id": "98709a62aa75e15d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
-                "mode": "source",
-                "source": false
-              }
-            },
-            "group": "66ff0f162b30b85a"
-          },
-          {
-            "id": "369e27d3ae505de4",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "1 索引/索引.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               }
             }
-          }
-        ]
-      },
-      {
-        "id": "dbf37a01f95817d5",
-        "type": "tabs",
-        "dimension": 49.27095990279465,
-        "children": [
-          {
-            "id": "5858b70eda96d851",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/World和Level/World和Level.md",
-                "mode": "source",
-                "source": false
-              }
-            },
-            "group": "66ff0f162b30b85a"
           }
         ]
       }
@@ -119,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -136,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -159,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/World和Level/World和Level.md"
+                "file": "README.md"
               }
             }
           }
@@ -180,16 +146,18 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "eee9679542304eb5",
+  "active": "0e5ed17f692dddcb",
   "lastOpenFiles": [
+    "README.md",
+    "未命名",
+    "2 note/World和Level/World和Level.md",
+    "2 note/World和Level/Image/README.md",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/World和Level/World和Level.mdj",
     "2 note/Tick逻辑/Image/tick执行.pdf",
     "1 索引/索引.md",
-    "2 note/World和Level/World和Level.md",
     "2 note/World和Level/Image",
     "2 note/World和Level",
-    "未命名",
     "2 note/FLatentActionManager/FLatentActionManager.md",
     "2 note/FLatentActionManager/LatentActionManager.mdj",
     "2 note/Actor逻辑/Actor.md",

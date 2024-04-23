@@ -1,0 +1,10 @@
+# GameEngine
+
+directx12和ue学习
+
+这边就展示图片，加载偏慢，不定时更新，不及时更新
+
+基础光照模型： 
+![Uploading file...0td4u]()
+
+! 贴图 ![贴图](https://user-images.githubusercontent.com/62169763/175771694-0483f5ac-b08a-47ad-b7f1-9a7eff15ce1f.gif) 混合 ![雾，透明，天空盒](https://user-images.githubusercontent.com/62169763/182022487-53f2bc59-0e67-47ca-963d-c449aadd8dff.gif) 阴影 ![阴影](https://github.com/lurenjia399/GameEngine/assets/62169763/0dba786b-fc2a-4470-9ff3-63816b8a3603) 模糊，计算着色器
