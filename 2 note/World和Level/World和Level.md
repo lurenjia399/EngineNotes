@@ -119,6 +119,8 @@ int32 FEngineLoop::Init()
 	// 省略调一些不关心的方法
 
 	// Figure out which UEngine variant to use.
+	// 这部分就是创建Enigne，有UGameEngine和UUnrealEdEngine的区别，
+	// 可以在DefaultEngine.ini文件中配置
 	UClass* EngineClass = nullptr;
 	if( !GIsEditor )
 	{
@@ -151,24 +153,22 @@ int32 FEngineLoop::Init()
 	}
 
 	FEmbeddedCommunication::ForceTick(11);
-
 	check( GEngine );
-
+	// 这个可能是loading的设计？后面看下这个movieplayer
 	GetMoviePlayer()->PassLoadingScreenWindowBackToGame();
-    
     if (FPreLoadScreenManager::Get())
     {
         FPreLoadScreenManager::Get()->PassPreLoadScreenWindowBackToGame();
     }
 
-	{
+	{// 上锁？
 		SCOPED_BOOT_TIMING("GEngine->ParseCommandline()");
 		GEngine->ParseCommandline();
 	}
 
 	FEmbeddedCommunication::ForceTick(12);
 
-	{
+	{// 初始化引擎的时间
 		SCOPED_BOOT_TIMING("InitTime");
 		InitTime();
 	}
@@ -186,6 +186,7 @@ int32 FEngineLoop::Init()
 	SlowTask.EnterProgressFrame(30);
 
 	// initialize engine instance discovery
+	// 不知道这部分看啥的
 	if (FPlatformProcess::SupportsMultithreading())
 	{
 		SCOPED_BOOT_TIMING("SessionService etc");
@@ -201,7 +202,7 @@ int32 FEngineLoop::Init()
 
 		EngineService = new FEngineService();
 	}
-
+	// 不知道这部分看啥的
 	{
 		SCOPED_BOOT_TIMING("IProjectManager::Get().LoadModulesForProject(ELoadingPhase::PostEngineInit)");
 		// Load all the post-engine init modules
@@ -211,7 +212,8 @@ int32 FEngineLoop::Init()
 			return 1;
 		}
 	}
-
+	// Engine的start方法
+	// GameEngine的里面走的是StartGameInstance
 	{
 		SCOPED_BOOT_TIMING("GEngine->Start()");
 		GEngine->Start();
