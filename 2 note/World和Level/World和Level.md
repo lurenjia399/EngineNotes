@@ -272,7 +272,7 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 	// Call base.
 	// 调用基类，里面也一堆东西，后面再看吧
 	UEngine::Init(InEngineLoop);
-// 不知道这个gan'ma
+// 不知道这个干嘛的
 #if USE_NETWORK_PROFILER
 	FString NetworkProfilerTag;
 	if( FParse::Value(FCommandLine::Get(), TEXT("NETWORKPROFILER="), NetworkProfilerTag ) )
