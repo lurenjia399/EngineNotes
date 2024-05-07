@@ -33,6 +33,7 @@ int32 GuardedMain( const TCHAR* CmdLine )
 	FCoreDelegates::GetPreMainInitDelegate().Broadcast();
 
 	// make sure GEngineLoop::Exit() is always called.
+	// 这个是方法中创建了个CleanupGuard对象，在这个方法结束的时候会调到析构函数
 	struct EngineLoopCleanupGuard 
 	{ 
 		~EngineLoopCleanupGuard()
@@ -45,17 +46,10 @@ int32 GuardedMain( const TCHAR* CmdLine )
 			}
 		}
 	} CleanupGuard;
+	
+	// 删掉这个宏，不知道干啥的
 
-	// Set up minidump filename. We cannot do this directly inside main as we use an FString that requires 
-	// destruction and main uses SEH.
-	// These names will be updated as soon as the Filemanager is set up so we can write to the log file.
-	// That will also use the user folder for installed builds so we don't write into program files or whatever.
-#if PLATFORM_WINDOWS
-	FCString::Strcpy(MiniDumpFilenameW, *FString::Printf(TEXT("unreal-v%i-%s.dmp"), FEngineVersion::Current().GetChangelist(), *FDateTime::Now().ToString()));
-
-	GIsConsoleExecutable = (GetFileType(GetStdHandle(STD_OUTPUT_HANDLE)) == FILE_TYPE_CHAR);
-#endif
-
+	// 引擎初始化前的初始化
 	int32 ErrorLevel = EnginePreInit( CmdLine );
 
 	// exit if PreInit failed.
@@ -65,11 +59,9 @@ int32 GuardedMain( const TCHAR* CmdLine )
 	}
 
 	{
+		// 还记得这个写法么，{}括号括起来，然后对同步量上锁，在括号结束的时候解锁
 		FScopedSlowTask SlowTask(100, NSLOCTEXT("EngineInit", "EngineInit_Loading", "Loading..."));
 
-		// EnginePreInit leaves 20% unused in its slow task.
-		// Here we consume 80% immediately so that the percentage value on the splash screen doesn't change from one slow task to the next.
-		// (Note, we can't include the call to EnginePreInit in this ScopedSlowTask, because the engine isn't fully initialized at that point)
 		SlowTask.EnterProgressFrame(80);
 
 		SlowTask.EnterProgressFrame(20);
