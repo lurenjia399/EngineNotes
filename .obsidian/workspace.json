@@ -13,21 +13,34 @@
             "state": {
               "type": "markdown",
               "state": {
+                "file": "1 索引/索引.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          },
+          {
+            "id": "c4eb254197b7ce27",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
                 "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               }
             },
-            "group": "22a0be3e3fde3f21"
+            "group": "990dd0fb91d81a20"
           }
-        ]
+        ],
+        "currentTab": 1
       },
       {
-        "id": "581fd0bdb3080cc2",
+        "id": "6bdff43a48ecca9a",
         "type": "tabs",
         "children": [
           {
-            "id": "f6d00563fc3bd556",
+            "id": "58f9532f469c2a0e",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -37,7 +50,7 @@
                 "source": false
               }
             },
-            "group": "22a0be3e3fde3f21"
+            "group": "990dd0fb91d81a20"
           }
         ]
       }
@@ -166,10 +179,11 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "98709a62aa75e15d",
+  "active": "58f9532f469c2a0e",
   "lastOpenFiles": [
     "1 索引/索引.md",
     "2 note/World和Level/World和Level.md",
+    "2 note/FLatentActionManager/FLatentActionManager.md",
     "README.md",
     "未命名",
     "2 note/World和Level/Image/README.md",
@@ -178,7 +192,6 @@
     "2 note/Tick逻辑/Image/tick执行.pdf",
     "2 note/World和Level/Image",
     "2 note/World和Level",
-    "2 note/FLatentActionManager/FLatentActionManager.md",
     "2 note/FLatentActionManager/LatentActionManager.mdj",
     "2 note/Actor逻辑/Actor.md",
     "2 note/Actor逻辑/Actor.mdj",

@@ -370,8 +370,8 @@ void UGameInstance::InitializeStandalone(const FName InPackageName, UPackage* In
 }
 
 ```
-6 主要就是分成了三部分。
-6.1 创建WorldContext
+## 6 主要就是分成了三部分。
+### 6.1 创建WorldContext
 ```cpp
 // 第一步
 FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
@@ -387,7 +387,7 @@ FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
 	return *NewWorldContext;
 }
 ```
-6.2 创建DummyWorld，虚假的World，知道LoadMap加在真正的world
+### 6.2 创建DummyWorld，虚假的World，直到LoadMap加在真正的world
 ```cpp
 UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngineOfWorld, FName WorldName, UPackage* InWorldPackage, bool bAddToRoot, ERHIFeatureLevel::Type InFeatureLevel)
 {
@@ -440,7 +440,7 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 	return NewWorld;
 }
 ```
-6.3 GameInstance初始化操作
+### 6.3 GameInstance初始化操作
 ```cpp
 void UGameInstance::Init()
 {
