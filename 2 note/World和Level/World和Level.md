@@ -175,7 +175,7 @@ int32 FEngineLoop::Init()
 
 	SlowTask.EnterProgressFrame(60);
 
-	{
+	{// 引擎的init，后面展开说下
 		SCOPED_BOOT_TIMING("GEngine->Init");
 		GEngine->Init(this);
 	}
@@ -260,5 +260,104 @@ int32 FEngineLoop::Init()
 	FEmbeddedCommunication::ForceTick(15);
 	// 后面就全是些云里雾里的操作了，有机会看吧
 	return 0;
+}
+```
+4 这个FEngineLoop::Init方法主要的作用就是，1 创建出UGameEngine或者UUnrealEdEngine。2然后做一些初始化以及Engine::init方法。3 还有一部分是movieplayer的部分，这部分好像是loading相关，后面看，下面看下UGameEngine::init方法。
+```cpp
+void UGameEngine::Init(IEngineLoop* InEngineLoop)
+{
+	DECLARE_SCOPE_CYCLE_COUNTER(TEXT("UGameEngine Init"), STAT_GameEngineStartup, STATGROUP_LoadTime);
+	
+
+	// Call base.
+	// 调用基类，里面也一堆东西，后面再看吧
+	UEngine::Init(InEngineLoop);
+// 不知道这个gan'ma
+#if USE_NETWORK_PROFILER
+	FString NetworkProfilerTag;
+	if( FParse::Value(FCommandLine::Get(), TEXT("NETWORKPROFILER="), NetworkProfilerTag ) )
+	{
+		GNetworkProfiler.EnableTracking(true);
+	}
+#endif
+
+	// Load and apply user game settings
+	GetGameUserSettings()->LoadSettings();
+	GetGameUserSettings()->ApplyNonResolutionSettings();
+
+	// Create game instance.  For GameEngine, this should be the only GameInstance that ever gets created.
+	{
+		FSoftClassPath GameInstanceClassName = GetDefault<UGameMapsSettings>()->GameInstanceClass;
+		UClass* GameInstanceClass = (GameInstanceClassName.IsValid() ? LoadObject<UClass>(NULL, *GameInstanceClassName.ToString()) : UGameInstance::StaticClass());
+		
+		if (GameInstanceClass == nullptr)
+		{
+			UE_LOG(LogEngine, Error, TEXT("Unable to load GameInstance Class '%s'. Falling back to generic UGameInstance."), *GameInstanceClassName.ToString());
+			GameInstanceClass = UGameInstance::StaticClass();
+		}
+
+		GameInstance = NewObject<UGameInstance>(this, GameInstanceClass);
+
+		GameInstance->InitializeStandalone();
+	}
+ 
+//  	// Creates the initial world context. For GameEngine, this should be the only WorldContext that ever gets created.
+//  	FWorldContext& InitialWorldContext = CreateNewWorldContext(EWorldType::Game);
+
+	IMovieSceneCaptureInterface* MovieSceneCaptureImpl = nullptr;
+#if WITH_EDITOR
+	if (!IsRunningDedicatedServer() && !IsRunningCommandlet())
+	{
+		MovieSceneCaptureImpl = IMovieSceneCaptureModule::Get().InitializeFromCommandLine();
+		if (MovieSceneCaptureImpl)
+		{
+			StartupMovieCaptureHandle = MovieSceneCaptureImpl->GetHandle();
+		}
+	}
+#endif
+
+	// Initialize the viewport client.
+	UGameViewportClient* ViewportClient = NULL;
+	if(GIsClient)
+	{
+		ViewportClient = NewObject<UGameViewportClient>(this, GameViewportClientClass);
+		ViewportClient->Init(*GameInstance->GetWorldContext(), GameInstance);
+		GameViewport = ViewportClient;
+		GameInstance->GetWorldContext()->GameViewport = ViewportClient;
+	}
+
+	LastTimeLogsFlushed = FPlatformTime::Seconds();
+
+	// Attach the viewport client to a new viewport.
+	if(ViewportClient)
+	{
+		// This must be created before any gameplay code adds widgets
+		bool bWindowAlreadyExists = GameViewportWindow.IsValid();
+		if (!bWindowAlreadyExists)
+		{
+			UE_LOG(LogEngine, Log, TEXT("GameWindow did not exist.  Was created"));
+			GameViewportWindow = CreateGameWindow();
+		}
+
+		CreateGameViewport( ViewportClient );
+
+		if( !bWindowAlreadyExists )
+		{
+			SwitchGameWindowToUseGameViewport();
+		}
+
+		FString Error;
+		if(ViewportClient->SetupInitialLocalPlayer(Error) == NULL)
+		{
+			UE_LOG(LogEngine, Fatal,TEXT("%s"),*Error);
+		}
+
+		UGameViewportClient::OnViewportCreated().Broadcast();
+	}
+
+	UE_LOG(LogInit, Display, TEXT("Game Engine Initialized.") );
+
+	// for IsInitialized()
+	bIsInitialized = true;
 }
 ```
