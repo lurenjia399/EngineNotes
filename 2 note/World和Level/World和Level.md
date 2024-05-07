@@ -79,20 +79,11 @@ int32 GuardedMain( const TCHAR* CmdLine )
 		}
 	}
 
-	double EngineInitializationTime = FPlatformTime::Seconds() - GStartTime;
-	UE_LOG(LogLoad, Log, TEXT("(Engine Initialization) Total time: %.2f seconds"), EngineInitializationTime);
-
-#if WITH_EDITOR
-	UE_LOG(LogLoad, Log, TEXT("(Engine Initialization) Total Blueprint compile time: %.2f seconds"), BlueprintCompileAndLoadTimerData.GetTime());
-#endif
-
-	ACCUM_LOADTIME(TEXT("EngineInitialization"), EngineInitializationTime);
-
-	BootTimingPoint("Tick loop starting");
-	DumpBootTiming();
+	// 时间的代码，不清楚干嘛的，删掉了
 
 	// Don't tick if we're running an embedded engine - we rely on the outer
 	// application ticking us instead.
+	// 这部分就是EngineTick了
 	if (!GUELibraryOverrideSettings.bIsEmbedded)
 	{
 		while( !IsEngineExitRequested() )
@@ -103,6 +94,7 @@ int32 GuardedMain( const TCHAR* CmdLine )
 
 	TRACE_BOOKMARK(TEXT("Tick loop end"));
 
+	// 如果编译了并且是Editor启动，就退出Editor
 #if WITH_EDITOR
 	if( GIsEditor )
 	{
