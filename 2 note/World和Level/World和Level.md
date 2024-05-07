@@ -361,21 +361,113 @@ void UGameInstance::InitializeStandalone(const FName InPackageName, UPackage* In
 	WorldContext->OwningGameInstance = this;
 
 	// In standalone create a dummy world from the beginning to avoid issues of not having a world until LoadMap gets us our real world
+	// 第二步，创建DummyWorld，虚假的World，知道LoadMap加在真正的world
 	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false, InPackageName, InWorldPackage);
 	DummyWorld->SetGameInstance(this);
 	WorldContext->SetCurrentWorld(DummyWorld);
-
+	// 第三步，GameInstance初始化操作
 	Init();
 }
+
+```
+6 主要就是分成了三部分。
+6.1 创建WorldContext
+```cpp
 // 第一步
 FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
 {
 	// 直接new的
 	FWorldContext* NewWorldContext = new FWorldContext;
+	// 将WorldContext添加到了WorldList里面
 	WorldList.Add(NewWorldContext);
+	// 设置参数
 	NewWorldContext->WorldType = WorldType;
 	NewWorldContext->ContextHandle = FName(*FString::Printf(TEXT("Context_%d"), NextWorldContextHandle++));
 
 	return *NewWorldContext;
+}
+```
+6.2 创建DummyWorld，虚假的World，知道LoadMap加在真正的world
+```cpp
+UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngineOfWorld, FName WorldName, UPackage* InWorldPackage, bool bAddToRoot, ERHIFeatureLevel::Type InFeatureLevel)
+{
+	if (InFeatureLevel >= ERHIFeatureLevel::Num)
+	{
+		InFeatureLevel = GMaxRHIFeatureLevel;
+	}
+
+	UPackage* WorldPackage = InWorldPackage;
+	if ( !WorldPackage )
+	{
+		WorldPackage = CreatePackage(nullptr);
+	}
+
+	if (InWorldType == EWorldType::PIE)
+	{
+		WorldPackage->SetPackageFlags(PKG_PlayInEditor);
+	}
+
+	// Mark the package as containing a world.  This has to happen here rather than at serialization time,
+	// so that e.g. the referenced assets browser will work correctly.
+	if ( WorldPackage != GetTransientPackage() )
+	{
+		WorldPackage->ThisContainsMap();
+	}
+
+	// Create new UWorld, ULevel and UModel.
+	const FString WorldNameString = (WorldName != NAME_None) ? WorldName.ToString() : TEXT("Untitled");
+	UWorld* NewWorld = NewObject<UWorld>(WorldPackage, *WorldNameString);
+	NewWorld->SetFlags(RF_Transactional);
+	NewWorld->WorldType = InWorldType;
+	NewWorld->FeatureLevel = InFeatureLevel;
+	NewWorld->InitializeNewWorld(UWorld::InitializationValues().ShouldSimulatePhysics(false).EnableTraceCollision(true).CreateNavigation(InWorldType == EWorldType::Editor).CreateAISystem(InWorldType == EWorldType::Editor));
+
+	// Clear the dirty flag set during SpawnActor and UpdateLevelComponents
+	WorldPackage->SetDirtyFlag(false);
+
+	if ( bAddToRoot )
+	{
+		// Add to root set so it doesn't get garbage collected.
+		NewWorld->AddToRoot();
+	}
+
+	// Tell the engine we are adding a world (unless we are asked not to)
+	if( ( GEngine ) && ( bInformEngineOfWorld == true ) )
+	{
+		GEngine->WorldAdded( NewWorld );
+	}
+
+	return NewWorld;
+}
+```
+6.3 GameInstance初始化操作
+```cpp
+void UGameInstance::Init()
+{
+	ReceiveInit();
+
+	if (!IsRunningCommandlet())
+	{
+		UClass* SpawnClass = GetOnlineSessionClass();
+		OnlineSession = NewObject<UOnlineSession>(this, SpawnClass);
+		if (OnlineSession)
+		{
+			OnlineSession->RegisterOnlineDelegates();
+		}
+
+		if (!IsDedicatedServerInstance())
+		{
+			TSharedPtr<GenericApplication> App = FSlateApplication::Get().GetPlatformApplication();
+			if (App.IsValid())
+			{
+				App->RegisterConsoleCommandListener(GenericApplication::FOnConsoleCommandListener::CreateUObject(this, &ThisClass::OnConsoleInput));
+			}
+		}
+
+		FNetDelegates::OnReceivedNetworkEncryptionToken.BindUObject(this, &ThisClass::ReceivedNetworkEncryptionToken);
+		FNetDelegates::OnReceivedNetworkEncryptionAck.BindUObject(this, &ThisClass::ReceivedNetworkEncryptionAck);
+	}
+
+	SubsystemCollection.Initialize(this);
 }
 ```
