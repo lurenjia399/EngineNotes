@@ -67,7 +67,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 32.72998046875,
-											"top": 13,
+											"top": 5,
 											"width": 115.9052734375,
 											"height": 13,
 											"text": "SequenceDiagram1"
@@ -83,7 +83,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;1",
 											"left": 13,
-											"top": 13,
+											"top": 5,
 											"width": 14.72998046875,
 											"height": 13,
 											"text": "sd"
@@ -94,8 +94,7 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 8,
-									"top": 8,
-									"width": 1225,
+									"width": 1049,
 									"height": 801,
 									"nameLabel": {
 										"$ref": "AAAAAAGO6tqnOxn4D7k="
@@ -2044,140 +2043,6 @@
 									}
 								},
 								{
-									"_type": "UMLSeqLifelineView",
-									"_id": "AAAAAAGPUNhXv9gos3E=",
-									"_parent": {
-										"$ref": "AAAAAAGO6tqnOhn2DBE="
-									},
-									"model": {
-										"$ref": "AAAAAAGPUNhXv9gn23k="
-									},
-									"subViews": [
-										{
-											"_type": "UMLNameCompartmentView",
-											"_id": "AAAAAAGPUNhXv9gpotU=",
-											"_parent": {
-												"$ref": "AAAAAAGPUNhXv9gos3E="
-											},
-											"model": {
-												"$ref": "AAAAAAGPUNhXv9gn23k="
-											},
-											"subViews": [
-												{
-													"_type": "LabelView",
-													"_id": "AAAAAAGPUNhXv9gqcAA=",
-													"_parent": {
-														"$ref": "AAAAAAGPUNhXv9gpotU="
-													},
-													"visible": false,
-													"lineColor": "#457b9d",
-													"fillColor": "#a8d9db",
-													"fontColor": "#4a3575",
-													"font": "Arial;13;0",
-													"height": 13
-												},
-												{
-													"_type": "LabelView",
-													"_id": "AAAAAAGPUNhXv9gri00=",
-													"_parent": {
-														"$ref": "AAAAAAGPUNhXv9gpotU="
-													},
-													"lineColor": "#457b9d",
-													"fillColor": "#a8d9db",
-													"fontColor": "#4a3575",
-													"font": "Arial;13;1",
-													"left": 1045,
-													"top": 47,
-													"width": 62.736328125,
-													"height": 13,
-													"text": "ULevel"
-												},
-												{
-													"_type": "LabelView",
-													"_id": "AAAAAAGPUNhXv9gsajw=",
-													"_parent": {
-														"$ref": "AAAAAAGPUNhXv9gpotU="
-													},
-													"visible": false,
-													"lineColor": "#457b9d",
-													"fillColor": "#a8d9db",
-													"fontColor": "#4a3575",
-													"font": "Arial;13;0",
-													"width": 106.20263671875,
-													"height": 13,
-													"text": "(from Interaction1)"
-												},
-												{
-													"_type": "LabelView",
-													"_id": "AAAAAAGPUNhXv9gtOb8=",
-													"_parent": {
-														"$ref": "AAAAAAGPUNhXv9gpotU="
-													},
-													"visible": false,
-													"lineColor": "#457b9d",
-													"fillColor": "#a8d9db",
-													"fontColor": "#4a3575",
-													"font": "Arial;13;0",
-													"height": 13,
-													"horizontalAlignment": 1
-												}
-											],
-											"lineColor": "#457b9d",
-											"fillColor": "#a8d9db",
-											"fontColor": "#4a3575",
-											"font": "Arial;13;0",
-											"left": 1040,
-											"top": 40,
-											"width": 72.736328125,
-											"height": 40,
-											"stereotypeLabel": {
-												"$ref": "AAAAAAGPUNhXv9gqcAA="
-											},
-											"nameLabel": {
-												"$ref": "AAAAAAGPUNhXv9gri00="
-											},
-											"namespaceLabel": {
-												"$ref": "AAAAAAGPUNhXv9gsajw="
-											},
-											"propertyLabel": {
-												"$ref": "AAAAAAGPUNhXv9gtOb8="
-											}
-										},
-										{
-											"_type": "UMLLinePartView",
-											"_id": "AAAAAAGPUNhXv9gueBc=",
-											"_parent": {
-												"$ref": "AAAAAAGPUNhXv9gos3E="
-											},
-											"model": {
-												"$ref": "AAAAAAGPUNhXv9gn23k="
-											},
-											"lineColor": "#457b9d",
-											"fillColor": "#a8d9db",
-											"fontColor": "#4a3575",
-											"font": "Arial;13;0",
-											"left": 1076,
-											"top": 80,
-											"width": 1,
-											"height": 625
-										}
-									],
-									"lineColor": "#457b9d",
-									"fillColor": "#a8d9db",
-									"fontColor": "#4a3575",
-									"font": "Arial;13;0",
-									"left": 1040,
-									"top": 40,
-									"width": 72.736328125,
-									"height": 665,
-									"nameCompartment": {
-										"$ref": "AAAAAAGPUNhXv9gpotU="
-									},
-									"linePart": {
-										"$ref": "AAAAAAGPUNhXv9gueBc="
-									}
-								},
-								{
 									"_type": "UMLSeqMessageView",
 									"_id": "AAAAAAGPUNu5Qdhs630=",
 									"_parent": {
@@ -2803,18 +2668,6 @@
 							"name": "UWorld",
 							"represent": {
 								"$ref": "AAAAAAGO6xwaNlFybAM="
-							},
-							"isMultiInstance": false
-						},
-						{
-							"_type": "UMLLifeline",
-							"_id": "AAAAAAGPUNhXv9gn23k=",
-							"_parent": {
-								"$ref": "AAAAAAGO6tqnOhn1l2o="
-							},
-							"name": "ULevel",
-							"represent": {
-								"$ref": "AAAAAAGPUNhXv9gmflc="
 							},
 							"isMultiInstance": false
 						}
