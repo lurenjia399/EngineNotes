@@ -318,6 +318,7 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 	LastTimeLogsFlushed = FPlatformTime::Seconds();
 
 	// Attach the viewport client to a new viewport.
+	// 不确定这个是否会走
 	if(ViewportClient)
 	{
 		// This must be created before any gameplay code adds widgets
@@ -348,5 +349,33 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 
 	// for IsInitialized()
 	bIsInitialized = true;
+}
+```
+5 UGameEngine::init方法里面不是特别的复杂，主要就是找到需要创建的GameInstance，然后创建出来进而初始化，后面就是创建ViewportClient这个东西了。下面看下GameInstance创建部分。
+```cpp
+void UGameInstance::InitializeStandalone(const FName InPackageName, UPackage* InWorldPackage)
+{
+	// Creates the world context. This should be the only WorldContext that ever gets created for this GameInstance.
+	// 第一步，创建WorldContext
+	WorldContext = &GetEngine()->CreateNewWorldContext(EWorldType::Game);
+	WorldContext->OwningGameInstance = this;
+
+	// In standalone create a dummy world from the beginning to avoid issues of not having a world until LoadMap gets us our real world
+	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false, InPackageName, InWorldPackage);
+	DummyWorld->SetGameInstance(this);
+	WorldContext->SetCurrentWorld(DummyWorld);
+
+	Init();
+}
+// 第一步
+FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
+{
+	// 直接new的
+	FWorldContext* NewWorldContext = new FWorldContext;
+	WorldList.Add(NewWorldContext);
+	NewWorldContext->WorldType = WorldType;
+	NewWorldContext->ContextHandle = FName(*FString::Printf(TEXT("Context_%d"), NextWorldContextHandle++));
+
+	return *NewWorldContext;
 }
 ```
