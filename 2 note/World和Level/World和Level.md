@@ -10,117 +10,113 @@ int32 WINAPI WinMain(_In_ HINSTANCE hInInstance, _In_opt_ HINSTANCE hPrevInstanc
 }
 LAUNCH_API int32 LaunchWindowsStartup( HINSTANCE hInInstance, HINSTANCE hPrevInstance, char*, int32 nCmdShow, const TCHAR* CmdLine )
 {
-	TRACE_BOOKMARK(TEXT("WinMain.Enter"));
+	// 这里面很多方法，但是往后走的就是这个方法
+	ErrorLevel = GuardedMain( CmdLine );
+}
 
-	// Setup common Windows settings
-	SetupWindowsEnvironment();
-
-	int32 ErrorLevel			= 0;
-	hInstance				= hInInstance;
-
-	if (!CmdLine)
+```
+2 不同平台都有GuardedMain这个方法，下面看看这个windows的这个
+```cpp
+int32 GuardedMain( const TCHAR* CmdLine )
+{
+#if !(UE_BUILD_SHIPPING)
+	if (FParse::Param(CmdLine, TEXT("waitforattach")))
 	{
-		CmdLine = ::GetCommandLineW();
-		if ( ProcessCommandLine() )
+		while (!FPlatformMisc::IsDebuggerPresent());
+		UE_DEBUG_BREAK();
+	}
+#endif
+
+	BootTimingPoint("DefaultMain");
+
+	// Super early init code. DO NOT MOVE THIS ANYWHERE ELSE!
+	FCoreDelegates::GetPreMainInitDelegate().Broadcast();
+
+	// make sure GEngineLoop::Exit() is always called.
+	struct EngineLoopCleanupGuard 
+	{ 
+		~EngineLoopCleanupGuard()
 		{
-			CmdLine = *GSavedCommandLine;
-		}
-	}
-
-	// If we're running in unattended mode, make sure we never display error dialogs if we crash.
-	if ( FParse::Param( CmdLine, TEXT("unattended") ) )
-	{
-		SetErrorMode(SEM_FAILCRITICALERRORS | SEM_NOGPFAULTERRORBOX | SEM_NOOPENFILEERRORBOX);
-	}
-
-#if !(UE_BUILD_SHIPPING && WITH_EDITOR)
-	// Named mutex we use to figure out whether we are the first instance of the game running. This is needed to e.g.
-	// make sure there is no contention when trying to save the shader cache.
-	GIsFirstInstance = MakeNamedMutex( CmdLine );
-
-	if ( FParse::Param( CmdLine,TEXT("crashreports") ) )
-	{
-		GAlwaysReportCrash = true;
-	}
-#endif
-
-	bool bNoExceptionHandler = FParse::Param(CmdLine,TEXT("noexceptionhandler"));
-	(void)bNoExceptionHandler;
-	// Using the -noinnerexception parameter will disable the exception handler within native C++, which is call from managed code,
-	// which is called from this function.
-	// The default case is to have three wrapped exception handlers 
-	// Native: WinMain() -> Native: GuardedMainWrapper().
-	// The inner exception handler in GuardedMainWrapper() catches crashes/asserts in native C++ code and is the only way to get the
-	// correct callstack when running a 64-bit executable. However, XAudio2 sometimes (?) don't like this and it may result in no sound.
-#ifdef _WIN64
-	if ( FParse::Param(CmdLine,TEXT("noinnerexception")) || FApp::IsBenchmarking() || bNoExceptionHandler)
-	{
-		GEnableInnerException = false;
-	}
-#endif	
-
-	// When we're running embedded, assume that the outer application is going to be handling crash reporting
-#if UE_BUILD_DEBUG
-	if (GUELibraryOverrideSettings.bIsEmbedded || !GAlwaysReportCrash)
-#else
-	if (GUELibraryOverrideSettings.bIsEmbedded || bNoExceptionHandler || (FPlatformMisc::IsDebuggerPresent() && !GAlwaysReportCrash))
-#endif
-	{
-		// Don't use exception handling when a debugger is attached to exactly trap the crash. This does NOT check
-		// whether we are the first instance or not!
-		ErrorLevel = GuardedMain( CmdLine );
-	}
-	else
-	{
-		// Use structured exception handling to trap any crashes, walk the the stack and display a crash dialog box.
-#if !PLATFORM_SEH_EXCEPTIONS_DISABLED
-		__try
-#endif
- 		{
-			GIsGuarded = 1;
-			// Run the guarded code.
-			ErrorLevel = GuardedMainWrapper( CmdLine );
-			GIsGuarded = 0;
-		}
-#if !PLATFORM_SEH_EXCEPTIONS_DISABLED
-		__except( GEnableInnerException ? EXCEPTION_EXECUTE_HANDLER : ReportCrash( GetExceptionInformation( ) ) )
-		{
-#if !(UE_BUILD_SHIPPING && WITH_EDITOR)
-			// Release the mutex in the error case to ensure subsequent runs don't find it.
-			ReleaseNamedMutex();
-#endif
-			// Crashed.
-			ErrorLevel = 1;
-			if(GError)
+			// Don't shut down the engine on scope exit when we are running embedded
+			// because the outer application will take care of that.
+			if (!GUELibraryOverrideSettings.bIsEmbedded)
 			{
-				GError->HandleError();
+				EngineExit();
 			}
-			LaunchStaticShutdownAfterError();
-			FPlatformMallocCrash::Get().PrintPoolsUsage();
-			FPlatformMisc::RequestExit( true );
 		}
+	} CleanupGuard;
+
+	// Set up minidump filename. We cannot do this directly inside main as we use an FString that requires 
+	// destruction and main uses SEH.
+	// These names will be updated as soon as the Filemanager is set up so we can write to the log file.
+	// That will also use the user folder for installed builds so we don't write into program files or whatever.
+#if PLATFORM_WINDOWS
+	FCString::Strcpy(MiniDumpFilenameW, *FString::Printf(TEXT("unreal-v%i-%s.dmp"), FEngineVersion::Current().GetChangelist(), *FDateTime::Now().ToString()));
+
+	GIsConsoleExecutable = (GetFileType(GetStdHandle(STD_OUTPUT_HANDLE)) == FILE_TYPE_CHAR);
 #endif
+
+	int32 ErrorLevel = EnginePreInit( CmdLine );
+
+	// exit if PreInit failed.
+	if ( ErrorLevel != 0 || IsEngineExitRequested() )
+	{
+		return ErrorLevel;
 	}
 
-	TRACE_BOOKMARK(TEXT("WinMain.Exit"));
+	{
+		FScopedSlowTask SlowTask(100, NSLOCTEXT("EngineInit", "EngineInit_Loading", "Loading..."));
 
+		// EnginePreInit leaves 20% unused in its slow task.
+		// Here we consume 80% immediately so that the percentage value on the splash screen doesn't change from one slow task to the next.
+		// (Note, we can't include the call to EnginePreInit in this ScopedSlowTask, because the engine isn't fully initialized at that point)
+		SlowTask.EnterProgressFrame(80);
+
+		SlowTask.EnterProgressFrame(20);
+
+#if WITH_EDITOR
+		if (GIsEditor)
+		{
+			ErrorLevel = EditorInit(GEngineLoop);
+		}
+		else
+#endif
+		{
+			ErrorLevel = EngineInit();
+		}
+	}
+
+	double EngineInitializationTime = FPlatformTime::Seconds() - GStartTime;
+	UE_LOG(LogLoad, Log, TEXT("(Engine Initialization) Total time: %.2f seconds"), EngineInitializationTime);
+
+#if WITH_EDITOR
+	UE_LOG(LogLoad, Log, TEXT("(Engine Initialization) Total Blueprint compile time: %.2f seconds"), BlueprintCompileAndLoadTimerData.GetTime());
+#endif
+
+	ACCUM_LOADTIME(TEXT("EngineInitialization"), EngineInitializationTime);
+
+	BootTimingPoint("Tick loop starting");
+	DumpBootTiming();
+
+	// Don't tick if we're running an embedded engine - we rely on the outer
+	// application ticking us instead.
+	if (!GUELibraryOverrideSettings.bIsEmbedded)
+	{
+		while( !IsEngineExitRequested() )
+		{
+			EngineTick();
+		}
+	}
+
+	TRACE_BOOKMARK(TEXT("Tick loop end"));
+
+#if WITH_EDITOR
+	if( GIsEditor )
+	{
+		EditorExit();
+	}
+#endif
 	return ErrorLevel;
 }
 
-LAUNCH_API void LaunchWindowsShutdown()
-{
-	// Final shut down.
-	FEngineLoop::AppExit();
-
-#if !(UE_BUILD_SHIPPING && WITH_EDITOR)
-	// Release the named mutex again now that we are done.
-	ReleaseNamedMutex();
-#endif
-
-	// pause if we should
-	if (GShouldPauseBeforeExit)
-	{
-		Sleep(INFINITE);
-	}
-}
 ```
