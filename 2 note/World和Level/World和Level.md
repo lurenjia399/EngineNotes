@@ -186,7 +186,7 @@ int32 FEngineLoop::Init()
 	SlowTask.EnterProgressFrame(30);
 
 	// initialize engine instance discovery
-	// 不知道这部分看啥的
+	// 不知道这部分干啥的
 	if (FPlatformProcess::SupportsMultithreading())
 	{
 		SCOPED_BOOT_TIMING("SessionService etc");
@@ -202,7 +202,7 @@ int32 FEngineLoop::Init()
 
 		EngineService = new FEngineService();
 	}
-	// 不知道这部分看啥的
+	// 不知道这部分干啥的
 	{
 		SCOPED_BOOT_TIMING("IProjectManager::Get().LoadModulesForProject(ELoadingPhase::PostEngineInit)");
 		// Load all the post-engine init modules
@@ -221,6 +221,7 @@ int32 FEngineLoop::Init()
 
 	FEmbeddedCommunication::ForceTick(13);
 
+	// 下面这部分还是loading相关的，后面再说
     if (FPreLoadScreenManager::Get() && FPreLoadScreenManager::Get()->HasActivePreLoadScreenType(EPreLoadScreenTypes::EngineLoadingScreen))
     {
 		SCOPED_BOOT_TIMING("WaitForEngineLoadingScreenToFinish");
@@ -232,32 +233,12 @@ int32 FEngineLoop::Init()
 		SCOPED_BOOT_TIMING("WaitForMovieToFinish");
 		GetMoviePlayer()->WaitForMovieToFinish();
     }
-
+	// 不了解这个方法
 	FTraceAuxiliary::EnableChannels();
 
-#if !UE_SERVER
-	// initialize media framework
-	IMediaModule* MediaModule = FModuleManager::LoadModulePtr<IMediaModule>("Media");
+	// 不知道这部分干啥的,去掉把
 
-	if (MediaModule != nullptr)
-	{
-		MediaModule->SetTimeSource(MakeShareable(new FAppMediaTimeSource));
-	}
-#endif
-
-	FEmbeddedCommunication::ForceTick(14);
-
-	// initialize automation worker
-#if WITH_AUTOMATION_WORKER
-	FModuleManager::Get().LoadModule("AutomationWorker");
-#endif
-
-	// Automation tests can be invoked locally in non-editor builds configuration (e.g. performance profiling in Test configuration)
-#if WITH_ENGINE && !UE_BUILD_SHIPPING
-	FModuleManager::Get().LoadModule("AutomationController");
-	FModuleManager::GetModuleChecked<IAutomationControllerModule>("AutomationController").Init();
-#endif
-
+// 在编辑器模式下，加在几个模块
 #if WITH_EDITOR
 	if (GIsEditor)
 	{
@@ -267,9 +248,9 @@ int32 FEngineLoop::Init()
 	FModuleManager::Get().LoadModule(TEXT("SequenceRecorder"));
 	FModuleManager::Get().LoadModule(TEXT("SequenceRecorderSections"));
 #endif
-
+	// 设置标志位
 	GIsRunning = true;
-
+	// 不是编辑器，开始viewport渲染?
 	if (!GIsEditor)
 	{
 		// hide a couple frames worth of rendering
@@ -277,45 +258,7 @@ int32 FEngineLoop::Init()
 	}
 
 	FEmbeddedCommunication::ForceTick(15);
-
-	FCoreDelegates::StarvedGameLoop.BindStatic(&GameLoopIsStarved);
-
-	// Ready to measure thread heartbeat
-	FThreadHeartBeat::Get().Start();
-
-	FShaderPipelineCache::PauseBatching();
-   	{
-#if defined(WITH_CODE_GUARD_HANDLER) && WITH_CODE_GUARD_HANDLER
-         void CheckImageIntegrity();
-        CheckImageIntegrity();
-#endif
-    }
-    
-    {
-		SCOPED_BOOT_TIMING("FCoreDelegates::OnFEngineLoopInitComplete.Broadcast()");
-		FCoreDelegates::OnFEngineLoopInitComplete.Broadcast();
-	}
-	FShaderPipelineCache::ResumeBatching();
-
-#if BUILD_EMBEDDED_APP
-	FEmbeddedCommunication::AllowSleep(TEXT("Startup"));
-	FEmbeddedCommunication::KeepAwake(TEXT("FirstTicks"), true);
-#endif
-	
-#if UE_EXTERNAL_PROFILING_ENABLED
-	FExternalProfiler* ActiveProfiler = FActiveExternalProfilerBase::InitActiveProfiler();
-	if (ActiveProfiler)
-	{
-		ActiveProfiler->Register();
-	}
-#endif		// UE_EXTERNAL_PROFILING_ENABLED
-
-	FDelayedAutoRegisterHelper::RunAndClearDelayedAutoRegisterDelegates(EDelayedRegisterRunPhase::EndOfEngineInit);
-
-	// Emit logging. Don't edit! Automation looks for this to detect failures during initialization.
-	UE_LOG(LogInit, Display, TEXT("Engine is initialized. Leaving FEngineLoop::Init()"));
+	// 后面就全是些云里雾里的操作了，有机会看吧
 	return 0;
 }
-
-
 ```
