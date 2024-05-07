@@ -286,6 +286,7 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 	GetGameUserSettings()->ApplyNonResolutionSettings();
 
 	// Create game instance.  For GameEngine, this should be the only GameInstance that ever gets created.
+	// 根据GameMapsSettings配置生成对应的gameInstance，也是在DefaultEngine.ini里面配的
 	{
 		FSoftClassPath GameInstanceClassName = GetDefault<UGameMapsSettings>()->GameInstanceClass;
 		UClass* GameInstanceClass = (GameInstanceClassName.IsValid() ? LoadObject<UClass>(NULL, *GameInstanceClassName.ToString()) : UGameInstance::StaticClass());
@@ -295,29 +296,17 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 			UE_LOG(LogEngine, Error, TEXT("Unable to load GameInstance Class '%s'. Falling back to generic UGameInstance."), *GameInstanceClassName.ToString());
 			GameInstanceClass = UGameInstance::StaticClass();
 		}
-
+		// 初始化GameInstance，后面看下这部分
 		GameInstance = NewObject<UGameInstance>(this, GameInstanceClass);
-
 		GameInstance->InitializeStandalone();
 	}
  
-//  	// Creates the initial world context. For GameEngine, this should be the only WorldContext that ever gets created.
-//  	FWorldContext& InitialWorldContext = CreateNewWorldContext(EWorldType::Game);
-
-	IMovieSceneCaptureInterface* MovieSceneCaptureImpl = nullptr;
-#if WITH_EDITOR
-	if (!IsRunningDedicatedServer() && !IsRunningCommandlet())
-	{
-		MovieSceneCaptureImpl = IMovieSceneCaptureModule::Get().InitializeFromCommandLine();
-		if (MovieSceneCaptureImpl)
-		{
-			StartupMovieCaptureHandle = MovieSceneCaptureImpl->GetHandle();
-		}
-	}
-#endif
+	// 这部分不太了解，去掉了
 
 	// Initialize the viewport client.
+	// 初始化viewport
 	UGameViewportClient* ViewportClient = NULL;
+	// 不确定这个标志位
 	if(GIsClient)
 	{
 		ViewportClient = NewObject<UGameViewportClient>(this, GameViewportClientClass);
