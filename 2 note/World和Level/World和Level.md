@@ -58,15 +58,16 @@ int32 GuardedMain( const TCHAR* CmdLine )
 		return ErrorLevel;
 	}
 
-	{
-		// 还记得这个写法么，{}括号括起来，然后对同步量上锁，在括号结束的时候解锁
+	{// 还记得这个写法么，{}括号括起来，然后对同步量上锁，在括号结束的时候解锁
+		
 		FScopedSlowTask SlowTask(100, NSLOCTEXT("EngineInit", "EngineInit_Loading", "Loading..."));
 
 		SlowTask.EnterProgressFrame(80);
 
 		SlowTask.EnterProgressFrame(20);
-
+	// WITH_EDITOR 这个宏的意思在编译的时候，我们是否用editer编译
 #if WITH_EDITOR
+		// 这个GIsEditor变量是说我们是否在编辑器模式下启动游戏
 		if (GIsEditor)
 		{
 			ErrorLevel = EditorInit(GEngineLoop);
