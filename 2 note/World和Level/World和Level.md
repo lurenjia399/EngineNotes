@@ -105,3 +105,215 @@ int32 GuardedMain( const TCHAR* CmdLine )
 }
 
 ```
+3 下面我们看EngineInit方法，就不看Editor部分了，看Game部分
+```cpp
+int32 EngineInit()
+{
+	int32 ErrorLevel = GEngineLoop.Init();
+
+	return( ErrorLevel );
+}
+
+int32 FEngineLoop::Init()
+{
+	// 省略调一些不关心的方法
+
+	// Figure out which UEngine variant to use.
+	UClass* EngineClass = nullptr;
+	if( !GIsEditor )
+	{
+		SCOPED_BOOT_TIMING("Create GEngine");
+		// We're the game.
+		FString GameEngineClassName;
+		GConfig->GetString(TEXT("/Script/Engine.Engine"), TEXT("GameEngine"), GameEngineClassName, GEngineIni);
+		EngineClass = StaticLoadClass( UGameEngine::StaticClass(), nullptr, *GameEngineClassName);
+		if (EngineClass == nullptr)
+		{
+			UE_LOG(LogInit, Fatal, TEXT("Failed to load UnrealEd Engine class '%s'."), *GameEngineClassName);
+		}
+		GEngine = NewObject<UEngine>(GetTransientPackage(), EngineClass);
+	}
+	else
+	{
+#if WITH_EDITOR
+		// We're UnrealEd.
+		FString UnrealEdEngineClassName;
+		GConfig->GetString(TEXT("/Script/Engine.Engine"), TEXT("UnrealEdEngine"), UnrealEdEngineClassName, GEngineIni);
+		EngineClass = StaticLoadClass(UUnrealEdEngine::StaticClass(), nullptr, *UnrealEdEngineClassName);
+		if (EngineClass == nullptr)
+		{
+			UE_LOG(LogInit, Fatal, TEXT("Failed to load UnrealEd Engine class '%s'."), *UnrealEdEngineClassName);
+		}
+		GEngine = GEditor = GUnrealEd = NewObject<UUnrealEdEngine>(GetTransientPackage(), EngineClass);
+#else
+		check(0);
+#endif
+	}
+
+	FEmbeddedCommunication::ForceTick(11);
+
+	check( GEngine );
+
+	GetMoviePlayer()->PassLoadingScreenWindowBackToGame();
+    
+    if (FPreLoadScreenManager::Get())
+    {
+        FPreLoadScreenManager::Get()->PassPreLoadScreenWindowBackToGame();
+    }
+
+	{
+		SCOPED_BOOT_TIMING("GEngine->ParseCommandline()");
+		GEngine->ParseCommandline();
+	}
+
+	FEmbeddedCommunication::ForceTick(12);
+
+	{
+		SCOPED_BOOT_TIMING("InitTime");
+		InitTime();
+	}
+
+	SlowTask.EnterProgressFrame(60);
+
+	{
+		SCOPED_BOOT_TIMING("GEngine->Init");
+		GEngine->Init(this);
+	}
+
+	// Call init callbacks
+	FCoreDelegates::OnPostEngineInit.Broadcast();
+
+	SlowTask.EnterProgressFrame(30);
+
+	// initialize engine instance discovery
+	if (FPlatformProcess::SupportsMultithreading())
+	{
+		SCOPED_BOOT_TIMING("SessionService etc");
+		if (!IsRunningCommandlet())
+		{
+			SessionService = FModuleManager::LoadModuleChecked<ISessionServicesModule>("SessionServices").GetSessionService();
+			
+			if (SessionService.IsValid())
+			{
+			SessionService->Start();
+		}
+		}
+
+		EngineService = new FEngineService();
+	}
+
+	{
+		SCOPED_BOOT_TIMING("IProjectManager::Get().LoadModulesForProject(ELoadingPhase::PostEngineInit)");
+		// Load all the post-engine init modules
+		if (!IProjectManager::Get().LoadModulesForProject(ELoadingPhase::PostEngineInit) || !IPluginManager::Get().LoadModulesForEnabledPlugins(ELoadingPhase::PostEngineInit))
+		{
+			RequestEngineExit(TEXT("One or more modules failed PostEngineInit"));
+			return 1;
+		}
+	}
+
+	{
+		SCOPED_BOOT_TIMING("GEngine->Start()");
+		GEngine->Start();
+	}
+
+	FEmbeddedCommunication::ForceTick(13);
+
+    if (FPreLoadScreenManager::Get() && FPreLoadScreenManager::Get()->HasActivePreLoadScreenType(EPreLoadScreenTypes::EngineLoadingScreen))
+    {
+		SCOPED_BOOT_TIMING("WaitForEngineLoadingScreenToFinish");
+		FPreLoadScreenManager::Get()->SetEngineLoadingComplete(true);
+        FPreLoadScreenManager::Get()->WaitForEngineLoadingScreenToFinish();
+    }
+    else
+    {
+		SCOPED_BOOT_TIMING("WaitForMovieToFinish");
+		GetMoviePlayer()->WaitForMovieToFinish();
+    }
+
+	FTraceAuxiliary::EnableChannels();
+
+#if !UE_SERVER
+	// initialize media framework
+	IMediaModule* MediaModule = FModuleManager::LoadModulePtr<IMediaModule>("Media");
+
+	if (MediaModule != nullptr)
+	{
+		MediaModule->SetTimeSource(MakeShareable(new FAppMediaTimeSource));
+	}
+#endif
+
+	FEmbeddedCommunication::ForceTick(14);
+
+	// initialize automation worker
+#if WITH_AUTOMATION_WORKER
+	FModuleManager::Get().LoadModule("AutomationWorker");
+#endif
+
+	// Automation tests can be invoked locally in non-editor builds configuration (e.g. performance profiling in Test configuration)
+#if WITH_ENGINE && !UE_BUILD_SHIPPING
+	FModuleManager::Get().LoadModule("AutomationController");
+	FModuleManager::GetModuleChecked<IAutomationControllerModule>("AutomationController").Init();
+#endif
+
+#if WITH_EDITOR
+	if (GIsEditor)
+	{
+		FModuleManager::Get().LoadModule(TEXT("ProfilerClient"));
+	}
+
+	FModuleManager::Get().LoadModule(TEXT("SequenceRecorder"));
+	FModuleManager::Get().LoadModule(TEXT("SequenceRecorderSections"));
+#endif
+
+	GIsRunning = true;
+
+	if (!GIsEditor)
+	{
+		// hide a couple frames worth of rendering
+		FViewport::SetGameRenderingEnabled(true, 3);
+	}
+
+	FEmbeddedCommunication::ForceTick(15);
+
+	FCoreDelegates::StarvedGameLoop.BindStatic(&GameLoopIsStarved);
+
+	// Ready to measure thread heartbeat
+	FThreadHeartBeat::Get().Start();
+
+	FShaderPipelineCache::PauseBatching();
+   	{
+#if defined(WITH_CODE_GUARD_HANDLER) && WITH_CODE_GUARD_HANDLER
+         void CheckImageIntegrity();
+        CheckImageIntegrity();
+#endif
+    }
+    
+    {
+		SCOPED_BOOT_TIMING("FCoreDelegates::OnFEngineLoopInitComplete.Broadcast()");
+		FCoreDelegates::OnFEngineLoopInitComplete.Broadcast();
+	}
+	FShaderPipelineCache::ResumeBatching();
+
+#if BUILD_EMBEDDED_APP
+	FEmbeddedCommunication::AllowSleep(TEXT("Startup"));
+	FEmbeddedCommunication::KeepAwake(TEXT("FirstTicks"), true);
+#endif
+	
+#if UE_EXTERNAL_PROFILING_ENABLED
+	FExternalProfiler* ActiveProfiler = FActiveExternalProfilerBase::InitActiveProfiler();
+	if (ActiveProfiler)
+	{
+		ActiveProfiler->Register();
+	}
+#endif		// UE_EXTERNAL_PROFILING_ENABLED
+
+	FDelayedAutoRegisterHelper::RunAndClearDelayedAutoRegisterDelegates(EDelayedRegisterRunPhase::EndOfEngineInit);
+
+	// Emit logging. Don't edit! Automation looks for this to detect failures during initialization.
+	UE_LOG(LogInit, Display, TEXT("Engine is initialized. Leaving FEngineLoop::Init()"));
+	return 0;
+}
+
+
+```
