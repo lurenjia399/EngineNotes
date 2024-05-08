@@ -66,7 +66,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 32.72998046875,
+											"left": 24.72998046875,
 											"top": 5,
 											"width": 115.9052734375,
 											"height": 13,
@@ -82,7 +82,7 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;1",
-											"left": 13,
+											"left": 5,
 											"top": 5,
 											"width": 14.72998046875,
 											"height": 13,
@@ -93,9 +93,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 8,
-									"width": 1049,
-									"height": 801,
+									"width": 1281,
+									"height": 993,
 									"nameLabel": {
 										"$ref": "AAAAAAGO6tqnOxn4D7k="
 									},
@@ -2559,6 +2558,7 @@
 								"$ref": "AAAAAAGO6tqnOhn1l2o="
 							},
 							"name": "CreateDummyWorld",
+							"documentation": "1 创建空的world",
 							"source": {
 								"$ref": "AAAAAAGO6u8yXxrjiIk="
 							},
