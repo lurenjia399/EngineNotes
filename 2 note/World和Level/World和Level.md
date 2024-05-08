@@ -414,7 +414,6 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 	}
 
 	// Create new UWorld, ULevel and UModel.
-	// zi'mia
 	const FString WorldNameString = (WorldName != NAME_None) ? WorldName.ToString() : TEXT("Untitled");
 	UWorld* NewWorld = NewObject<UWorld>(WorldPackage, *WorldNameString);
 	NewWorld->SetFlags(RF_Transactional);
@@ -434,6 +433,7 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 	// Tell the engine we are adding a world (unless we are asked not to)
 	if( ( GEngine ) && ( bInformEngineOfWorld == true ) )
 	{
+		// 广播事件
 		GEngine->WorldAdded( NewWorld );
 	}
 
@@ -444,10 +444,12 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 ```cpp
 void UGameInstance::Init()
 {
+	// 蓝图实现这个方法，蓝图调用
 	ReceiveInit();
 
 	if (!IsRunningCommandlet())
 	{
+		// 
 		UClass* SpawnClass = GetOnlineSessionClass();
 		OnlineSession = NewObject<UOnlineSession>(this, SpawnClass);
 		if (OnlineSession)
