@@ -449,7 +449,7 @@ void UGameInstance::Init()
 
 	if (!IsRunningCommandlet())
 	{
-		// 
+		// 创建UOnlineSession
 		UClass* SpawnClass = GetOnlineSessionClass();
 		OnlineSession = NewObject<UOnlineSession>(this, SpawnClass);
 		if (OnlineSession)
