@@ -365,13 +365,14 @@ void UGameInstance::InitializeStandalone(const FName InPackageName, UPackage* In
 	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false, InPackageName, InWorldPackage);
 	DummyWorld->SetGameInstance(this);
 	WorldContext->SetCurrentWorld(DummyWorld);
+	
 	// 第三步，GameInstance初始化操作
 	Init();
 }
 
 ```
-## 6 主要就是分成了三部分。
-### 6.1 创建WorldContext
+6 主要就是分成了三部分。
+6.1 创建WorldContext
 ```cpp
 // 第一步
 FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
@@ -387,26 +388,24 @@ FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
 	return *NewWorldContext;
 }
 ```
-### 6.2 创建DummyWorld，虚假的World，直到LoadMap加在真正的world
+6.2 创建DummyWorld，虚假的World，直到LoadMap加在真正的world
 ```cpp
 UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngineOfWorld, FName WorldName, UPackage* InWorldPackage, bool bAddToRoot, ERHIFeatureLevel::Type InFeatureLevel)
 {
+	// 设置了一些状态
 	if (InFeatureLevel >= ERHIFeatureLevel::Num)
 	{
 		InFeatureLevel = GMaxRHIFeatureLevel;
 	}
-
 	UPackage* WorldPackage = InWorldPackage;
 	if ( !WorldPackage )
 	{
 		WorldPackage = CreatePackage(nullptr);
 	}
-
 	if (InWorldType == EWorldType::PIE)
 	{
 		WorldPackage->SetPackageFlags(PKG_PlayInEditor);
 	}
-
 	// Mark the package as containing a world.  This has to happen here rather than at serialization time,
 	// so that e.g. the referenced assets browser will work correctly.
 	if ( WorldPackage != GetTransientPackage() )
@@ -415,6 +414,7 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 	}
 
 	// Create new UWorld, ULevel and UModel.
+	// zi'mia
 	const FString WorldNameString = (WorldName != NAME_None) ? WorldName.ToString() : TEXT("Untitled");
 	UWorld* NewWorld = NewObject<UWorld>(WorldPackage, *WorldNameString);
 	NewWorld->SetFlags(RF_Transactional);
@@ -440,7 +440,7 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 	return NewWorld;
 }
 ```
-### 6.3 GameInstance初始化操作
+6.3 GameInstance初始化操作
 ```cpp
 void UGameInstance::Init()
 {
