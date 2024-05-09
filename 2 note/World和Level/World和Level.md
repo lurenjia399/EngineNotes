@@ -494,17 +494,20 @@ void UGameInstance::StartGameInstance()
 	UEngine* const Engine = GetEngine();
 
 	// 前边全省略了，不关心
-	// 这个就是读UGameMapsSetting这个配置了，也在DefaltEngine.ini里有
+	// 这个就是读UGameMapsSetting这个配置了，也在DefaultEngine.ini里有
 	const UGameMapsSettings* GameMapsSettings = GetDefault<UGameMapsSettings>();
 	// 拿到GameDefaultMap
 	const FString& DefaultMap = GameMapsSettings->GetGameDefaultMap();
 
 	FString PackageName;
+	// 这个判断，是否通过命令行来指定map，
+	//路径/ALSVServer-Win64-DebugGame.exe Game/ThirdPersonCPP/Maps/ThirdPersonExampleMap -log
+	// 如果没有命令行，就从DefaultEngine.ini里取
 	if (!FParse::Token(Tmp, PackageName, 0) || **PackageName == '-')
 	{
 		PackageName = DefaultMap + GameMapsSettings->LocalMapOptions;
 	}
-
+	// 将定好的map填入到url中
 	FURL URL(&DefaultURL, *PackageName, TRAVEL_Partial);
 	if (URL.Valid)
 	{
