@@ -575,10 +575,17 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 7.9 删掉当前world
 		GEngine->WorldDestroyed(WorldContext.World());
 		WorldContext.World()->RemoveFromRoot();
-		// 8.0 标记world中的所有level和streaminglevel，后续让gc把它们干掉
-		// 8.1 设置当前世界为kon
+		// 7.9.1 标记world中的所有level和streaminglevel，后续让gc把它们干掉
+		// 7.9.2 设置当前世界为nullptr
 		WorldContext.SetCurrentWorld(nullptr);
 	}
+	// 8 PIE的操作，
+	// If this world is a PIE instance, we need to check if we are traveling to another PIE instance's world.
+	// If we are, we need to set the PIERemapPrefix so that we load a copy of that world, instead of loading the
+	// PIE world directly.
+	// 9 加载新的world
+	{
 	
+	}
 }
 ```
