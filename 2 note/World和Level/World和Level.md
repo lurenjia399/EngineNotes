@@ -473,3 +473,18 @@ void UGameInstance::Init()
 	SubsystemCollection.Initialize(this);
 }
 ```
+7 接下来就是start的部分，也是从FEngineLoop::Init方法中调用
+```cpp
+{
+	SCOPED_BOOT_TIMING("GEngine->Start()");
+	// 看上去只有GameEngine有这个start，EditorEngine没有
+	GEngine->Start();
+}
+void UGameEngine::Start()
+{
+	UE_LOG(LogInit, Display, TEXT("Starting Game."));
+
+	GameInstance->StartGameInstance();
+}
+```
+8 接下来看下Gam
