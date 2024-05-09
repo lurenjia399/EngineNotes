@@ -569,8 +569,15 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 7.5 销毁掉world里的所有Actor，有些例外
 		// 7.6 Destroy all player states  in this world.
 		// 就是WorldContext.World()->DestroyActor(PlayerState, true);这样删掉
-		// 7.7 继续处理当前世界里数据
-		
+		// 7.7 RouteEndPlay方法，还不知道干嘛的
+		// 7.8 // Do this after destroying pawns/playercontrollers, in case that spawns new things (e.g. dropped weapons)
+			WorldContext.World()->CleanupWorld();
+		// 7.9 删掉当前world
+		GEngine->WorldDestroyed(WorldContext.World());
+		WorldContext.World()->RemoveFromRoot();
+		// 8.0 标记world中的所有level和streaminglevel，后续让gc把它们干掉
+		// 8.1 设置当前世界为kon
+		WorldContext.SetCurrentWorld(nullptr);
 	}
 	
 }
