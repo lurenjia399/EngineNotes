@@ -388,7 +388,7 @@ FWorldContext& UEngine::CreateNewWorldContext(EWorldType::Type WorldType)
 	return *NewWorldContext;
 }
 ```
-6.2 创建DummyWorld，虚假的World，直到LoadMap加在真正的world
+6.2 UWorld::CreateWorld方法创建DummyWorld，虚假的World，直到LoadMap加在真正的world
 ```cpp
 UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngineOfWorld, FName WorldName, UPackage* InWorldPackage, bool bAddToRoot, ERHIFeatureLevel::Type InFeatureLevel)
 {
