@@ -494,8 +494,9 @@ void UGameInstance::StartGameInstance()
 	UEngine* const Engine = GetEngine();
 
 	// 前边全省略了，不关心
-	
+	// 这个就是读UGameMapsSetting这个配置了，也在DefaltEngine.ini里有
 	const UGameMapsSettings* GameMapsSettings = GetDefault<UGameMapsSettings>();
+	// 拿到GameDefaultMap
 	const FString& DefaultMap = GameMapsSettings->GetGameDefaultMap();
 
 	FString PackageName;
