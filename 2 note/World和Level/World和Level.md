@@ -561,14 +561,15 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	// 7 卸载当前的world
 	{
 		// 7.1 Clean up networking
-		// 7.2 处理LevelStreaming
+		// 7.2 调用FlushLevelStreaming方法
 		// 7.3 我们自己加了这个
 		WorldTraverseUtils.OnPreChangeWorld(WorldContext.World(), nullptr);
 		// 7.4 Disassociate the players from their PlayerControllers in this world.
 		// 就是通过GameInstance找到playercontroler和pawn，都DestroyActor销毁掉
-		// 7.5 销毁掉world里的所有Actor
+		// 7.5 销毁掉world里的所有Actor，有些例外
 		// 7.6 Destroy all player states  in this world.
 		// 就是WorldContext.World()->DestroyActor(PlayerState, true);这样删掉
+		// 7.7 继续处理当前世界里数据
 		
 	}
 	
