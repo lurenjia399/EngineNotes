@@ -511,8 +511,10 @@ void UGameInstance::StartGameInstance()
 	FURL URL(&DefaultURL, *PackageName, TRAVEL_Partial);
 	if (URL.Valid)
 	{
+		// 这个方法就是加在我们的map
 		BrowseRet = Engine->Browse(*WorldContext, URL, Error);
 	}
+	
 
 	// If waiting for a network connection, go into the starting level.
 	if (BrowseRet == EBrowseReturnVal::Failure)
