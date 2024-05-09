@@ -567,6 +567,8 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 7.4 Disassociate the players from their PlayerControllers in this world.
 		// 就是通过GameInstance找到playercontroler和pawn，都DestroyActor销毁掉
 		// 7.5 销毁掉world里的所有Actor
+		// 7.6 Destroy all player states  in this world.
+		// 就是WorldContext.World()->DestroyActor(PlayerState, true);这样删掉
 		
 	}
 	
