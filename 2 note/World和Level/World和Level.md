@@ -585,7 +585,13 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	// PIE world directly.
 	// 9 加载新的world
 	{
-	
+		// 9,1 LoadPackage加载
+		// 9.2 拿到newworld,是个空的？
+		NewWorld = UWorld::FindWorldInPackage(WorldPackage);
+		// 9.3 判断newworld的WorldType，如果是game,pie就不看了
+		NewWorld = CreatePIEWorldByLoadingFromPackage(WorldContext, URL.Map, WorldPackage);
+		
+		
 	}
 }
 ```
