@@ -538,5 +538,20 @@ void UGameInstance::StartGameInstance()
 ```
 9 至此，GameEngine的流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法创建出默认的World。下面我们看看默认的World具体是怎么创建出来的，也就是通过UEngine::Browse这个方法会调到UEngine::LoadMap
 ```cpp
-
+bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
+{
+	// 代码很长，这里简化下
+	// 1 一堆宏，不看了
+	// 2 做一些前置初始化，赋值bMapNeedLoad
+	bool bMapNeedLoad = !URL.HasOption(TEXT("KeepWorld"));
+	WorldContext.NewLoadMap = bMapNeedLoad;
+	if (WorldContext.World())
+	{
+		WorldContext.World()->bIsLevelStreamingFrozen = false;
+	}
+	{
+		FCoreUObjectDelegates::PreLoadMap.Broadcast(URL.Map);
+	}
+	// 3 创建了一个结构体的局部变量，作用是make sure there is a matching PostLoadMap() no matter how we exit
+}
 ```
