@@ -536,4 +536,7 @@ void UGameInstance::StartGameInstance()
 }
 
 ```
-9 至此，GameEngine的流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法创建出默认的World
+9 至此，GameEngine的流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法创建出默认的World。下面我们看看默认的World具体是怎么创建出来的，也就是UEngine::Browse这个方法
+```cpp
+
+```
