@@ -590,7 +590,27 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		NewWorld = UWorld::FindWorldInPackage(WorldPackage);
 		// 9.3 判断newworld的WorldType，如果是game,pie就不看了
 		NewWorld = CreatePIEWorldByLoadingFromPackage(WorldContext, URL.Map, WorldPackage);
-		
+		// 9.4 字面意思，不复杂，就是初始化
+		if (bMapNeedLoad)
+		{
+			NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
+			GWorld = NewWorld;
+			WorldContext.SetCurrentWorld(NewWorld);
+			WorldContext.World()->WorldType = WorldContext.WorldType;
+			if (!WorldContext.World()->bIsWorldInitialized)
+			{
+				// InitWorld
+				WorldContext.World()->InitWorld();
+			}
+		}
+		WorldContext.World()->SetGameMode(URL);
+		WorldContext.World()->CreateAISystem();
+		WorldContext.World()->InitializeActorsForPlay(URL, true, &Context);
+		FNavigationSystem::AddNavigationSystemToWorld(*WorldContext.World(), FNavigationSystemRunMode::GameMode);
+		// 9.5 我们自己加了这个
+		WorldTraverseUtils.OnPostChangeWorld(WorldContext.World());
+		// 9.6 beginplay?
+		WorldContext.World()->BeginPlay();
 		
 	}
 }
