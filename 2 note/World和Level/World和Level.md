@@ -519,44 +519,21 @@ void UGameInstance::StartGameInstance()
 	// If waiting for a network connection, go into the starting level.
 	if (BrowseRet == EBrowseReturnVal::Failure)
 	{
-		UE_LOG(LogLoad, Error, TEXT("%s"), *FString::Printf(TEXT("Failed to enter %s: %s. Please check the log for errors."), *URL.Map, *Error));
-
-		// the map specified on the command-line couldn't be loaded.  ask the user if we should load the default map instead
-		if (FCString::Stricmp(*PackageName, *DefaultMap) != 0)
-		{
-			const FText Message = FText::Format(NSLOCTEXT("Engine", "MapNotFound", "The map specified on the commandline '{0}' could not be found. Would you like to load the default map instead?"), FText::FromString(URL.Map));
-			if (   FCString::Stricmp(*URL.Map, *DefaultMap) != 0  
-				&& FMessageDialog::Open(EAppMsgType::OkCancel, Message) != EAppReturnType::Ok)
-			{
-				// user canceled (maybe a typo while attempting to run a commandlet)
-				FPlatformMisc::RequestExit(false);
-				return;
-			}
-			else
-			{
-				BrowseRet = Engine->Browse(*WorldContext, FURL(&DefaultURL, *(DefaultMap + GameMapsSettings->LocalMapOptions), TRAVEL_Partial), Error);
-			}
-		}
-		else
-		{
-			const FText Message = FText::Format(NSLOCTEXT("Engine", "MapNotFoundNoFallback", "The map specified on the commandline '{0}' could not be found. Exiting."), FText::FromString(URL.Map));
-			FMessageDialog::Open(EAppMsgType::Ok, Message);
-			FPlatformMisc::RequestExit(false);
-			return;
-		}
+		// 这边没啥东西，就是加在地图失败的处理
 	}
 
 	// Handle failure.
 	if (BrowseRet == EBrowseReturnVal::Failure)
 	{
-		UE_LOG(LogLoad, Error, TEXT("%s"), *FString::Printf(TEXT("Failed to enter %s: %s. Please check the log for errors."), *DefaultMap, *Error));
-		const FText Message = FText::Format(NSLOCTEXT("Engine", "DefaultMapNotFound", "The default map '{0}' could not be found. Exiting."), FText::FromString(DefaultMap));
+		// 这边也是，加载地图失败了弹窗
 		FMessageDialog::Open(EAppMsgType::Ok, Message);
 		FPlatformMisc::RequestExit(false);
 		return;
 	}
 
+	// 广播OnStartGameInstance事件
 	BroadcastOnStart();
 }
 
 ```
+9 至此，GameEngine的流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法创建出默认的World
