@@ -419,6 +419,7 @@ UWorld* UWorld::CreateWorld(const EWorldType::Type InWorldType, bool bInformEngi
 	NewWorld->SetFlags(RF_Transactional);
 	NewWorld->WorldType = InWorldType;
 	NewWorld->FeatureLevel = InFeatureLevel;
+	// 这个方法里会创建PersistentLevel
 	NewWorld->InitializeNewWorld(UWorld::InitializationValues().ShouldSimulatePhysics(false).EnableTraceCollision(true).CreateNavigation(InWorldType == EWorldType::Editor).CreateAISystem(InWorldType == EWorldType::Editor));
 
 	// Clear the dirty flag set during SpawnActor and UpdateLevelComponents
@@ -473,7 +474,7 @@ void UGameInstance::Init()
 	SubsystemCollection.Initialize(this);
 }
 ```
-7 接下来就是start的部分，也是从FEngineLoop::Init方法中调用
+7 接下来就是start的部分，也是从FEngineLoop::Init方法中调用。就是创建真正的默认world
 ```cpp
 {
 	SCOPED_BOOT_TIMING("GEngine->Start()");
@@ -511,17 +512,14 @@ void UGameInstance::StartGameInstance()
 	FURL URL(&DefaultURL, *PackageName, TRAVEL_Partial);
 	if (URL.Valid)
 	{
-		// 这个方法就是加在我们的map
+		// 这个方法就是加载我们的map
 		BrowseRet = Engine->Browse(*WorldContext, URL, Error);
 	}
-	
-
 	// If waiting for a network connection, go into the starting level.
 	if (BrowseRet == EBrowseReturnVal::Failure)
 	{
 		// 这边没啥东西，就是加在地图失败的处理
 	}
-
 	// Handle failure.
 	if (BrowseRet == EBrowseReturnVal::Failure)
 	{
@@ -530,7 +528,6 @@ void UGameInstance::StartGameInstance()
 		FPlatformMisc::RequestExit(false);
 		return;
 	}
-
 	// 广播OnStartGameInstance事件
 	BroadcastOnStart();
 }
