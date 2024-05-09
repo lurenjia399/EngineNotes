@@ -553,5 +553,14 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		FCoreUObjectDelegates::PreLoadMap.Broadcast(URL.Map);
 	}
 	// 3 创建了一个结构体的局部变量，作用是make sure there is a matching PostLoadMap() no matter how we exit
+	// 4 判断if (bMapNeedLoad)，应该就是处理当前world中数据
+	// 5 记录StartTime
+	double  StartTime = FPlatformTime::Seconds();
+	// 6 卸载当前的world
+	{
+		// 6.1 Clean up networking
+		// 6.2 
+	}
+	
 }
 ```
