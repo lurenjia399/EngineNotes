@@ -536,7 +536,7 @@ void UGameInstance::StartGameInstance()
 }
 
 ```
-9 至此，GameEngine的流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法创建出默认的World。下面我们看看默认的World具体是怎么创建出来的，也就是通过UEngine::Browse这个方法会调到UEngine::LoadMap
+9 下面我们看看默认的World具体是怎么创建出来的，也就是通过UEngine::Browse这个方法会调到UEngine::LoadMap
 ```cpp
 bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
 {
@@ -590,7 +590,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		NewWorld = UWorld::FindWorldInPackage(WorldPackage);
 		// 9.3 判断newworld的WorldType，如果是game,pie就不看了
 		NewWorld = CreatePIEWorldByLoadingFromPackage(WorldContext, URL.Map, WorldPackage);
-		// 9.4 字面意思，不复杂，就是初始化
+		// 9.4 字面意思，很重要的
 		if (bMapNeedLoad)
 		{
 			NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
@@ -611,7 +611,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		WorldTraverseUtils.OnPostChangeWorld(WorldContext.World());
 		// 9.6 beginplay?
 		WorldContext.World()->BeginPlay();
-		
 	}
 }
 ```
+10 至此，GameEngine的world创建流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法调用到loadmap创建出默认的World。
