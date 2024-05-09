@@ -562,7 +562,9 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	{
 		// 7.1 Clean up networking
 		// 7.2 处理LevelStreaming
-		// 7.3
+		// 7.3 我们自己加了这个
+		WorldTraverseUtils.OnPreChangeWorld(WorldContext.World(), nullptr);
+		
 	}
 	
 }
