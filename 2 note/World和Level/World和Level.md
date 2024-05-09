@@ -556,10 +556,13 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	// 4 判断if (bMapNeedLoad)，应该就是处理当前world中数据
 	// 5 记录StartTime
 	double  StartTime = FPlatformTime::Seconds();
-	// 6 卸载当前的world
+	// 6 我们自己加了这个
+	FWorldTraverseUtils WorldTraverseUtils(bMapNeedLoad);
+	// 7 卸载当前的world
 	{
-		// 6.1 Clean up networking
-		// 6.2 
+		// 7.1 Clean up networking
+		// 7.2 处理LevelStreaming
+		// 7.3
 	}
 	
 }
