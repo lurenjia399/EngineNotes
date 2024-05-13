@@ -675,6 +675,7 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 	// 初始化各种信息
 	PopulateLevelsList();
 
+	// 移除无效的SubLevel,没啥用感觉
 	if (bRemoveInvalidSelectedLevelsAfter)
 	{
 		InvalidSelectedLevels = SavedInvalidSelectedLevels;
@@ -682,7 +683,71 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 	}
 }
 ```
+代码不长，逻辑也不复杂，下面看下AddLevelsToWorld实现添加SubLevel的方法
+```cpp
+ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> PackageNames, TSubclassOf<ULevelStreaming> LevelStreamingClass)
+{
+	// World没有，返回nullptr
+	if (!ensure(InWorld))
+	{
+		return nullptr;
+	}
 
+	// 编辑器里面那个加载东西的进度条
+	FScopedSlowTask SlowTask(PackageNames.Num(), LOCTEXT("AddLevelsToWorldTask", "Adding Levels to World"));
+	SlowTask.MakeDialog();
+
+	// Sort the level packages alphabetically by name.
+	// 按照PackageName的字母顺序对SubLevels进行排序
+	PackageNames.Sort();
+
+	// Fire ULevel::LevelDirtiedEvent when falling out of scope.
+	FScopedLevelDirtied LevelDirtyCallback;
+
+	// Try to add the levels that were specified in the dialog.
+	ULevel* NewLevel = nullptr;
+	for (const FString& PackageName : PackageNames)
+	{
+		SlowTask.EnterProgressFrame();
+
+		if (ULevelStreaming* NewStreamingLevel = AddLevelToWorld_Internal(InWorld, *PackageName, LevelStreamingClass))
+		{
+			NewLevel = NewStreamingLevel->GetLoadedLevel();
+			if (NewLevel)
+			{
+				LevelDirtyCallback.Request();
+			}
+		}
+	} // for each file
+
+	  // Set the last loaded level to be the current level
+	if (NewLevel)
+	{
+		if (InWorld->SetCurrentLevel(NewLevel))
+		{
+			FEditorDelegates::NewCurrentLevel.Broadcast();
+		}
+	}
+
+	// For safety
+	if (GLevelEditorModeTools().IsModeActive(FBuiltinEditorModes::EM_Landscape))
+	{
+		GLevelEditorModeTools().ActivateDefaultMode();
+	}
+
+	// Broadcast the levels have changed (new style)
+	InWorld->BroadcastLevelsChanged();
+	FEditorDelegates::RefreshLevelBrowser.Broadcast();
+
+	// Update volume actor visibility for each viewport since we loaded a level which could potentially contain volumes
+	if (GUnrealEd)
+	{
+		GUnrealEd->UpdateVolumeActorVisibility(nullptr);
+	}
+
+	return NewLevel;
+}
+```
 
 ### 2 WorldComposition方式
 
