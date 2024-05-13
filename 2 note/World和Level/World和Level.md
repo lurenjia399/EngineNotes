@@ -617,3 +617,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 10 至此，GameEngine的world创建流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法调用到loadmap创建出默认的World。
 11 还有个问题，他为什么要先创建个空的，然后再加载默认的地图呢？
 # 2 流式关卡切换
+一种将大世界地图分成小level的方式，然后通过关卡之间的加载卸载来模拟大世界的逻辑
+## 2.1 添加子关卡的两种方式
+### 1 手动添加
+
