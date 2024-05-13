@@ -668,7 +668,7 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 	// 当前选择的SubLevels是否有效
 	FLevelModelList SavedInvalidSelectedLevels = InvalidSelectedLevels;
 
-	// 添加SubLevels的方法，
+	// 添加SubLevels的方法，注意AddedLevelStreamingClass这个uclass
 	EditorLevelUtils::AddLevelsToWorld(CurrentWorld.Get(), MoveTemp(PackageNames), AddedLevelStreamingClass);
 
 	// Force a cached level list rebuild
@@ -683,7 +683,7 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 	}
 }
 ```
-代码不长，逻辑也不复杂，下面看下AddLevelsToWorld实现添加SubLevel的方法
+代码不长，逻辑也不复杂，注意AddedLevelStreamingClass这个uclass，这个是我们可以选择的SubLevel的加载方式，如果是SetAddStreamingMethod_AlwaysLoaded这种情况就会创建出ULevelStreamingAlwaysLoaded这个类，如果是SetAddStreamingMethod_Blueprint这种情况就会创建出ULevelStreamingDynamic这个类。下面看下AddLevelsToWorld实现添加SubLevel的方法
 ```cpp
 ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> PackageNames, TSubclassOf<ULevelStreaming> LevelStreamingClass)
 {
