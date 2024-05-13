@@ -623,6 +623,8 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 1 
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405132128759.png)
 再Levels编辑器中执行AddExisting节点就行，是在persistent level中添加子关卡。
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405132132966.png)
+添加完后就是这样
 2 代码部分:
 点击了AddExisting就会执行AddExistingLevel_Executed方法
 ```cpp
@@ -633,8 +635,49 @@ void FStreamingLevelCollectionModel::AddExistingLevel_Executed()
 {
 	AddExistingLevel();
 }
-```
 
+void FStreamingLevelCollectionModel::AddExistingLevel(bool bRemoveInvalidSelectedLevelsAfter)
+{
+	if (!bAssetDialogOpen)
+	{
+		bAssetDialogOpen = true;
+		// 选择SubLevel的代理
+		FEditorFileUtils::FOnLevelsChosen LevelsChosenDelegate = FEditorFileUtils::FOnLevelsChosen::CreateSP(this, &FStreamingLevelCollectionModel::HandleAddExistingLevelSelected, bRemoveInvalidSelectedLevelsAfter);
+		// 取消选择SubLevel的代理
+		FEditorFileUtils::FOnLevelPickingCancelled LevelPickingCancelledDelegate = FEditorFileUtils::FOnLevelPickingCancelled::CreateSP(this, &FStreamingLevelCollectionModel::HandleAddExistingLevelCancelled);
+		const bool bAllowMultipleSelection = true;
+		// 弹出可选择SubLevel的界面，把两个代理传进去
+		FEditorFileUtils::OpenLevelPickingDialog(LevelsChosenDelegate, LevelPickingCancelledDelegate, bAllowMultipleSelection);
+	}
+}
+```
+下面我们看下HandleAddExistingLevelSelected这个方法，再选择了SubLevel之后会走到
+```cpp
+void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray<FAssetData>& SelectedAssets, bool bRemoveInvalidSelectedLevelsAfter)
+{
+	bAssetDialogOpen = false;
+
+	TArray<FString> PackageNames;
+	for (const FAssetData& AssetData : SelectedAssets)
+	{
+		PackageNames.Add(AssetData.PackageName.ToString());
+	}
+
+	// Save or selected list, adding a new level will clean it up
+	FLevelModelList SavedInvalidSelectedLevels = InvalidSelectedLevels;
+
+	EditorLevelUtils::AddLevelsToWorld(CurrentWorld.Get(), MoveTemp(PackageNames), AddedLevelStreamingClass);
+
+	// Force a cached level list rebuild
+	PopulateLevelsList();
+
+	if (bRemoveInvalidSelectedLevelsAfter)
+	{
+		InvalidSelectedLevels = SavedInvalidSelectedLevels;
+		RemoveInvalidSelectedLevels_Executed();
+	}
+}
+```
 
 
 ### 2 WorldComposition方式
