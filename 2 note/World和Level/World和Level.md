@@ -1,4 +1,7 @@
 # 1 World的创建流程
+
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405132122388.png)
+
 1 我们从windows的启动开始看
 ```cpp
 // LaunchWindows.cpp文件中的main函数
