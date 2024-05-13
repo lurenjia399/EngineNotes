@@ -721,6 +721,7 @@ ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> Pac
 	} // for each file
 
 	  // Set the last loaded level to be the current level
+	  // 设置当前Level
 	if (NewLevel)
 	{
 		if (InWorld->SetCurrentLevel(NewLevel))
@@ -736,10 +737,12 @@ ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> Pac
 	}
 
 	// Broadcast the levels have changed (new style)
+	// 广播事件
 	InWorld->BroadcastLevelsChanged();
 	FEditorDelegates::RefreshLevelBrowser.Broadcast();
 
 	// Update volume actor visibility for each viewport since we loaded a level which could potentially contain volumes
+	// 看英文注释
 	if (GUnrealEd)
 	{
 		GUnrealEd->UpdateVolumeActorVisibility(nullptr);
@@ -748,6 +751,78 @@ ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> Pac
 	return NewLevel;
 }
 ```
+就是一个对加载出的ULevelStreaming进行初始化啥的，里面包含些广播事件，初始化啥的。下面看下ULevelStreaming的创建流程
+```cpp
+ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, const TCHAR* LevelPackageName, TSubclassOf<ULevelStreaming> LevelStreamingClass, const FTransform& LevelTransform)
+{
+	ULevel* NewLevel = nullptr;
+	ULevelStreaming* StreamingLevel = nullptr;
+	// 是否是主关卡？
+	bool bIsPersistentLevel = (InWorld->PersistentLevel->GetOutermost()->GetName() == FString(LevelPackageName));
 
+	// 如果是主关卡 或者 已经加载过了，就弹出提示，不看了这部分
+	if (bIsPersistentLevel || FLevelUtils::FindStreamingLevel(InWorld, LevelPackageName))
+	{
+		// 不看了省略
+	}
+	else
+	{
+		// If the selected class is still NULL or the selected class is abstract, abort the operation.
+		if (LevelStreamingClass == nullptr || LevelStreamingClass->HasAnyClassFlags(CLASS_Abstract))
+		{
+			return nullptr;
+		}
+
+		const FScopedBusyCursor BusyCursor;
+
+		// 根据LevelStreamingClass创建出我们的
+		StreamingLevel = NewObject<ULevelStreaming>(InWorld, LevelStreamingClass, NAME_None, RF_NoFlags, NULL);
+
+		// Associate a package name.
+		StreamingLevel->SetWorldAssetByPackageName(LevelPackageName);
+
+		StreamingLevel->LevelTransform = LevelTransform;
+
+		// Seed the level's draw color.
+		StreamingLevel->LevelColor = FLinearColor::MakeRandomColor();
+
+		// Add the new level to world.
+		InWorld->AddStreamingLevel(StreamingLevel);
+
+		// Refresh just the newly created level.
+		TArray<ULevelStreaming*> LevelsForRefresh;
+		LevelsForRefresh.Add(StreamingLevel);
+		InWorld->RefreshStreamingLevels(LevelsForRefresh);
+		InWorld->MarkPackageDirty();
+
+		NewLevel = StreamingLevel->GetLoadedLevel();
+		if (NewLevel != nullptr)
+		{
+			EditorLevelUtils::SetLevelVisibility(NewLevel, true, true);
+
+			// Levels migrated from other projects may fail to load their world settings
+			// If so we create a new AWorldSettings actor here.
+			if (NewLevel->GetWorldSettings(false) == nullptr)
+			{
+				UWorld* SubLevelWorld = CastChecked<UWorld>(NewLevel->GetOuter());
+
+				FActorSpawnParameters SpawnInfo;
+				SpawnInfo.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+				SpawnInfo.Name = GEngine->WorldSettingsClass->GetFName();
+				AWorldSettings* NewWorldSettings = SubLevelWorld->SpawnActor<AWorldSettings>(GEngine->WorldSettingsClass, SpawnInfo);
+
+				NewLevel->SetWorldSettings(NewWorldSettings);
+			}
+		}
+	}
+
+	if (NewLevel) // if the level was successfully added
+	{
+		FEditorDelegates::OnAddLevelToWorld.Broadcast(NewLevel);
+	}
+
+	return StreamingLevel;
+}
+```
 ### 2 WorldComposition方式
 
