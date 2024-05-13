@@ -789,21 +789,22 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 		// 将创建出的StreamingLevel和World关联起来下面介绍下
 		// 
 		StreamingLevel->SetWorldAssetByPackageName(LevelPackageName);
-
+		// SteamingLevel的初始化
 		StreamingLevel->LevelTransform = LevelTransform;
-
-		// Seed the level's draw color.
 		StreamingLevel->LevelColor = FLinearColor::MakeRandomColor();
 
 		// Add the new level to world.
+		// 添加StreaminLevel
 		InWorld->AddStreamingLevel(StreamingLevel);
 
 		// Refresh just the newly created level.
+		// 刷新下新创建出的streamingLevel？
 		TArray<ULevelStreaming*> LevelsForRefresh;
 		LevelsForRefresh.Add(StreamingLevel);
 		InWorld->RefreshStreamingLevels(LevelsForRefresh);
 		InWorld->MarkPackageDirty();
 
+		// 获取SteamingLevel中包的ULevel
 		NewLevel = StreamingLevel->GetLoadedLevel();
 		if (NewLevel != nullptr)
 		{
@@ -811,6 +812,7 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 
 			// Levels migrated from other projects may fail to load their world settings
 			// If so we create a new AWorldSettings actor here.
+			// 为新关卡设置WorldSettings
 			if (NewLevel->GetWorldSettings(false) == nullptr)
 			{
 				UWorld* SubLevelWorld = CastChecked<UWorld>(NewLevel->GetOuter());
@@ -825,6 +827,7 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 		}
 	}
 
+	// 广播事件
 	if (NewLevel) // if the level was successfully added
 	{
 		FEditorDelegates::OnAddLevelToWorld.Broadcast(NewLevel);
