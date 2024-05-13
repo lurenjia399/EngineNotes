@@ -620,4 +620,22 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 一种将大世界地图分成小level的方式，然后通过关卡之间的加载卸载来模拟大世界的逻辑
 ## 2.1 添加子关卡的两种方式
 ### 1 手动添加
+1 
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405132128759.png)
+再Levels编辑器中执行AddExisting节点就行，是在persistent level中添加子关卡。
+2 代码部分:
+点击了AddExisting就会执行AddExistingLevel_Executed方法
+```cpp
+ActionList.MapAction( Commands.World_AddExistingLevel,
+		FExecuteAction::CreateSP( this, &FStreamingLevelCollectionModel::AddExistingLevel_Executed ) );
+		
+void FStreamingLevelCollectionModel::AddExistingLevel_Executed()
+{
+	AddExistingLevel();
+}
+```
+
+
+
+### 2 WorldComposition方式
 
