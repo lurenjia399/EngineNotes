@@ -626,6 +626,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405132132966.png)
 添加完后就是这样
 2 代码部分:
+#### AddExistingLevel_Executed
 点击了AddExisting就会执行AddExistingLevel_Executed方法
 ```cpp
 ActionList.MapAction( Commands.World_AddExistingLevel,
@@ -651,6 +652,7 @@ void FStreamingLevelCollectionModel::AddExistingLevel(bool bRemoveInvalidSelecte
 	}
 }
 ```
+#### HandleAddExistingLevelSelected
 下面我们看下HandleAddExistingLevelSelected这个方法，再选择了SubLevel之后会走到
 ```cpp
 void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray<FAssetData>& SelectedAssets, bool bRemoveInvalidSelectedLevelsAfter)
@@ -683,7 +685,9 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 	}
 }
 ```
-代码不长，逻辑也不复杂，注意AddedLevelStreamingClass这个uclass，这个是我们可以选择的SubLevel的加载方式，如果是SetAddStreamingMethod_AlwaysLoaded这种情况就会创建出ULevelStreamingAlwaysLoaded这个类，如果是SetAddStreamingMethod_Blueprint这种情况就会创建出ULevelStreamingDynamic这个类。下面看下AddLevelsToWorld实现添加SubLevel的方法
+代码不长，逻辑也不复杂，注意AddedLevelStreamingClass这个uclass，这个是我们可以选择的SubLevel的加载方式，如果是SetAddStreamingMethod_AlwaysLoaded这种情况就会创建出ULevelStreamingAlwaysLoaded这个类，如果是SetAddStreamingMethod_Blueprint这种情况就会创建出ULevelStreamingDynamic这个类。
+#### AddLevelsToWorld
+下面看下AddLevelsToWorld实现添加SubLevel的方法
 ```cpp
 ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> PackageNames, TSubclassOf<ULevelStreaming> LevelStreamingClass)
 {
@@ -710,6 +714,7 @@ ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> Pac
 	{
 		SlowTask.EnterProgressFrame();
 
+		// [[World和Level#ULevelStreaming 创建]]
 		if (ULevelStreaming* NewStreamingLevel = AddLevelToWorld_Internal(InWorld, *PackageName, LevelStreamingClass))
 		{
 			NewLevel = NewStreamingLevel->GetLoadedLevel();
@@ -751,7 +756,9 @@ ULevel* UEditorLevelUtils::AddLevelsToWorld(UWorld* InWorld, TArray<FString> Pac
 	return NewLevel;
 }
 ```
-就是一个对加载出的ULevelStreaming进行初始化啥的，里面包含些广播事件，初始化啥的。下面看下ULevelStreaming的创建流程
+就是一个对加载出的ULevelStreaming进行初始化啥的，里面包含些广播事件，初始化啥的。
+#### ULevelStreaming 创建
+下面看下ULevelStreaming的创建流程
 ```cpp
 ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, const TCHAR* LevelPackageName, TSubclassOf<ULevelStreaming> LevelStreamingClass, const FTransform& LevelTransform)
 {
@@ -775,10 +782,12 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 
 		const FScopedBusyCursor BusyCursor;
 
-		// 根据LevelStreamingClass创建出我们的
+		// 根据LevelStreamingClass创建出我们的ULevelStreaming
 		StreamingLevel = NewObject<ULevelStreaming>(InWorld, LevelStreamingClass, NAME_None, RF_NoFlags, NULL);
 
 		// Associate a package name.
+		// 将创建出的StreamingLevel和World关联起来下面介绍下
+		// 
 		StreamingLevel->SetWorldAssetByPackageName(LevelPackageName);
 
 		StreamingLevel->LevelTransform = LevelTransform;
