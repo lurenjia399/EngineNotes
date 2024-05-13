@@ -657,6 +657,7 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 {
 	bAssetDialogOpen = false;
 
+	// 遍历挑选的SubLevels，将每个PackageName存到数组中
 	TArray<FString> PackageNames;
 	for (const FAssetData& AssetData : SelectedAssets)
 	{
@@ -664,11 +665,14 @@ void FStreamingLevelCollectionModel::HandleAddExistingLevelSelected(const TArray
 	}
 
 	// Save or selected list, adding a new level will clean it up
+	// 当前选择的SubLevels是否有效
 	FLevelModelList SavedInvalidSelectedLevels = InvalidSelectedLevels;
 
+	// 添加SubLevels的方法，
 	EditorLevelUtils::AddLevelsToWorld(CurrentWorld.Get(), MoveTemp(PackageNames), AddedLevelStreamingClass);
 
 	// Force a cached level list rebuild
+	// 初始化各种信息
 	PopulateLevelsList();
 
 	if (bRemoveInvalidSelectedLevelsAfter)
