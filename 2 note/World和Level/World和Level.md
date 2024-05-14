@@ -798,7 +798,7 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 		InWorld->AddStreamingLevel(StreamingLevel);
 
 		// Refresh just the newly created level.
-		// 刷新下新创建出的streamingLevel？
+		// 刷新下新创建出的streamingLevel？编辑器会走
 		TArray<ULevelStreaming*> LevelsForRefresh;
 		LevelsForRefresh.Add(StreamingLevel);
 		InWorld->RefreshStreamingLevels(LevelsForRefresh);
@@ -836,5 +836,6 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 	return StreamingLevel;
 }
 ```
+看上就是通过NewObject创建出ULevelStreaming这个对象，然后通过UWorld::AddStreamingLevel这个方法将其赋值给World的StreamingLevels和StreamingLevelsToConsider数组
 ### 2 WorldComposition方式
 
