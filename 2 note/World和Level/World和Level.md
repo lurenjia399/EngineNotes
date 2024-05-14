@@ -901,5 +901,248 @@ void UWorld::UpdateLevelStreaming()
 ```
 主要就是对World中StreamingLevelsToConsider这个数组每个元素的处理。所以我们想要加载关卡首先就需要存到StreamingLevelsToConsider这个数组里面，然后world在tick的时候会进行加载。
 ### 3 ULevelStreaming::UpdateStreamingState
-这个方法分成了两部分，一部分是匿名方法异步加载关卡，一部分是对StreamingLevel的state进行处理。
+这个方法分成了两部分，一部分是匿名方法异步加载关卡，一部分是对StreamingLevel的state进行处理。这里我们就看下第一部分
+```cpp
+void ULevelStreaming::UpdateStreamingState(bool& bOutUpdateAgain, bool& bOutRedetermineTarget)
+{
+	auto UpdateStreamingState_RequestLevel = [&]()
+	{
+		// 很长的方法，主要就这个，其他的都先省略掉
+		RequestLevel(World, bAllowLevelLoadRequests, (bBlockOnLoad ? ULevelStreaming::AlwaysBlock : ULevelStreaming::BlockAlwaysLoadedLevelsOnly));
+		
+	};
+}
+bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoadRequests, EReqLevelBlock BlockPolicy)
+{
+	// Quit early in case load request already issued
+	if (CurrentState == ECurrentState::Loading)
+	{
+		return true;
+	}
+
+	// Previous attempts have failed, no reason to try again
+	if (CurrentState == ECurrentState::FailedToLoad)
+	{
+		return false;
+	}
+
+	QUICK_SCOPE_CYCLE_COUNTER(STAT_ULevelStreaming_RequestLevel);
+	FScopeCycleCounterUObject Context(PersistentWorld);
+
+	// Package name we want to load
+	const bool bIsGameWorld = PersistentWorld->IsGameWorld();
+	const FName DesiredPackageName = bIsGameWorld ? GetLODPackageName() : GetWorldAssetPackageFName();
+	const FName LoadedLevelPackageName = GetLoadedLevelPackageName();
+
+	// Check if currently loaded level is what we want right now
+	if (LoadedLevel && LoadedLevelPackageName == DesiredPackageName)
+	{
+		return true;
+	}
+
+	// Can not load new level now, there is still level pending unload
+	if (PendingUnloadLevel)
+	{
+		return false;
+	}
+
+	// Can not load new level now either, we're still processing visibility for this one
+	ULevel* PendingLevelVisOrInvis = (PersistentWorld->GetCurrentLevelPendingVisibility() ? PersistentWorld->GetCurrentLevelPendingVisibility() : PersistentWorld->GetCurrentLevelPendingInvisibility());
+    if (PendingLevelVisOrInvis && PendingLevelVisOrInvis == LoadedLevel)
+    {
+		UE_LOG(LogLevelStreaming, Verbose, TEXT("Delaying load of new level %s, because %s still processing visibility request."), *DesiredPackageName.ToString(), *CachedLoadedLevelPackageName.ToString());
+		return false;
+	}
+
+	// Validate that our new streaming level is unique, check for clash with currently loaded streaming levels
+	for (ULevelStreaming* OtherLevel : PersistentWorld->GetStreamingLevels())
+	{
+		if (OtherLevel == nullptr || OtherLevel == this)
+		{
+			continue;
+		}
+
+		const ECurrentState OtherState = OtherLevel->GetCurrentState();
+		if (OtherState == ECurrentState::FailedToLoad || OtherState == ECurrentState::Removed || (OtherState == ECurrentState::Unloaded && (OtherLevel->TargetState == ETargetState::Unloaded || OtherLevel->TargetState == ETargetState::UnloadedAndRemoved)))
+		{
+			// If the other level isn't loaded or in the process of being loaded we don't need to consider it
+			continue;
+		}
+
+		if (OtherLevel->WorldAsset == WorldAsset)
+		{ 
+			if (OtherLevel->GetIsRequestingUnloadAndRemoval())
+			{
+				return false; // Cannot load new level now, retry until the OtherLevel is done unloading
+			}
+			else
+			{
+				UE_LOG(LogLevelStreaming, Warning, TEXT("Streaming Level '%s' uses same destination for level ('%s') as '%s'. Level cannot be loaded again and this StreamingLevel will be flagged as failed to load."), *GetPathName(), *WorldAsset.GetLongPackageName(), *OtherLevel->GetPathName());
+				CurrentState = ECurrentState::FailedToLoad;
+				return false;
+			}
+		}
+	}
+
+	TRACE_LOADTIME_REQUEST_GROUP_SCOPE(TEXT("LevelStreaming - %s"), *GetPathName());
+
+	EPackageFlags PackageFlags = PKG_ContainsMap;
+	int32 PIEInstanceID = INDEX_NONE;
+
+	// Try to find the [to be] loaded package.
+	UPackage* LevelPackage = (UPackage*)StaticFindObjectFast(UPackage::StaticClass(), nullptr, DesiredPackageName, 0, 0, RF_NoFlags, EInternalObjectFlags::PendingKill);
+
+	// copy streaming level on demand if we are in PIE
+	// (the world is already loaded for the editor, just find it and copy it)
+	if ( LevelPackage == nullptr && PersistentWorld->IsPlayInEditor() )
+	{
+		if (PersistentWorld->GetOutermost()->HasAnyPackageFlags(PKG_PlayInEditor))
+		{
+			PackageFlags |= PKG_PlayInEditor;
+		}
+		PIEInstanceID = PersistentWorld->GetOutermost()->PIEInstanceID;
+
+		const FString NonPrefixedLevelName = UWorld::StripPIEPrefixFromPackageName(DesiredPackageName.ToString(), PersistentWorld->StreamingLevelsPrefix);
+		UPackage* EditorLevelPackage = FindObjectFast<UPackage>(nullptr, FName(*NonPrefixedLevelName));
+
+		bool bShouldDuplicate = EditorLevelPackage && (BlockPolicy == AlwaysBlock || EditorLevelPackage->IsDirty() || !GEngine->PreferToStreamLevelsInPIE());
+		if (bShouldDuplicate)
+		{
+			// Do the duplication
+			UWorld* PIELevelWorld = UWorld::DuplicateWorldForPIE(NonPrefixedLevelName, PersistentWorld);
+			if (PIELevelWorld)
+			{
+				check(PendingUnloadLevel == NULL);
+				SetLoadedLevel(PIELevelWorld->PersistentLevel);
+
+				// Broadcast level loaded event to blueprints
+				{
+					QUICK_SCOPE_CYCLE_COUNTER(STAT_OnLevelLoaded_Broadcast);
+					OnLevelLoaded.Broadcast();
+					// AZURE
+					if (OnAzureLevelLoaded.IsBound())
+						OnAzureLevelLoaded.Execute();
+				}
+
+				return true;
+			}
+			else if (PersistentWorld->WorldComposition == NULL) // In world composition streaming levels are not loaded by default
+			{
+				if ( bAllowLevelLoadRequests )
+				{
+					UE_LOG(LogLevelStreaming, Log, TEXT("World to duplicate for PIE '%s' not found. Attempting load."), *NonPrefixedLevelName);
+				}
+				else
+				{
+					UE_LOG(LogLevelStreaming, Warning, TEXT("Unable to duplicate PIE World: '%s'"), *NonPrefixedLevelName);
+				}
+			}
+		}
+	}
+
+	// Package is already or still loaded.
+	if (LevelPackage)
+	{
+		// Find world object and use its PersistentLevel pointer.
+		UWorld* World = UWorld::FindWorldInPackage(LevelPackage);
+
+		// Check for a redirector. Follow it, if found.
+		if (!World)
+		{
+			World = UWorld::FollowWorldRedirectorInPackage(LevelPackage);
+			if (World)
+			{
+				LevelPackage = World->GetOutermost();
+			}
+		}
+
+		if (World != nullptr)
+		{
+			if (World->IsPendingKill())
+			{
+				// We're trying to reload a level that has very recently been marked for garbage collection, it might not have been cleaned up yet
+				// So continue attempting to reload the package if possible
+				UE_LOG(LogLevelStreaming, Verbose, TEXT("RequestLevel: World is pending kill %s"), *DesiredPackageName.ToString());
+				return false;
+			}
+
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
+			if (World->PersistentLevel == nullptr)
+			{
+				UE_LOG(LogLevelStreaming, Error, TEXT("World exists but PersistentLevel doesn't for %s, most likely caused by reference to world of unloaded level and GC setting reference to null while keeping world object"), *World->GetOutermost()->GetName());
+				UE_LOG(LogLevelStreaming, Error, TEXT("Most likely caused by reference to world of unloaded level and GC setting reference to null while keeping world object. Referenced by:"));
+
+				FReferenceChainSearch RefChainSearch(World, EReferenceChainSearchMode::Shortest | EReferenceChainSearchMode::PrintResults);
+				UE_LOG(LogLoad, Fatal, TEXT("World exists but PersistentLevel doesn't for %s! Referenced by:") LINE_TERMINATOR TEXT("%s"), *World->GetPathName(), *RefChainSearch.GetRootPath());
+
+				return false;
+			}
+#endif
+			if (World->PersistentLevel != LoadedLevel)
+			{
+#if WITH_EDITOR
+				if (PIEInstanceID != INDEX_NONE)
+				{
+					World->PersistentLevel->FixupForPIE(PIEInstanceID);
+				}
+#endif
+
+				// Level already exists but may have the wrong type due to being inactive before, so copy data over
+				World->WorldType = PersistentWorld->WorldType;
+				World->PersistentLevel->OwningWorld = PersistentWorld;
+
+				SetLoadedLevel(World->PersistentLevel);
+				// Broadcast level loaded event to blueprints
+				OnLevelLoaded.Broadcast();
+				if (OnAzureLevelLoaded.IsBound())
+					OnAzureLevelLoaded.Execute();
+			}
+			
+			return true;
+		}
+	}
+
+	// Async load package if world object couldn't be found and we are allowed to request a load.
+	if (bAllowLevelLoadRequests)
+	{
+		const FName DesiredPackageNameToLoad = bIsGameWorld ? GetLODPackageNameToLoad() : PackageNameToLoad;
+		const FString PackageNameToLoadFrom = DesiredPackageNameToLoad != NAME_None ? DesiredPackageNameToLoad.ToString() : DesiredPackageName.ToString();
+
+		if (FPackageName::DoesPackageExist(PackageNameToLoadFrom))
+		{
+			CurrentState = ECurrentState::Loading;
+			FWorldNotifyStreamingLevelLoading::Started(PersistentWorld);
+			
+			ULevel::StreamedLevelsOwningWorld.Add(DesiredPackageName, PersistentWorld);
+			UWorld::WorldTypePreLoadMap.FindOrAdd(DesiredPackageName) = PersistentWorld->WorldType;
+
+			// Kick off async load request.
+			STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "RequestLevel - " ) + DesiredPackageName.ToString() )) );
+			TRACE_BOOKMARK(TEXT("RequestLevel - %s"), *DesiredPackageName.ToString());
+			LoadPackageAsync(DesiredPackageName.ToString(), nullptr, *PackageNameToLoadFrom, FLoadPackageAsyncDelegate::CreateUObject(this, &ULevelStreaming::AsyncLevelLoadComplete), PackageFlags, PIEInstanceID, GetPriority());
+
+			// streamingServer: server loads everything?
+			// Editor immediately blocks on load and we also block if background level streaming is disabled.
+			if (BlockPolicy == AlwaysBlock || (ShouldBeAlwaysLoaded() && BlockPolicy != NeverBlock))
+			{
+				if (IsAsyncLoading())
+				{
+					UE_LOG(LogStreaming, Display, TEXT("ULevelStreaming::RequestLevel(%s) is flushing async loading"), *DesiredPackageName.ToString());
+				}
+
+				// Finish all async loading.
+				FlushAsyncLoading();
+			}
+		}
+		else
+		{
+			UE_LOG(LogStreaming, Error,TEXT("Couldn't find file for package %s."), *PackageNameToLoadFrom);
+			CurrentState = ECurrentState::FailedToLoad;
+			return false;
+		}
+	}
+
+	return true;
+}
+```
 
