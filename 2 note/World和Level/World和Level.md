@@ -899,4 +899,7 @@ void UWorld::UpdateLevelStreaming()
 	}
 }
 ```
-主要就是对World中StreamingLevelsToConsider这个数组每个元素的处理。所以我们想要加载关卡s
+主要就是对World中StreamingLevelsToConsider这个数组每个元素的处理。所以我们想要加载关卡首先就需要存到StreamingLevelsToConsider这个数组里面，然后world在tick的时候会进行加载。
+### 3 ULevelStreaming::UpdateStreamingState
+这个方法分成了两部分，一部分是匿名方法异步加载关卡，一部分是对StreamingLevel的state进行处理。
+
