@@ -988,68 +988,26 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 			}
 		}
 	}
-
-
+	
 	EPackageFlags PackageFlags = PKG_ContainsMap;
 	int32 PIEInstanceID = INDEX_NONE;
 
 	// Try to find the [to be] loaded package.
-	// 找一下当前
+	// 找一下当前关卡的UPackage
 	UPackage* LevelPackage = (UPackage*)StaticFindObjectFast(UPackage::StaticClass(), nullptr, DesiredPackageName, 0, 0, RF_NoFlags, EInternalObjectFlags::PendingKill);
 
 	// copy streaming level on demand if we are in PIE
 	// (the world is already loaded for the editor, just find it and copy it)
 	if ( LevelPackage == nullptr && PersistentWorld->IsPlayInEditor() )
 	{
-		if (PersistentWorld->GetOutermost()->HasAnyPackageFlags(PKG_PlayInEditor))
-		{
-			PackageFlags |= PKG_PlayInEditor;
-		}
-		PIEInstanceID = PersistentWorld->GetOutermost()->PIEInstanceID;
-
-		const FString NonPrefixedLevelName = UWorld::StripPIEPrefixFromPackageName(DesiredPackageName.ToString(), PersistentWorld->StreamingLevelsPrefix);
-		UPackage* EditorLevelPackage = FindObjectFast<UPackage>(nullptr, FName(*NonPrefixedLevelName));
-
-		bool bShouldDuplicate = EditorLevelPackage && (BlockPolicy == AlwaysBlock || EditorLevelPackage->IsDirty() || !GEngine->PreferToStreamLevelsInPIE());
-		if (bShouldDuplicate)
-		{
-			// Do the duplication
-			UWorld* PIELevelWorld = UWorld::DuplicateWorldForPIE(NonPrefixedLevelName, PersistentWorld);
-			if (PIELevelWorld)
-			{
-				check(PendingUnloadLevel == NULL);
-				SetLoadedLevel(PIELevelWorld->PersistentLevel);
-
-				// Broadcast level loaded event to blueprints
-				{
-					QUICK_SCOPE_CYCLE_COUNTER(STAT_OnLevelLoaded_Broadcast);
-					OnLevelLoaded.Broadcast();
-					// AZURE
-					if (OnAzureLevelLoaded.IsBound())
-						OnAzureLevelLoaded.Execute();
-				}
-
-				return true;
-			}
-			else if (PersistentWorld->WorldComposition == NULL) // In world composition streaming levels are not loaded by default
-			{
-				if ( bAllowLevelLoadRequests )
-				{
-					UE_LOG(LogLevelStreaming, Log, TEXT("World to duplicate for PIE '%s' not found. Attempting load."), *NonPrefixedLevelName);
-				}
-				else
-				{
-					UE_LOG(LogLevelStreaming, Warning, TEXT("Unable to duplicate PIE World: '%s'"), *NonPrefixedLevelName);
-				}
-			}
-		}
+		// 当前关卡的UPackage没加载，并且是编辑器模式下有段逻辑
+		// 不看了，直接省略掉
 	}
 
 	// Package is already or still loaded.
 	if (LevelPackage)
 	{
-		
-		// 这边是关卡已经加载过了，不需要再启动线程去加载了，直接走加载完成后的逻辑
+		// 这边是当前关卡的UPackage已经加载好了，不需要再启动线程去加载了，直接走加载完成后的逻辑
 		// 代码省略掉
 		return true;
 	}
@@ -1060,11 +1018,14 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 		const FName DesiredPackageNameToLoad = bIsGameWorld ? GetLODPackageNameToLoad() : PackageNameToLoad;
 		const FString PackageNameToLoadFrom = DesiredPackageNameToLoad != NAME_None ? DesiredPackageNameToLoad.ToString() : DesiredPackageName.ToString();
 
+		// 当前关卡UPackage存在
 		if (FPackageName::DoesPackageExist(PackageNameToLoadFrom))
 		{
+			// 切换当前关卡的State为Loading
 			CurrentState = ECurrentState::Loading;
+			// 增加处在Loading中的关卡计数器
 			FWorldNotifyStreamingLevelLoading::Started(PersistentWorld);
-			
+			// 一个静态数组，保存下当前gua和
 			ULevel::StreamedLevelsOwningWorld.Add(DesiredPackageName, PersistentWorld);
 			UWorld::WorldTypePreLoadMap.FindOrAdd(DesiredPackageName) = PersistentWorld->WorldType;
 
