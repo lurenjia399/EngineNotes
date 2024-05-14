@@ -836,6 +836,6 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 	return StreamingLevel;
 }
 ```
-看上就是通过NewObject创建出ULevelStreaming这个对象，然后通过UWorld::AddStreamingLevel这个方法将其赋值给World的StreamingLevels和StreamingLevelsToConsider数组
+看上就是通过NewObject创建出ULevelStreaming这个对象，然后通过UWorld::AddStreamingLevel这个方法将其赋值给World的StreamingLevels和StreamingLevelsToConsider数组。再添加完成后StreamingLevel的CurrentState是UnLoaded，TargetState是LoadedNotVisibe。
 ### 2 WorldComposition方式
 
