@@ -840,7 +840,7 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 ### 2 WorldComposition方式
 
 ## 2.2 流式关卡加载流程
-1 又是在Engine::Tick方法里面，我们就看GameEngine吧
+### 1 又是在Engine::Tick方法里面，我们就看GameEngine吧
 ```cpp
 if( GIsServer == true )
 {
@@ -849,14 +849,14 @@ if( GIsServer == true )
 	Context.World()->UpdateLevelStreaming();
 }
 ```
-2 
+### 2 UWorld::UpdateLevelStreaming
 ```cpp
 void UWorld::UpdateLevelStreaming()
 {
-	// 这有个计数器，表示开始处理StreamingLevelsToConsider这个数组？
+	// 增加计数器，表示开始处理StreamingLevelsToConsider这个数组？
 	StreamingLevelsToConsider.BeginConsideration();
 
-	// 遍历StreamingLevelsToConsider数组，对其中每个元素进行
+	// 遍历StreamingLevelsToConsider数组，对其中每个元素进行UpdateStreamingState
 	for (int32 Index = StreamingLevelsToConsider.GetStreamingLevels().Num() - 1; Index >= 0; --Index)
 	{
 		if (ULevelStreaming* StreamingLevel = StreamingLevelsToConsider.GetStreamingLevels()[Index])
@@ -885,6 +885,7 @@ void UWorld::UpdateLevelStreaming()
 		}
 	}
 
+	// 减少计数器，表示结束处理StreamingLevelsToConsider这个数组？
 	StreamingLevelsToConsider.EndConsideration();
 
 
@@ -898,3 +899,4 @@ void UWorld::UpdateLevelStreaming()
 	}
 }
 ```
+主要就是对World中StreamingLevelsToConsider这个数组每个元素的处理。所以我们想要加载关卡s
