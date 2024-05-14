@@ -786,15 +786,15 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 		StreamingLevel = NewObject<ULevelStreaming>(InWorld, LevelStreamingClass, NAME_None, RF_NoFlags, NULL);
 
 		// Associate a package name.
-		// 将创建出的StreamingLevel和World关联起来下面介绍下
-		// 
+		// 将创建出的StreamingLevel和World关联起来,参数是选择的SubLevel资源名称
+		// 将创建出的StreamingLevel放入到选择的SubLevel资源中的World里的StreamingLevelsToConsider这个变量里
 		StreamingLevel->SetWorldAssetByPackageName(LevelPackageName);
 		// SteamingLevel的初始化
 		StreamingLevel->LevelTransform = LevelTransform;
 		StreamingLevel->LevelColor = FLinearColor::MakeRandomColor();
 
 		// Add the new level to world.
-		// 添加StreaminLevel
+		// 向当前World中添加StreamingLevel，也就是给StreamingLevels和StreamingLevelsToConsider赋值
 		InWorld->AddStreamingLevel(StreamingLevel);
 
 		// Refresh just the newly created level.
