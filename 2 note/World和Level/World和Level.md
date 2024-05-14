@@ -912,22 +912,22 @@ void ULevelStreaming::UpdateStreamingState(bool& bOutUpdateAgain, bool& bOutRede
 		
 	};
 }
+
 bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoadRequests, EReqLevelBlock BlockPolicy)
 {
 	// Quit early in case load request already issued
+	// 当前关卡正在加载，直接返回
 	if (CurrentState == ECurrentState::Loading)
 	{
 		return true;
 	}
 
 	// Previous attempts have failed, no reason to try again
+	// 当前关卡加载失败了，不在进行重新加载
 	if (CurrentState == ECurrentState::FailedToLoad)
 	{
 		return false;
 	}
-
-	QUICK_SCOPE_CYCLE_COUNTER(STAT_ULevelStreaming_RequestLevel);
-	FScopeCycleCounterUObject Context(PersistentWorld);
 
 	// Package name we want to load
 	const bool bIsGameWorld = PersistentWorld->IsGameWorld();
@@ -935,12 +935,14 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	const FName LoadedLevelPackageName = GetLoadedLevelPackageName();
 
 	// Check if currently loaded level is what we want right now
+	// 当前关卡已经加载了，并且DesiredLevel也是当前关卡，直接返回
 	if (LoadedLevel && LoadedLevelPackageName == DesiredPackageName)
 	{
 		return true;
 	}
 
 	// Can not load new level now, there is still level pending unload
+	// 已经标记卸载当前关卡了，直接返回
 	if (PendingUnloadLevel)
 	{
 		return false;
@@ -950,7 +952,7 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	ULevel* PendingLevelVisOrInvis = (PersistentWorld->GetCurrentLevelPendingVisibility() ? PersistentWorld->GetCurrentLevelPendingVisibility() : PersistentWorld->GetCurrentLevelPendingInvisibility());
     if (PendingLevelVisOrInvis && PendingLevelVisOrInvis == LoadedLevel)
     {
-		UE_LOG(LogLevelStreaming, Verbose, TEXT("Delaying load of new level %s, because %s still processing visibility request."), *DesiredPackageName.ToString(), *CachedLoadedLevelPackageName.ToString());
+		
 		return false;
 	}
 
@@ -977,7 +979,7 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 			}
 			else
 			{
-				UE_LOG(LogLevelStreaming, Warning, TEXT("Streaming Level '%s' uses same destination for level ('%s') as '%s'. Level cannot be loaded again and this StreamingLevel will be flagged as failed to load."), *GetPathName(), *WorldAsset.GetLongPackageName(), *OtherLevel->GetPathName());
+				
 				CurrentState = ECurrentState::FailedToLoad;
 				return false;
 			}
@@ -1043,63 +1045,10 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	// Package is already or still loaded.
 	if (LevelPackage)
 	{
-		// Find world object and use its PersistentLevel pointer.
-		UWorld* World = UWorld::FindWorldInPackage(LevelPackage);
-
-		// Check for a redirector. Follow it, if found.
-		if (!World)
-		{
-			World = UWorld::FollowWorldRedirectorInPackage(LevelPackage);
-			if (World)
-			{
-				LevelPackage = World->GetOutermost();
-			}
-		}
-
-		if (World != nullptr)
-		{
-			if (World->IsPendingKill())
-			{
-				// We're trying to reload a level that has very recently been marked for garbage collection, it might not have been cleaned up yet
-				// So continue attempting to reload the package if possible
-				UE_LOG(LogLevelStreaming, Verbose, TEXT("RequestLevel: World is pending kill %s"), *DesiredPackageName.ToString());
-				return false;
-			}
-
-#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
-			if (World->PersistentLevel == nullptr)
-			{
-				UE_LOG(LogLevelStreaming, Error, TEXT("World exists but PersistentLevel doesn't for %s, most likely caused by reference to world of unloaded level and GC setting reference to null while keeping world object"), *World->GetOutermost()->GetName());
-				UE_LOG(LogLevelStreaming, Error, TEXT("Most likely caused by reference to world of unloaded level and GC setting reference to null while keeping world object. Referenced by:"));
-
-				FReferenceChainSearch RefChainSearch(World, EReferenceChainSearchMode::Shortest | EReferenceChainSearchMode::PrintResults);
-				UE_LOG(LogLoad, Fatal, TEXT("World exists but PersistentLevel doesn't for %s! Referenced by:") LINE_TERMINATOR TEXT("%s"), *World->GetPathName(), *RefChainSearch.GetRootPath());
-
-				return false;
-			}
-#endif
-			if (World->PersistentLevel != LoadedLevel)
-			{
-#if WITH_EDITOR
-				if (PIEInstanceID != INDEX_NONE)
-				{
-					World->PersistentLevel->FixupForPIE(PIEInstanceID);
-				}
-#endif
-
-				// Level already exists but may have the wrong type due to being inactive before, so copy data over
-				World->WorldType = PersistentWorld->WorldType;
-				World->PersistentLevel->OwningWorld = PersistentWorld;
-
-				SetLoadedLevel(World->PersistentLevel);
-				// Broadcast level loaded event to blueprints
-				OnLevelLoaded.Broadcast();
-				if (OnAzureLevelLoaded.IsBound())
-					OnAzureLevelLoaded.Execute();
-			}
-			
-			return true;
-		}
+		
+		// 这边是关卡已经加载过了，不需要再启动线程去加载了，直接走加载完成后的逻辑
+		// 代码省略掉
+		return true;
 	}
 
 	// Async load package if world object couldn't be found and we are allowed to request a load.
