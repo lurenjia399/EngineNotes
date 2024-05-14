@@ -840,5 +840,61 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 ### 2 WorldComposition方式
 
 ## 2.2 流式关卡加载流程
-又是在Engine::Tick方法里面
+1 又是在Engine::Tick方法里面，我们就看GameEngine吧
+```cpp
+if( GIsServer == true )
+{
+	SCOPE_CYCLE_COUNTER(STAT_UpdateLevelStreaming);
+	// 这个关键UpdateLevelStreaming方法
+	Context.World()->UpdateLevelStreaming();
+}
+```
+2 
+```cpp
+void UWorld::UpdateLevelStreaming()
+{
+	// 这有个计数器，表示开始处理StreamingLevelsToConsider这个数组？
+	StreamingLevelsToConsider.BeginConsideration();
 
+	// 遍历StreamingLevelsToConsider数组，对其中每个元素进行
+	for (int32 Index = StreamingLevelsToConsider.GetStreamingLevels().Num() - 1; Index >= 0; --Index)
+	{
+		if (ULevelStreaming* StreamingLevel = StreamingLevelsToConsider.GetStreamingLevels()[Index])
+		{
+			bool bUpdateAgain = true;
+			bool bShouldContinueToConsider = true;
+			while (bUpdateAgain && bShouldContinueToConsider)
+			{
+				bool bRedetermineTarget = false;
+				FStreamingLevelPrivateAccessor::UpdateStreamingState(StreamingLevel, bUpdateAgain, bRedetermineTarget);
+
+				if (bRedetermineTarget)
+				{
+					bShouldContinueToConsider = FStreamingLevelPrivateAccessor::DetermineTargetState(StreamingLevel);
+				}
+			}
+
+			if (!bShouldContinueToConsider)
+			{
+				StreamingLevelsToConsider.RemoveAt(Index);
+			}
+		}
+		else
+		{
+			StreamingLevelsToConsider.RemoveAt(Index);
+		}
+	}
+
+	StreamingLevelsToConsider.EndConsideration();
+
+
+	// In case more levels has been requested to unload, force GC on next tick 
+	if (GLevelStreamingForceGCAfterLevelStreamedOut != 0)
+	{
+		if (NumLevelsPendingPurge < FLevelStreamingGCHelper::GetNumLevelsPendingPurge())
+		{
+			GEngine->ForceGarbageCollection(true); 
+		}
+	}
+}
+```
