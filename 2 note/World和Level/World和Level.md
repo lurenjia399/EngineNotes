@@ -1056,5 +1056,5 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	return true;
 }
 ```
-异步加载关卡之前的一些条件处理，判断是否能够加载新的关卡。在LoadPackageAsync这个方法之前会设置关卡的Cu
+异步加载关卡之前的一些条件处理，判断是否能够加载当前关卡。在LoadPackageAsync这个方法之前会设置关卡的CurrentState为Loading状态，此时当前关卡的CurrenState是Loading，TargetState是LoadedNotVisibe。
 ### 4 ULevelStreaming::AsyncLevelLoadComplete
