@@ -840,5 +840,5 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 ### 2 WorldComposition方式
 
 ## 2.2 流式关卡加载流程
-又是在Engine::Tick方法
+又是在Engine::Tick方法里面
 

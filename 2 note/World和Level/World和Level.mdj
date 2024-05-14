@@ -44,7 +44,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGO6tqnOhn1l2o="
 							},
-							"name": "SequenceDiagram1",
+							"name": "CreateWorld",
 							"ownedViews": [
 								{
 									"_type": "UMLFrameView",
@@ -68,9 +68,9 @@
 											"font": "Arial;13;0",
 											"left": 24.72998046875,
 											"top": 5,
-											"width": 115.9052734375,
+											"width": 73.7314453125,
 											"height": 13,
-											"text": "SequenceDiagram1"
+											"text": "CreateWorld"
 										},
 										{
 											"_type": "LabelView",
@@ -3724,7 +3724,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGO6vEVwhsbYwg="
 					},
-					"name": "ClassDiagram1",
+					"name": "WorldAndLevel",
 					"ownedViews": [
 						{
 							"_type": "UMLClassView",
@@ -9244,7 +9244,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGPUOdffOFn3IU="
 							},
-							"name": "Add subLevel",
+							"name": "StreamingLevel",
 							"ownedViews": [
 								{
 									"_type": "UMLFrameView",
@@ -9268,9 +9268,9 @@
 											"font": "Arial;13;0",
 											"left": 24.72998046875,
 											"top": 5,
-											"width": 79.78076171875,
+											"width": 91.3271484375,
 											"height": 13,
-											"text": "Add subLevel"
+											"text": "StreamingLevel"
 										},
 										{
 											"_type": "LabelView",
