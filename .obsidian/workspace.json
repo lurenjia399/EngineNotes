@@ -181,13 +181,13 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0e5ed17f692dddcb",
+  "active": "c4eb254197b7ce27",
   "lastOpenFiles": [
+    "1 索引/索引.md",
+    "2 note/World和Level/World和Level.md",
     "2 note/GarbageCollection",
     "2 note/SCS 和 CDO",
     "未命名",
-    "1 索引/索引.md",
-    "2 note/World和Level/World和Level.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
     "README.md",
     "2 note/World和Level/Image/README.md",
@@ -200,7 +200,6 @@
     "2 note/Actor逻辑/Actor.md",
     "2 note/Actor逻辑/Actor.mdj",
     "2 note/FLatentActionManager/Image",
-    "2 note/FLatentActionManager",
     "2 note/Tick逻辑/Image/AActor或Component注册流程图.png",
     "2 note/Tick逻辑/Image/SequenceDiagram1.jpg",
     "2 note/2 Tick逻辑/Tick逻辑.md",

@@ -615,7 +615,8 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 }
 ```
 10 至此，GameEngine的world创建流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法调用到loadmap创建出默认的World。
-11 还有个问题，他为什么要先创建个空的，然后再加载默认的地图呢？
+11 还有个问题，他为什么要先创建个空的（过渡地图），然后再加载默认的地图呢？
+至于为什么需要设置过渡地图？试想如果没有过渡地图，那么在当前地图中加载（异步加载的，后面会详细介绍）的新地图之后，此时World同时存在新旧两个地图，如果都比较大的话，内存告急！
 # 2 流式关卡切换
 一种将大世界地图分成小level的方式，然后通过关卡之间的加载卸载来模拟大世界的逻辑
 ## 2.1 添加子关卡的两种方式
