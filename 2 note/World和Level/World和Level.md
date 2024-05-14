@@ -1025,13 +1025,13 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 			CurrentState = ECurrentState::Loading;
 			// 增加处在Loading中的关卡计数器
 			FWorldNotifyStreamingLevelLoading::Started(PersistentWorld);
-			// 一个静态数组，保存下当前gua和
+			// 一个静态数组，保存下当前关卡UPackage和World
 			ULevel::StreamedLevelsOwningWorld.Add(DesiredPackageName, PersistentWorld);
+			// 保存数组
 			UWorld::WorldTypePreLoadMap.FindOrAdd(DesiredPackageName) = PersistentWorld->WorldType;
 
-			// Kick off async load request.
-			STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "RequestLevel - " ) + DesiredPackageName.ToString() )) );
-			TRACE_BOOKMARK(TEXT("RequestLevel - %s"), *DesiredPackageName.ToString());
+			// 开启线程，加载当前关卡资源
+			// 加载完成后调用ULevelStreaming::AsyncLevelLoadComplete方法
 			LoadPackageAsync(DesiredPackageName.ToString(), nullptr, *PackageNameToLoadFrom, FLoadPackageAsyncDelegate::CreateUObject(this, &ULevelStreaming::AsyncLevelLoadComplete), PackageFlags, PIEInstanceID, GetPriority());
 
 			// streamingServer: server loads everything?
@@ -1040,7 +1040,6 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 			{
 				if (IsAsyncLoading())
 				{
-					UE_LOG(LogStreaming, Display, TEXT("ULevelStreaming::RequestLevel(%s) is flushing async loading"), *DesiredPackageName.ToString());
 				}
 
 				// Finish all async loading.
@@ -1049,7 +1048,6 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 		}
 		else
 		{
-			UE_LOG(LogStreaming, Error,TEXT("Couldn't find file for package %s."), *PackageNameToLoadFrom);
 			CurrentState = ECurrentState::FailedToLoad;
 			return false;
 		}
@@ -1058,4 +1056,5 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	return true;
 }
 ```
-
+异步加载关卡之前的一些条件处理，判断是否能够加载新的关卡。在LoadPackageAsync这个方法之前会设置关卡的Cu
+### 4 ULevelStreaming::AsyncLevelLoadComplete
