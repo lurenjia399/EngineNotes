@@ -949,6 +949,7 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	}
 
 	// Can not load new level now either, we're still processing visibility for this one
+	// 现在正在处理当前关卡的可见性，也就是再可见和不可见的状态切换中，直接返回
 	ULevel* PendingLevelVisOrInvis = (PersistentWorld->GetCurrentLevelPendingVisibility() ? PersistentWorld->GetCurrentLevelPendingVisibility() : PersistentWorld->GetCurrentLevelPendingInvisibility());
     if (PendingLevelVisOrInvis && PendingLevelVisOrInvis == LoadedLevel)
     {
