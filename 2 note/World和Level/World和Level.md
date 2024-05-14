@@ -958,6 +958,8 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 	}
 
 	// Validate that our new streaming level is unique, check for clash with currently loaded streaming levels
+	// 这个循环是检测要创建的当前关卡是不是独一无二的，检测关卡中的World是不是被其他卸载的关卡引用
+	// 如果是的话，就直接返回
 	for (ULevelStreaming* OtherLevel : PersistentWorld->GetStreamingLevels())
 	{
 		if (OtherLevel == nullptr || OtherLevel == this)
@@ -987,12 +989,12 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 		}
 	}
 
-	TRACE_LOADTIME_REQUEST_GROUP_SCOPE(TEXT("LevelStreaming - %s"), *GetPathName());
 
 	EPackageFlags PackageFlags = PKG_ContainsMap;
 	int32 PIEInstanceID = INDEX_NONE;
 
 	// Try to find the [to be] loaded package.
+	// 找一下当前
 	UPackage* LevelPackage = (UPackage*)StaticFindObjectFast(UPackage::StaticClass(), nullptr, DesiredPackageName, 0, 0, RF_NoFlags, EInternalObjectFlags::PendingKill);
 
 	// copy streaming level on demand if we are in PIE
