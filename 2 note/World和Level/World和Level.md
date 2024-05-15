@@ -1224,5 +1224,8 @@ void UWorld::Tick( ELevelTick TickType, float DeltaSeconds )
 ```
 看样子也是在TIck里触发的
 ```cpp
-
+void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
+{
+	
+}
 ```
