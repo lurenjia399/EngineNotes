@@ -1109,11 +1109,7 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 				}
 				// 处理关卡需要的初始化数据
 				Level->HandleLegacyMapBuildData();
-
-				// Notify the streamer to start building incrementally the level streaming data.
 				IStreamingManager::Get().AddLevel(Level);
-
-				// Make sure this level will start to render only when it will be fully added to the world
 				if (LODPackageNames.Num() > 0)
 				{
 					Level->bRequireFullVisibilityToRender = true;
@@ -1121,23 +1117,13 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 					Level->bClientOnlyVisible = LODPackageNames.Contains(InLoadedPackage->GetFName());
 				}
 			
-				// In the editor levels must be in the levels array regardless of whether they are visible or not
 				if (ensure(LevelOwningWorld) && LevelOwningWorld->WorldType == EWorldType::Editor)
 				{
 					LevelOwningWorld->AddLevel(Level);
-#if WITH_EDITOR
-					// We should also at this point, apply the level's editor transform
-					if (!Level->bAlreadyMovedActors)
-					{
-						FLevelUtils::ApplyEditorTransform(this, false);
-						Level->bAlreadyMovedActors = true;
-					}
-#endif // WITH_EDITOR
 				}
 			}
 			else
 			{
-				UE_LOG(LogLevelStreaming, Warning, TEXT("Couldn't find ULevel object in package '%s'"), *InPackageName.ToString() );
 			}
 		}
 		else
@@ -1153,8 +1139,6 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 	}
 	else
 	{
-		UE_LOG(LogLevelStreaming, Warning, TEXT("Failed to load package '%s'"), *InPackageName.ToString() );
-		
 		CurrentState = ECurrentState::FailedToLoad;
  		SetShouldBeLoaded(false);
 	}
@@ -1162,8 +1146,5 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 	// Clean up the world type list and owning world list now that PostLoad has occurred
 	UWorld::WorldTypePreLoadMap.Remove(InPackageName);
 	ULevel::StreamedLevelsOwningWorld.Remove(InPackageName);
-
-	STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "RequestLevelComplete - " ) + InPackageName.ToString() )) );
-	TRACE_BOOKMARK(TEXT("RequestLevelComplete - %s"), *InPackageName.ToString());
 }
 ```
