@@ -1059,3 +1059,118 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 ```
 异步加载关卡之前的一些条件处理，判断是否能够加载当前关卡。在LoadPackageAsync这个方法之前会设置关卡的CurrentState为Loading状态，此时当前关卡的CurrenState是Loading，TargetState是LoadedNotVisibe。
 ### 4 ULevelStreaming::AsyncLevelLoadComplete
+
+```cpp
+void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackage* InLoadedPackage, EAsyncLoadingResult::Type Result)
+{
+	CurrentState = ECurrentState::LoadedNotVisible;
+	if (UWorld* World = GetWorld())
+	{
+		if (World->GetStreamingLevels().Contains(this))
+		{
+			FWorldNotifyStreamingLevelLoading::Finished(World);
+		}
+	}
+
+	if (InLoadedPackage)
+	{
+		UPackage* LevelPackage = InLoadedPackage;
+		
+		// Try to find a UWorld object in the level package.
+		UWorld* World = UWorld::FindWorldInPackage(LevelPackage);
+
+		if (World)
+		{
+			ULevel* Level = World->PersistentLevel;
+			if (Level)
+			{
+				UWorld* LevelOwningWorld = Level->OwningWorld;
+				if (LevelOwningWorld)
+				{
+					ULevel* PendingLevelVisOrInvis = (LevelOwningWorld->GetCurrentLevelPendingVisibility() ? LevelOwningWorld->GetCurrentLevelPendingVisibility() : LevelOwningWorld->GetCurrentLevelPendingInvisibility());
+					if (PendingLevelVisOrInvis && PendingLevelVisOrInvis == LoadedLevel)
+					{
+						// We can't change current loaded level if it's still processing visibility request
+						// On next UpdateLevelStreaming call this loaded package will be found in memory by RequestLevel function in case visibility request has finished
+						UE_LOG(LogLevelStreaming, Verbose, TEXT("Delaying setting result of async load new level %s, because current loaded level still processing visibility request"), *LevelPackage->GetName());
+					}
+					else
+					{
+						check(PendingUnloadLevel == nullptr);
+					
+#if WITH_EDITOR
+						int32 PIEInstanceID = GetOutermost()->PIEInstanceID;
+						if (PIEInstanceID != INDEX_NONE)
+						{
+							World->PersistentLevel->FixupForPIE(PIEInstanceID);
+						}
+#endif
+
+						SetLoadedLevel(Level);
+						// Broadcast level loaded event to blueprints
+						OnLevelLoaded.Broadcast();
+						// AZURE
+						if (OnAzureLevelLoaded.IsBound())
+							OnAzureLevelLoaded.Execute();
+					}
+				}
+
+				Level->HandleLegacyMapBuildData();
+
+				// Notify the streamer to start building incrementally the level streaming data.
+				IStreamingManager::Get().AddLevel(Level);
+
+				// Make sure this level will start to render only when it will be fully added to the world
+				if (LODPackageNames.Num() > 0)
+				{
+					Level->bRequireFullVisibilityToRender = true;
+					// LOD levels should not be visible on server
+					Level->bClientOnlyVisible = LODPackageNames.Contains(InLoadedPackage->GetFName());
+				}
+			
+				// In the editor levels must be in the levels array regardless of whether they are visible or not
+				if (ensure(LevelOwningWorld) && LevelOwningWorld->WorldType == EWorldType::Editor)
+				{
+					LevelOwningWorld->AddLevel(Level);
+#if WITH_EDITOR
+					// We should also at this point, apply the level's editor transform
+					if (!Level->bAlreadyMovedActors)
+					{
+						FLevelUtils::ApplyEditorTransform(this, false);
+						Level->bAlreadyMovedActors = true;
+					}
+#endif // WITH_EDITOR
+				}
+			}
+			else
+			{
+				UE_LOG(LogLevelStreaming, Warning, TEXT("Couldn't find ULevel object in package '%s'"), *InPackageName.ToString() );
+			}
+		}
+		else
+		{
+			// 这便是package里面没有world的情况，看上去就是资源有问题，只看正常情况，省略
+		}
+	}
+	else if (Result == EAsyncLoadingResult::Canceled)
+	{
+		// Cancel level streaming
+		CurrentState = ECurrentState::Unloaded;
+		SetShouldBeLoaded(false);
+	}
+	else
+	{
+		UE_LOG(LogLevelStreaming, Warning, TEXT("Failed to load package '%s'"), *InPackageName.ToString() );
+		
+		CurrentState = ECurrentState::FailedToLoad;
+ 		SetShouldBeLoaded(false);
+	}
+
+	// Clean up the world type list and owning world list now that PostLoad has occurred
+	UWorld::WorldTypePreLoadMap.Remove(InPackageName);
+	ULevel::StreamedLevelsOwningWorld.Remove(InPackageName);
+
+	STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "RequestLevelComplete - " ) + InPackageName.ToString() )) );
+	TRACE_BOOKMARK(TEXT("RequestLevelComplete - %s"), *InPackageName.ToString());
+}
+```
