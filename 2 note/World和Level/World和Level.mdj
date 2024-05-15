@@ -11246,7 +11246,7 @@
 											"left": 888,
 											"top": 496,
 											"width": 14,
-											"height": 97
+											"height": 177
 										}
 									],
 									"lineColor": "#457b9d",
@@ -11397,6 +11397,132 @@
 									},
 									"activation": {
 										"$ref": "AAAAAAGPdxAyDh0hDLU="
+									}
+								},
+								{
+									"_type": "UMLSeqMessageView",
+									"_id": "AAAAAAGPfDsYeyB8/L8=",
+									"_parent": {
+										"$ref": "AAAAAAGPUOdffOFo6mg="
+									},
+									"model": {
+										"$ref": "AAAAAAGPfDsYeyB7a4g="
+									},
+									"subViews": [
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGPfDsYeyB9FAA=",
+											"_parent": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"model": {
+												"$ref": "AAAAAAGPfDsYeyB7a4g="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 846,
+											"top": 603,
+											"width": 189.34423828125,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"edgePosition": 1,
+											"text": "12 : DiscardPendingUnloadLevel"
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGPfDsYeyB+tfY=",
+											"_parent": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"model": {
+												"$ref": "AAAAAAGPfDsYeyB7a4g="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 955,
+											"top": 603,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 25,
+											"hostEdge": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGPfDsYeyB/1GM=",
+											"_parent": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"model": {
+												"$ref": "AAAAAAGPfDsYeyB7a4g="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 921,
+											"top": 604,
+											"height": 13,
+											"alpha": -1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "UMLActivationView",
+											"_id": "AAAAAAGPfDsYeyCArX0=",
+											"_parent": {
+												"$ref": "AAAAAAGPfDsYeyB8/L8="
+											},
+											"model": {
+												"$ref": "AAAAAAGPfDsYeyB7a4g="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 895,
+											"top": 620,
+											"width": 14,
+											"height": 29
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"head": {
+										"$ref": "AAAAAAGPUP9ha+JFSxg="
+									},
+									"tail": {
+										"$ref": "AAAAAAGPUP9ha+JFSxg="
+									},
+									"points": "901:600;931:600;931:620;908:620",
+									"nameLabel": {
+										"$ref": "AAAAAAGPfDsYeyB9FAA="
+									},
+									"stereotypeLabel": {
+										"$ref": "AAAAAAGPfDsYeyB+tfY="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAGPfDsYeyB/1GM="
+									},
+									"activation": {
+										"$ref": "AAAAAAGPfDsYeyCArX0="
 									}
 								}
 							]
@@ -11551,6 +11677,20 @@
 								"$ref": "AAAAAAGPUOdffOFn3IU="
 							},
 							"name": "RequestLevel",
+							"source": {
+								"$ref": "AAAAAAGPUP9ha+I+3UY="
+							},
+							"target": {
+								"$ref": "AAAAAAGPUP9ha+I+3UY="
+							}
+						},
+						{
+							"_type": "UMLMessage",
+							"_id": "AAAAAAGPfDsYeyB7a4g=",
+							"_parent": {
+								"$ref": "AAAAAAGPUOdffOFn3IU="
+							},
+							"name": "DiscardPendingUnloadLevel",
 							"source": {
 								"$ref": "AAAAAAGPUP9ha+I+3UY="
 							},
