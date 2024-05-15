@@ -1217,5 +1217,12 @@ void FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC()
 ## 1 LevelStreamingVolume
 这个就是在PersistentLevel里面放置一个ALevelStreamingVolume这个Actor，类似于一个包围盒的东西，判断玩家是否在这个Volume里面，进而触发加载StreamingLevel。
 ```cpp
+void UWorld::Tick( ELevelTick TickType, float DeltaSeconds )
+{
+	ProcessLevelStreamingVolumes();
+}
+```
+看样子也是在TIck里触发的
+```cpp
 
 ```
