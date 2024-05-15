@@ -1184,6 +1184,7 @@ void FLevelStreamingGCHelper::RequestUnload( ULevel* InLevel )
 ```
 
 ### 2 FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC
+在这个方法里添加监听代理
 ```cpp
 void FLevelStreamingGCHelper::AddGarbageCollectorCallback()
 {
@@ -1197,11 +1198,17 @@ void FLevelStreamingGCHelper::AddGarbageCollectorCallback()
 	}
 }
 ```
-在这个方法里添加监听代理
+在这个方法里广播的代理
 ```cpp
 void CollectGarbageInternal(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
 	FCoreUObjectDelegates::GetPreGarbageCollectDelegate().Broadcast();
 }
-
+```
+在这个方法里卸载的Level
+```cpp
+void FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC()
+{
+	Level->CleanupLevel();
+}
 ```
