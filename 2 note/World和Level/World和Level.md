@@ -1148,3 +1148,4 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 	ULevel::StreamedLevelsOwningWorld.Remove(InPackageName);
 }
 ```
+用新的线程加载完关卡后的回调函数，保存各种数据吧。这个回调函数结束后CurrentState是LoadedNotVIsible，TargetState是LoadedNotVisibe。
