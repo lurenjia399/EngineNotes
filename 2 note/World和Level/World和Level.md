@@ -1158,12 +1158,13 @@ void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
 	// 会PendingUnloadLevel = OldStreamingLevel
 	if (PendingUnloadLevel)
 	{
-		// 如果可见，感觉是PendingUnloadLevel是否neng
+		// 如果可见，感觉是PendingUnloadLevel是否能让玩家看到了
+		// 将level从Persistentworld中移除掉
 		if (PendingUnloadLevel->bIsVisible)
 		{
 			PersistentWorld->RemoveFromWorld(PendingUnloadLevel);
 		}
-
+		// 如果看不到，就用gc干掉
 		if (!PendingUnloadLevel->bIsVisible)
 		{
 			FLevelStreamingGCHelper::RequestUnload(PendingUnloadLevel);
