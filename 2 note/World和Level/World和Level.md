@@ -1233,7 +1233,15 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 	TSet<ULevelStreaming*> LevelStreamingObjectsWithVolumesOtherThanBlockingLoad;
 	// 
 	TMap<ULevelStreaming*,FVisibleLevelStreamingSettings> VisibleLevelStreamingObjects;
-	
+	// 遍历world中所有的playerController
+	{
+		// 记录玩家在哪个位置
+		FVector ViewLocation(0,0,0);
+		// 遍历LevelStreamingObjectsWithVolumes数组
+		{
+			// 遍历StreamingLevel中的所有Volumes
+		}
+	}
 }
 ```
 1 遍历world中所有的StreamingLevels，来填充LevelStreamingObjectsWithVolumes和LevelStreamingObjectsWithVolumesOtherThanBlockingLoad两个数组。
