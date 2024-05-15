@@ -1233,13 +1233,37 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 	TSet<ULevelStreaming*> LevelStreamingObjectsWithVolumesOtherThanBlockingLoad;
 	// 
 	TMap<ULevelStreaming*,FVisibleLevelStreamingSettings> VisibleLevelStreamingObjects;
+	// key是world中所有的AVolume,value是标志位，标识viewpoint是否在volume中
+	TMap<AVolume*,bool> VolumeMap;
 	// 遍历world中所有的playerController
 	{
-		// 记录玩家在哪个位置
+		// 记录viewpoint
 		FVector ViewLocation(0,0,0);
 		// 遍历LevelStreamingObjectsWithVolumes数组
 		{
 			// 遍历StreamingLevel中的所有Volumes
+			{
+				// 计算viewpoint是否在Volume中，并填充VolumeMap
+				bViewpointInVolume=
+						StreamingVolume->EncompassesPoint( ViewLocation );		
+				VolumeMap.Add( StreamingVolume, bViewpointInVolume );
+				// 如果viewpoint在volume中
+				if ( bViewpointInVolume )
+							{
+								// Copy off the streaming settings for this volume.
+								StreamingSettings |= FVisibleLevelStreamingSettings( (EStreamingVolumeUsage) StreamingVolume->StreamingUsage );
+
+								// Update the streaming settings for the level.
+								// This also marks the level as "should be loaded".
+								VisibleLevelStreamingObjects.Add( LevelStreamingObject, StreamingSettings );
+
+								// Stop looking for viewpoint-containing volumes once all streaming settings have been enabled.
+								if ( StreamingSettings.AllSettingsEnabled() )
+								{
+									break;
+								}
+							}
+			}
 		}
 	}
 }
