@@ -1228,7 +1228,10 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 {
 	// 在此方法里赋值，会保存由Volume触发的StreamingLevel
 	TArray<ULevelStreaming*> LevelStreamingObjectsWithVolumes;
-	// 
+	// Volume的类型不是SVB_BlockingOnLoad，就会存储。
+	// 是LevelStreamingObjectsWithVolumes子集
 	TSet<ULevelStreaming*> LevelStreamingObjectsWithVolumesOtherThanBlockingLoad;
 }
 ```
+1 遍历world中所有的StreamingLevels，来填充LevelStreamingObjectsWithVolumes和LevelStreamingObjectsWithVolumesOtherThanBlockingLoad两个数组。
+2 
