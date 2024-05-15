@@ -1063,11 +1063,13 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 ```cpp
 void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackage* InLoadedPackage, EAsyncLoadingResult::Type Result)
 {
+	// 更新新关卡的CurrentState为LoadedNotVisible
 	CurrentState = ECurrentState::LoadedNotVisible;
 	if (UWorld* World = GetWorld())
 	{
 		if (World->GetStreamingLevels().Contains(this))
 		{
+			// 减少处在Loading中的关卡计数器
 			FWorldNotifyStreamingLevelLoading::Finished(World);
 		}
 	}
@@ -1077,10 +1079,12 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 		UPackage* LevelPackage = InLoadedPackage;
 		
 		// Try to find a UWorld object in the level package.
+		// 从Package里面找到world
 		UWorld* World = UWorld::FindWorldInPackage(LevelPackage);
 
 		if (World)
 		{
+			// 拿到world中的主Level
 			ULevel* Level = World->PersistentLevel;
 			if (Level)
 			{
@@ -1090,22 +1094,9 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 					ULevel* PendingLevelVisOrInvis = (LevelOwningWorld->GetCurrentLevelPendingVisibility() ? LevelOwningWorld->GetCurrentLevelPendingVisibility() : LevelOwningWorld->GetCurrentLevelPendingInvisibility());
 					if (PendingLevelVisOrInvis && PendingLevelVisOrInvis == LoadedLevel)
 					{
-						// We can't change current loaded level if it's still processing visibility request
-						// On next UpdateLevelStreaming call this loaded package will be found in memory by RequestLevel function in case visibility request has finished
-						UE_LOG(LogLevelStreaming, Verbose, TEXT("Delaying setting result of async load new level %s, because current loaded level still processing visibility request"), *LevelPackage->GetName());
 					}
 					else
 					{
-						check(PendingUnloadLevel == nullptr);
-					
-#if WITH_EDITOR
-						int32 PIEInstanceID = GetOutermost()->PIEInstanceID;
-						if (PIEInstanceID != INDEX_NONE)
-						{
-							World->PersistentLevel->FixupForPIE(PIEInstanceID);
-						}
-#endif
-
 						SetLoadedLevel(Level);
 						// Broadcast level loaded event to blueprints
 						OnLevelLoaded.Broadcast();
