@@ -1226,6 +1226,9 @@ void UWorld::Tick( ELevelTick TickType, float DeltaSeconds )
 ```cpp
 void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 {
-	
+	// 在此方法里赋值，会保存由Volume触发的StreamingLevel
+	TArray<ULevelStreaming*> LevelStreamingObjectsWithVolumes;
+	// 
+	TSet<ULevelStreaming*> LevelStreamingObjectsWithVolumesOtherThanBlockingLoad;
 }
 ```
