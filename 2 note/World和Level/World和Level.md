@@ -1097,15 +1097,17 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 					}
 					else
 					{
+						// 设置新关卡，把旧关卡卸载掉
 						SetLoadedLevel(Level);
 						// Broadcast level loaded event to blueprints
+						// 广播事件
 						OnLevelLoaded.Broadcast();
 						// AZURE
 						if (OnAzureLevelLoaded.IsBound())
 							OnAzureLevelLoaded.Execute();
 					}
 				}
-
+				// 处理关卡需要的初始化数据
 				Level->HandleLegacyMapBuildData();
 
 				// Notify the streamer to start building incrementally the level streaming data.
