@@ -1154,9 +1154,11 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 ```cpp
 void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
 {
-	// 这个变量是在SetLoadedLevel这个方法里设置的，就是newLevel
+	// 这个变量是在SetLoadedLevel这个方法里设置的，就是NewStreamingLevel已经好了
+	// 会PendingUnloadLevel = OldStreamingLevel
 	if (PendingUnloadLevel)
 	{
+		// 如果可见，感觉是PendingUnloadLevel是否neng
 		if (PendingUnloadLevel->bIsVisible)
 		{
 			PersistentWorld->RemoveFromWorld(PendingUnloadLevel);
