@@ -1172,4 +1172,36 @@ void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
 		}
 	}
 }
+
+// 主要就是保存到LevelsPendingUnload数组中，供给gc使用
+void FLevelStreamingGCHelper::RequestUnload( ULevel* InLevel )
+{
+	if (!IsRunningCommandlet())
+	{
+		LevelsPendingUnload.AddUnique( InLevel );
+	}
+}
+```
+
+### 2 FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC
+```cpp
+void FLevelStreamingGCHelper::AddGarbageCollectorCallback()
+{
+	// Only register for garbage collection once
+	static bool GarbageCollectAdded = false;
+	if ( GarbageCollectAdded == false )
+	{
+		FCoreUObjectDelegates::GetPreGarbageCollectDelegate().AddStatic( FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC );
+		FCoreUObjectDelegates::GetPostGarbageCollect().AddStatic( FLevelStreamingGCHelper::VerifyLevelsGotRemovedByGC );
+		GarbageCollectAdded = true;
+	}
+}
+```
+在这个方法里添加监听代理
+```cpp
+void CollectGarbageInternal(EObjectFlags KeepFlags, bool bPerformFullPurge)
+{
+	FCoreUObjectDelegates::GetPreGarbageCollectDelegate().Broadcast();
+}
+
 ```
