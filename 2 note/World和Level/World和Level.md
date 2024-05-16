@@ -1265,7 +1265,8 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 			}
 		}
 	}
+	
 }
 ```
 1 遍历world中所有的StreamingLevels，来填充LevelStreamingObjectsWithVolumes和LevelStreamingObjectsWithVolumesOtherThanBlockingLoad两个数组。
-2 遍历world中所有的playerController，
+2 遍历world中所有的playerController，算下玩家位置或者pov位置，判断位置在哪个StreamingLevel中的Volume中，填充VisibleLevelStreamingObjects数组。
