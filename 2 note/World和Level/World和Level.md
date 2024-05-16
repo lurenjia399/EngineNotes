@@ -1266,8 +1266,14 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 		}
 	}
 	// 后面继续遍历LevelStreamingObjectsWithVolumes数组
-	// 然后再
+	// 然后再设置一些状态
+	LevelStreamingObject->SetShouldBeLoaded(true);
+	// 这个在Visible改变的时候，会添加进StreamingLevelsToConsider数组里
+	LevelStreamingObject->SetShouldBeVisible(NewStreamingSettings->ShouldBeVisible(bOriginalShouldBeVisible));
+	// 设置状态
+	LevelStreamingObject->bShouldBlockOnLoad	= NewStreamingSettings->ShouldBlockOnLoad();
 }
 ```
 1 遍历world中所有的StreamingLevels，来填充LevelStreamingObjectsWithVolumes和LevelStreamingObjectsWithVolumesOtherThanBlockingLoad两个数组。
 2 遍历world中所有的playerController，算下玩家位置或者pov位置，判断位置在哪个StreamingLevel中的Volume中，填充VisibleLevelStreamingObjects数组。
+3 改变StreamingLevel的状态，
