@@ -795,7 +795,9 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 		StreamingLevel->LevelColor = FLinearColor::MakeRandomColor();
 
 		// Add the new level to world.
-		// 向当前World中添加StreamingLevel，也就是给StreamingLevels和StreamingLevelsToConsider赋值
+		// 向当前World中添加StreamingLevel，就是给StreamingLevels赋值
+		// 在编辑器下，TargetState是ETargetState::LoadedNotVisible，并给StreamingLevelsToConsider赋值
+		// 在exe下，TargetState是ETargetState::Unloaded，没有给StreamingLevelsToConsider赋值
 		InWorld->AddStreamingLevel(StreamingLevel);
 
 		// Refresh just the newly created level.
@@ -837,7 +839,7 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 	return StreamingLevel;
 }
 ```
-看上就是通过NewObject创建出ULevelStreaming这个对象，然后通过UWorld::AddStreamingLevel这个方法将其赋值给World的StreamingLevels和StreamingLevelsToConsider数组。再添加完成后StreamingLevel的CurrentState是UnLoaded，如果是编辑器TargetState是LoadedNotVisibe，如果是。
+看上就是通过NewObject创建出ULevelStreaming这个对象，然后通过UWorld::AddStreamingLevel这个方法将其赋值给World的StreamingLevels和StreamingLevelsToConsider数组。再添加完成后StreamingLevel的CurrentState是UnLoaded，如果是编辑器TargetState是LoadedNotVisibe，如果是exe的话TargetState是Unloaded。
 ### 2 WorldComposition方式
 
 ## 2.2 流式关卡加载流程
