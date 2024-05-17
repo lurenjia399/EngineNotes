@@ -1283,8 +1283,7 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 	// 这个是不应该加载，但已经加载过了，也就是需要卸载
 	else if (LevelStreamingObject->ShouldBeLoaded())
 	{
-		// Prevent unload request flood.  The additional check ensures that unload requests can still be issued in the first UnloadCooldownTime seconds of play.
-		if (TimeSeconds < LevelStreamingObject->LastVolumeUnloadRequestTime || // AZURE change map
+		if (TimeSeconds < LevelStreamingObject->LastVolumeUnloadRequestTime ||
 			TimeSeconds - LevelStreamingObject->LastVolumeUnloadRequestTime > LevelStreamingObject->MinTimeBetweenVolumeUnloadRequests ||  LevelStreamingObject->LastVolumeUnloadRequestTime < 0.1f)
 		{
 			if (GetPlayerControllerIterator())
