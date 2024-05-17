@@ -1268,7 +1268,10 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 		}
 	}
 	// 后面继续遍历LevelStreamingObjectsWithVolumes数组
-	// 设置bShouldBeLoaded变量，应该加载StreamingLevel了
+	// 如果是应该加载，通过
+	if( bShouldBeLoaded )
+	{
+		/// 设置bShouldBeLoaded变量，应该加载StreamingLevel了
 	LevelStreamingObject->SetShouldBeLoaded(true);
 	// SetShouldBeVisible(true)，
 	// 这个方法里也会走DetermineTargetState方法
@@ -1276,6 +1279,23 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 	LevelStreamingObject->SetShouldBeVisible(NewStreamingSettings->ShouldBeVisible(bOriginalShouldBeVisible));
 	// 设置状态
 	LevelStreamingObject->bShouldBlockOnLoad	= NewStreamingSettings->ShouldBlockOnLoad();
+	}
+	// 这个是不应该加载，但已经加载过了，也就是需要卸载
+	else if (LevelStreamingObject->ShouldBeLoaded())
+	{
+		// Prevent unload request flood.  The additional check ensures that unload requests can still be issued in the first UnloadCooldownTime seconds of play.
+		if (TimeSeconds < LevelStreamingObject->LastVolumeUnloadRequestTime || // AZURE change map
+			TimeSeconds - LevelStreamingObject->LastVolumeUnloadRequestTime > LevelStreamingObject->MinTimeBetweenVolumeUnloadRequests ||  LevelStreamingObject->LastVolumeUnloadRequestTime < 0.1f)
+		{
+			if (GetPlayerControllerIterator())
+			{
+				LevelStreamingObject->LastVolumeUnloadRequestTime = TimeSeconds;
+				LevelStreamingObject->SetShouldBeLoaded(false);
+				LevelStreamingObject->SetShouldBeVisible(false);
+			}
+		}
+	}
+	
 }
 ```
 1 遍历world中所有的StreamingLevels，来填充LevelStreamingObjectsWithVolumes和LevelStreamingObjectsWithVolumesOtherThanBlockingLoad两个数组。
