@@ -12509,7 +12509,7 @@
 											"left": 909,
 											"top": 1180,
 											"width": 14,
-											"height": 29
+											"height": 61
 										}
 									],
 									"lineColor": "#457b9d",
@@ -12535,6 +12535,22 @@
 									"activation": {
 										"$ref": "AAAAAAGPhLCscCNFvaM="
 									}
+								},
+								{
+									"_type": "UMLTextBoxView",
+									"_id": "AAAAAAGPhewcKiPoxOk=",
+									"_parent": {
+										"$ref": "AAAAAAGPUOdffOFo6mg="
+									},
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 920,
+									"top": 1200,
+									"width": 181.03759765625,
+									"height": 25,
+									"text": "ECurrentState::LoadedVisible"
 								}
 							]
 						}
