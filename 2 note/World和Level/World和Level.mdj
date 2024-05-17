@@ -11823,6 +11823,22 @@
 									"activation": {
 										"$ref": "AAAAAAGPfDsYeyCArX0="
 									}
+								},
+								{
+									"_type": "UMLTextBoxView",
+									"_id": "AAAAAAGPhHjVFSGBGAI=",
+									"_parent": {
+										"$ref": "AAAAAAGPUOdffOFo6mg="
+									},
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 896,
+									"top": 528,
+									"width": 155.25341796875,
+									"height": 38,
+									"text": "ECurrentState::Unloaded ETargetState::Unloaded"
 								}
 							]
 						}
