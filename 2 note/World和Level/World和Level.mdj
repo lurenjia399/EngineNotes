@@ -12065,7 +12065,7 @@
 											"left": 888,
 											"top": 904,
 											"width": 14,
-											"height": 417
+											"height": 313
 										}
 									],
 									"lineColor": "#457b9d",
@@ -12191,7 +12191,7 @@
 											"left": 895,
 											"top": 988,
 											"width": 14,
-											"height": 277
+											"height": 213
 										}
 									],
 									"lineColor": "#457b9d",
@@ -12242,7 +12242,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 853,
-											"top": 1179,
+											"top": 1131,
 											"width": 189.34423828125,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -12268,7 +12268,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 962,
-											"top": 1179,
+											"top": 1131,
 											"height": 13,
 											"alpha": 1.5707963267948966,
 											"distance": 25,
@@ -12292,7 +12292,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 928,
-											"top": 1180,
+											"top": 1132,
 											"height": 13,
 											"alpha": -1.5707963267948966,
 											"distance": 10,
@@ -12315,7 +12315,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 902,
-											"top": 1196,
+											"top": 1148,
 											"width": 14,
 											"height": 29
 										}
@@ -12330,7 +12330,7 @@
 									"tail": {
 										"$ref": "AAAAAAGPUP9ha+JFSxg="
 									},
-									"points": "908:1176;938:1176;938:1196;915:1196",
+									"points": "908:1128;938:1128;938:1148;915:1148",
 									"nameLabel": {
 										"$ref": "AAAAAAGPfDsYeyB9FAA="
 									},
@@ -12377,6 +12377,22 @@
 									"text": "Tick",
 									"horzAlign": 1,
 									"vertAlign": 5
+								},
+								{
+									"_type": "UMLTextBoxView",
+									"_id": "AAAAAAGPhKXxZyKXrKo=",
+									"_parent": {
+										"$ref": "AAAAAAGPUOdffOFo6mg="
+									},
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 904,
+									"top": 1040,
+									"width": 194.05029296875,
+									"height": 38,
+									"text": "ECurrentState::Loading ETargetState::LoadedNotVisible"
 								}
 							]
 						}
