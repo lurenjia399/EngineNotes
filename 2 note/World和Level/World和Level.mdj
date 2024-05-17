@@ -12549,8 +12549,8 @@
 									"left": 920,
 									"top": 1200,
 									"width": 181.03759765625,
-									"height": 25,
-									"text": "ECurrentState::LoadedVisible"
+									"height": 38,
+									"text": "ECurrentState::LoadedVisible ETargetState::LoadedVisible"
 								}
 							]
 						}
