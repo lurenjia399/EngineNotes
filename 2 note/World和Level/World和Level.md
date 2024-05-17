@@ -1272,7 +1272,7 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 	LevelStreamingObject->SetShouldBeLoaded(true);
 	// SetShouldBeVisible(true)，
 	// 这个方法里也会走DetermineTargetState方法
-	// 将TargetStatesh
+	// 将TargetState设置为ETargetState::LoadedNotVisible,然后添加进StreamingLevelsToConsider数组里
 	LevelStreamingObject->SetShouldBeVisible(NewStreamingSettings->ShouldBeVisible(bOriginalShouldBeVisible));
 	// 设置状态
 	LevelStreamingObject->bShouldBlockOnLoad	= NewStreamingSettings->ShouldBlockOnLoad();
