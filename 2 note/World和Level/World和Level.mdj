@@ -11738,7 +11738,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 672,
-											"top": 757,
+											"top": 768,
 											"width": 216.05517578125,
 											"height": 13,
 											"alpha": 1.5707963267948966,
@@ -11764,7 +11764,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 780,
-											"top": 742,
+											"top": 753,
 											"height": 13,
 											"alpha": 1.5707963267948966,
 											"distance": 25,
@@ -11788,7 +11788,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 780,
-											"top": 777,
+											"top": 788,
 											"height": 13,
 											"alpha": -1.5707963267948966,
 											"distance": 10,
@@ -11811,7 +11811,7 @@
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
 											"left": 888,
-											"top": 773,
+											"top": 784,
 											"width": 14,
 											"height": 29
 										}
@@ -11826,7 +11826,7 @@
 									"tail": {
 										"$ref": "AAAAAAGPUQRhmhOnvG4="
 									},
-									"points": "673:773;888:773",
+									"points": "673:784;888:784",
 									"nameLabel": {
 										"$ref": "AAAAAAGPhIoUgCIQapw="
 									},
@@ -12469,6 +12469,22 @@
 									"activation": {
 										"$ref": "AAAAAAGPfDsYeyCArX0="
 									}
+								},
+								{
+									"_type": "UMLTextBoxView",
+									"_id": "AAAAAAGPhIwOKiJFjOA=",
+									"_parent": {
+										"$ref": "AAAAAAGPUOdffOFo6mg="
+									},
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 896,
+									"top": 736,
+									"width": 194.05029296875,
+									"height": 38,
+									"text": "ECurrentState::Unloaded ETargetState::LoadedNotVisible"
 								}
 							]
 						}

@@ -1268,9 +1268,11 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 		}
 	}
 	// 后面继续遍历LevelStreamingObjectsWithVolumes数组
-	// 然后再设置一些状态
+	// 设置bShouldBeLoaded变量，应该加载StreamingLevel了
 	LevelStreamingObject->SetShouldBeLoaded(true);
-	// 这个在Visible改变的时候，会添加进StreamingLevelsToConsider数组里
+	// SetShouldBeVisible(true)，
+	// 这个方法里也会走DetermineTargetState方法
+	// 将TargetStatesh
 	LevelStreamingObject->SetShouldBeVisible(NewStreamingSettings->ShouldBeVisible(bOriginalShouldBeVisible));
 	// 设置状态
 	LevelStreamingObject->bShouldBlockOnLoad	= NewStreamingSettings->ShouldBlockOnLoad();
