@@ -12930,6 +12930,33 @@
 					"name": "Role5"
 				}
 			]
+		},
+		{
+			"_type": "UMLStateMachine",
+			"_id": "AAAAAAGPk/YHVCPwr0E=",
+			"_parent": {
+				"$ref": "AAAAAAFF+h6SjaM2Hec="
+			},
+			"name": "StateMachine1",
+			"ownedElements": [
+				{
+					"_type": "UMLStatechartDiagram",
+					"_id": "AAAAAAGPk/YHVCPyiGA=",
+					"_parent": {
+						"$ref": "AAAAAAGPk/YHVCPwr0E="
+					},
+					"name": "StreamingLevelState"
+				}
+			],
+			"regions": [
+				{
+					"_type": "UMLRegion",
+					"_id": "AAAAAAGPk/YHVCPx6+E=",
+					"_parent": {
+						"$ref": "AAAAAAGPk/YHVCPwr0E="
+					}
+				}
+			]
 		}
 	]
 }
