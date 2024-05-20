@@ -16118,7 +16118,7 @@
 							"left": 1016,
 							"top": 584,
 							"width": 249,
-							"height": 57,
+							"height": 73,
 							"nameCompartment": {
 								"$ref": "AAAAAAGPlUWgxSo9OII="
 							},
@@ -16145,8 +16145,8 @@
 							"left": 1024,
 							"top": 592,
 							"width": 233,
-							"height": 38,
-							"text": "ECurrentState::LoadedNotVisible ETargetState::LoadedNotVisible"
+							"height": 51,
+							"text": "ECurrentState::LoadedNotVisible Editor:ETargetState::LoadedNotVisible Game:ETargetState::Unloaded"
 						},
 						{
 							"_type": "UMLTransitionView",
