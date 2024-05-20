@@ -11359,12 +11359,12 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 599,
-											"top": 651,
+											"left": 598,
+											"top": 648,
 											"width": 212.443359375,
 											"height": 13,
-											"alpha": 1.5707963267948966,
-											"distance": 10,
+											"alpha": 2.034442435796203,
+											"distance": 8.94427190999916,
 											"hostEdge": {
 												"$ref": "AAAAAAGPhIbG8SHGoEU="
 											},
@@ -12945,7 +12945,99 @@
 					"_parent": {
 						"$ref": "AAAAAAGPk/YHVCPwr0E="
 					},
-					"name": "StreamingLevelState"
+					"name": "StreamingLevelState",
+					"ownedViews": [
+						{
+							"_type": "UMLPseudostateView",
+							"_id": "AAAAAAGPk/7WVySKeSo=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPyiGA="
+							},
+							"model": {
+								"$ref": "AAAAAAGPk/7WVySJXpw="
+							},
+							"subViews": [
+								{
+									"_type": "NodeLabelView",
+									"_id": "AAAAAAGPk/7WVySLu7Y=",
+									"_parent": {
+										"$ref": "AAAAAAGPk/7WVySKeSo="
+									},
+									"model": {
+										"$ref": "AAAAAAGPk/7WVySJXpw="
+									},
+									"visible": false,
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 122.5,
+									"top": 148,
+									"height": 13,
+									"alpha": 2.356194490192345,
+									"distance": 20
+								},
+								{
+									"_type": "NodeLabelView",
+									"_id": "AAAAAAGPk/7WWCSMgkY=",
+									"_parent": {
+										"$ref": "AAAAAAGPk/7WVySKeSo="
+									},
+									"model": {
+										"$ref": "AAAAAAGPk/7WVySJXpw="
+									},
+									"visible": false,
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 112.5,
+									"top": 138,
+									"height": 13,
+									"alpha": 2.356194490192345,
+									"distance": 35
+								},
+								{
+									"_type": "NodeLabelView",
+									"_id": "AAAAAAGPk/7WWCSNtCQ=",
+									"_parent": {
+										"$ref": "AAAAAAGPk/7WVySKeSo="
+									},
+									"model": {
+										"$ref": "AAAAAAGPk/7WVySJXpw="
+									},
+									"visible": false,
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 122.5,
+									"top": 177,
+									"height": 13,
+									"alpha": -2.356194490192345,
+									"distance": 20
+								}
+							],
+							"lineColor": "#457b9d",
+							"fillColor": "#a8d9db",
+							"fontColor": "#4a3575",
+							"font": "Arial;13;0",
+							"containerChangeable": true,
+							"left": 128,
+							"top": 160,
+							"width": 20,
+							"height": 20,
+							"nameLabel": {
+								"$ref": "AAAAAAGPk/7WVySLu7Y="
+							},
+							"stereotypeLabel": {
+								"$ref": "AAAAAAGPk/7WWCSMgkY="
+							},
+							"propertyLabel": {
+								"$ref": "AAAAAAGPk/7WWCSNtCQ="
+							}
+						}
+					]
 				}
 			],
 			"regions": [
@@ -12954,7 +13046,64 @@
 					"_id": "AAAAAAGPk/YHVCPx6+E=",
 					"_parent": {
 						"$ref": "AAAAAAGPk/YHVCPwr0E="
-					}
+					},
+					"vertices": [
+						{
+							"_type": "UMLPseudostate",
+							"_id": "AAAAAAGPk/7WVySJXpw=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPx6+E="
+							},
+							"kind": "initial"
+						},
+						{
+							"_type": "UMLPseudostate",
+							"_id": "AAAAAAGPk/7s9CSawqg=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPx6+E="
+							},
+							"kind": "join"
+						},
+						{
+							"_type": "UMLPseudostate",
+							"_id": "AAAAAAGPk/8qgCSz30o=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPx6+E="
+							},
+							"kind": "join"
+						},
+						{
+							"_type": "UMLState",
+							"_id": "AAAAAAGPk/9BjSTMM0M=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPx6+E="
+							},
+							"name": "State1"
+						},
+						{
+							"_type": "UMLPseudostate",
+							"_id": "AAAAAAGPk/9SkCTxT4M=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPx6+E="
+							},
+							"kind": "join"
+						}
+					],
+					"transitions": [
+						{
+							"_type": "UMLTransition",
+							"_id": "AAAAAAGPk/9mFSUKlqQ=",
+							"_parent": {
+								"$ref": "AAAAAAGPk/YHVCPx6+E="
+							},
+							"source": {
+								"$ref": "AAAAAAGPk/7WVySJXpw="
+							},
+							"target": {
+								"$ref": "AAAAAAGPk/9BjSTMM0M="
+							}
+						}
+					]
 				}
 			]
 		}
