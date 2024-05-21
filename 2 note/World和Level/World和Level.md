@@ -1152,6 +1152,7 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 ```
 用新的线程加载完关卡后的回调函数，保存各种数据吧。这个回调函数结束后CurrentState是LoadedNotVIsible，TargetState是LoadedNotVisibe。
 ## 2.3 流式关卡卸载流程
+### 1 
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
 void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
