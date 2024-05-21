@@ -1220,7 +1220,10 @@ for (APawn* Pawn : TActorRange<APawn>(this))
 }
 // 3 移除渲染资源？
 Level->ReleaseRenderingResources();
-
+// 4 StreamingManager里面移除Level，这个StreamingManager是干嘛的呢？
+// Remove from the world's level array and destroy actor components.
+IStreamingManager::Get().RemoveLevel( Level );
+// 5 
 
 ```
 
