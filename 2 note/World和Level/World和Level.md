@@ -1153,6 +1153,42 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 用新的线程加载完关卡后的回调函数，保存各种数据吧。这个回调函数结束后CurrentState是LoadedNotVIsible，TargetState是LoadedNotVisibe。
 ## 2.3 流式关卡卸载流程
 ### 1 
+如果玩家不在volume中或者是某些情况，首先会UpdateStreamingState改变CurrentState。
+```cpp
+// 第一次tick走到UpdateStreamingState
+// CurrentState::MakingInvisible，ETargetState::LoadedNotVisible
+case ECurrentState::LoadedVisible:
+	switch (TargetState)
+	{
+	case ETargetState::LoadedNotVisible:
+		CurrentState = ECurrentState::MakingInvisible;
+		bOutUpdateAgain = true;
+		break;
+	break;
+
+// 第二次tick走到UpdateStreamingState
+case ECurrentState::MakingInvisible:
+	if (ensure(LoadedLevel))
+	{
+		// Hide loaded level, incrementally if necessary
+		World->RemoveFromWorld(LoadedLevel, !bShouldBlockOnUnload && World->IsGameWorld());
+
+		// Inform the scene once we have finished making the level invisible
+		if (!LoadedLevel->bIsVisible)
+		{
+			if (World->Scene)
+			{
+				World->Scene->OnLevelRemovedFromWorld(World, LoadedLevel->bIsLightingScenario);
+			}
+
+			CurrentState = ECurrentState::LoadedNotVisible;
+			bOutUpdateAgain = true;
+			bOutRedetermineTarget = true;
+		}
+	}
+	break;
+```
+
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
 void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
