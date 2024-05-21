@@ -1225,6 +1225,9 @@ Level->ReleaseRenderingResources();
 IStreamingManager::Get().RemoveLevel( Level );
 // 5 Unregister Level中的Component,也就是Level自带的ModelComponent和其中Actor的Component
 Level->ClearLevelComponents();
+// 6 通知服务器改变Level状态，通过PlayerController
+// 7 设置bIsVisible为false
+Level->bIsVisible = false;
 
 
 ```
