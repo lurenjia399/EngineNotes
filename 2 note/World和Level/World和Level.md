@@ -871,6 +871,7 @@ void UWorld::UpdateLevelStreaming()
 				bool bRedetermineTarget = false;
 				FStreamingLevelPrivateAccessor::UpdateStreamingState(StreamingLevel, bUpdateAgain, bRedetermineTarget);
 
+				// 注意这个地方，每次UpdateStreamingState之后，会根据判断执行一次DetermineTargetState
 				if (bRedetermineTarget)
 				{
 					bShouldContinueToConsider = FStreamingLevelPrivateAccessor::DetermineTargetState(StreamingLevel);
@@ -1152,7 +1153,7 @@ void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackag
 ```
 用新的线程加载完关卡后的回调函数，保存各种数据吧。这个回调函数结束后CurrentState是LoadedNotVIsible，TargetState是LoadedNotVisibe。
 ## 2.3 流式关卡卸载流程
-### 1 
+### 1 基本流程
 如果玩家不在volume中或者是某些情况，首先会UpdateStreamingState改变CurrentState。
 ```cpp
 // 第一次tick走到UpdateStreamingState
@@ -1167,6 +1168,7 @@ case ECurrentState::LoadedVisible:
 	break;
 
 // 第二次tick走到UpdateStreamingState
+// CurrentState::LoadedNotVisible，ETargetState::Unloaded
 case ECurrentState::MakingInvisible:
 	if (ensure(LoadedLevel))
 	{
@@ -1186,6 +1188,21 @@ case ECurrentState::MakingInvisible:
 			bOutRedetermineTarget = true;
 		}
 	}
+	break;
+
+// 第三次tick走到UpdateStreamingState
+case ECurrentState::LoadedNotVisible:
+	switch (TargetState)
+	{
+	case ETargetState::Unloaded:
+		DiscardPendingUnloadLevel(World);
+		ClearLoadedLevel();
+		DiscardPendingUnloadLevel(World);
+
+		bOutUpdateAgain = true;
+		bOutRedetermineTarget = true;
+		break;
+
 	break;
 ```
 ### 2 RemoveFromWorld
