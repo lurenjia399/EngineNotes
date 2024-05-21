@@ -1223,7 +1223,9 @@ Level->ReleaseRenderingResources();
 // 4 StreamingManager里面移除Level，这个StreamingManager是干嘛的呢？
 // Remove from the world's level array and destroy actor components.
 IStreamingManager::Get().RemoveLevel( Level );
-// 5 Unregister Level中的Component
+// 5 Unregister Level中的Component,也就是Level自带的ModelComponent和其中Actor的Component
+Level->ClearLevelComponents();
+
 
 ```
 
