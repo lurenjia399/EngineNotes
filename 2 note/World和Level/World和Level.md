@@ -1311,41 +1311,7 @@ void FLevelStreamingGCHelper::RequestUnload( ULevel* InLevel )
 	}
 }
 ```
-主要目的就是将可移除Level添加到LevelsPendingUnload这个数组里面
-
-### 1 ULevelStreaming::DiscardPendingUnloadLevel
-```cpp
-void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
-{
-	// 这个变量是在SetLoadedLevel这个方法里设置的，就是NewStreamingLevel已经好了
-	// 会PendingUnloadLevel = OldStreamingLevel
-	if (PendingUnloadLevel)
-	{
-		// 如果可见，感觉是PendingUnloadLevel是否能让玩家看到了
-		// 将level从Persistentworld中移除掉
-		if (PendingUnloadLevel->bIsVisible)
-		{
-			PersistentWorld->RemoveFromWorld(PendingUnloadLevel);
-		}
-		// 如果看不到，就用gc干掉
-		if (!PendingUnloadLevel->bIsVisible)
-		{
-			FLevelStreamingGCHelper::RequestUnload(PendingUnloadLevel);
-			PendingUnloadLevel = nullptr;
-		}
-	}
-}
-
-// 主要就是保存到LevelsPendingUnload数组中，供给gc使用
-void FLevelStreamingGCHelper::RequestUnload( ULevel* InLevel )
-{
-	if (!IsRunningCommandlet())
-	{
-		LevelsPendingUnload.AddUnique( InLevel );
-	}
-}
-```
-
+主要目的就是将可移除Level添加到LevelsPendingUnload这个数组里面，然后再PrepareStreamedOutLevelsForGC这个方法中将关卡卸载。
 ### 2 FLevelStreamingGCHelper::PrepareStreamedOutLevelsForGC
 在这个方法里添加监听代理
 ```cpp
