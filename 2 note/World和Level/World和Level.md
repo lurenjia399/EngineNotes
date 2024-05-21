@@ -1246,11 +1246,54 @@ Level->ClearLevelComponents();
 // 7 设置bIsVisible为false
 Level->bIsVisible = false;
 ```
+从world中移除掉LoadedLevel中的东西，改变LoadedLevel的bIsVisible状态
 ### 3 DiscardPendingUnloadLevel
 ```cpp
 
 ```
+### 4 ClearLoadedLevel
+```cpp
+void ClearLoadedLevel() { SetLoadedLevel(nullptr); }
+void ULevelStreaming::SetLoadedLevel(ULevel* Level)
+{ 
+	// 设置要UnloadLevel和LoadedLevel
+	PendingUnloadLevel = LoadedLevel;
+	LoadedLevel = Level;
+	bHasCachedLoadedLevelPackageName = false;
 
+	// Cancel unloading for this level, in case it was queued for it
+	FLevelStreamingGCHelper::CancelUnloadRequest(LoadedLevel);
+
+	// Add this level to the correct collection
+	const ELevelCollectionType CollectionType =	bIsStatic ? ELevelCollectionType::StaticLevels : ELevelCollectionType::DynamicSourceLevels;
+
+	UWorld* World = GetWorld();
+
+	FLevelCollection& LC = World->FindOrAddCollectionByType(CollectionType);
+	LC.RemoveLevel(PendingUnloadLevel);
+
+	if (LoadedLevel)
+	{
+		LoadedLevel->OwningWorld = World;
+
+		// Remove the loaded level from its current collection, if any.
+		if (LoadedLevel->GetCachedLevelCollection())
+		{
+			LoadedLevel->GetCachedLevelCollection()->RemoveLevel(LoadedLevel);
+		}
+		LC.AddLevel(LoadedLevel);
+
+		CurrentState = (LoadedLevel->bIsVisible ? ECurrentState::LoadedVisible : ECurrentState::LoadedNotVisible);
+	}
+	else
+	{
+		CurrentState = ECurrentState::Unloaded;
+	}
+
+	World->UpdateStreamingLevelShouldBeConsidered(this);
+}
+
+```
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
 void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
