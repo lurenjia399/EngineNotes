@@ -1188,6 +1188,8 @@ case ECurrentState::MakingInvisible:
 	}
 	break;
 ```
+### 2 RemoveFromWorld
+
 
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
