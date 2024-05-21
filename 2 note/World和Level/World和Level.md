@@ -1249,7 +1249,23 @@ Level->bIsVisible = false;
 从world中移除掉LoadedLevel中的东西，改变LoadedLevel的bIsVisible状态
 ### 3 DiscardPendingUnloadLevel
 ```cpp
+void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
+{
+	if (PendingUnloadLevel)
+	{
+		、、
+		if (PendingUnloadLevel->bIsVisible)
+		{
+			PersistentWorld->RemoveFromWorld(PendingUnloadLevel);
+		}
 
+		if (!PendingUnloadLevel->bIsVisible)
+		{
+			FLevelStreamingGCHelper::RequestUnload(PendingUnloadLevel);
+			PendingUnloadLevel = nullptr;
+		}
+	}
+}
 ```
 ### 4 ClearLoadedLevel
 ```cpp
@@ -1274,16 +1290,7 @@ void ULevelStreaming::SetLoadedLevel(ULevel* Level)
 
 	if (LoadedLevel)
 	{
-		LoadedLevel->OwningWorld = World;
-
-		// Remove the loaded level from its current collection, if any.
-		if (LoadedLevel->GetCachedLevelCollection())
-		{
-			LoadedLevel->GetCachedLevelCollection()->RemoveLevel(LoadedLevel);
-		}
-		LC.AddLevel(LoadedLevel);
-
-		CurrentState = (LoadedLevel->bIsVisible ? ECurrentState::LoadedVisible : ECurrentState::LoadedNotVisible);
+		// 这里不走这个，省略得了
 	}
 	else
 	{
@@ -1292,8 +1299,8 @@ void ULevelStreaming::SetLoadedLevel(ULevel* Level)
 
 	World->UpdateStreamingLevelShouldBeConsidered(this);
 }
-
 ```
+最主要的就是设置LoadedLevel为nullptr，剩下的也就是字面意思了不复杂。
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
 void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
