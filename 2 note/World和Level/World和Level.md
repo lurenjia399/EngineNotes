@@ -1247,27 +1247,7 @@ Level->ClearLevelComponents();
 Level->bIsVisible = false;
 ```
 从world中移除掉LoadedLevel中的东西，改变LoadedLevel的bIsVisible状态
-### 3 DiscardPendingUnloadLevel
-```cpp
-void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
-{
-	if (PendingUnloadLevel)
-	{
-		、、
-		if (PendingUnloadLevel->bIsVisible)
-		{
-			PersistentWorld->RemoveFromWorld(PendingUnloadLevel);
-		}
-
-		if (!PendingUnloadLevel->bIsVisible)
-		{
-			FLevelStreamingGCHelper::RequestUnload(PendingUnloadLevel);
-			PendingUnloadLevel = nullptr;
-		}
-	}
-}
-```
-### 4 ClearLoadedLevel
+### 3 ClearLoadedLevel
 ```cpp
 void ClearLoadedLevel() { SetLoadedLevel(nullptr); }
 void ULevelStreaming::SetLoadedLevel(ULevel* Level)
@@ -1301,6 +1281,38 @@ void ULevelStreaming::SetLoadedLevel(ULevel* Level)
 }
 ```
 最主要的就是设置LoadedLevel为nullptr，剩下的也就是字面意思了不复杂。
+### 4 DiscardPendingUnloadLevel
+```cpp
+void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
+{
+	if (PendingUnloadLevel)
+	{
+		// 如果可以移除Level但是可见的，说明还没从world中移除，手动移除下
+		if (PendingUnloadLevel->bIsVisible)
+		{
+			PersistentWorld->RemoveFromWorld(PendingUnloadLevel);
+		}
+		// 正常流程，可以移除Level是不可见的
+		if (!PendingUnloadLevel->bIsVisible)
+		{
+			// 调用这个Helper把Level存到LevelsPendingUnload这个数组里
+			FLevelStreamingGCHelper::RequestUnload(PendingUnloadLevel);
+			PendingUnloadLevel = nullptr;
+		}
+	}
+}
+void FLevelStreamingGCHelper::RequestUnload( ULevel* InLevel )
+{
+	if (!IsRunningCommandlet())
+	{
+		check( InLevel );
+		check( InLevel->bIsVisible == false );
+		LevelsPendingUnload.AddUnique( InLevel );
+	}
+}
+```
+主要目的就是将可移除Level添加到LevelsPendingUnload这个数组里面
+
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
 void ULevelStreaming::DiscardPendingUnloadLevel(UWorld* PersistentWorld)
