@@ -1189,7 +1189,40 @@ case ECurrentState::MakingInvisible:
 	break;
 ```
 ### 2 RemoveFromWorld
+```cpp
+// 1 停掉Level里Actor
+for (int32 ActorIdx = 0; ActorIdx < Level->Actors.Num(); ActorIdx++)
+{
+	if (AActor* Actor = Level->Actors[ActorIdx])
+	{
+		Actor->RouteEndPlay(EEndPlayReason::RemovedFromWorld);
+	}
+}
+// 2 移除Level里的Pawn
+// Remove any pawns from the pawn list that are about to be streamed out
+for (APawn* Pawn : TActorRange<APawn>(this))
+{
+	if (Pawn->IsInLevel(Level))
+	{
+		AController* Controller = Pawn->GetController();
+		// This should have happened as part of the RouteEndPlay above, but ensuring to validate this assumption and maintain behavior
+		// with RemovePawn having been deprecated
+		if (!ensure(Controller == nullptr || (Controller->GetPawn() == Pawn)))
+		{
+			Controller->UnPossess();
+		}
+	}
+	else if (UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(Pawn->GetMovementComponent()))
+	{
+		// otherwise force floor check in case the floor was streamed out from under it
+		CharacterMovement->bForceNextFloorCheck = true;
+	}
+}
+// 3 移除渲染资源？
+Level->ReleaseRenderingResources();
 
+
+```
 
 ### 1 ULevelStreaming::DiscardPendingUnloadLevel
 ```cpp
