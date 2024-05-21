@@ -1245,7 +1245,9 @@ Level->ClearLevelComponents();
 // 6 通知服务器改变Level状态，通过PlayerController
 // 7 设置bIsVisible为false
 Level->bIsVisible = false;
-
+```
+### 3 DiscardPendingUnloadLevel
+```cpp
 
 ```
 
