@@ -841,6 +841,61 @@ ULevelStreaming* UEditorLevelUtils::AddLevelToWorld_Internal(UWorld* InWorld, co
 ```
 看上就是通过NewObject创建出ULevelStreaming这个对象，然后通过UWorld::AddStreamingLevel这个方法将其赋值给World的StreamingLevels和StreamingLevelsToConsider数组。再添加完成后StreamingLevel的CurrentState是UnLoaded，如果是编辑器TargetState是LoadedNotVisibe，如果是exe的话TargetState是Unloaded。
 ### 2 WorldComposition方式
+首先需要在WorldSettings中开启：
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405222014460.png)
+在开启之后引擎会遍历PersistentLevel所在文件夹下所有的关卡，生成WorldCompositionTile。
+#### 1 FUnrealEdMisc::EnableWorldComposition、
+```cpp
+bool FUnrealEdMisc::EnableWorldComposition(UWorld* InWorld, bool bEnable)
+{
+	if (InWorld->WorldComposition == nullptr)
+	{
+		FString RootPackageName = InWorld->GetOutermost()->GetName();
+		// Map should be saved to disk
+		if (!FPackageName::DoesPackageExist(RootPackageName))
+		{
+			return false;
+		}
+		// All existing sub-levels on this map should be removed
+		// 
+		int32 NumExistingSublevels = InWorld->GetStreamingLevels().Num();
+		if (NumExistingSublevels > 0)
+		{
+			return false;
+		}
+		AWorldSettings* WorldSettings = InWorld->GetWorldSettings();
+		UClass* WorldCompositionClass = UWorldComposition::StaticClass();
+		if (WorldSettings && WorldSettings->WorldCompositionClass.Get())
+		{
+			WorldCompositionClass = WorldSettings->WorldCompositionClass.Get();
+		}
+		auto WorldCompostion = NewObject<UWorldComposition>(InWorld, WorldCompositionClass);
+		// All map files found in the same and folder and all sub-folders will be added ass sub-levels to this map
+		// Make sure user understands this
+		int32 NumFoundSublevels = WorldCompostion->GetTilesList().Num();
+		if (NumFoundSublevels)
+		{
+			FFormatNamedArguments Arguments;
+			Arguments.Add(TEXT("NumSubLevels"), NumFoundSublevels);
+			Arguments.Add(TEXT("FolderLocation"), FText::FromString(FPackageName::GetLongPackagePath(RootPackageName)));
+			const FText Message = FText::Format(LOCTEXT("EnableWorldCompositionPrompt_Message", "World Composition auto-discovers sub-levels by scanning the folder the level is saved in, and all sub-folders. {NumSubLevels} level files were found in {FolderLocation} and will be added as sub-levels. Do you want to continue?"), Arguments);
+			
+			auto AppResult = FMessageDialog::Open(EAppMsgType::OkCancel, Message);
+			if (AppResult != EAppReturnType::Ok)
+			{
+				WorldCompostion->MarkPendingKill();
+				return false;
+			}
+		}
+			
+		// 
+		InWorld->WorldComposition = WorldCompostion;
+		UWorldComposition::WorldCompositionChangedEvent.Broadcast(InWorld);
+	}
+	
+	return true;
+}
+```
 
 ## 2.2 流式关卡加载流程
 ### 1 又是在Engine::Tick方法里面，我们就看GameEngine吧
