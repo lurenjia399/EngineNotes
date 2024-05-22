@@ -857,7 +857,7 @@ bool FUnrealEdMisc::EnableWorldComposition(UWorld* InWorld, bool bEnable)
 			return false;
 		}
 		// All existing sub-levels on this map should be removed
-		// 
+		// 移除所有PersistentLevel的所有子关卡
 		int32 NumExistingSublevels = InWorld->GetStreamingLevels().Num();
 		if (NumExistingSublevels > 0)
 		{
@@ -869,6 +869,7 @@ bool FUnrealEdMisc::EnableWorldComposition(UWorld* InWorld, bool bEnable)
 		{
 			WorldCompositionClass = WorldSettings->WorldCompositionClass.Get();
 		}
+		// 创建出WorldComposition对象
 		auto WorldCompostion = NewObject<UWorldComposition>(InWorld, WorldCompositionClass);
 		// All map files found in the same and folder and all sub-folders will be added ass sub-levels to this map
 		// Make sure user understands this
