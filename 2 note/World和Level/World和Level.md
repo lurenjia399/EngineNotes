@@ -873,23 +873,11 @@ bool FUnrealEdMisc::EnableWorldComposition(UWorld* InWorld, bool bEnable)
 		auto WorldCompostion = NewObject<UWorldComposition>(InWorld, WorldCompositionClass);
 		// All map files found in the same and folder and all sub-folders will be added ass sub-levels to this map
 		// Make sure user understands this
+		// WorldComposition会自动扫描文件夹下的子关卡，然后
 		int32 NumFoundSublevels = WorldCompostion->GetTilesList().Num();
 		if (NumFoundSublevels)
 		{
-			FFormatNamedArguments Arguments;
-			Arguments.Add(TEXT("NumSubLevels"), NumFoundSublevels);
-			Arguments.Add(TEXT("FolderLocation"), FText::FromString(FPackageName::GetLongPackagePath(RootPackageName)));
-			const FText Message = FText::Format(LOCTEXT("EnableWorldCompositionPrompt_Message", "World Composition auto-discovers sub-levels by scanning the folder the level is saved in, and all sub-folders. {NumSubLevels} level files were found in {FolderLocation} and will be added as sub-levels. Do you want to continue?"), Arguments);
-			
-			auto AppResult = FMessageDialog::Open(EAppMsgType::OkCancel, Message);
-			if (AppResult != EAppReturnType::Ok)
-			{
-				WorldCompostion->MarkPendingKill();
-				return false;
-			}
 		}
-			
-		// 
 		InWorld->WorldComposition = WorldCompostion;
 		UWorldComposition::WorldCompositionChangedEvent.Broadcast(InWorld);
 	}
