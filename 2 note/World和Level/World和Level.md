@@ -903,80 +903,16 @@ void UWorldComposition::Rescan()
 	FTilesList SavedTileList = Tiles;
 		
 	Reset();	
-
-	UWorld* OwningWorld = GetWorld();
-	
-	FString RootPackageName = GetOutermost()->GetName();
-	RootPackageName = UWorld::StripPIEPrefixFromPackageName(RootPackageName, OwningWorld->StreamingLevelsPrefix);
-	if (!FPackageName::DoesPackageExist(RootPackageName))
-	{
-		return;	
-	}
-	
-	WorldRoot = FPaths::GetPath(RootPackageName) + TEXT("/");
-			
-	// Gather tiles packages from a specified folder
-	FWorldTilesGatherer Gatherer;
-	FString WorldRootFilename = FPackageName::LongPackageNameToFilename(WorldRoot);
-	Gatherer.BuildTileCollection(WorldRootFilename);
-
-	// Make sure we have persistent level name without PIE prefix
-	FString PersistentLevelPackageName = UWorld::StripPIEPrefixFromPackageName(OwningWorld->GetOutermost()->GetName(), OwningWorld->StreamingLevelsPrefix);
-		
 	// Add found tiles to a world composition, except persistent level
 	for (const FString& TilePackageName : Gatherer.TilesCollection)
 	{
-		// Discard persistent level entry
-		if (TilePackageName == PersistentLevelPackageName)
-		{
-			continue;
-		}
-
-		FWorldTileInfo Info;
-		FString TileFilename = FPackageName::LongPackageNameToFilename(TilePackageName, FPackageName::GetMapPackageExtension());
-		if (!FWorldTileInfo::Read(TileFilename, Info))
-		{
-			continue;
-		}
-
-		FWorldCompositionTile Tile;
-		Tile.PackageName = FName(*TilePackageName);
-		Tile.Info = Info;
-		
-		// Assign LOD tiles
-		FString TileShortName = FPackageName::GetShortName(TilePackageName);
-		TArray<FPackageNameAndLODIndex> TileLODList;
-		Gatherer.TilesLODCollection.MultiFind(TileShortName, TileLODList);
-		if (TileLODList.Num())
-		{
-			Tile.LODPackageNames.SetNum(WORLDTILE_LOD_MAX_INDEX);
-			FString TilePath = FPackageName::GetLongPackagePath(TilePackageName) + TEXT("/");
-			for (const FPackageNameAndLODIndex& TileLOD : TileLODList)
-			{
-				// LOD tiles should be in the same directory or in nested directory
-				// Basically tile path should be a prefix of a LOD tile path
-				if (TileLOD.PackageName.StartsWith(TilePath))
-				{
-					Tile.LODPackageNames[TileLOD.LODIndex-1] = FName(*FString::Printf(TEXT("%s_LOD%d"), *TileLOD.PackageName, TileLOD.LODIndex));
-				}
-			}
-
-			// Remove null entries in LOD list
-			int32 NullEntryIdx;
-			if (Tile.LODPackageNames.Find(FName(), NullEntryIdx))
-			{
-				Tile.LODPackageNames.SetNum(NullEntryIdx);
-			}
-		}
-		
+		// 这里边一系列的操作就是创建Tile，也就是FWorldCompositionTile对象
+		// 然后添加到Tiles列表里面
 		Tiles.Add(Tile);
 	}
-
-#if WITH_EDITOR
-	RestoreDirtyTilesInfo(SavedTileList);
-#endif// WITH_EDITOR
 	
 	// Create streaming levels for each Tile
+	// 根据Tiles列表创建出ULevelStreaming，然后存到TilesStreaming数组里面
 	PopulateStreamingLevels();
 
 	// Calculate absolute positions since they are not serialized to disk
