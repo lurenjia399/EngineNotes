@@ -873,7 +873,7 @@ bool FUnrealEdMisc::EnableWorldComposition(UWorld* InWorld, bool bEnable)
 		auto WorldCompostion = NewObject<UWorldComposition>(InWorld, WorldCompositionClass);
 		// All map files found in the same and folder and all sub-folders will be added ass sub-levels to this map
 		// Make sure user understands this
-		// WorldComposition会自动扫描文件夹下的子关卡，然后
+		// WorldComposition会自动扫描文件夹下的子关卡，然后创建对应的Tile
 		int32 NumFoundSublevels = WorldCompostion->GetTilesList().Num();
 		if (NumFoundSublevels)
 		{
@@ -881,11 +881,108 @@ bool FUnrealEdMisc::EnableWorldComposition(UWorld* InWorld, bool bEnable)
 		InWorld->WorldComposition = WorldCompostion;
 		UWorldComposition::WorldCompositionChangedEvent.Broadcast(InWorld);
 	}
-	
 	return true;
 }
 ```
+这一部分没啥东西，就是创建开启WorldComposition，判断persistentLevel是否有子关卡，弹出一些提示框之类的
+#### 2 UWorldComposition::PostInitProperties
+```cpp
+void UWorldComposition::PostInitProperties()
+{
+	Super::PostInitProperties();
 
+	if (!IsTemplate() && !GetOutermost()->HasAnyPackageFlags(PKG_PlayInEditor))
+	{
+		Rescan();
+	}
+}
+
+void UWorldComposition::Rescan()
+{
+	// Save tiles state, so we can restore it for dirty tiles after rescan is done
+	FTilesList SavedTileList = Tiles;
+		
+	Reset();	
+
+	UWorld* OwningWorld = GetWorld();
+	
+	FString RootPackageName = GetOutermost()->GetName();
+	RootPackageName = UWorld::StripPIEPrefixFromPackageName(RootPackageName, OwningWorld->StreamingLevelsPrefix);
+	if (!FPackageName::DoesPackageExist(RootPackageName))
+	{
+		return;	
+	}
+	
+	WorldRoot = FPaths::GetPath(RootPackageName) + TEXT("/");
+			
+	// Gather tiles packages from a specified folder
+	FWorldTilesGatherer Gatherer;
+	FString WorldRootFilename = FPackageName::LongPackageNameToFilename(WorldRoot);
+	Gatherer.BuildTileCollection(WorldRootFilename);
+
+	// Make sure we have persistent level name without PIE prefix
+	FString PersistentLevelPackageName = UWorld::StripPIEPrefixFromPackageName(OwningWorld->GetOutermost()->GetName(), OwningWorld->StreamingLevelsPrefix);
+		
+	// Add found tiles to a world composition, except persistent level
+	for (const FString& TilePackageName : Gatherer.TilesCollection)
+	{
+		// Discard persistent level entry
+		if (TilePackageName == PersistentLevelPackageName)
+		{
+			continue;
+		}
+
+		FWorldTileInfo Info;
+		FString TileFilename = FPackageName::LongPackageNameToFilename(TilePackageName, FPackageName::GetMapPackageExtension());
+		if (!FWorldTileInfo::Read(TileFilename, Info))
+		{
+			continue;
+		}
+
+		FWorldCompositionTile Tile;
+		Tile.PackageName = FName(*TilePackageName);
+		Tile.Info = Info;
+		
+		// Assign LOD tiles
+		FString TileShortName = FPackageName::GetShortName(TilePackageName);
+		TArray<FPackageNameAndLODIndex> TileLODList;
+		Gatherer.TilesLODCollection.MultiFind(TileShortName, TileLODList);
+		if (TileLODList.Num())
+		{
+			Tile.LODPackageNames.SetNum(WORLDTILE_LOD_MAX_INDEX);
+			FString TilePath = FPackageName::GetLongPackagePath(TilePackageName) + TEXT("/");
+			for (const FPackageNameAndLODIndex& TileLOD : TileLODList)
+			{
+				// LOD tiles should be in the same directory or in nested directory
+				// Basically tile path should be a prefix of a LOD tile path
+				if (TileLOD.PackageName.StartsWith(TilePath))
+				{
+					Tile.LODPackageNames[TileLOD.LODIndex-1] = FName(*FString::Printf(TEXT("%s_LOD%d"), *TileLOD.PackageName, TileLOD.LODIndex));
+				}
+			}
+
+			// Remove null entries in LOD list
+			int32 NullEntryIdx;
+			if (Tile.LODPackageNames.Find(FName(), NullEntryIdx))
+			{
+				Tile.LODPackageNames.SetNum(NullEntryIdx);
+			}
+		}
+		
+		Tiles.Add(Tile);
+	}
+
+#if WITH_EDITOR
+	RestoreDirtyTilesInfo(SavedTileList);
+#endif// WITH_EDITOR
+	
+	// Create streaming levels for each Tile
+	PopulateStreamingLevels();
+
+	// Calculate absolute positions since they are not serialized to disk
+	CaclulateTilesAbsolutePositions();
+}
+```
 ## 2.2 流式关卡加载流程
 ### 1 又是在Engine::Tick方法里面，我们就看GameEngine吧
 ```cpp
