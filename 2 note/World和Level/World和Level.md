@@ -921,7 +921,22 @@ void UWorldComposition::Rescan()
 }
 ```
 扫描PersistentLevel文件夹下的所有关卡，填充TilesStreaming数组，确定每个Tile的AbsolutePosition。
+#### 3 UWorldComposition::PostLoad
+```cpp
+void UWorldComposition::PostLoad()
+{
+	Super::PostLoad();
 
+	UWorld* World = GetWorld();
+
+	if (World->IsGameWorld())
+	{
+		// Remove streaming levels created by World Browser, to avoid duplication with streaming levels from world composition
+		World->SetStreamingLevels(TilesStreaming);
+	}
+}
+```
+这个方法就是添加到StreamingLevelsToConsider这个数组里面
 ## 2.2 流式关卡加载流程
 ### 1 又是在Engine::Tick方法里面，我们就看GameEngine吧
 ```cpp
