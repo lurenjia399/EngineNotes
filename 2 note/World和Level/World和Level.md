@@ -916,9 +916,12 @@ void UWorldComposition::Rescan()
 	PopulateStreamingLevels();
 
 	// Calculate absolute positions since they are not serialized to disk
+	// 计算每个Tile的Position,通过遍历Tile然后将期父亲的Position加上的方式确定
 	CaclulateTilesAbsolutePositions();
 }
 ```
+扫描PersistentLevel文件夹下的所有关卡，填充TilesStreaming数组，确定每个Tile的AbsolutePosition。
+
 ## 2.2 流式关卡加载流程
 ### 1 又是在Engine::Tick方法里面，我们就看GameEngine吧
 ```cpp
