@@ -1652,3 +1652,20 @@ bool UWorldComposition::CommitTileStreamingState(UWorld* PersistentWorld, int32 
 }
 ```
 不复杂，字面意思，先有一些条件判断，然后设置StreamingLevel的状态，等待下一帧状态机的切换进而触发可见和不可见的过程。
+## 3 手动触发
+### 1 蓝图中Load Stream Level
+```cpp
+void UGameplayStatics::LoadStreamLevel(const UObject* WorldContextObject, FName LevelName, bool bMakeVisibleAfterLoad, bool bShouldBlockOnLoad, FLatentActionInfo LatentInfo)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+	{
+		FLatentActionManager& LatentManager = World->GetLatentActionManager();
+		if (LatentManager.FindExistingAction<FStreamLevelAction>(LatentInfo.CallbackTarget, LatentInfo.UUID) == nullptr)
+		{
+			FStreamLevelAction* NewAction = new FStreamLevelAction(true, LevelName, bMakeVisibleAfterLoad, bShouldBlockOnLoad, LatentInfo, World);
+			LatentManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, NewAction);
+		}
+	}
+}
+```
+
