@@ -1541,3 +1541,4 @@ if( !bIsPaused )
 }
 ```
 也是在world的Tick里面，首先会检测Volume推流，然后就会检测WorldComposition推流
+### 1 UWorldComposition::UpdateStreamingState
