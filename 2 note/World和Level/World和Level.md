@@ -1522,3 +1522,22 @@ void UWorld::ProcessLevelStreamingVolumes(FVector* OverrideViewLocation)
 1 遍历world中所有的StreamingLevels，来填充LevelStreamingObjectsWithVolumes和LevelStreamingObjectsWithVolumesOtherThanBlockingLoad两个数组。
 2 遍历world中所有的playerController，算下玩家位置或者pov位置，判断位置在哪个StreamingLevel中的Volume中，填充VisibleLevelStreamingObjects数组。
 3 遍历带有Volumes的StreamingLevels，如果在Volume里面就改变StreamingLevel的Target状态为LoadedNotVisible，也给之后UpdateStreamingState这个方法真正加载Level提供条件
+## 2 WorldComposition
+```cpp
+// 在UWorld::Tick方法里面走
+if( !bIsPaused )
+{
+	// Issues level streaming load/unload requests based on local players being inside/outside level streaming volumes.
+	if (IsGameWorld())
+	{
+		// 这个上面看了，是Volume的推流机制
+		ProcessLevelStreamingVolumes();
+		// 这个就是需要看的WorldComposition推流机制
+		if (WorldComposition)
+		{
+			WorldComposition->UpdateStreamingState();
+		}
+	}
+}
+```
+也是在world的Tick里面，首先会检测V
