@@ -1622,4 +1622,33 @@ void UWorldComposition::GetDistanceVisibleLevels(
 ```
 大部分代码都省略掉了，主要就是遍历Tile，然后以玩家位置为中心Tile的可见距离为半径构建圆，将圆和Tile中关卡的AABB包围盒判断相交，如果相交放入VisibleLevel不相交放入HiddenLevel。
 ### 3 UWorldComposition::CommitTileStreamingState
+```cpp
+bool UWorldComposition::CommitTileStreamingState(UWorld* PersistentWorld, int32 TileIdx, bool bShouldBeLoaded, bool bShouldBeVisible, bool bShouldBlock, int32 LODIdx)
+{
+	// 一些条件判断，提前返回的，就省略掉了
+	// Quit early in case we have cooldown on streaming state changes
+	// 当前在切换阈值中，不改变Level状态
+	const bool bUseStreamingStateCooldown = (PersistentWorld->IsGameWorld() && PersistentWorld->FlushLevelStreamingType == EFlushLevelStreamingType::None);
+	if (bUseStreamingStateCooldown && TilesStreamingTimeThreshold > 0.0)
+	{
+		const double CurrentTime = FPlatformTime::Seconds();
+		const double TimePassed = CurrentTime - Tile.StreamingLevelStateChangeTime;
+		if (TimePassed < TilesStreamingTimeThreshold)
+		{
+			return false;
+		}
 
+		// Save current time as state change time for this tile
+		Tile.StreamingLevelStateChangeTime = CurrentTime;
+	}
+
+	// Commit new state
+	// 改变关卡状态,等待下一帧的StreamingLevel状态机切换
+	StreamingLevel->bShouldBlockOnLoad	= bShouldBlock;
+	StreamingLevel->SetShouldBeLoaded(bShouldBeLoaded);
+	StreamingLevel->SetShouldBeVisible(bShouldBeVisible);
+	StreamingLevel->SetLevelLODIndex(LODIdx);
+	return true;
+}
+```
+不复杂，字面意思，先有一些条件判断，然后设置StreamingLevel的状态，等待下一帧状态机的切换进而触发可见和不可见的过程。
