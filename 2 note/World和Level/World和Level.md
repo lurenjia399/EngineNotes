@@ -1542,3 +1542,32 @@ if( !bIsPaused )
 ```
 也是在world的Tick里面，首先会检测Volume推流，然后就会检测WorldComposition推流
 ### 1 UWorldComposition::UpdateStreamingState
+```cpp
+void UWorldComposition::UpdateStreamingState(const FVector* InLocations, int32 Num)
+{
+	UWorld* OwningWorld = GetWorld();
+
+	// Get the list of visible and hidden levels from current view point
+	TArray<FDistanceVisibleLevel> DistanceVisibleLevels;
+	TArray<FDistanceVisibleLevel> DistanceHiddenLevels;
+	// 判断玩家位置和Level的距离
+	GetDistanceVisibleLevels(InLocations, Num, DistanceVisibleLevels, DistanceHiddenLevels);
+	
+	// Dedicated server always blocks on load
+	bool bShouldBlock = (OwningWorld->GetNetMode() == NM_DedicatedServer);
+	
+	// Set distance hidden levels to unload
+	for (const FDistanceVisibleLevel& Level : DistanceHiddenLevels)
+	{
+		// 距离过远隐藏关卡
+		CommitTileStreamingState(OwningWorld, Level.TileIdx, false, false, bShouldBlock, Level.LODIndex);
+	}
+
+	// Set distance visible levels to load
+	for (const FDistanceVisibleLevel& Level : DistanceVisibleLevels)
+	{
+		// 距离合适显示关卡
+		CommitTileStreamingState(OwningWorld, Level.TileIdx, true, true, bShouldBlock, Level.LODIndex);
+	}
+}
+```
