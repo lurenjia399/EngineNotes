@@ -1572,7 +1572,7 @@ void UWorldComposition::UpdateStreamingState(const FVector* InLocations, int32 N
 }
 ```
 首先判断玩家和Level之间的距离赋值DistanceHiddenLevels和DistanceVisibleLevels数组，然后根据数组用CommitTileStreamingState来隐藏显示关卡。
-### 2 GetDistanceVisibleLevels
+### 2 UWorldComposition::GetDistanceVisibleLevels
 ```cpp
 void UWorldComposition::GetDistanceVisibleLevels(
 	const FVector* InLocations,
@@ -1594,28 +1594,8 @@ void UWorldComposition::GetDistanceVisibleLevels(
 		}
 		else
 		{
-			//
-			// Check if tile bounding box intersects with a sphere with origin at provided location and with radius equal to tile layer distance settings
-			//
-			FIntPoint LevelPositionXY = FIntPoint(Tile.Info.AbsolutePosition.X, Tile.Info.AbsolutePosition.Y);
-			FIntPoint LevelOffsetXY = LevelPositionXY - WorldOriginLocationXY;
-			FBox LevelBounds = Tile.Info.Bounds.ShiftBy(FVector(LevelOffsetXY));
-			// We don't care about third dimension yet
-			LevelBounds.Min.Z = -WORLD_MAX;
-			LevelBounds.Max.Z = +WORLD_MAX;
-				
-			int32 NumAvailableLOD = FMath::Min(Tile.Info.LODList.Num(), Tile.LODPackageNames.Num());
-			// Find LOD
-			// INDEX_NONE for original non-LOD level
 			for (int32 LODIdx = INDEX_NONE; LODIdx < NumAvailableLOD; ++LODIdx)
 			{
-				if (bIsVisible && LODIdx > VisibleLevel.LODIndex)
-				{
-					// no point to loop more, we have visible tile with best possible LOD
-					break;
-				}
-				
-				int32 TileStreamingDistance = Tile.Info.GetStreamingDistance(LODIdx);
 				for (int32 LocationIdx = 0; LocationIdx < NumLocations; ++LocationIdx)
 				{
 					FSphere QuerySphere(InLocations[LocationIdx], TileStreamingDistance);
@@ -1640,3 +1620,6 @@ void UWorldComposition::GetDistanceVisibleLevels(
 	}
 }
 ```
+大部分代码都省略掉了，主要就是遍历Tile，然后以玩家位置为中心Tile的可见距离为半径构建圆，将圆和Tile中关卡的AABB包围盒判断相交，如果相交放入VisibleLevel不相交放入HiddenLevel。
+### 3 UWorldComposition::CommitTileStreamingState
+
