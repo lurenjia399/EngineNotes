@@ -1662,6 +1662,11 @@ void UGameplayStatics::LoadStreamLevel(const UObject* WorldContextObject, FName 
 		FLatentActionManager& LatentManager = World->GetLatentActionManager();
 		if (LatentManager.FindExistingAction<FStreamLevelAction>(LatentInfo.CallbackTarget, LatentInfo.UUID) == nullptr)
 		{
+			// 创建StreamingLevelAction
+			// 第一个参数表示，是否在loading中了，也就是在load关卡的过程中了
+			// 第二个参数表示，需要load关卡的名称
+			// 第三个参数表示，load完成后关卡是否可见
+			// 第四个参数表示，
 			FStreamLevelAction* NewAction = new FStreamLevelAction(true, LevelName, bMakeVisibleAfterLoad, bShouldBlockOnLoad, LatentInfo, World);
 			LatentManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, NewAction);
 		}
@@ -1683,7 +1688,58 @@ FStreamLevelAction::FStreamLevelAction(bool bIsLoading, const FName& InLevelName
 	ActivateLevel( LocalLevel );
 }
 ```
-我们首先看下构造函数，1 首先就是找到需要load的StreamingLevel，通过FindAndCacheLevelStreamingObject这个方法，具体的逻辑是遍历world中的StreamingLevels数组，然后找到LevelName和元素相等的Level进而返回。2 把返回的Level保存到LatentAction中的Level中。3 调用ActivateLevel方法。
+我们首先看下构造函数，1 初始化列表的方式创建一些值。2 找到需要load的StreamingLevel，通过FindAndCacheLevelStreamingObject这个方法，具体的逻辑是遍历world中的StreamingLevels数组，然后找到LevelName和元素相等的Level进而返回。3 把返回的Level保存到LatentAction中的Level中。4 调用ActivateLevel方法。
 ```cpp
+void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
+{	
+	if (LevelStreamingObject)
+	{
+		// Loading.
+		if (bLoading)
+		{
+			LevelStreamingObject->SetShouldBeLoaded(true);
+			LevelStreamingObject->SetShouldBeVisible(LevelStreamingObject->GetShouldBeVisibleFlag()	|| bMakeVisibleAfterLoad);
+			LevelStreamingObject->bShouldBlockOnLoad = bShouldBlock;
+		}
+		// Unloading.
+		else 
+		{
+			UE_LOG(LogStreaming, Log, TEXT("Streaming out level %s (%s)..."),*LevelStreamingObject->GetName(),*LevelStreamingObject->GetWorldAssetPackageName());
+			LevelStreamingObject->SetShouldBeLoaded(false);
+			LevelStreamingObject->SetShouldBeVisible(false);
+			LevelStreamingObject->bShouldBlockOnUnload = bShouldBlock;
+		}
 
+		// If we have a valid world
+		if (UWorld* LevelWorld = LevelStreamingObject->GetWorld())
+		{
+				const bool bShouldBeLoaded = LevelStreamingObject->ShouldBeLoaded();
+				const bool bShouldBeVisible = LevelStreamingObject->ShouldBeVisible();
+
+			UE_LOG(LogLevel, Log, TEXT("ActivateLevel %s %i %i %i"),
+				*LevelStreamingObject->GetWorldAssetPackageName(),
+				bShouldBeLoaded,
+				bShouldBeVisible,
+				bShouldBlock);
+
+			// Notify players of the change
+			for (FConstPlayerControllerIterator Iterator = LevelWorld->GetPlayerControllerIterator(); Iterator; ++Iterator)
+			{
+				if (APlayerController* PlayerController = Iterator->Get())
+				{
+					PlayerController->LevelStreamingStatusChanged(
+						LevelStreamingObject,
+						bShouldBeLoaded,
+					bShouldBeVisible,
+						bShouldBlock,
+					INDEX_NONE);
+				}
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogLevel, Warning, TEXT("Failed to find streaming level object associated with '%s'"), *LevelName.ToString() );
+	}
+}
 ```
