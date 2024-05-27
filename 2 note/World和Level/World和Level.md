@@ -1695,6 +1695,7 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 	if (LevelStreamingObject)
 	{
 		// Loading.
+		// 字面意思，如果bLoading为true，我们设置关卡的标志位bShouldBeLoaded,bShouldBeVisible,bShouldBlockOnLoad
 		if (bLoading)
 		{
 			LevelStreamingObject->SetShouldBeLoaded(true);
@@ -1704,7 +1705,6 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 		// Unloading.
 		else 
 		{
-			UE_LOG(LogStreaming, Log, TEXT("Streaming out level %s (%s)..."),*LevelStreamingObject->GetName(),*LevelStreamingObject->GetWorldAssetPackageName());
 			LevelStreamingObject->SetShouldBeLoaded(false);
 			LevelStreamingObject->SetShouldBeVisible(false);
 			LevelStreamingObject->bShouldBlockOnUnload = bShouldBlock;
