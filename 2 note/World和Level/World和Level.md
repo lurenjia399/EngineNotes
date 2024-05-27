@@ -1668,4 +1668,19 @@ void UGameplayStatics::LoadStreamLevel(const UObject* WorldContextObject, FName 
 	}
 }
 ```
-
+蓝图中的这个时创建了一个FStreamLevelAction，这个我们在之前分析过，就相当于是一个延迟操作，具体的逻辑是在tick中执行。
+### 2 FStreamLevelAction
+```cpp
+FStreamLevelAction::FStreamLevelAction(bool bIsLoading, const FName& InLevelName, bool bIsMakeVisibleAfterLoad, bool bInShouldBlock, const FLatentActionInfo& InLatentInfo, UWorld* World)
+	: bLoading(bIsLoading)
+	, bMakeVisibleAfterLoad(bIsMakeVisibleAfterLoad)
+	, bShouldBlock(bInShouldBlock)
+	, LevelName(InLevelName)
+	, LatentInfo(InLatentInfo)
+{
+	ULevelStreaming* LocalLevel = FindAndCacheLevelStreamingObject( LevelName, World );
+	Level = LocalLevel;
+	ActivateLevel( LocalLevel );
+}
+```
+我们首先看下构造函数，
