@@ -1683,4 +1683,7 @@ FStreamLevelAction::FStreamLevelAction(bool bIsLoading, const FName& InLevelName
 	ActivateLevel( LocalLevel );
 }
 ```
-我们首先看下构造函数，
+我们首先看下构造函数，1 首先就是找到需要load的StreamingLevel，通过FindAndCacheLevelStreamingObject这个方法，具体的逻辑是遍历world中的StreamingLevels数组，然后找到LevelName和元素相等的Level进而返回。2 把返回的Level保存到LatentAction中的Level中。3 调用ActivateLevel方法。
+```cpp
+
+```
