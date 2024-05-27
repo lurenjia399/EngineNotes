@@ -1737,3 +1737,8 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 }
 ```
 这个里面就是设置Level的标志位，以及发个rpc给客户端通过playercontroller。
+
+# 4 关卡切换流程
+## 1 OpenLevel
+我们以蓝图接口作为切入点
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405272025529.png)
