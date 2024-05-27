@@ -1718,12 +1718,6 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 				const bool bShouldBeLoaded = LevelStreamingObject->ShouldBeLoaded();
 				const bool bShouldBeVisible = LevelStreamingObject->ShouldBeVisible();
 
-			UE_LOG(LogLevel, Log, TEXT("ActivateLevel %s %i %i %i"),
-				*LevelStreamingObject->GetWorldAssetPackageName(),
-				bShouldBeLoaded,
-				bShouldBeVisible,
-				bShouldBlock);
-
 			// Notify players of the change
 			for (FConstPlayerControllerIterator Iterator = LevelWorld->GetPlayerControllerIterator(); Iterator; ++Iterator)
 			{
@@ -1742,3 +1736,4 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 
 }
 ```
+这个里面就是设置Level的z
