@@ -1742,3 +1742,49 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 ## 1 OpenLevel
 我们以蓝图接口作为切入点
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405272025529.png)
+
+```cpp
+void UGameplayStatics::OpenLevel(const UObject* WorldContextObject, FName LevelName, bool bAbsolute, FString Options)
+{
+	UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+	if (World == nullptr)
+	{
+		return;
+	}
+
+	const ETravelType TravelType = (bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative);
+	FWorldContext &WorldContext = GEngine->GetWorldContextFromWorldChecked(World);
+	FString Cmd = LevelName.ToString();
+	if (Options.Len() > 0)
+	{
+		Cmd += FString(TEXT("?")) + Options;
+	}
+	FURL TestURL(&WorldContext.LastURL, *Cmd, TravelType);
+	if (TestURL.IsLocalInternal())
+	{
+		// make sure the file exists if we are opening a local file
+		if (!GEngine->MakeSureMapNameIsValid(TestURL.Map))
+		{
+			
+		}
+	}
+
+	GEngine->SetClientTravel( World, *Cmd, TravelType );
+}
+
+void UEngine::SetClientTravel( UWorld *InWorld, const TCHAR* NextURL, ETravelType InTravelType )
+{
+	FWorldContext &Context = GetWorldContextFromWorldChecked(InWorld);
+
+	// set TravelURL.  Will be processed safely on the next tick in UGameEngine::Tick().
+	Context.TravelURL    = NextURL;
+	Context.TravelType   = InTravelType;
+
+	// Prevent crashing the game by attempting to connect to own listen server
+	if ( Context.LastURL.HasOption(TEXT("Listen")) )
+	{
+		Context.LastURL.RemoveOption(TEXT("Listen"));
+	}
+}
+```
+OpenLevel方法很简单，就是组装参数然后调用SetClientTravel，这个方法就是在WorldContext里面设置参数，然后再下一帧的tick里面进行切换关卡的流程。
