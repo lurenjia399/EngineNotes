@@ -1736,4 +1736,4 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 
 }
 ```
-这个里面就是设置Level的z
+这个里面就是设置Level的标志位，以及发个rpc给客户端通过playercontroller。
