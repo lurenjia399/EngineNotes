@@ -1816,7 +1816,7 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 	// 第四部分是更新PendingLevel
 }
 ```
-### 3 Browse
+### 3 第二部分和第三部分的 Browse
 ```cpp
 EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, FString& Error )
 {
