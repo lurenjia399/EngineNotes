@@ -1825,61 +1825,40 @@ EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, F
 	// 之后就是处理普通的URL，没有Options的那种URL
 	if (GDisallowNetworkTravel && URL.HasOption(TEXT("listen")))
 	{
+		// 使用了网络游戏中不允许的命令，切换地图失败
 		Error = NSLOCTEXT("Engine", "UsedCheatCommands", "Console commands were used which are disallowed in netplay.  You must restart the game to create a match.").ToString();
 		BroadcastTravelFailure(WorldContext.World(), ETravelFailure::CheatCommands, Error);
 		return EBrowseReturnVal::Failure;
 	}
 	if( URL.IsLocalInternal() )
 	{
+		// 本地的地图切换？，直接LoadMap
 		// Local map file.
 		return LoadMap( WorldContext, URL, NULL, Error ) ? EBrowseReturnVal::Success : EBrowseReturnVal::Failure;
 	}
 	else if( URL.IsInternal() && GIsClient )
 	{
+		// 在网络链接的情况下，客户端执行地图切换
+		// 取消掉PendingLevel
 		// Network URL.
 		if( WorldContext.PendingNetGame )
 		{
 			CancelPending(WorldContext);
 		}
-
+		// 关闭NetDriver
 		// Clean up the netdriver/socket so that the pending level succeeds
 		if (WorldContext.World() && ShouldShutdownWorldNetDriver())
 		{
 			ShutdownWorldNetDriver(WorldContext.World());
 		}
-
+		// 创建PendingNetGame和NetDriver
 		WorldContext.PendingNetGame = NewObject<UPendingNetGame>();
 		WorldContext.PendingNetGame->Initialize(URL); //-V595
 		WorldContext.PendingNetGame->InitNetDriver(); //-V595
-
-		if( !WorldContext.PendingNetGame )
-		{
-			// If the inital packet sent in InitNetDriver results in a socket error, HandleDisconnect() and CancelPending() may be called, which will null the PendingNetGame.
-			Error = NSLOCTEXT("Engine", "PendingNetGameInitFailure", "Error initializing the network driver.").ToString();
-			BroadcastTravelFailure(WorldContext.World(), ETravelFailure::PendingNetGameCreateFailure, Error);
-			return EBrowseReturnVal::Failure;
-		}
-
-		if( !WorldContext.PendingNetGame->NetDriver )
-		{
-			// UPendingNetGame will set the appropriate error code and connection lost type, so
-			// we just have to propagate that message to the game.
-			BroadcastTravelFailure(WorldContext.World(), ETravelFailure::PendingNetGameCreateFailure, WorldContext.PendingNetGame->ConnectionError);
-			WorldContext.PendingNetGame = NULL;
-			return EBrowseReturnVal::Failure;
-		}
-		return EBrowseReturnVal::Pending;
-	}
-	else if( URL.IsInternal() )
-	{
-		// Invalid.
-		Error = NSLOCTEXT("Engine", "ServerOpen", "Servers can't open network URLs").ToString();
-		return EBrowseReturnVal::Failure;
+	}else{
 	}
 	{
-		// External URL - disabled by default.
-		// Client->Viewports(0)->Exec(TEXT("ENDFULLSCREEN"));
-		// FPlatformProcess::LaunchURL( *URL.ToString(), TEXT(""), &Error );
+
 		return EBrowseReturnVal::Failure;
 	}
 }
