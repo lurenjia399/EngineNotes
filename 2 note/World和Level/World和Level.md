@@ -1808,7 +1808,27 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 		Context.SeamlessTravelHandler.Tick();
 	}
 	// 第二部分是处理服务器的关卡切换，
-	// 第三部分是处理客户端的关卡切换，
-	// 
+	// 第三部分是处理客户端的关卡切换，设置PendingLevel,在下一帧处理PendingLevel
+	if( !Context.TravelURL.IsEmpty() )
+	{	
+		AGameModeBase* const GameMode = Context.World()->GetAuthGameMode();
+		if (GameMode)
+		{
+			GameMode->StartToLeaveMap();
+		}
+
+		FString Error, TravelURLCopy = Context.TravelURL;
+		if (Browse( Context, FURL(&Context.LastURL,*TravelURLCopy,(ETravelType)Context.TravelType), Error ) == EBrowseReturnVal::Failure)
+		{
+			if (Context.World() == NULL)
+			{
+				BrowseToDefaultMap(Context);
+			}
+			BroadcastTravelFailure(Context.World(), ETravelFailure::ClientTravelFailure, Error);
+		}
+		check(Context.World() != NULL);
+		return;
+	}
+	// 第四部分是更新PendingLevel
 }
 ```
