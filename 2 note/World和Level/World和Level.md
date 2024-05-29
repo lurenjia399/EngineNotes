@@ -1855,10 +1855,11 @@ EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, F
 		WorldContext.PendingNetGame = NewObject<UPendingNetGame>();
 		WorldContext.PendingNetGame->Initialize(URL); //-V595
 		WorldContext.PendingNetGame->InitNetDriver(); //-V595
-	}else{
+		
+		// 后面还有对PendingNetGame和NetDriver创建失败的返回操作
+		return EBrowseReturnVal::Pending;
 	}
 	{
-
 		return EBrowseReturnVal::Failure;
 	}
 }
