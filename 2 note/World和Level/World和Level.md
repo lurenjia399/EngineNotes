@@ -1808,27 +1808,79 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 		Context.SeamlessTravelHandler.Tick();
 	}
 	// 第二部分是处理服务器的关卡切换，
+	// 没什么特别的，就是调用Borwse方法来进行地图切换
+	Browse( Context, FURL(&Context.LastURL,*NextURL,(ETravelType)Context.World()->NextTravelType), Error )
 	// 第三部分是处理客户端的关卡切换，设置PendingLevel,在下一帧处理PendingLevel
-	if( !Context.TravelURL.IsEmpty() )
-	{	
-		AGameModeBase* const GameMode = Context.World()->GetAuthGameMode();
-		if (GameMode)
+	// 同样的也是调用Borwse方法来进行地图切换
+	Browse( Context, FURL(&Context.LastURL,*TravelURLCopy,(ETravelType)Context.TravelType), Error );
+	// 第四部分是更新PendingLevel
+}
+```
+### 3 Browse
+```cpp
+EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, FString& Error )
+{
+	// 开头一大部分就是对URL进行处理，以及Options处理
+	
+	// 之后就是处理普通的URL，没有Options的那种URL
+	if (GDisallowNetworkTravel && URL.HasOption(TEXT("listen")))
+	{
+		Error = NSLOCTEXT("Engine", "UsedCheatCommands", "Console commands were used which are disallowed in netplay.  You must restart the game to create a match.").ToString();
+		BroadcastTravelFailure(WorldContext.World(), ETravelFailure::CheatCommands, Error);
+		return EBrowseReturnVal::Failure;
+	}
+	if( URL.IsLocalInternal() )
+	{
+		// Local map file.
+		return LoadMap( WorldContext, URL, NULL, Error ) ? EBrowseReturnVal::Success : EBrowseReturnVal::Failure;
+	}
+	else if( URL.IsInternal() && GIsClient )
+	{
+		// Network URL.
+		if( WorldContext.PendingNetGame )
 		{
-			GameMode->StartToLeaveMap();
+			CancelPending(WorldContext);
 		}
 
-		FString Error, TravelURLCopy = Context.TravelURL;
-		if (Browse( Context, FURL(&Context.LastURL,*TravelURLCopy,(ETravelType)Context.TravelType), Error ) == EBrowseReturnVal::Failure)
+		// Clean up the netdriver/socket so that the pending level succeeds
+		if (WorldContext.World() && ShouldShutdownWorldNetDriver())
 		{
-			if (Context.World() == NULL)
-			{
-				BrowseToDefaultMap(Context);
-			}
-			BroadcastTravelFailure(Context.World(), ETravelFailure::ClientTravelFailure, Error);
+			ShutdownWorldNetDriver(WorldContext.World());
 		}
-		check(Context.World() != NULL);
-		return;
+
+		WorldContext.PendingNetGame = NewObject<UPendingNetGame>();
+		WorldContext.PendingNetGame->Initialize(URL); //-V595
+		WorldContext.PendingNetGame->InitNetDriver(); //-V595
+
+		if( !WorldContext.PendingNetGame )
+		{
+			// If the inital packet sent in InitNetDriver results in a socket error, HandleDisconnect() and CancelPending() may be called, which will null the PendingNetGame.
+			Error = NSLOCTEXT("Engine", "PendingNetGameInitFailure", "Error initializing the network driver.").ToString();
+			BroadcastTravelFailure(WorldContext.World(), ETravelFailure::PendingNetGameCreateFailure, Error);
+			return EBrowseReturnVal::Failure;
+		}
+
+		if( !WorldContext.PendingNetGame->NetDriver )
+		{
+			// UPendingNetGame will set the appropriate error code and connection lost type, so
+			// we just have to propagate that message to the game.
+			BroadcastTravelFailure(WorldContext.World(), ETravelFailure::PendingNetGameCreateFailure, WorldContext.PendingNetGame->ConnectionError);
+			WorldContext.PendingNetGame = NULL;
+			return EBrowseReturnVal::Failure;
+		}
+		return EBrowseReturnVal::Pending;
 	}
-	// 第四部分是更新PendingLevel
+	else if( URL.IsInternal() )
+	{
+		// Invalid.
+		Error = NSLOCTEXT("Engine", "ServerOpen", "Servers can't open network URLs").ToString();
+		return EBrowseReturnVal::Failure;
+	}
+	{
+		// External URL - disabled by default.
+		// Client->Viewports(0)->Exec(TEXT("ENDFULLSCREEN"));
+		// FPlatformProcess::LaunchURL( *URL.ToString(), TEXT(""), &Error );
+		return EBrowseReturnVal::Failure;
+	}
 }
 ```
