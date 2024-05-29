@@ -1814,6 +1814,20 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 	// 同样的也是调用Borwse方法来进行地图切换
 	Browse( Context, FURL(&Context.LastURL,*TravelURLCopy,(ETravelType)Context.TravelType), Error );
 	// 第四部分是更新PendingLevel
+	Context.PendingNetGame->Tick( DeltaSeconds );
+	// 使用了LoadMap来加载地图
+	const bool bLoadedMapSuccessfully = LoadMap(Context, Context.PendingNetGame->URL, Context.PendingNetGame, Error);
+	if (Context.PendingNetGame != nullptr)
+	{
+		Context.PendingNetGame->LoadMapCompleted(this, Context, bLoadedMapSuccessfully, Error);
+		// Kill the pending level.
+		Context.PendingNetGame = nullptr;
+	}
+	else
+	{
+		BrowseToDefaultMap(Context);
+		BroadcastTravelFailure(Context.World(), ETravelFailure::TravelFailure, Error);
+	}
 }
 ```
 ### 3 第二部分和第三部分的 Browse
