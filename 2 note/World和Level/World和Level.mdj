@@ -21042,7 +21042,7 @@
 											"left": 624,
 											"top": 436,
 											"width": 14,
-											"height": 29
+											"height": 53
 										}
 									],
 									"lineColor": "#457b9d",
@@ -21067,6 +21067,132 @@
 									},
 									"activation": {
 										"$ref": "AAAAAAGPxH+A3TM2sl0="
+									}
+								},
+								{
+									"_type": "UMLSeqMessageView",
+									"_id": "AAAAAAGPxIxV3TNJrAg=",
+									"_parent": {
+										"$ref": "AAAAAAGPxGJ24DDfNGU="
+									},
+									"model": {
+										"$ref": "AAAAAAGPxIxV3TNImX0="
+									},
+									"subViews": [
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGPxIxV3TNKbH8=",
+											"_parent": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"model": {
+												"$ref": "AAAAAAGPxIxV3TNImX0="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 596,
+											"top": 483,
+											"width": 161.17333984375,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"edgePosition": 1,
+											"text": "10 : SetHandlerLoadedData"
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGPxIxV3TNLZtQ=",
+											"_parent": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"model": {
+												"$ref": "AAAAAAGPxIxV3TNImX0="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 691,
+											"top": 483,
+											"height": 13,
+											"alpha": 1.5707963267948966,
+											"distance": 25,
+											"hostEdge": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "EdgeLabelView",
+											"_id": "AAAAAAGPxIxV3TNMYOg=",
+											"_parent": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"model": {
+												"$ref": "AAAAAAGPxIxV3TNImX0="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 657,
+											"top": 484,
+											"height": 13,
+											"alpha": -1.5707963267948966,
+											"distance": 10,
+											"hostEdge": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"edgePosition": 1
+										},
+										{
+											"_type": "UMLActivationView",
+											"_id": "AAAAAAGPxIxV3TNN+qc=",
+											"_parent": {
+												"$ref": "AAAAAAGPxIxV3TNJrAg="
+											},
+											"model": {
+												"$ref": "AAAAAAGPxIxV3TNImX0="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 624,
+											"top": 500,
+											"width": 14,
+											"height": 29
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"head": {
+										"$ref": "AAAAAAGPxGw7QzKRCOc="
+									},
+									"tail": {
+										"$ref": "AAAAAAGPxGw7QzKRCOc="
+									},
+									"points": "637:480;667:480;667:500;637:500",
+									"nameLabel": {
+										"$ref": "AAAAAAGPxIxV3TNKbH8="
+									},
+									"stereotypeLabel": {
+										"$ref": "AAAAAAGPxIxV3TNLZtQ="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAGPxIxV3TNMYOg="
+									},
+									"activation": {
+										"$ref": "AAAAAAGPxIxV3TNN+qc="
 									}
 								}
 							]
@@ -21195,6 +21321,20 @@
 							"name": "SeamlessTravelLoadCallback",
 							"source": {
 								"$ref": "AAAAAAGPxHeC9DLSkkQ="
+							},
+							"target": {
+								"$ref": "AAAAAAGPxGw7QzKKYe0="
+							}
+						},
+						{
+							"_type": "UMLMessage",
+							"_id": "AAAAAAGPxIxV3TNImX0=",
+							"_parent": {
+								"$ref": "AAAAAAGPxGJ23zDecJc="
+							},
+							"name": "SetHandlerLoadedData",
+							"source": {
+								"$ref": "AAAAAAGPxGw7QzKKYe0="
 							},
 							"target": {
 								"$ref": "AAAAAAGPxGw7QzKKYe0="
