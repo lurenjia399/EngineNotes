@@ -1845,8 +1845,32 @@ bool UWorld::ServerTravel(const FString& FURL, bool bAbsolute, bool bShouldSkipG
 很简单的流程，就是设置NextURL表示服务器要切换地图了，然后调用ProcessServerTravel方法通知链接的客户端跟着切换地图。
 ### 2 ProcessServerTravel
 ```cpp
+APlayerController* AGameModeBase::ProcessClientTravel(FString& FURL, FGuid NextMapGuid, bool bSeamless, bool bAbsolute)
+{
+	// We call PreClientTravel directly on any local PlayerPawns (ie listen server)
+	APlayerController* LocalPlayerController = nullptr;
+	for (FConstPlayerControllerIterator Iterator = GetWorld()->GetPlayerControllerIterator(); Iterator; ++Iterator)
+	{
+		if (APlayerController* PlayerController = Iterator->Get())
+		{
+			if (Cast<UNetConnection>(PlayerController->Player) != nullptr)
+			{
+				// Remote player
+				PlayerController->ClientTravel(FURL, TRAVEL_Relative, bSeamless, NextMapGuid);
+			}
+			else
+			{
+				// Local player
+				LocalPlayerController = PlayerController;
+				PlayerController->PreClientTravel(FURL, bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative, bSeamless);
+			}
+		}
+	}
 
+	return LocalPlayerController;
+}
 ```
+在服务器上遍历world里面的PlayerController，如果有远程链接的就调用一个Client
 ## 3 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
