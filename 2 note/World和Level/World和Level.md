@@ -1930,13 +1930,15 @@ EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, F
 	if( URL.IsLocalInternal() )
 	{
 		// 本地的地图切换？，直接LoadMap
+		// 这也就是服务器应该走，所以uds上的url必须不能包括host等信息
+		// 服务器走Browse方法就直接会LoadMap
 		// Local map file.
 		return LoadMap( WorldContext, URL, NULL, Error ) ? EBrowseReturnVal::Success : EBrowseReturnVal::Failure;
 	}
 	else if( URL.IsInternal() && GIsClient )
 	{
 		// 在网络链接的情况下，客户端执行地图切换
-		// 取消掉PendingLevel
+		// 客户端会走到这个分支里面，这里会创建客户端的PendingNetGame和NetDriver
 		// Network URL.
 		if( WorldContext.PendingNetGame )
 		{
