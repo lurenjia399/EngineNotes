@@ -1787,7 +1787,7 @@ void UEngine::SetClientTravel( UWorld *InWorld, const TCHAR* NextURL, ETravelTyp
 	}
 }
 ```
-OpenLevel方法很简单，就是组装参数然后调用SetClientTravel，这个方法就是在WorldContext里面设置参数，然后再下一帧的tick里面进行切换关卡的流程。
+OpenLevel方法很简单，就是组装参数然后调用SetClientTravel，这个方法就是在WorldContext里面设置参数，然后再下一帧的tick里面进行切换关卡的流程。需要注意的就是OpenLevel中bAbsolute是true，也就是TravelType为TRAVEL_Absolute，使用完整的URL，
 ## 2 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
