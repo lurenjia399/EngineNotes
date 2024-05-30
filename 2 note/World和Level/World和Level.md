@@ -1961,3 +1961,45 @@ EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, F
 	}
 }
 ```
+这一次tick就是根据url的不同，决定是服务器切换地图同步给客户端还是客户端自己切换。无论走服务器还是客户端都会走到Browse方法，这个方法里会清空PendingNetGame和NetDriver然后再创建，也就是断开客户端服务器链接，然后设置新的PendingNetGame。
+### 5 第四部分 处理PendingNetGame
+```cpp
+// Update the pending level.
+if( Context.PendingNetGame )
+{
+	Context.PendingNetGame->Tick( DeltaSeconds );
+	if ( Context.PendingNetGame && Context.PendingNetGame->ConnectionError.Len() > 0 )
+	{
+		BroadcastNetworkFailure(NULL, Context.PendingNetGame->NetDriver, ENetworkFailure::PendingConnectionFailure, Context.PendingNetGame->ConnectionError);
+		CancelPending(Context);
+	}
+	else if (Context.PendingNetGame && Context.PendingNetGame->bSuccessfullyConnected && !Context.PendingNetGame->bSentJoinRequest && (Context.OwningGameInstance == NULL || !Context.OwningGameInstance->DelayPendingNetGameTravel()))
+	{
+		if (!MakeSureMapNameIsValid(Context.PendingNetGame->URL.Map))
+		{
+			BrowseToDefaultMap(Context);
+			BroadcastTravelFailure(Context.World(), ETravelFailure::PackageMissing, Context.PendingNetGame->URL.Map);
+		}
+		else
+		{
+			// Attempt to load the map.
+			FString Error;
+
+			const bool bLoadedMapSuccessfully = LoadMap(Context, Context.PendingNetGame->URL, Context.PendingNetGame, Error);
+
+			if (Context.PendingNetGame != nullptr)
+			{
+				Context.PendingNetGame->LoadMapCompleted(this, Context, bLoadedMapSuccessfully, Error);
+
+				// Kill the pending level.
+				Context.PendingNetGame = nullptr;
+			}
+			else
+			{
+				BrowseToDefaultMap(Context);
+				BroadcastTravelFailure(Context.World(), ETravelFailure::TravelFailure, Error);
+			}
+		}
+	}
+}
+```
