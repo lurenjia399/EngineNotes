@@ -1800,7 +1800,14 @@ if( Type==TRAVEL_Relative )
 	Port     = Base->Port;
 }
 ```
-这里我们这个UGameplayStatics::OpenLevel接口使用的是Absolute，也就是GEngineIni里配置的URL信息。项目中
+这里我们这个UGameplayStatics::OpenLevel接口使用的是Absolute，也就是GEngineIni里配置的URL信息，看上去项目中是空的啊，还是什么时候设置的呢？
+```cpp
+void FURL::StaticInit()
+{
+	UrlConfig.Init();
+	bDefaultsInitialized = true;
+}
+```
 ## 2 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
@@ -1820,10 +1827,10 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 	{
 		Context.SeamlessTravelHandler.Tick();
 	}
-	// 第二部分是处理服务器的关卡切换，
+	// 第二部分是处理服务器的关卡切换，有NextURL就ren'we
 	// 没什么特别的，就是调用Borwse方法来进行地图切换
 	Browse( Context, FURL(&Context.LastURL,*NextURL,(ETravelType)Context.World()->NextTravelType), Error )
-	// 第三部分是处理客户端的关卡切换，设置PendingLevel,在下一帧处理PendingLevel
+	// 第三部分是处理客户端的关卡切换，有TravelURL就认为是客户端切换
 	// 同样的也是调用Borwse方法来进行地图切换
 	Browse( Context, FURL(&Context.LastURL,*TravelURLCopy,(ETravelType)Context.TravelType), Error );
 	// 第四部分是更新PendingLevel
