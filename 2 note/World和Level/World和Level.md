@@ -1809,7 +1809,8 @@ void FURL::StaticInit()
 }
 ```
 ## 2 服务器切换
-```
+### 1 ServerTravel
+```cpp
 bool UWorld::ServerTravel(const FString& FURL, bool bAbsolute, bool bShouldSkipGameNotify)
 {
 	AGameModeBase* GameMode = GetAuthGameMode();
@@ -1818,16 +1819,12 @@ bool UWorld::ServerTravel(const FString& FURL, bool bAbsolute, bool bShouldSkipG
 	{
 		return false;
 	}
-
-	// Set the next travel type to use
 	NextTravelType = bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative;
-
-	// if we're not already in a level change, start one now
-	// If the bShouldSkipGameNotify is there, then don't worry about seamless travel recursion
-	// and accept that we really want to travel
 	if (NextURL.IsEmpty() && (!IsInSeamlessTravel() || bShouldSkipGameNotify))
 	{
+		// 设置NextURL
 		NextURL = FURL;
+		// 通知链接的客户端也要切换地图
 		if (GameMode != NULL)
 		{
 			// Skip notifying clients if requested
@@ -1845,7 +1842,11 @@ bool UWorld::ServerTravel(const FString& FURL, bool bAbsolute, bool bShouldSkipG
 	return true;
 }
 ```
+很简单的流程，就是设置NextURL表示服务器要切换地图了，然后调用ProcessServerTravel方法通知链接的客户端跟着切换地图。
+### 2 ProcessServerTravel
+```cpp
 
+```
 ## 3 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
