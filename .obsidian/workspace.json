@@ -121,7 +121,7 @@
               "type": "backlink",
               "state": {
                 "file": "2 note/World和Level/World和Level.md",
-                "collapseAll": false,
+                "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
@@ -164,11 +164,13 @@
               }
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -180,7 +182,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "c4eb254197b7ce27",
+  "active": "0f970b5fd823eafd",
   "lastOpenFiles": [
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/Tick逻辑/Image/AActor或Component注册流程图.png",
