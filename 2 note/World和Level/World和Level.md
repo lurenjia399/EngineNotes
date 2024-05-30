@@ -1870,7 +1870,7 @@ APlayerController* AGameModeBase::ProcessClientTravel(FString& FURL, FGuid NextM
 	return LocalPlayerController;
 }
 ```
-在服务器上遍历world里面的PlayerController，如果有远程链接的就调用一个Client
+在服务器上遍历world里面的PlayerController，如果有远程链接的就调用一个Client的RPC，进而执行SetClientTravel这个方法，也就是上面客户端切换关卡流程。如果没有远程连接就是那种模拟的，就调用PreClientTracel方法广播OnNotifyPreClientTravel()。
 ## 3 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
