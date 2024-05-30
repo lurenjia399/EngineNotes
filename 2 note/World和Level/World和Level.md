@@ -1739,8 +1739,8 @@ void FStreamLevelAction::ActivateLevel( ULevelStreaming* LevelStreamingObject )
 这个里面就是设置Level的标志位，以及发个rpc给客户端通过playercontroller。
 
 # 4 关卡切换流程
-## 1 OpenLevel
-我们以蓝图接口作为切入点
+## 1 客户端切换
+我们以OpenLevel蓝图接口作为切入点
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202405272025529.png)
 
 ```cpp
@@ -1808,7 +1808,45 @@ void FURL::StaticInit()
 	bDefaultsInitialized = true;
 }
 ```
-## 2 TickWorldTravel
+## 2 服务器切换
+```
+bool UWorld::ServerTravel(const FString& FURL, bool bAbsolute, bool bShouldSkipGameNotify)
+{
+	AGameModeBase* GameMode = GetAuthGameMode();
+	
+	if (GameMode != nullptr && !GameMode->CanServerTravel(FURL, bAbsolute))
+	{
+		return false;
+	}
+
+	// Set the next travel type to use
+	NextTravelType = bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative;
+
+	// if we're not already in a level change, start one now
+	// If the bShouldSkipGameNotify is there, then don't worry about seamless travel recursion
+	// and accept that we really want to travel
+	if (NextURL.IsEmpty() && (!IsInSeamlessTravel() || bShouldSkipGameNotify))
+	{
+		NextURL = FURL;
+		if (GameMode != NULL)
+		{
+			// Skip notifying clients if requested
+			if (!bShouldSkipGameNotify)
+			{
+				GameMode->ProcessServerTravel(FURL, bAbsolute);
+			}
+		}
+		else
+		{
+			NextSwitchCountdown = 0;
+		}
+	}
+
+	return true;
+}
+```
+
+## 3 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
 // Tick all travel and Pending NetGames (Seamless, server, client)
@@ -1827,7 +1865,7 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 	{
 		Context.SeamlessTravelHandler.Tick();
 	}
-	// 第二部分是处理服务器的关卡切换，有NextURL就ren'we
+	// 第二部分是处理服务器的关卡切换，有NextURL就认为是服务器切换
 	// 没什么特别的，就是调用Borwse方法来进行地图切换
 	Browse( Context, FURL(&Context.LastURL,*NextURL,(ETravelType)Context.World()->NextTravelType), Error )
 	// 第三部分是处理客户端的关卡切换，有TravelURL就认为是客户端切换
@@ -1850,7 +1888,7 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 	}
 }
 ```
-### 3 第二部分和第三部分的 Browse
+### 4 第二部分和第三部分的 Browse
 ```cpp
 EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, FString& Error )
 {
