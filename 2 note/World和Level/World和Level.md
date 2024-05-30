@@ -1800,7 +1800,7 @@ if( Type==TRAVEL_Relative )
 	Port     = Base->Port;
 }
 ```
-这里我们这个UGameplayStatics::OpenLevel接口使用的是Absolute，也就是默认的网络信息。
+这里我们这个UGameplayStatics::OpenLevel接口使用的是Absolute，也就是GEngineIni里配置的URL信息。项目中
 ## 2 TickWorldTravel
 每一帧的执行，是再UGameEngine::Tick方法里面
 ```cpp
