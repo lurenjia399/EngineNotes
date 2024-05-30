@@ -1984,7 +1984,6 @@ if( Context.PendingNetGame )
 		{
 			// Attempt to load the map.
 			FString Error;
-
 			const bool bLoadedMapSuccessfully = LoadMap(Context, Context.PendingNetGame->URL, Context.PendingNetGame, Error);
 
 			if (Context.PendingNetGame != nullptr)
