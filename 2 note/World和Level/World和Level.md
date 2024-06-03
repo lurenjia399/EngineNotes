@@ -2082,14 +2082,137 @@ void UWorld::SeamlessTravel(const FString& SeamlessTravelURL, bool bAbsolute, FG
 	}
 	else
 	{
+		// 拿到SeamlessTravelHandler的引用，应该是再这里初始化的
 		// tell the handler to start the transition
 		FSeamlessTravelHandler &SeamlessTravelHandler = GEngine->SeamlessTravelHandlerForWorld( this );
-		PRAGMA_DISABLE_DEPRECATION_WARNINGS
 		if (!SeamlessTravelHandler.StartTravel(this, NewURL, MapPackageGuid) && !SeamlessTravelHandler.IsInTransition())
-		PRAGMA_ENABLE_DEPRECATION_WARNINGS
 		{
-			const FString Error = FText::Format( NSLOCTEXT("Engine", "InvalidUrl", "Invalid URL: {0}"), FText::FromString( SeamlessTravelURL ) ).ToString();
-			GEngine->BroadcastTravelFailure(this, ETravelFailure::InvalidURL, Error);
+		}
+	}
+}
+```
+做一些对无缝切换的初始设置，也就是对SeamlessTravelHandler进行初始化的操作，调用StartTravel这个方法来进行初始化。
+### 4 FSeamlessTravelHandler::StartTravel
+```cpp
+bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InURL, const FGuid& InGuid)
+{
+	if (!InURL.Valid)
+	{
+		// 参数URL无效，提前返回
+		UE_LOG(LogWorld, Error, TEXT("Invalid travel URL specified"));
+		return false;
+	}
+	else
+	{
+		if (!FPackageName::DoesPackageExist(MapName, InGuid.IsValid() ? &InGuid : NULL))
+		{
+			// 要加载的地图在Package包中不存在，提前返回
+			UE_LOG(LogWorld, Error, TEXT("Unable to travel to '%s' - file not found"), *MapName);
+			return false;
+		}
+		else
+		{
+			bool bCancelledExisting = false;
+			// 如果当前在切换中
+			if (IsInTransition())
+			{
+				// 如果正在切换，返回true
+				if (PendingTravelURL.Map == InURL.Map)
+				{
+					// we are going to the same place so just replace the options
+					PendingTravelURL = InURL;
+					return true;
+				}
+				// 否则取消PendingTravel
+				CancelTravel();
+				bCancelledExisting = true;
+			}
+
+			// CancelTravel will null out CurrentWorld, so we need to assign it after that.
+			CurrentWorld = InCurrentWorld;
+
+			FWorldDelegates::OnSeamlessTravelStart.Broadcast(CurrentWorld, InURL.Map);
+
+			checkSlow(LoadedPackage == NULL);
+			checkSlow(LoadedWorld == NULL);
+
+			PendingTravelURL = InURL;
+			PendingTravelGuid = InGuid;
+			bSwitchedToDefaultMap = false;
+			bTransitionInProgress = true;
+			bPauseAtMidpoint = false;
+			bNeedCancelCleanUp = false;
+
+			FName CurrentMapName = CurrentWorld->GetOutermost()->GetFName();
+			FName DestinationMapName = FName(*PendingTravelURL.Map);
+
+			FString TransitionMap = GetDefault<UGameMapsSettings>()->TransitionMap.GetLongPackageName();
+			FName DefaultMapFinalName(*TransitionMap);
+
+			// if we're already in the default map, skip loading it and just go to the destination
+			if (DefaultMapFinalName == CurrentMapName ||
+				DefaultMapFinalName == DestinationMapName)
+			{
+				UE_LOG(LogWorld, Log, TEXT("Already in default map or the default map is the destination, continuing to destination"));
+				bSwitchedToDefaultMap = true;
+				if (bCancelledExisting)
+				{
+					// we need to fully finishing loading the old package and GC it before attempting to load the new one
+					bPauseAtMidpoint = true;
+					bNeedCancelCleanUp = true;
+				}
+				else
+				{
+					StartLoadingDestination();
+				}
+			}
+			else if (TransitionMap.IsEmpty())
+			{
+				// If a default transition map doesn't exist, create a dummy World to use as the transition
+				if (CurrentWorld->WorldType == EWorldType::PIE)
+				{
+					SetHandlerLoadedData(NULL, UWorld::CreateWorld(EWorldType::PIE, false));
+				}
+				else
+				{
+					SetHandlerLoadedData(NULL, UWorld::CreateWorld(EWorldType::None, false));
+				}
+			}
+			else
+			{
+				if (CurrentMapName == DestinationMapName)
+				{
+					UNetDriver* const NetDriver = CurrentWorld->GetNetDriver();
+					if (NetDriver)
+					{
+						for (int32 ClientIdx = 0; ClientIdx < NetDriver->ClientConnections.Num(); ClientIdx++)
+						{
+							UNetConnection* Connection = NetDriver->ClientConnections[ClientIdx];
+							if (Connection)
+							{
+								// Empty the current map name in case we are going A -> transition -> A and the server loads fast enough
+								// that the clients are not on the transition map yet causing the server to think its loaded
+								Connection->SetClientWorldPackageName(NAME_None);
+							}
+						}
+					}
+				}
+
+				// Set the world type in the static map, so that UWorld::PostLoad can set the world type
+				UWorld::WorldTypePreLoadMap.FindOrAdd(*TransitionMap) = CurrentWorld->WorldType;
+
+				// first, load the entry level package
+				STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "StartTravel - " ) + TransitionMap )) );
+				TRACE_BOOKMARK(TEXT("StartTravel - %s"), *TransitionMap);
+				LoadPackageAsync(TransitionMap, 
+					FLoadPackageAsyncDelegate::CreateRaw(this, &FSeamlessTravelHandler::SeamlessTravelLoadCallback),
+					0, 
+					(CurrentWorld->WorldType == EWorldType::PIE ? PKG_PlayInEditor : PKG_None),
+					Context.PIEInstance
+					);
+			}
+
+			return true;
 		}
 	}
 }
