@@ -2127,21 +2127,16 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 				CancelTravel();
 				bCancelledExisting = true;
 			}
-
-			// CancelTravel will null out CurrentWorld, so we need to assign it after that.
 			CurrentWorld = InCurrentWorld;
-
+			// 广播开始无缝切换事件
 			FWorldDelegates::OnSeamlessTravelStart.Broadcast(CurrentWorld, InURL.Map);
-
-			checkSlow(LoadedPackage == NULL);
-			checkSlow(LoadedWorld == NULL);
-
-			PendingTravelURL = InURL;
-			PendingTravelGuid = InGuid;
-			bSwitchedToDefaultMap = false;
-			bTransitionInProgress = true;
-			bPauseAtMidpoint = false;
-			bNeedCancelCleanUp = false;
+			// 设置各种参数
+			PendingTravelURL = InURL;// PendingTravel的URL
+			PendingTravelGuid = InGuid;// PendingTravel的Guid
+			bSwitchedToDefaultMap = false;// 切换到默认map
+			bTransitionInProgress = true;// 在无缝切换的过程中
+			bPauseAtMidpoint = false;// 中间节点标志位，在loading过渡地图后，在loadingTarget地图前
+			bNeedCancelCleanUp = false;// 在travel中间切换travel，需要把之前travel中的一些设置cleanUp
 
 			FName CurrentMapName = CurrentWorld->GetOutermost()->GetFName();
 			FName DestinationMapName = FName(*PendingTravelURL.Map);
