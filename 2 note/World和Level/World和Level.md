@@ -2004,3 +2004,4 @@ if( Context.PendingNetGame )
 	}
 }
 ```
+这个就是处理设置好的PendingNetGame，通过loadmap来加载新地图，loadmap里面是通过LoadPackage这个方法加载，注意是个同步的方法。
