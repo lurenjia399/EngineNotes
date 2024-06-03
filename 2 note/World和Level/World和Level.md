@@ -2006,7 +2006,7 @@ if( Context.PendingNetGame )
 ```
 这个就是处理设置好的PendingNetGame，通过loadmap来加载新地图，loadmap里面是通过LoadPackage这个方法加载，注意是个同步的方法。
 ## 无缝切换SeamlessTravel
-无缝切换的含义是客户端不断开与服务器的链接进而切换地图，也就是服务器切换地图，然后发送RPC通知链接的客户端进而切换地图。也就是无缝切换不能由客户端启动，那样就相当于客户端和服务器加载出来的地图不一样了。所以由服务器发起，就是走ServerTravel方法，然后再TickWorldTravel里执行无缝的操作。
+无缝切换的含义是客户端不断开与服务器的链接进而切换地图，也就是服务器切换地图，然后发送RPC通知链接的客户端进而切换地图。也就是无缝切换不能由客户端启动，那样就相当于客户端和服务器加载出来的地图不一样了。所以由服务器发起，就是走ServerTravel方法，然后再TickWorldTravel里执行无缝的tick操作。
 1 
 ```cpp
 void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
@@ -2017,4 +2017,8 @@ void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
 		Context.SeamlessTravelHandler.Tick();
 	}
 }
+```
+
+```cpp
+
 ```
