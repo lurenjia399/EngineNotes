@@ -2007,18 +2007,65 @@ if( Context.PendingNetGame )
 这个就是处理设置好的PendingNetGame，通过loadmap来加载新地图，loadmap里面是通过LoadPackage这个方法加载，注意是个同步的方法。
 ## 无缝切换SeamlessTravel
 无缝切换的含义是客户端不断开与服务器的链接进而切换地图，也就是服务器切换地图，然后发送RPC通知链接的客户端进而切换地图。也就是无缝切换不能由客户端启动，那样就相当于客户端和服务器加载出来的地图不一样了。所以由服务器发起，就是走ServerTravel方法，然后再TickWorldTravel里执行无缝的tick操作。
-1 
+### 1 ServerTravel 无缝相关
 ```cpp
-void UEngine::TickWorldTravel(FWorldContext& Context, float DeltaSeconds)
+bool UWorld::ServerTravel(const FString& FURL, bool bAbsolute, bool bShouldSkipGameNotify)
 {
-	// Handle seamless traveling
-	if (Context.SeamlessTravelHandler.IsInTransition())
+	AGameModeBase* GameMode = GetAuthGameMode();
+	
+	if (GameMode != nullptr && !GameMode->CanServerTravel(FURL, bAbsolute))
 	{
-		Context.SeamlessTravelHandler.Tick();
+		return false;
 	}
+
+	NextTravelType = bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative;
+	if (NextURL.IsEmpty() && (!IsInSeamlessTravel() || bShouldSkipGameNotify))
+	{
+		NextURL = FURL;
+		if (GameMode != NULL)
+		{
+			if (!bShouldSkipGameNotify)
+			{
+				GameMode->ProcessServerTravel(FURL, bAbsolute);
+			}
+		}
+		else
+		{
+			NextSwitchCountdown = 0;
+		}
+	}
+	return true;
 }
 ```
-
+上边以及分析过了，主要就是会执行到ProcessServerTravel方法里面
+### 2 ProcessServerTravel 无缝相关
 ```cpp
+void AGameModeBase::ProcessServerTravel(const FString& URL, bool bAbsolute)
+{
+#if WITH_SERVER_CODE
 
+	// 判断是否是无缝切换，也就是GameModel里有个成员变量bUseSeamlessTravel是否设置
+	bool bSeamless = (bUseSeamlessTravel && GetWorld()->TimeSeconds < 172800.0f); // 172800 seconds == 48 hours
+
+	// 服务器地图切换需要的NextURL组装
+	FURL NextURL = FURL(&WorldContext.LastURL, *URL, bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative);
+	// NextURL地图的GUID
+	FGuid NextMapGuid = UEngine::GetPackageGuid(FName(*NextURL.Map), GetWorld()->IsPlayInEditor());
+
+	// 发送RPC通知客户端要切换地图
+	FString URLMod = NextURL.ToString();
+	APlayerController* LocalPlayer = ProcessClientTravel(URLMod, NextMapGuid, bSeamless, bAbsolute);
+	// wu
+	if (bSeamless)
+	{
+		World->SeamlessTravel(World->NextURL, bAbsolute);
+		World->NextURL = TEXT("");
+	}
+	// Switch immediately if not networking.
+	else if (NetMode != NM_DedicatedServer && NetMode != NM_ListenServer)
+	{
+		World->NextSwitchCountdown = 0.0f;
+	}
+#endif // WITH_SERVER_CODE
+}
 ```
