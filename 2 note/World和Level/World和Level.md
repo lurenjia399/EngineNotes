@@ -2055,7 +2055,7 @@ void AGameModeBase::ProcessServerTravel(const FString& URL, bool bAbsolute)
 	// 发送RPC通知客户端要切换地图
 	FString URLMod = NextURL.ToString();
 	APlayerController* LocalPlayer = ProcessClientTravel(URLMod, NextMapGuid, bSeamless, bAbsolute);
-	// wu
+	// 无缝切换会通过判断
 	if (bSeamless)
 	{
 		World->SeamlessTravel(World->NextURL, bAbsolute);
@@ -2067,5 +2067,30 @@ void AGameModeBase::ProcessServerTravel(const FString& URL, bool bAbsolute)
 		World->NextSwitchCountdown = 0.0f;
 	}
 #endif // WITH_SERVER_CODE
+}
+```
+字面意思不是很复杂，就是通过bUseSeamlessTravel标志位判断是否是无缝切换，然后调用到SeamlessTravel这个方法，并把NextURL置空。
+### 3 SeamlessTravel
+```cpp
+void UWorld::SeamlessTravel(const FString& SeamlessTravelURL, bool bAbsolute, FGuid MapPackageGuid)
+{
+	// 通过参数，组装新的URL
+	// construct the URL
+	FURL NewURL(&GEngine->LastURLFromWorld(this), *SeamlessTravelURL, bAbsolute ? TRAVEL_Absolute : TRAVEL_Relative);
+	if (!NewURL.Valid)
+	{
+	}
+	else
+	{
+		// tell the handler to start the transition
+		FSeamlessTravelHandler &SeamlessTravelHandler = GEngine->SeamlessTravelHandlerForWorld( this );
+		PRAGMA_DISABLE_DEPRECATION_WARNINGS
+		if (!SeamlessTravelHandler.StartTravel(this, NewURL, MapPackageGuid) && !SeamlessTravelHandler.IsInTransition())
+		PRAGMA_ENABLE_DEPRECATION_WARNINGS
+		{
+			const FString Error = FText::Format( NSLOCTEXT("Engine", "InvalidUrl", "Invalid URL: {0}"), FText::FromString( SeamlessTravelURL ) ).ToString();
+			GEngine->BroadcastTravelFailure(this, ETravelFailure::InvalidURL, Error);
+		}
+	}
 }
 ```
