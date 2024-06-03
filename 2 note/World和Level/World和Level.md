@@ -2165,6 +2165,7 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 			{
 				if (CurrentWorld->WorldType == EWorldType::PIE)
 				{
+					// 没啥特别的东西，就是设置变量
 					SetHandlerLoadedData(NULL, UWorld::CreateWorld(EWorldType::PIE, false));
 				}
 				else
@@ -2175,28 +2176,7 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 			// 正常流程会走这里
 			else
 			{
-				if (CurrentMapName == DestinationMapName)
-				{
-					UNetDriver* const NetDriver = CurrentWorld->GetNetDriver();
-					if (NetDriver)
-					{
-						for (int32 ClientIdx = 0; ClientIdx < NetDriver->ClientConnections.Num(); ClientIdx++)
-						{
-							UNetConnection* Connection = NetDriver->ClientConnections[ClientIdx];
-							if (Connection)
-							{
-								Connection->SetClientWorldPackageName(NAME_None);
-							}
-						}
-					}
-				}
-
-				// Set the world type in the static map, so that UWorld::PostLoad can set the world type
-				UWorld::WorldTypePreLoadMap.FindOrAdd(*TransitionMap) = CurrentWorld->WorldType;
-
-				// first, load the entry level package
-				STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "StartTravel - " ) + TransitionMap )) );
-				TRACE_BOOKMARK(TEXT("StartTravel - %s"), *TransitionMap);
+				// 创建我们的异步加载流程，调用LoadPackageAsync方法
 				LoadPackageAsync(TransitionMap, 
 					FLoadPackageAsyncDelegate::CreateRaw(this, &FSeamlessTravelHandler::SeamlessTravelLoadCallback),
 					0, 
@@ -2208,5 +2188,86 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 			return true;
 		}
 	}
+}
+
+// 这个里面没啥东西，就是设置变量
+void FSeamlessTravelHandler::SetHandlerLoadedData(UObject* InLevelPackage, UWorld* InLoadedWorld)
+{
+	LoadedPackage = InLevelPackage;
+	LoadedWorld = InLoadedWorld;
+	if (LoadedWorld != NULL)
+	{
+		LoadedWorld->AddToRoot();
+	}
+
+}
+```
+代码多但不复杂，需要注意的可能就是CurrentMap -> TransitionMap -> DestinationMap的流程
+
+### 5 FSeamlessTravelHandler::SeamlessTravelLoadCallback
+```cpp
+void FSeamlessTravelHandler::SeamlessTravelLoadCallback(const FName& PackageName, UPackage* LevelPackage, EAsyncLoadingResult::Type Result)
+{
+	// make sure we remove the name, even if travel was canceled.
+	const FName URLMapFName = FName(*PendingTravelURL.Map);
+	UWorld::WorldTypePreLoadMap.Remove(URLMapFName);
+
+#if WITH_EDITOR
+	if (GIsEditor)
+	{
+		FWorldContext &WorldContext = GEngine->GetWorldContextFromHandleChecked(WorldContextHandle);
+		if (WorldContext.WorldType == EWorldType::PIE)
+		{
+			FString URLMapPackageName = UWorld::ConvertToPIEPackageName(PendingTravelURL.Map, WorldContext.PIEInstance);
+			UWorld::WorldTypePreLoadMap.Remove(FName(*URLMapPackageName));
+		}
+	}
+#endif
+
+	// defer until tick when it's safe to perform the transition
+	if (IsInTransition())
+	{
+		UWorld* World = UWorld::FindWorldInPackage(LevelPackage);
+
+		// If the world could not be found, follow a redirector if there is one.
+		if (!World)
+		{
+			World = UWorld::FollowWorldRedirectorInPackage(LevelPackage);
+			if (World)
+			{
+				LevelPackage = World->GetOutermost();
+			}
+		}
+
+		SetHandlerLoadedData(LevelPackage, World);
+
+		// Now that the p map is loaded, start async loading any always loaded levels
+		if (World)
+		{
+			if (World->WorldType == EWorldType::PIE)
+			{
+				if (LevelPackage->PIEInstanceID != -1)
+				{
+					World->StreamingLevelsPrefix = UWorld::BuildPIEPackagePrefix(LevelPackage->PIEInstanceID);
+				}
+				else
+				{
+					// If this is a PIE world but the PIEInstanceID is -1, that implies this world is a temporary save
+					// for multi-process PIE which should have been saved with the correct StreamingLevelsPrefix.
+					ensure(!World->StreamingLevelsPrefix.IsEmpty());
+				}
+			}
+
+			if (World->PersistentLevel)
+			{
+				World->PersistentLevel->HandleLegacyMapBuildData();
+			}
+
+			World->AsyncLoadAlwaysLoadedLevelsForSeamlessTravel();
+		}
+	}
+
+	STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "StartTravelComplete - " ) + PackageName.ToString() )) );
+	TRACE_BOOKMARK(TEXT("StartTravelComplete - %s"), *PackageName.ToString());
 }
 ```
