@@ -2137,27 +2137,26 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 			bTransitionInProgress = true;// 在无缝切换的过程中
 			bPauseAtMidpoint = false;// 中间节点标志位，在loading过渡地图后，在loadingTarget地图前
 			bNeedCancelCleanUp = false;// 在travel中间切换travel，需要把之前travel中的一些设置cleanUp
-
+			// 当前所处的mapName
 			FName CurrentMapName = CurrentWorld->GetOutermost()->GetFName();
+			// target的mapName
 			FName DestinationMapName = FName(*PendingTravelURL.Map);
-
+			// 在配置中的过度地图mapName
 			FString TransitionMap = GetDefault<UGameMapsSettings>()->TransitionMap.GetLongPackageName();
 			FName DefaultMapFinalName(*TransitionMap);
-
-			// if we're already in the default map, skip loading it and just go to the destination
+			// 如果我们所处默认地图中，或者targetmap就是默认地图
 			if (DefaultMapFinalName == CurrentMapName ||
 				DefaultMapFinalName == DestinationMapName)
 			{
-				UE_LOG(LogWorld, Log, TEXT("Already in default map or the default map is the destination, continuing to destination"));
-				bSwitchedToDefaultMap = true;
+				bSwitchedToDefaultMap = true;// 是否切换到默认地图标志位
 				if (bCancelledExisting)
 				{
-					// we need to fully finishing loading the old package and GC it before attempting to load the new one
 					bPauseAtMidpoint = true;
-					bNeedCancelCleanUp = true;
+					bNeedCancelCleanUp = true;//完美符合定义，这里为true
 				}
 				else
 				{
+					// 
 					StartLoadingDestination();
 				}
 			}
