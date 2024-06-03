@@ -2156,13 +2156,13 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 				}
 				else
 				{
-					// 
+					// 开始loading我们的Targetmap
 					StartLoadingDestination();
 				}
 			}
+			// 如果我们的过渡地图为空，需要创建一个空的地图
 			else if (TransitionMap.IsEmpty())
 			{
-				// If a default transition map doesn't exist, create a dummy World to use as the transition
 				if (CurrentWorld->WorldType == EWorldType::PIE)
 				{
 					SetHandlerLoadedData(NULL, UWorld::CreateWorld(EWorldType::PIE, false));
@@ -2172,6 +2172,7 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 					SetHandlerLoadedData(NULL, UWorld::CreateWorld(EWorldType::None, false));
 				}
 			}
+			// 正常流程会走这里
 			else
 			{
 				if (CurrentMapName == DestinationMapName)
@@ -2184,8 +2185,6 @@ bool FSeamlessTravelHandler::StartTravel(UWorld* InCurrentWorld, const FURL& InU
 							UNetConnection* Connection = NetDriver->ClientConnections[ClientIdx];
 							if (Connection)
 							{
-								// Empty the current map name in case we are going A -> transition -> A and the server loads fast enough
-								// that the clients are not on the transition map yet causing the server to think its loaded
 								Connection->SetClientWorldPackageName(NAME_None);
 							}
 						}
