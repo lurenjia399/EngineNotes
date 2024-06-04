@@ -2297,6 +2297,9 @@ UWorld* FSeamlessTravelHandler::Tick()
 	if (It->PlayerController != nullptr)  
 	{      It->PlayerController->GetSeamlessTravelActorList(!bSwitchedToDefaultMap, KeepActors);  
 	}}
+	// 接下来就是通过判断endplay CurrentWorld里面的Actor
+	TheActor->RouteEndPlay(EEndPlayReason::LevelTransition);
+	
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
 {
