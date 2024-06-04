@@ -2208,40 +2208,11 @@ void FSeamlessTravelHandler::SetHandlerLoadedData(UObject* InLevelPackage, UWorl
 ```cpp
 void FSeamlessTravelHandler::SeamlessTravelLoadCallback(const FName& PackageName, UPackage* LevelPackage, EAsyncLoadingResult::Type Result)
 {
-	// make sure we remove the name, even if travel was canceled.
-	const FName URLMapFName = FName(*PendingTravelURL.Map);
-	UWorld::WorldTypePreLoadMap.Remove(URLMapFName);
-
-#if WITH_EDITOR
-	if (GIsEditor)
-	{
-		FWorldContext &WorldContext = GEngine->GetWorldContextFromHandleChecked(WorldContextHandle);
-		if (WorldContext.WorldType == EWorldType::PIE)
-		{
-			FString URLMapPackageName = UWorld::ConvertToPIEPackageName(PendingTravelURL.Map, WorldContext.PIEInstance);
-			UWorld::WorldTypePreLoadMap.Remove(FName(*URLMapPackageName));
-		}
-	}
-#endif
-
 	// defer until tick when it's safe to perform the transition
 	if (IsInTransition())
 	{
 		UWorld* World = UWorld::FindWorldInPackage(LevelPackage);
-
-		// If the world could not be found, follow a redirector if there is one.
-		if (!World)
-		{
-			World = UWorld::FollowWorldRedirectorInPackage(LevelPackage);
-			if (World)
-			{
-				LevelPackage = World->GetOutermost();
-			}
-		}
-
 		SetHandlerLoadedData(LevelPackage, World);
-
-		// Now that the p map is loaded, start async loading any always loaded levels
 		if (World)
 		{
 			if (World->WorldType == EWorldType::PIE)
@@ -2249,12 +2220,6 @@ void FSeamlessTravelHandler::SeamlessTravelLoadCallback(const FName& PackageName
 				if (LevelPackage->PIEInstanceID != -1)
 				{
 					World->StreamingLevelsPrefix = UWorld::BuildPIEPackagePrefix(LevelPackage->PIEInstanceID);
-				}
-				else
-				{
-					// If this is a PIE world but the PIEInstanceID is -1, that implies this world is a temporary save
-					// for multi-process PIE which should have been saved with the correct StreamingLevelsPrefix.
-					ensure(!World->StreamingLevelsPrefix.IsEmpty());
 				}
 			}
 
@@ -2266,8 +2231,17 @@ void FSeamlessTravelHandler::SeamlessTravelLoadCallback(const FName& PackageName
 			World->AsyncLoadAlwaysLoadedLevelsForSeamlessTravel();
 		}
 	}
+}
 
-	STAT_ADD_CUSTOMMESSAGE_NAME( STAT_NamedMarker, *(FString( TEXT( "StartTravelComplete - " ) + PackageName.ToString() )) );
-	TRACE_BOOKMARK(TEXT("StartTravelComplete - %s"), *PackageName.ToString());
+void FSeamlessTravelHandler::SetHandlerLoadedData(UObject* InLevelPackage, UWorld* InLoadedWorld)
+{
+	LoadedPackage = InLevelPackage;
+	LoadedWorld = InLoadedWorld;
+	if (LoadedWorld != NULL)
+	{
+		LoadedWorld->AddToRoot();
+	}
+
 }
 ```
+异步加载TargetMap之后的回调函数，就是调用SetHandlerLoadedData方法设置一些变量，加载主关卡的数据，加载ShouldAlways类型的StreamingLevel。
