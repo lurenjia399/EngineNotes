@@ -2329,6 +2329,16 @@ UWorld* FSeamlessTravelHandler::Tick()
 		LoadedWorld->InitWorld();
 	}
 	bWorldChanged = true;
+	// 设置新的gamemode
+	if (bCreateNewGameMode)
+	{
+		LoadedWorld->SetGameMode(PendingTravelURL);
+	}
+	// 初始化新世界的各种系统
+	LoadedWorld->FlushLevelStreaming(EFlushLevelStreamingType::Visibility);	
+	LoadedWorld->CreateAISystem();
+	LoadedWorld->InitializeActorsForPlay(PendingTravelURL, false);
+	FNavigationSystem::AddNavigationSystemToWorld(*LoadedWorld, FNavigationSystemRunMode::GameMode);
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
 {
