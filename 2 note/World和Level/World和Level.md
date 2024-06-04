@@ -2302,7 +2302,22 @@ UWorld* FSeamlessTravelHandler::Tick()
 	// 下面就是给我们的targetLevel创建保存的那些actor，gamemode,controller,gamestate
 	LoadedWorld->AddController(static_cast<AController*>(TheActor));
 	LoadedWorld->CopyGameState(KeptGameMode, KeptGameState);
-	// 然后就是
+	// 然后就是CopyWorldData,看上去主要就是传递旧世界的NetDriver，gameinstance啥的
+	CopyWorldData();
+	// 清理当前世界数据
+	CurrentWorld->CleanupWorld(bSwitchedToDefaultMap);
+	CurrentWorld->RemoveFromRoot();
+	CurrentWorld->ClearFlags(RF_Standalone);
+	if (FAudioDevice* AudioDevice = CurrentWorld->GetAudioDeviceRaw())
+	{
+		AudioDevice->Flush(CurrentWorld);
+	}
+	// 设置新世界数据
+	LoadedWorld->AddToRoot();
+	FWorldContext &CurrentContext = GEngine->GetWorldContextFromWorldChecked(CurrentWorld);
+	CurrentContext.SetCurrentWorld(LoadedWorld);
+	LoadedWorld->WorldType = CurrentContext.WorldType;
+	// 标记旧世界
 	
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
