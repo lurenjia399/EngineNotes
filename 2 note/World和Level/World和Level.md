@@ -2252,9 +2252,18 @@ UWorld* FSeamlessTravelHandler::Tick()
 {
 	// 把当前world和streamingLevel相关的干掉
 	CurrentWorld->FlushLevelStreaming(EFlushLevelStreamingType::Visibility);		
+	// 设置playerstate里面bFromPreviousLevel这个标志位
+	// 说是这个playerstate是来自previous Level的
 	if (CurrentWorld->GetGameState())  
 	{  
 	   CurrentWorld->GetGameState()->SeamlessTravelTransitionCheckpoint(!bSwitchedToDefaultMap);  
+	}
+	// 设置标志位 bIsTearingDown 意思是世界开始切换了吧
+	CurrentWorld->BeginTearingDown();
+	// 
+	if (AGameModeBase* AuthGameMode = CurrentWorld->GetAuthGameMode())
+	{
+		AuthGameMode->GetSeamlessTravelActorList(!bSwitchedToDefaultMap, KeepActors);
 	}
 }
 
