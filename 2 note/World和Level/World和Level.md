@@ -2344,24 +2344,18 @@ UWorld* FSeamlessTravelHandler::Tick()
 	{
 		CurrentContext.LastURL = PendingTravelURL;
 		bTransitionInProgress = false;
-		
-		double TotalSeamlessTravelTime = FPlatformTime::Seconds() - SeamlessTravelStartTime;
-		FLoadTimeTracker::Get().DumpRawLoadTimes();
-
 		AGameModeBase* const GameMode = LoadedWorld->GetAuthGameMode();
 		if (GameMode)
 		{
-			// inform the new GameMode so it can handle players that persisted
 			GameMode->PostSeamlessTravel();					
 		}
-
-		// Called after post seamless travel to make sure players are setup correctly first
 		LoadedWorld->BeginPlay();
-
 		FCoreUObjectDelegates::PostLoadMapWithWorld.Broadcast(LoadedWorld);
 	}
 	else
 	{
+		// 这个是切换到过渡地图会走到
+		// 也就是StartLoadingDestination方法，继续加载targetMap
 		bSwitchedToDefaultMap = true;
 		CurrentWorld = LoadedWorld;
 		if (!bPauseAtMidpoint)
