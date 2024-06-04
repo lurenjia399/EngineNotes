@@ -2260,10 +2260,56 @@ UWorld* FSeamlessTravelHandler::Tick()
 	}
 	// 设置标志位 bIsTearingDown 意思是世界开始切换了吧
 	CurrentWorld->BeginTearingDown();
-	// 
+	// 保存了服务器上的playerstate，gamemode，gamestate,gamesession
 	if (AGameModeBase* AuthGameMode = CurrentWorld->GetAuthGameMode())
 	{
+		// 下边详细看，就是保存了服务器上的playerstate，gamemode，gamestate,gamesession
 		AuthGameMode->GetSeamlessTravelActorList(!bSwitchedToDefaultMap, KeepActors);
+	}
+	if (bIsClient)
+	{
+		// 如果是客户端，保存下客户端的playerComtroller
+		for (FLocalPlayerIterator It(GEngine, CurrentWorld); It; ++It)
+		{
+			if (It->PlayerController != nullptr)
+			{
+				KeepAnnotation.Set(It->PlayerController);
+			}
+		}
+	}
+	else
+	{
+		for( FConstControllerIterator Iterator = CurrentWorld->GetControllerIterator(); Iterator; ++Iterator )
+		{
+			if (AController* Player = Iterator->Get())
+			{
+				if (Player->PlayerState || Cast<APlayerController>(Player) != nullptr)
+				{
+					KeepAnnotation.Set(Player);
+				}
+			}
+		}
+	}
+}
+void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
+{
+	// Get allocations for the elements we're going to add handled in one go
+	const int32 ActorsToAddCount = GameState->PlayerArray.Num() + (bToTransition ? 3 : 0);
+	ActorList.Reserve(ActorsToAddCount);
+
+	// Always keep PlayerStates, so that after we restart we can keep players on the same team, etc
+	ActorList.Append(GameState->PlayerArray);
+
+	if (bToTransition)
+	{
+		// Keep ourselves until we transition to the final destination
+		ActorList.Add(this);
+		// Keep general game state until we transition to the final destination
+		ActorList.Add(GameState);
+		// Keep the game session state until we transition to the final destination
+		ActorList.Add(GameSession);
+
+		// If adding in this section best to increase the literal above for the ActorsToAddCount
 	}
 }
 
