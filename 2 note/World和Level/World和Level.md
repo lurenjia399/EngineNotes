@@ -2334,11 +2334,41 @@ UWorld* FSeamlessTravelHandler::Tick()
 	{
 		LoadedWorld->SetGameMode(PendingTravelURL);
 	}
-	// 初始化新世界的各种系统
+	// 初始化新世界的各种系统，到这新世界就创建完了
 	LoadedWorld->FlushLevelStreaming(EFlushLevelStreamingType::Visibility);	
 	LoadedWorld->CreateAISystem();
 	LoadedWorld->InitializeActorsForPlay(PendingTravelURL, false);
 	FNavigationSystem::AddNavigationSystemToWorld(*LoadedWorld, FNavigationSystemRunMode::GameMode);
+	// 下面就需要在创建新的新世界了
+	if (bSwitchedToDefaultMap)
+	{
+		CurrentContext.LastURL = PendingTravelURL;
+		bTransitionInProgress = false;
+		
+		double TotalSeamlessTravelTime = FPlatformTime::Seconds() - SeamlessTravelStartTime;
+		FLoadTimeTracker::Get().DumpRawLoadTimes();
+
+		AGameModeBase* const GameMode = LoadedWorld->GetAuthGameMode();
+		if (GameMode)
+		{
+			// inform the new GameMode so it can handle players that persisted
+			GameMode->PostSeamlessTravel();					
+		}
+
+		// Called after post seamless travel to make sure players are setup correctly first
+		LoadedWorld->BeginPlay();
+
+		FCoreUObjectDelegates::PostLoadMapWithWorld.Broadcast(LoadedWorld);
+	}
+	else
+	{
+		bSwitchedToDefaultMap = true;
+		CurrentWorld = LoadedWorld;
+		if (!bPauseAtMidpoint)
+		{
+			StartLoadingDestination();
+		}
+	}
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
 {
