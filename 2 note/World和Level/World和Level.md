@@ -2299,6 +2299,10 @@ UWorld* FSeamlessTravelHandler::Tick()
 	}}
 	// 接下来就是通过判断endplay CurrentWorld里面的Actor
 	TheActor->RouteEndPlay(EEndPlayReason::LevelTransition);
+	// 下面就是给我们的targetLevel创建保存的那些actor，gamemode,controller,gamestate
+	LoadedWorld->AddController(static_cast<AController*>(TheActor));
+	LoadedWorld->CopyGameState(KeptGameMode, KeptGameState);
+	// 然后就是
 	
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
