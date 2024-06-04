@@ -2268,7 +2268,7 @@ UWorld* FSeamlessTravelHandler::Tick()
 	}
 	if (bIsClient)
 	{
-		// 如果是客户端，保存下客户端的playerComtroller
+		// 如果是客户端，保存下客户端的playerController
 		for (FLocalPlayerIterator It(GEngine, CurrentWorld); It; ++It)
 		{
 			if (It->PlayerController != nullptr)
@@ -2279,6 +2279,7 @@ UWorld* FSeamlessTravelHandler::Tick()
 	}
 	else
 	{
+		// 如果是服务器，也保存下服务器的playerController
 		for( FConstControllerIterator Iterator = CurrentWorld->GetControllerIterator(); Iterator; ++Iterator )
 		{
 			if (AController* Player = Iterator->Get())
@@ -2290,6 +2291,12 @@ UWorld* FSeamlessTravelHandler::Tick()
 			}
 		}
 	}
+	// 再把客户端的AHUD，APlayerCameraManager保存下
+	for (FLocalPlayerIterator It(GEngine, CurrentWorld); It; ++It)  
+	{  
+	if (It->PlayerController != nullptr)  
+	{      It->PlayerController->GetSeamlessTravelActorList(!bSwitchedToDefaultMap, KeepActors);  
+	}}
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
 {
