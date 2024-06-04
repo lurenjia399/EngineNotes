@@ -2317,8 +2317,18 @@ UWorld* FSeamlessTravelHandler::Tick()
 	FWorldContext &CurrentContext = GEngine->GetWorldContextFromWorldChecked(CurrentWorld);
 	CurrentContext.SetCurrentWorld(LoadedWorld);
 	LoadedWorld->WorldType = CurrentContext.WorldType;
-	// 标记旧世界
-	
+	// 标记旧世界中的level，streamingLevel为pendingkill
+	// 置空当前世界
+	CurrentWorld = nullptr;
+	// 调用垃圾回收
+	CollectGarbage( GARBAGE_COLLECTION_KEEPFLAGS, true );
+	// 设置新世界了，初始化
+	GWorld = LoadedWorld;
+	if (!LoadedWorld->bIsWorldInitialized)
+	{
+		LoadedWorld->InitWorld();
+	}
+	bWorldChanged = true;
 }
 void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor*>& ActorList)
 {
