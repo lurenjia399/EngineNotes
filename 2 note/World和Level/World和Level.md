@@ -2252,9 +2252,9 @@ UWorld* FSeamlessTravelHandler::Tick()
 {
 	// 把当前world和streamingLevel相关的干掉
 	CurrentWorld->FlushLevelStreaming(EFlushLevelStreamingType::Visibility);		
-	if (!GIsEditor && !IsRunningDedicatedServer() && bSwitchedToDefaultMap)
-	{
-		LoadedWorld->DuplicateRequestedLevels(LoadedWorld->GetOuter()->GetFName());
+	if (CurrentWorld->GetGameState())  
+	{  
+	   CurrentWorld->GetGameState()->SeamlessTravelTransitionCheckpoint(!bSwitchedToDefaultMap);  
 	}
 }
 
