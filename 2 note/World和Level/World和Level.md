@@ -2245,3 +2245,5 @@ void FSeamlessTravelHandler::SetHandlerLoadedData(UObject* InLevelPackage, UWorl
 }
 ```
 异步加载TargetMap之后的回调函数，就是调用SetHandlerLoadedData方法设置一些变量，加载主关卡的数据，加载ShouldAlways类型的StreamingLevel。
+### 6 FSeamlessTravelHandler::Tick
+这个tick是在TickWorldTravel里面走，如果当前正在无缝切换过程中，才能走进来。
