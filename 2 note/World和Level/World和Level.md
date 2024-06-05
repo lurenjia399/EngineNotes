@@ -1666,7 +1666,7 @@ void UGameplayStatics::LoadStreamLevel(const UObject* WorldContextObject, FName 
 			// 第一个参数表示，是否在loading中了，也就是在load关卡的过程中了
 			// 第二个参数表示，需要load关卡的名称
 			// 第三个参数表示，load完成后关卡是否可见
-			// 第四个参数表示，
+			// 第四个参数表示，load的关卡是否阻塞主线程
 			FStreamLevelAction* NewAction = new FStreamLevelAction(true, LevelName, bMakeVisibleAfterLoad, bShouldBlockOnLoad, LatentInfo, World);
 			LatentManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, NewAction);
 		}
