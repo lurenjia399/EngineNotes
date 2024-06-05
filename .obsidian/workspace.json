@@ -26,15 +26,27 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "1 索引/索引.md",
                 "mode": "source",
                 "source": false
               }
             },
             "group": "990dd0fb91d81a20"
+          },
+          {
+            "id": "7e78228932610861",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       },
       {
         "id": "6bdff43a48ecca9a",
@@ -47,7 +59,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "1 索引/索引.md",
                 "mode": "source",
                 "source": false
               }
@@ -120,7 +132,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -137,7 +149,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -160,7 +172,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/World和Level/World和Level.md"
+                "file": "2 note/FLatentActionManager/FLatentActionManager.md"
               }
             }
           }
@@ -182,16 +194,16 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "c4eb254197b7ce27",
+  "active": "7e78228932610861",
   "lastOpenFiles": [
-    "2 note/网络/未命名.md",
     "2 note/World和Level/World和Level.md",
+    "1 索引/索引.md",
+    "2 note/网络/未命名.md",
     "2 note/网络",
     "未命名",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/Tick逻辑/Image/AActor或Component注册流程图.png",
     "2 note/Actor逻辑/Actor.md",
-    "1 索引/索引.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
     "2 note/GarbageCollection",
     "2 note/SCS 和 CDO",
