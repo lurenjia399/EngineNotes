@@ -561,7 +561,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	// 7 卸载当前的world
 	{
 		// 7.1 Clean up networking，去掉当前world的NetDriver
-		// 7.2 调用FlushLevelStreaming方法
+		// 7.2 调用FlushLevelStreaming方法，确保当前没有异步加载StreamingLevel
 		// 7.3 我们自己加了这个
 		WorldTraverseUtils.OnPreChangeWorld(WorldContext.World(), nullptr);
 		// 7.4 Disassociate the players from their PlayerControllers in this world.
@@ -571,7 +571,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 就是WorldContext.World()->DestroyActor(PlayerState, true);这样删掉
 		// 7.7 RouteEndPlay方法，还不知道干嘛的
 		// 7.8 // Do this after destroying pawns/playercontrollers, in case that spawns new things (e.g. dropped weapons)
-			WorldContext.World()->CleanupWorld();
+		WorldContext.World()->CleanupWorld();
 		// 7.9 删掉当前world
 		GEngine->WorldDestroyed(WorldContext.World());
 		WorldContext.World()->RemoveFromRoot();
