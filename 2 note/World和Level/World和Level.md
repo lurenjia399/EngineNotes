@@ -565,7 +565,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 7.3 我们自己加了这个
 		WorldTraverseUtils.OnPreChangeWorld(WorldContext.World(), nullptr);
 		// 7.4 Disassociate the players from their PlayerControllers in this world.
-		// 就是通过GameInstance找到playercontroler和pawn，都DestroyActor销毁掉
+		// 就是通过客户端上的GameInstance找到LocalPlayers(也就是本地玩家s),将去删除
 		// 7.5 销毁掉world里的所有Actor，有些例外
 		// 7.6 Destroy all player states  in this world.
 		// 就是WorldContext.World()->DestroyActor(PlayerState, true);这样删掉
