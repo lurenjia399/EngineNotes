@@ -580,8 +580,21 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		WorldContext.SetCurrentWorld(nullptr);
 	}
 	// 8 PIE的操作，
-	
-	// 9 加载新的world
+	// 8.1 如果不需要切换地图，删掉gamemode，gamestate等信息
+	if (!bMapNeedLoad)
+	{
+		NewWorld = WorldContext.World();
+		AGameModeBase* GameMode = WorldContext.World()->GetAuthGameMode();
+		if (GameMode)
+		{
+			WorldContext.World()->DestroyActor(GameMode->GameSession, true);
+			WorldContext.World()->DestroyActor(GameMode, true);
+		}
+
+		NewWorld->CopyGameState(nullptr, nullptr);
+	}
+	// 9 如果bMapNeedLoad为true，需要加载新的world
+	if (NewWorld == NULL)
 	{
 		// 9,1 LoadPackage加载
 		// 9.2 拿到newworld,是个空的？
@@ -591,6 +604,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 9.4 字面意思，很重要的
 		if (bMapNeedLoad)
 		{
+			// 给新世界赋值旧世界的GameInstance
 			NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
 			GWorld = NewWorld;
 			WorldContext.SetCurrentWorld(NewWorld);
@@ -601,6 +615,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 				WorldContext.World()->InitWorld();
 			}
 		}
+		// 给新世界创建新的GameMode
 		WorldContext.World()->SetGameMode(URL);
 		WorldContext.World()->CreateAISystem();
 		WorldContext.World()->InitializeActorsForPlay(URL, true, &Context);
