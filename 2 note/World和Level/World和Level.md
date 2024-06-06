@@ -553,14 +553,14 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		FCoreUObjectDelegates::PreLoadMap.Broadcast(URL.Map);
 	}
 	// 3 创建了一个结构体的局部变量，作用是make sure there is a matching PostLoadMap() no matter how we exit
-	// 4 判断if (bMapNeedLoad)，应该就是处理当前world中数据
+	// 4 判断if (bMapNeedLoad)，应该就是处理当前world中数据,FlushAsyncLoading等待所有Async加载全部完成，然后取消掉地图切换
 	// 5 记录StartTime
 	double  StartTime = FPlatformTime::Seconds();
 	// 6 我们自己加了这个
 	FWorldTraverseUtils WorldTraverseUtils(bMapNeedLoad);
 	// 7 卸载当前的world
 	{
-		// 7.1 Clean up networking
+		// 7.1 Clean up networking，去掉当前world的NetDriver
 		// 7.2 调用FlushLevelStreaming方法
 		// 7.3 我们自己加了这个
 		WorldTraverseUtils.OnPreChangeWorld(WorldContext.World(), nullptr);
