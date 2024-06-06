@@ -626,6 +626,12 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		WorldContext.World()->BeginPlay();
 	}
 }
+/*
+总的来说，这个方法就是加载/切换地图的方法，在服务器或者客户端都可以执行。
+1 方法的开始就会通过URL上是否带有?KeepWorld来确定bMapNeedLoad标志位，表示是否需要加载新的World地图。
+2 如果bMapNeedLoad为true，就需要等待所有异步加载完成，然后取消切换地图和无缝切换地图的流程，CancelPendingMapChange(WorldContext)，WorldContext.SeamlessTravelHandler.CancelTravel()
+3 然后就是处理当前世界数据，比如清掉NetDriver,同步所有Streaming
+*/
 ```
 10 至此，GameEngine的world创建流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法调用到loadmap创建出默认的World。
 11 还有个问题，他为什么要先创建个空的（过渡地图），然后再加载默认的地图呢？
