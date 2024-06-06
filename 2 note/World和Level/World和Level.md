@@ -601,37 +601,40 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		NewWorld = UWorld::FindWorldInPackage(WorldPackage);
 		// 9.3 判断newworld的WorldType，如果是game,pie就不看了
 		NewWorld = CreatePIEWorldByLoadingFromPackage(WorldContext, URL.Map, WorldPackage);
-		// 9.4 字面意思,如果需要切换新地图
-		if (bMapNeedLoad)
-		{
-			// 给新世界赋值旧世界的GameInstance
-			NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
-			GWorld = NewWorld;
-			WorldContext.SetCurrentWorld(NewWorld);
-			WorldContext.World()->WorldType = WorldContext.WorldType;
-			if (!WorldContext.World()->bIsWorldInitialized)
-			{
-				// InitWorld
-				WorldContext.World()->InitWorld();
-			}
-		}
-		// 给新世界创建新的GameMode
-		WorldContext.World()->SetGameMode(URL);
-		WorldContext.World()->CreateAISystem();
-		WorldContext.World()->InitializeActorsForPlay(URL, true, &Context);
-		FNavigationSystem::AddNavigationSystemToWorld(*WorldContext.World(), FNavigationSystemRunMode::GameMode);
-		// 9.5 我们自己加了这个
-		WorldTraverseUtils.OnPostChangeWorld(WorldContext.World());
-		// 9.6 beginplay?
-		WorldContext.World()->BeginPlay();
 	}
+	// 10 字面意思,如果需要切换新地图
+	if (bMapNeedLoad)
+	{
+		// 给新世界赋值旧世界的GameInstance
+		NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
+		GWorld = NewWorld;
+		WorldContext.SetCurrentWorld(NewWorld);
+		WorldContext.World()->WorldType = WorldContext.WorldType;
+		if (!WorldContext.World()->bIsWorldInitialized)
+		{
+			// InitWorld
+			WorldContext.World()->InitWorld();
+		}
+	}
+	// 给新世界创建新的GameMode
+	WorldContext.World()->SetGameMode(URL);
+	WorldContext.World()->CreateAISystem();
+	WorldContext.World()->InitializeActorsForPlay(URL, true, &Context);
+	FNavigationSystem::AddNavigationSystemToWorld(*WorldContext.World(), FNavigationSystemRunMode::GameMode);
+	// 11 我们自己加了这个
+	WorldTraverseUtils.OnPostChangeWorld(WorldContext.World());
+	// 12 beginplay?
+	WorldContext.World()->BeginPlay();
+	
 }
 /*
 总的来说，这个方法就是加载/切换地图的方法，在服务器或者客户端都可以执行。
 1 方法的开始就会通过URL上是否带有?KeepWorld来确定bMapNeedLoad标志位，表示是否需要加载新的World地图。
 2 如果bMapNeedLoad为true，就需要等待所有异步加载完成，然后取消切换地图和无缝切换地图的流程，CancelPendingMapChange(WorldContext)，WorldContext.SeamlessTravelHandler.CancelTravel()
 3 然后就是处理旧世界数据，比如清掉NetDriver,同步所有StreamingLevel的异步请求，清掉gemeInstance里面的localPlayer,清掉world中有网络状态的Actor，清掉playerstate,如果bMapNeedLoad为true还需要清掉旧世界GEngine->WorldDestroyed(WorldContext.World())
-4 
+4 如果bMapNeedLoad为false，删掉GameMode和GameSession
+5 如果4没通过，就加载新的world
+6 如果bMapNeedLoad为true，设置newWorld的gameInstance,通过URL设置GameMode等信息，然后初始化newWorld的各种系统
 */
 ```
 10 至此，GameEngine的world创建流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法调用到loadmap创建出默认的World。
