@@ -1787,7 +1787,7 @@ void UEngine::SetClientTravel( UWorld *InWorld, const TCHAR* NextURL, ETravelTyp
 	}
 }
 ```
-OpenLevel方法很简单，就是组装参数然后调用SetClientTravel，这个方法就是在WorldContext里面设置参数，然后再下一帧的tick里面进行切换关卡的流程。需要注意的就是OpenLevel中bAbsolute是true，也就是TravelType为TRAVEL_Absolute，这种情况下会使用默认的Protocol，host，port等信息，但如果是TRAVEL_Relative，就会设置Protocol，host，port这些信息为原来的。
+OpenLevel方法很简单，就是组装参数然后调用SetClientTravel，这个方法就是在WorldContext里面设置参数，然后再下一帧的tick里面进行切换关卡的流程。需要注意的就是OpenLevel中bAbsolute是true，也就是TravelType为TRAVEL_Absolute，这种情况下会使用默认的Protocol，host，port等信息，但如果是TRAVEL_Relative，就会设置Protocol，host，port这些信息为旧世界的。
 ```cpp
 // 在FURL::FURL的构造函数中执行
 if( Type==TRAVEL_Relative )
