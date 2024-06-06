@@ -593,7 +593,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 
 		NewWorld->CopyGameState(nullptr, nullptr);
 	}
-	// 9 如果bMapNeedLoad为true，需要加载新的world
+	// 9 如果bMapNeedLoad为true也就是NewWorld为null，需要加载新的world
 	if (NewWorld == NULL)
 	{
 		// 9,1 LoadPackage加载
@@ -601,7 +601,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		NewWorld = UWorld::FindWorldInPackage(WorldPackage);
 		// 9.3 判断newworld的WorldType，如果是game,pie就不看了
 		NewWorld = CreatePIEWorldByLoadingFromPackage(WorldContext, URL.Map, WorldPackage);
-		// 9.4 字面意思，很重要的
+		// 9.4 字面意思,如果需要切换新地图
 		if (bMapNeedLoad)
 		{
 			// 给新世界赋值旧世界的GameInstance
