@@ -634,7 +634,8 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 3 然后就是处理旧世界数据，比如清掉NetDriver,同步所有StreamingLevel的异步请求，清掉gemeInstance里面的localPlayer,清掉world中有网络状态的Actor，清掉playerstate,如果bMapNeedLoad为true还需要清掉旧世界GEngine->WorldDestroyed(WorldContext.World())
 4 如果bMapNeedLoad为false，删掉GameMode和GameSession
 5 如果4没通过，就加载新的world
-6 如果bMapNeedLoad为true，设置newWorld的gameInstance,通过URL设置GameMode等信息，然后初始化newWorld的各种系统
+6 如果bMapNeedLoad为true，设置newWorld的gameInstance,等信息
+7 通过URL设置newWorld的GameMode等信息，然后初始化newWorld的各种系统(也就是说无论bMapNeedLoad是什么，GameMode都会根据URL重新创建。如果bMapNeedLoad为false，就把旧的GameMode删掉)
 */
 ```
 10 至此，GameEngine的world创建流程是，我们的GameInstance经过InitializeStandalone方法创建出DummyWorld空的world，然后通过StartGameInstance方法调用到loadmap创建出默认的World。
