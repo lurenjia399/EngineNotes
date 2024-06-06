@@ -569,7 +569,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		// 7.5 销毁掉world里的所有Actor，有些例外
 		// 7.6 Destroy all player states  in this world.
 		// 就是WorldContext.World()->DestroyActor(PlayerState, true);这样删掉
-		// 7.7 RouteEndPlay方法，还不知道干嘛的
+		// 7.7 RouteEndPlay方法结束actor生命
 		// 7.8 // Do this after destroying pawns/playercontrollers, in case that spawns new things (e.g. dropped weapons)
 		WorldContext.World()->CleanupWorld();
 		// 7.9 删掉当前world
@@ -580,9 +580,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 		WorldContext.SetCurrentWorld(nullptr);
 	}
 	// 8 PIE的操作，
-	// If this world is a PIE instance, we need to check if we are traveling to another PIE instance's world.
-	// If we are, we need to set the PIERemapPrefix so that we load a copy of that world, instead of loading the
-	// PIE world directly.
+	
 	// 9 加载新的world
 	{
 		// 9,1 LoadPackage加载
