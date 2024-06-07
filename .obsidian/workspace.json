@@ -38,7 +38,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               }
@@ -59,7 +59,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "preview",
                 "source": false
               }
@@ -132,7 +132,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -149,7 +149,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -172,7 +172,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md"
+                "file": "2 note/World和Level/World和Level.md"
               }
             }
           }
@@ -196,8 +196,8 @@
   },
   "active": "7e78228932610861",
   "lastOpenFiles": [
-    "2 note/World和Level/World和Level.md",
     "2 note/SCS 和 CDO/未命名.md",
+    "2 note/World和Level/World和Level.md",
     "1 索引/索引.md",
     "2 note/网络/未命名.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
