@@ -2413,6 +2413,7 @@ void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor
 # 5 关卡切换这部分使用
 ## 1 UIScene
 我们的UIScene是通过ECPanelBase的CreatePanel调用ShowUIScene方法显示的
+### ShowUIScene
 ```lua
 local LoadLevelStreaming = function(...)
     table.insert(self.m_callbacks, { startLoad = false, resPaths = resPaths, visible = visible, loaded = loaded, callback = callback, clientOnly = clientOnly })
@@ -2438,10 +2439,24 @@ local LoadLevelStreamings = function(...)
 end
 
 local UpdateLevelStreaming = function(...)
-	-- 这个方法里面就是主要通过IsLevelLoaded， IsLevelVisiblezhe
+	-- 这个方法里面就是主要通过IsLevelLoaded， IsLevelVisible这两个方法判断关卡是否加载好了
+	-- 如果加载好了就callback
 	if levelStreaming:IsLevelLoaded() and levelStreaming:IsLevelVisible() == data.visible then
-	
 	end
 end
-
+```
+### HideUIScene
+```lua
+ if levelStreaming and not levelStreaming:is_nil() then
+levelStreaming:SetShouldBeLoaded(false)
+levelStreaming:SetShouldBeVisible(false)
+levelStreaming:Set_bShouldBlockOnLoad(false)
+if levelStreaming.SetPrecomputedVisibilityNull then
+	levelStreaming:SetPrecomputedVisibilityNull()
+end
+if levelStreaming.SetShouldBeRemovedOnUnload then
+	levelStreaming:SetShouldBeRemovedOnUnload(true)
+	levelStreaming:SetIsRequestingUnloadAndRemoval(true)
+end
+end
 ```
