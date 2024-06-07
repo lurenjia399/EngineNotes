@@ -2414,16 +2414,34 @@ void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor
 ## 1 UIScene
 我们的UIScene是通过ECPanelBase的CreatePanel调用ShowUIScene方法显示的
 ```lua
--- 这个加载方法就是ULevelStreamingDynamic::LoadLevelInstance这个方法
--- 就是NewObject
-levelStreaming = GameUtil.LoadStreamLevel(_G.entryPoint, loadName)
-if levelStreaming then
-	warn("create levelStreaming", loadName)
-	self.m_lackOfMaps[levelResPath] = nil
-	levelStreaming:SetShouldBeVisible(visible)
-	levelStreaming:SetShouldBeLoaded(loaded)
-	levelStreaming:Set_bShouldBlockOnLoad(false)
+local LoadLevelStreaming = function(...)
+    table.insert(self.m_callbacks, { startLoad = false, resPaths = resPaths, visible = visible, loaded = loaded, callback = callback, clientOnly = clientOnly })
+    -- 这个方法就是创建LevelStreamingDynamic
+    self:LoadLevelStreamings()
 
-	
+    if #self.m_callbacks > 0 and self.m_timerHandler == 0 then
+	    --添加了timer，每帧走UpdateLevelStreaming方法
+        self.m_timerHandler = GameUtil.AddGlobalEarlyTimer(0, false, function() self:UpdateLevelStreaming() end)
+    end
 end
+
+local LoadLevelStreamings = function(...)
+	-- 这个加载方法就是ULevelStreamingDynamic::LoadLevelInstance这个方法，就是NewObject<ULevelStreamingDynamic>,然后World->AddStreamingLevel中
+	--创建好Object之后就设置三个状态变量shouldbeLoaded,shouldbevisible,shouldblockonload
+	levelStreaming = GameUtil.LoadStreamLevel(_G.entryPoint, loadName)
+	if levelStreaming then
+		self.m_lackOfMaps[levelResPath] = nil
+		levelStreaming:SetShouldBeVisible(visible)
+		levelStreaming:SetShouldBeLoaded(loaded)
+		levelStreaming:Set_bShouldBlockOnLoad(false)
+	end
+end
+
+local UpdateLevelStreaming = function(...)
+	-- 这个方法里面就是主要通过IsLevelLoaded， IsLevelVisiblezhe
+	if levelStreaming:IsLevelLoaded() and levelStreaming:IsLevelVisible() == data.visible then
+	
+	end
+end
+
 ```
