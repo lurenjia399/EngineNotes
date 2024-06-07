@@ -2410,3 +2410,20 @@ void AGameModeBase::GetSeamlessTravelActorList(bool bToTransition, TArray<AActor
 }
 ```
 
+# 5 关卡切换这部分使用
+## 1 UIScene
+我们的UIScene是通过ECPanelBase的CreatePanel调用ShowUIScene方法显示的
+```lua
+-- 这个加载方法就是ULevelStreamingDynamic::LoadLevelInstance这个方法
+-- 就是NewObject
+levelStreaming = GameUtil.LoadStreamLevel(_G.entryPoint, loadName)
+if levelStreaming then
+	warn("create levelStreaming", loadName)
+	self.m_lackOfMaps[levelResPath] = nil
+	levelStreaming:SetShouldBeVisible(visible)
+	levelStreaming:SetShouldBeLoaded(loaded)
+	levelStreaming:Set_bShouldBlockOnLoad(false)
+
+	
+end
+```
