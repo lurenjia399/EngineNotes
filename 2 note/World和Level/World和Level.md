@@ -2447,16 +2447,17 @@ end
 ```
 ### HideUIScene
 ```lua
- if levelStreaming and not levelStreaming:is_nil() then
-levelStreaming:SetShouldBeLoaded(false)
-levelStreaming:SetShouldBeVisible(false)
-levelStreaming:Set_bShouldBlockOnLoad(false)
-if levelStreaming.SetPrecomputedVisibilityNull then
-	levelStreaming:SetPrecomputedVisibilityNull()
-end
-if levelStreaming.SetShouldBeRemovedOnUnload then
-	levelStreaming:SetShouldBeRemovedOnUnload(true)
-	levelStreaming:SetIsRequestingUnloadAndRemoval(true)
-end
+-- 同理也是设置这几个标志位，引擎在状态切换的时候就会卸载掉streaminglevel
+if levelStreaming and not levelStreaming:is_nil() then
+	levelStreaming:SetShouldBeLoaded(false)
+	levelStreaming:SetShouldBeVisible(false)
+	levelStreaming:Set_bShouldBlockOnLoad(false)
+	if levelStreaming.SetPrecomputedVisibilityNull then
+		levelStreaming:SetPrecomputedVisibilityNull()
+	end
+	if levelStreaming.SetShouldBeRemovedOnUnload then
+		levelStreaming:SetShouldBeRemovedOnUnload(true)
+		levelStreaming:SetIsRequestingUnloadAndRemoval(true)
+	end
 end
 ```
