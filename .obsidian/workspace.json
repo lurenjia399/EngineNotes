@@ -6,7 +6,7 @@
       {
         "id": "19054910895cd298",
         "type": "tabs",
-        "dimension": 50,
+        "dimension": 55.52855407047388,
         "children": [
           {
             "id": "98709a62aa75e15d",
@@ -26,45 +26,33 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1 索引/索引.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
-            "id": "7e78228932610861",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
                 "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               }
             },
-            "group": "49ec428fdc7eba48"
+            "group": "990dd0fb91d81a20"
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       },
       {
-        "id": "9e871786b94f1d4f",
+        "id": "6bdff43a48ecca9a",
         "type": "tabs",
-        "dimension": 50,
+        "dimension": 44.471445929526126,
         "children": [
           {
-            "id": "364c8c042081b5c6",
+            "id": "58f9532f469c2a0e",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "2 note/World和Level/World和Level.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false
               }
             },
-            "group": "49ec428fdc7eba48"
+            "group": "990dd0fb91d81a20"
           }
         ]
       }
@@ -194,20 +182,20 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "7e78228932610861",
+  "active": "c4eb254197b7ce27",
   "lastOpenFiles": [
     "2 note/SCS 和 CDO/未命名.md",
-    "2 note/World和Level/World和Level.md",
-    "1 索引/索引.md",
+    "2 note/SCS 和 CDO",
     "2 note/网络/未命名.md",
-    "2 note/FLatentActionManager/FLatentActionManager.md",
+    "2 note/World和Level/World和Level.md",
     "2 note/网络",
     "未命名",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/Tick逻辑/Image/AActor或Component注册流程图.png",
     "2 note/Actor逻辑/Actor.md",
+    "1 索引/索引.md",
+    "2 note/FLatentActionManager/FLatentActionManager.md",
     "2 note/GarbageCollection",
-    "2 note/SCS 和 CDO",
     "README.md",
     "2 note/World和Level/Image/README.md",
     "2 note/World和Level/World和Level.mdj",
