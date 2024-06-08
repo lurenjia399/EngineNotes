@@ -3,12 +3,4 @@
 ################################################################################
 
 
-/.gitignore
 /.obsidian
-/LurenjiaEngine/.vs
-/LurenjiaEngine/Binaries
-/LurenjiaEngine/Intermediate
-/LurenjiaEngine/Saved
-/LurenjiaEngine/Source/LurenjiaModelTool/FBX/lib/arm64
-/LurenjiaEngine/Source/LurenjiaModelTool/FBX/lib/x64/release
-/LurenjiaEngine/Source/LurenjiaModelTool/FBX/samples
