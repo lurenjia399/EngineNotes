@@ -2463,4 +2463,4 @@ end
 ```
 
 ## 2 进入游戏
-收到服务器发来的消息SelfEnterScene,dddd
+收到服务器发来的消息SelfEnterScene
