@@ -208,5 +208,5 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	}
 }
 ```
-
-# 4 
+# 4 UGameInstance::StartPlayInEditorGameInstance
+感觉像是在编辑器启动的时候也会创建，就先不看了
