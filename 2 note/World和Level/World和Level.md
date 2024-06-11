@@ -2472,4 +2472,14 @@ local StartChangeWorld = function()
 	end, not keepworld)
 end
 ```
-首先释放当前world，具体走的部分也是设置标志位，
+首先释放当前world，具体走的部分也是设置标志位，等待tick里面更新状态
+``` lua
+levelStreaming:SetShouldBeLoaded(false)
+levelStreaming:SetShouldBeVisible(false)
+levelStreaming:Set_bShouldBlockOnLoad(false)
+```
+然后就是加载新的world，走的就是LoadLevelStreaming，然后GameplayStatics.OpenLevel(_G.entryPoint, url, true)方法。
+```lua
+-- 其中LoadLevelStreaming方法走的是ue的ULevelStreamingDynamic::LoadLevelInstance这个方法，
+
+```
