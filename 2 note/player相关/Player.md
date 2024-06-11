@@ -81,8 +81,10 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	{
 		// 创建出我们的LocalPlayer
 		NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
+		// 将创建出的LocalPlayer添加到GameInstance中的LocalPlayers数组中
 		InsertIndex = AddLocalPlayer(NewPlayer, UserId);
 		UWorld* CurrentWorld = GetWorld();
+		// 下面是创建dui'yinlayerController
 		if (bSpawnPlayerController && InsertIndex != INDEX_NONE && CurrentWorld != nullptr)
 		{
 			if (CurrentWorld->GetNetMode() != NM_Client)
