@@ -44,16 +44,13 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 		bool bWindowAlreadyExists = GameViewportWindow.IsValid();
 		CreateGameViewport( ViewportClient );
 		FString Error;
-		// chuang'jian
+		// 创建出localPlayer
 		if(ViewportClient->SetupInitialLocalPlayer(Error) == NULL)
 		{
 			UE_LOG(LogEngine, Fatal,TEXT("%s"),*Error);
 		}
 	}
-
-	UE_LOG(LogInit, Display, TEXT("Game Engine Initialized.") );
-
-	// for IsInitialized()
 	bIsInitialized = true;
 }
 ```
+字面意思不是很复杂，在这个方法里面，首先需要创建出设置好的GameInstance进而创建一系列的WorldContext，也就是说GameInstance是客户端服务器都存在的。然后如果是客户端的话，就创建出ViewportClient，进而创建出LocalPlayer。
