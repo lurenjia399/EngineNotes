@@ -1,6 +1,6 @@
 基本知识 https://www.cnblogs.com/u-n-owen/p/16443936.html
-我们首先看下什么时候会创建LocalPlayer
-# 1 LocalPlayer
+我们首先看下什么时候会创建LocalPlayer或者是创建LocalPlayer的PlayerController
+# 1 UGameEngine::Init
 ## 1 UGameEngine::Init
 在GameEngine::init方法中会创建localPlayer
 ```cpp
@@ -166,3 +166,8 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 }
 ```
 在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance在新World中创建新的。
+# 3 CreatePlayer
+这个应该是蓝图中创建的方法
+```cpp
+
+```
