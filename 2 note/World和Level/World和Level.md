@@ -2530,7 +2530,8 @@ ECLevelStreamingLoader.Instance():LoadLevelStreaming(resPaths, true, true, funct
 	self:OnPostLoadAllSubLevels()
 end)
 
--- 这边我们设置了lightmap
+-- 这边我们设置了lightmap，白天黑夜切换祥光
+-- 切换完成后OnPostLoadAllSubLevelsAfterSetTime
 def.override().OnPostLoadAllSubLevels = function(self)
     ECWorld.SetLightMapByTime(time, function()
         self:OnPostLoadAllSubLevelsAfterSetTime()
