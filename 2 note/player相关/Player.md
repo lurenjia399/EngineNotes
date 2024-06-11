@@ -77,49 +77,9 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	ULocalPlayer* NewPlayer = NULL;
 	int32 InsertIndex = INDEX_NONE;
 	UGameViewportClient* GameViewport = GetGameViewportClient();
-
-	if (GameViewport == nullptr)
+	if (LocalPlayers.Num() < MaxSplitscreenPlayers)
 	{
-		if (ensure(IsDedicatedServerInstance()))
-		{
-			OutError = FString::Printf(TEXT("Dedicated servers cannot have local players"));
-			return nullptr;
-		}
-	}
-
-	const int32 MaxSplitscreenPlayers = GameViewport ? GameViewport->MaxSplitscreenPlayers : 1;
-
-	if (FindLocalPlayerFromPlatformUserId(UserId) != NULL)
-	{
-		OutError = FString::Printf(TEXT("A local player already exists for PlatformUserId %d,"), UserId.GetInternalId());
-	}
-	else if (LocalPlayers.Num() < MaxSplitscreenPlayers)
-	{
-		// If the controller ID is not specified then find the first available
-		if (!UserId.IsValid())
-		{
-			for (int32 Id = 0; Id < MaxSplitscreenPlayers; ++Id)
-			{
-				// Iterate until we find a null player. We want the next available platform user ID
-				FPlatformUserId DummyId = IPlatformInputDeviceMapper::Get().GetPlatformUserForUserIndex(Id);
-
-				if (DummyId.IsValid())
-				{
-					UserId = DummyId;
-				}
-				
-				if (FindLocalPlayerFromControllerId(Id) == nullptr)
-				{
-					break;
-				}
-			}
-			check(UserId.GetInternalId() < MaxSplitscreenPlayers);
-		}
-		else if (UserId.GetInternalId() >= MaxSplitscreenPlayers)
-		{
-			UE_LOG(LogPlayerManagement, Warning, TEXT("Controller ID (%d) is unlikely to map to any physical device, so this player will not receive input"), UserId.GetInternalId());
-		}
-
+		// 创建出我们的LocalPlayer
 		NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
 		InsertIndex = AddLocalPlayer(NewPlayer, UserId);
 		UWorld* CurrentWorld = GetWorld();
