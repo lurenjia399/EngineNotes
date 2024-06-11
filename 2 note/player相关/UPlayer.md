@@ -196,7 +196,8 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	// 就是创建出LocalPlayer
 	// 然后根据参数在服务器创建出LocalPlayer的PlayerController
 	NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
-	if (CurrentWorld->GetNetMode() != NM_Client)
+	if (CurrentWorld->GetNetMode() != NM_Client
+	)
 	{
 		// server; spawn a new PlayerController immediately
 		if (!NewPlayer->SpawnPlayActor("", OutError, CurrentWorld))
@@ -207,3 +208,5 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	}
 }
 ```
+
+# 4 
