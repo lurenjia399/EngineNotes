@@ -116,7 +116,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
 所以看上去Init这部分就是，在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
-## 3 UEngine::LoadMap
+# 2 UEngine::LoadMap
 ```cpp
 bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
 {
@@ -165,4 +165,4 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	}
 }
 ```
-在Lo
+在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance在新World中创建新的。
