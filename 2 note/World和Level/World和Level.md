@@ -2529,5 +2529,11 @@ ECLevelStreamingLoader.Instance():LoadLevelStreaming(resPaths, true, true, funct
 	end
 	self:OnPostLoadAllSubLevels()
 end)
+
+def.override().OnPostLoadAllSubLevels = function(self)
+    ECWorld.SetLightMapByTime(time, function()
+        self:OnPostLoadAllSubLevelsAfterSetTime()
+    end)
+end
 ```
 
