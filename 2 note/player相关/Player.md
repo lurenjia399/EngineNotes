@@ -1,7 +1,7 @@
 https://www.cnblogs.com/u-n-owen/p/16443936.html
 
 # 1 UGameEngine::Init
-## 1 开始
+## 1 
 在GameEngine::init方法中会创建localPlayer
 ```cpp
 void UGameEngine::Init(IEngineLoop* InEngineLoop)
@@ -116,3 +116,22 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
 所以看上去Init这部分就是，在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
+# 2 UEngine::LoadMap
+```cpp
+bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
+{
+	// 在偏后的位置有这么一段代码
+	// Spawn play actors for all active local players
+	if (WorldContext.OwningGameInstance != NULL)
+	{
+		for(auto It = WorldContext.OwningGameInstance->GetLocalPlayerIterator(); It; ++It)
+		{
+			FString Error2;
+			if(!(*It)->SpawnPlayActor(URL.ToString(1),Error2,WorldContext.World()))
+			{
+				UE_LOG(LogEngine, Fatal, TEXT("Couldn't spawn player: %s"), *Error2);
+			}
+		}
+	}
+}
+```
