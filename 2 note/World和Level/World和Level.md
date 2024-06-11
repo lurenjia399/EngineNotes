@@ -2463,4 +2463,13 @@ end
 ```
 
 ## 2 进入游戏
-收到服务器发来的消息SelfEnterScene,
+收到服务器发来的消息SelfEnterScene开始切换客户端关卡的流程，然后首先创建出ECPanelLoading.Instance():ShowLoadingPanel(presceneid, nextsceneid, StartChangeWorld) 界面。
+在创建loading完成后的callback中调用下面方法：
+``` lua
+local StartChangeWorld = function()
+	self:_ReleaseCurWorld(function()
+		self:_LoaWorld(nextsceneid)
+	end, not keepworld)
+end
+```
+首先释放当前world，具体走的部分也是设置标志位，
