@@ -84,9 +84,11 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 		// 将创建出的LocalPlayer添加到GameInstance中的LocalPlayers数组中
 		InsertIndex = AddLocalPlayer(NewPlayer, UserId);
 		UWorld* CurrentWorld = GetWorld();
-		// 下面是创建dui'yinlayerController
+		// 下面是创建对应的PlayerController，如果参数是需要创建的话
+		// 我们走的这里是不用创建的，但也还是看下吧
 		if (bSpawnPlayerController && InsertIndex != INDEX_NONE && CurrentWorld != nullptr)
 		{
+			// 如果不是客户端，就创建PlayerController
 			if (CurrentWorld->GetNetMode() != NM_Client)
 			{
 				// server; spawn a new PlayerController immediately
@@ -96,36 +98,19 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 					NewPlayer = nullptr;
 				}
 			}
+			// 这个分支不是很了解
 			else if (CurrentWorld->IsPlayingReplay())
 			{
-				if (UDemoNetDriver* DemoNetDriver = CurrentWorld->GetDemoNetDriver())
-				{
-					// demo playback; ask the replay driver to spawn a splitscreen client
-					if (!DemoNetDriver->SpawnSplitscreenViewer(NewPlayer, CurrentWorld))
-					{
-						RemoveLocalPlayer(NewPlayer);
-						NewPlayer = nullptr;
-					}
-				}
 			}
 			else
 			{
 				// client; ask the server to let the new player join
+				// 是给服务器发消息，但不知道怎么客户端收到回复消息
 				TArray<FString> Options;
 				NewPlayer->SendSplitJoin(Options);
 			}
 		}
 	}
-	else
-	{
-		OutError = FString::Printf(TEXT( "Maximum number of players (%d) already created.  Unable to create more."), MaxSplitscreenPlayers);
-	}
-
-	if (OutError != TEXT(""))
-	{
-		UE_LOG(LogPlayerManagement, Log, TEXT("UPlayer* creation failed with error: %s"), *OutError);
-	}
-
 	return NewPlayer;
 }
 ```
