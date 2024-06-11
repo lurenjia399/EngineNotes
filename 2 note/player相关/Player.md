@@ -121,6 +121,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
 {
 
+	// 这边首先是会通过GameInstance来清理当前World中Loacal相关的东西，比如PlayerController,Pawn
 	// Disassociate the players from their PlayerControllers in this world.
 	if (WorldContext.OwningGameInstance != nullptr)
 	{
