@@ -1,6 +1,6 @@
 基本知识 https://www.cnblogs.com/u-n-owen/p/16443936.html
 我们首先看下什么时候会创建LocalPlayer或者是创建LocalPlayer的PlayerController
-# 1 Loc
+# 1 LocalPlayer
 ## 1 UGameEngine::Init
 在GameEngine::init方法中会创建localPlayer
 ```cpp
@@ -54,7 +54,7 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 }
 ```
 字面意思不是很复杂，在这个方法里面，首先需要创建出设置好的GameInstance进而创建一系列的WorldContext，也就是说GameInstance是客户端服务器都存在的。然后如果是客户端的话，就创建出ViewportClient，进而创建出LocalPlayer。
-## 2 SetupInitialLocalPlayer
+### 2 SetupInitialLocalPlayer
 ```cpp
 ULocalPlayer* UGameViewportClient::SetupInitialLocalPlayer(FString& OutError)
 {
@@ -116,7 +116,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
 所以看上去Init这部分就是，在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
-# 2 UEngine::LoadMap
+## 2 UEngine::LoadMap
 堆栈如下：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224440.png)
 
@@ -169,7 +169,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 }
 ```
 在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance在新World中创建新的。
-# 3 CreatePlayer
+## 3 CreatePlayer
 这个应该是蓝图中创建的方法
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611223220.png)
 
@@ -191,7 +191,7 @@ APlayerController* UGameplayStatics::CreatePlayerFromPlatformUser(...)
 	return (LocalPlayer ? LocalPlayer->PlayerController : nullptr);
 }
 ```
-## 1 UGameInstance::CreateLocalPlayer
+### 1 UGameInstance::CreateLocalPlayer
 ```cpp
 ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& OutError, bool bSpawnPlayerController)
 {
@@ -211,6 +211,6 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	}
 }
 ```
-# 4 UGameInstance::StartPlayInEditorGameInstance
+## 4 UGameInstance::StartPlayInEditorGameInstance
 感觉像是在编辑器启动的时候也会创建，就先不看了，堆栈如下
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224046.png)
