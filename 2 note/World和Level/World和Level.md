@@ -2493,6 +2493,7 @@ levelStreaming:Set_bShouldBlockOnLoad(false)
 FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UAzureGameInstance::OnMapChanged);
 
 // 这个事件的广播是在loadmap方法里面定义了一个struct来实现的
+// make sure there is a matching PostLoadMap() no matter how we exit
 struct FPostLoadMapCaller
 {
 	FPostLoadMapCaller()
