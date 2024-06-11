@@ -168,12 +168,13 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance在新World中创建新的。
 # 3 CreatePlayer
 这个应该是蓝图中创建的方法
+
 ```cpp
 UFUNCTION(BlueprintCallable, Category = "Game", 
 		  meta = (DisplayName="Create Local Player", 
 		  WorldContext = "WorldContextObject", AdvancedDisplay = "2",
 		  UnsafeDuringActorConstruction = "true"))
-	static ENGINE_API class APlayerController* CreatePlayer(const UObject* WorldContextObject, int32 ControllerId = -1, bool bSpawnPlayerController = true);
+	static ENGINE_API class APlayerController* CreatePlayer(...);
 	
 	APlayerController* UGameplayStatics::CreatePlayer(...)
 {
