@@ -143,6 +143,11 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 			Player->CleanupViewState(); 
 		}
 	}
+	// 清理完当前World中的各种数据，然后就开始转让GameInstance，WorldContext所有权
+	NewWorld->SetGameInstance(WorldContext.OwningGameInstance);
+	GWorld = NewWorld;
+	WorldContext.SetCurrentWorld(NewWorld);
+	WorldContext.World()->WorldType = WorldContext.WorldType;
 	
 	// 在偏后的位置有这么一段代码
 	// Spawn play actors for all active local players
