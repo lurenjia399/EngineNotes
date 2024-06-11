@@ -120,6 +120,29 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 ```cpp
 bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
 {
+
+	// Disassociate the players from their PlayerControllers in this world.
+	if (WorldContext.OwningGameInstance != nullptr)
+	{
+		for(auto It = WorldContext.OwningGameInstance->GetLocalPlayerIterator(); It; ++It)
+		{
+			ULocalPlayer *Player = *It;
+			if(Player->PlayerController && Player->PlayerController->GetWorld() == WorldContext.World())
+			{
+				if(Player->PlayerController->GetPawn())
+				{
+					WorldContext.World()->DestroyActor(Player->PlayerController->GetPawn(), true);
+				}
+				WorldContext.World()->DestroyActor(Player->PlayerController, true);
+				Player->PlayerController = nullptr;
+			}
+			// reset split join info so we'll send one after loading the new map if necessary
+			Player->bSentSplitJoin = false;
+			// When loading maps, clear out mids that are referenced as they may prevent the world from shutting down cleanly and the local player will not be cleaned up until later
+			Player->CleanupViewState(); 
+		}
+	}
+	
 	// 在偏后的位置有这么一段代码
 	// Spawn play actors for all active local players
 	if (WorldContext.OwningGameInstance != NULL)
