@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/player相关/Player.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,7 +32,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/player相关/Player.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "preview",
                 "source": false
               }
@@ -105,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/player相关/Player.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/player相关/Player.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/player相关/Player.md"
+                "file": "2 note/player相关/UPlayer.md"
               }
             }
           }
@@ -169,7 +169,7 @@
   "active": "021eddd639897515",
   "lastOpenFiles": [
     "2 note/World和Level/World和Level.md",
-    "2 note/player相关/Player.md",
+    "2 note/player相关/UPlayer.md",
     "2 note/player相关"
   ]
 }

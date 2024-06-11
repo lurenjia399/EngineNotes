@@ -1,7 +1,7 @@
-https://www.cnblogs.com/u-n-owen/p/16443936.html
-
-# 1 UGameEngine::Init
-## 1 
+基本知识 https://www.cnblogs.com/u-n-owen/p/16443936.html
+我们首先看下什么时候会创建LocalPlayer
+# 1 LocalPlayer
+## 1 UGameEngine::Init
 在GameEngine::init方法中会创建localPlayer
 ```cpp
 void UGameEngine::Init(IEngineLoop* InEngineLoop)
@@ -116,7 +116,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
 所以看上去Init这部分就是，在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
-# 2 UEngine::LoadMap
+## 3 UEngine::LoadMap
 ```cpp
 bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetGame* Pending, FString& Error )
 {
@@ -165,3 +165,4 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	}
 }
 ```
+在Lo
