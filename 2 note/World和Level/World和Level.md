@@ -2463,6 +2463,7 @@ end
 ```
 
 ## 2 进入游戏
+### 1 
 收到服务器发来的消息SelfEnterScene开始切换客户端关卡的流程，然后首先创建出ECPanelLoading.Instance():ShowLoadingPanel(presceneid, nextsceneid, StartChangeWorld) 界面。
 在创建loading完成后的callback中调用下面方法：
 ``` lua
@@ -2472,14 +2473,18 @@ local StartChangeWorld = function()
 	end, not keepworld)
 end
 ```
+### 2 
 首先释放当前world，具体走的部分也是设置标志位，等待tick里面更新状态
 ``` lua
 levelStreaming:SetShouldBeLoaded(false)
 levelStreaming:SetShouldBeVisible(false)
 levelStreaming:Set_bShouldBlockOnLoad(false)
 ```
+### 3 
 然后就是加载新的world，走的就是LoadLevelStreaming，然后GameplayStatics.OpenLevel(_G.entryPoint, url, true)方法。
 ```lua
--- 其中LoadLevelStreaming方法走的是ue的ULevelStreamingDynamic::LoadLevelInstance这个方法，
+-- 其中LoadLevelStreaming方法走的是ue的ULevelStreamingDynamic::LoadLevelInstance这个方法，就是创建出StreamingLevel，然后添加到world的数组里面
 
+-- 其中GameplayStatics.OpenLevel方法走的是ue的UGameplayStatics::OpenLevel这个方法，就是蓝图中的openlevel节点。
 ```
+4 
