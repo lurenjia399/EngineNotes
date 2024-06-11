@@ -2520,6 +2520,7 @@ private:
 } PostLoadMapCaller;
 ```
 ### 5 lua侧
-```cpp
-
+```lua
+-- cpp这边监听了这个事件，然后会调用到lua中
+-- lua这边就是通过配置来获取需要加载的streaminglevel，然后通过LoadLevelStreaming这个fan
 ```
