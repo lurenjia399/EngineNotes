@@ -1,0 +1,171 @@
+{
+  "main": {
+    "id": "31faeb441dd762f0",
+    "type": "split",
+    "children": [
+      {
+        "id": "af71041353f852c2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "021eddd639897515",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2 note/World和Level/World和Level.md",
+                "mode": "source",
+                "source": false
+              }
+            },
+            "group": "2915f50df396409b"
+          }
+        ]
+      },
+      {
+        "id": "e08f465077a3ef75",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "04c9f8b1fe923c38",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2 note/World和Level/World和Level.md",
+                "mode": "preview",
+                "source": false
+              }
+            },
+            "group": "2915f50df396409b"
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "53842bb59072c73b",
+    "type": "split",
+    "children": [
+      {
+        "id": "d48e6bfd312c5571",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "87d4a4ddb3c55608",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "d67c74eb1cebdf43",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "86a17dbfb3ff8fe9",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "001f2b6ca6570c6a",
+    "type": "split",
+    "children": [
+      {
+        "id": "eb4ca786ff2732ef",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "74625ca26345fd9a",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "2 note/World和Level/World和Level.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "3a671b1fbe55ac61",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "2 note/World和Level/World和Level.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "29d80a6f10b4b5f6",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "e625b6d0275e9c65",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "2 note/World和Level/World和Level.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false
+    }
+  },
+  "active": "74625ca26345fd9a",
+  "lastOpenFiles": []
+}
