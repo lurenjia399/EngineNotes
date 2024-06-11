@@ -2481,7 +2481,7 @@ levelStreaming:SetShouldBeLoaded(false)
 levelStreaming:SetShouldBeVisible(false)
 levelStreaming:Set_bShouldBlockOnLoad(false)
 ```
-### 3 
+### 3 LoadLevelStreaming OpenLevel
 然后就是加载新的world，走的就是LoadLevelStreaming，然后GameplayStatics.OpenLevel(_G.entryPoint, url, true)方法。
 ```lua
 -- 其中LoadLevelStreaming方法走的是ue的ULevelStreamingDynamic::LoadLevelInstance这个方法，就是创建出StreamingLevel，然后添加到world的数组里面
@@ -2522,5 +2522,12 @@ private:
 ### 5 lua侧
 ```lua
 -- cpp这边监听了这个事件，然后会调用到lua中
--- lua这边就是通过配置来获取需要加载的streaminglevel，然后通过LoadLevelStreaming这个fan
+-- lua这边就是通过配置来获取需要加载的streaminglevel，然后通过LoadLevelStreaming（上面简单介绍过这个方法）这个方法加载，
+ECLevelStreamingLoader.Instance():LoadLevelStreaming(resPaths, true, true, function(levels)
+	if not ECWorldManager.Instance().m_KeepWorld then
+		--Navigation.PostLevelStreaming()
+	end
+	self:OnPostLoadAllSubLevels()
+end)
 ```
+
