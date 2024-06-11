@@ -2491,5 +2491,30 @@ levelStreaming:Set_bShouldBlockOnLoad(false)
 ``` cpp
 // 我们会在AzureGameInstance里面监听这个事件，调用到蓝图里面
 FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UAzureGameInstance::OnMapChanged);
+
+// 这个事件的广播是在loadmap方法里面定义了一个struct来实现的
+struct FPostLoadMapCaller
+{
+	FPostLoadMapCaller()
+		: bCalled(false)
+	{}
+	~FPostLoadMapCaller()
+	{
+		if (!bCalled)
+		{
+			FCoreUObjectDelegates::PostLoadMapWithWorld.Broadcast(nullptr);
+		}
+	}
+	void Broadcast(UWorld* World)
+	{
+		if (ensure(!bCalled))
+		{
+			bCalled = true;
+			FCoreUObjectDelegates::PostLoadMapWithWorld.Broadcast(World);
+		}
+	}
+private:
+	bool bCalled;
+} PostLoadMapCaller;
 ```
 
