@@ -2519,3 +2519,7 @@ private:
 	bool bCalled;
 } PostLoadMapCaller;
 ```
+### 5 lua侧
+```cpp
+
+```
