@@ -150,6 +150,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	WorldContext.World()->WorldType = WorldContext.WorldType;
 	
 	// 在偏后的位置有这么一段代码
+	// 根据GameInstance中的LoacalPlayer，在新World中创建出PlayerController
 	// Spawn play actors for all active local players
 	if (WorldContext.OwningGameInstance != NULL)
 	{
