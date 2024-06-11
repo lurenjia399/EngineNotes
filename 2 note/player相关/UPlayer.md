@@ -192,80 +192,18 @@ APlayerController* UGameplayStatics::CreatePlayerFromPlatformUser(...)
 ```cpp
 ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& OutError, bool bSpawnPlayerController)
 {
-	ULocalPlayer* NewPlayer = NULL;
-	int32 InsertIndex = INDEX_NONE;
-	UGameViewportClient* GameViewport = GetGameViewportClient();
-	if (LocalPlayers.Num() < MaxSplitscreenPlayers)
+	// 这个方法在上面看过了
+	// 就是创建出LocalPlayer
+	// 然后根据参数在服务器创建出LocalPlayer的PlayerController
+	NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
+	if (CurrentWorld->GetNetMode() != NM_Client)
 	{
-		// If the controller ID is not specified then find the first available
-		if (!UserId.IsValid())
+		// server; spawn a new PlayerController immediately
+		if (!NewPlayer->SpawnPlayActor("", OutError, CurrentWorld))
 		{
-			for (int32 Id = 0; Id < MaxSplitscreenPlayers; ++Id)
-			{
-				// Iterate until we find a null player. We want the next available platform user ID
-				FPlatformUserId DummyId = IPlatformInputDeviceMapper::Get().GetPlatformUserForUserIndex(Id);
-
-				if (DummyId.IsValid())
-				{
-					UserId = DummyId;
-				}
-				
-				if (FindLocalPlayerFromControllerId(Id) == nullptr)
-				{
-					break;
-				}
-			}
-			check(UserId.GetInternalId() < MaxSplitscreenPlayers);
-		}
-		else if (UserId.GetInternalId() >= MaxSplitscreenPlayers)
-		{
-			UE_LOG(LogPlayerManagement, Warning, TEXT("Controller ID (%d) is unlikely to map to any physical device, so this player will not receive input"), UserId.GetInternalId());
-		}
-
-		NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
-		InsertIndex = AddLocalPlayer(NewPlayer, UserId);
-		UWorld* CurrentWorld = GetWorld();
-		if (bSpawnPlayerController && InsertIndex != INDEX_NONE && CurrentWorld != nullptr)
-		{
-			if (CurrentWorld->GetNetMode() != NM_Client)
-			{
-				// server; spawn a new PlayerController immediately
-				if (!NewPlayer->SpawnPlayActor("", OutError, CurrentWorld))
-				{
-					RemoveLocalPlayer(NewPlayer);
-					NewPlayer = nullptr;
-				}
-			}
-			else if (CurrentWorld->IsPlayingReplay())
-			{
-				if (UDemoNetDriver* DemoNetDriver = CurrentWorld->GetDemoNetDriver())
-				{
-					// demo playback; ask the replay driver to spawn a splitscreen client
-					if (!DemoNetDriver->SpawnSplitscreenViewer(NewPlayer, CurrentWorld))
-					{
-						RemoveLocalPlayer(NewPlayer);
-						NewPlayer = nullptr;
-					}
-				}
-			}
-			else
-			{
-				// client; ask the server to let the new player join
-				TArray<FString> Options;
-				NewPlayer->SendSplitJoin(Options);
-			}
+			RemoveLocalPlayer(NewPlayer);
+			NewPlayer = nullptr;
 		}
 	}
-	else
-	{
-		OutError = FString::Printf(TEXT( "Maximum number of players (%d) already created.  Unable to create more."), MaxSplitscreenPlayers);
-	}
-
-	if (OutError != TEXT(""))
-	{
-		UE_LOG(LogPlayerManagement, Log, TEXT("UPlayer* creation failed with error: %s"), *OutError);
-	}
-
-	return NewPlayer;
 }
 ```
