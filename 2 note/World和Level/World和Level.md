@@ -2465,7 +2465,7 @@ end
 ## 2 进入游戏
 
 ### 1 
-收到服务器发来的消息SelfEnterScene开始切换客户端关卡的流程，然后首先创建出ECPanelLoading.Instance():ShowLoadingPanel(presceneid, nextsceneid, StartChangeWorld) 界面。
+收到服务器发来的消息SelfEnterScene开始切换客户端关卡的流程，然后首先创建出ECPanelLoading.Instance():ShowLoadingPanel(presceneid, nextsceneid, StartChangeWorld) 界面,loading界面是在_OnPostLoadAllSubLevels方法中关闭，也就是在地图切换完成后关闭。
 在创建loading完成后的callback中调用下面方法：
 ``` lua
 local StartChangeWorld = function()
