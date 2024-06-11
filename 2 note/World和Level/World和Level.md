@@ -2487,4 +2487,9 @@ levelStreaming:Set_bShouldBlockOnLoad(false)
 
 -- 其中GameplayStatics.OpenLevel方法走的是ue的UGameplayStatics::OpenLevel这个方法，就是蓝图中的openlevel节点。
 ```
-4 
+4 切换完成事件
+``` cpp
+// 我们会在AzureGameInstance里面监听这个事件，调用到蓝图里面
+FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UAzureGameInstance::OnMapChanged);
+```
+
