@@ -169,5 +169,21 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 # 3 CreatePlayer
 这个应该是蓝图中创建的方法
 ```cpp
+UFUNCTION(BlueprintCallable, Category = "Game", 
+		  meta = (DisplayName="Create Local Player", 
+		  WorldContext = "WorldContextObject", AdvancedDisplay = "2",
+		  UnsafeDuringActorConstruction = "true"))
+	static ENGINE_API class APlayerController* CreatePlayer(const UObject* WorldContextObject, int32 ControllerId = -1, bool bSpawnPlayerController = true);
+	
+	APlayerController* UGameplayStatics::CreatePlayer(...)
+{
+	return CreatePlayerFromPlatformUser(...);
+}
 
+APlayerController* UGameplayStatics::CreatePlayerFromPlatformUser(...)
+{
+	ULocalPlayer* LocalPlayer = World ? World->GetGameInstance()->CreateLocalPlayer(UserId, Error, bSpawnPlayerController) : nullptr;
+	return (LocalPlayer ? LocalPlayer->PlayerController : nullptr);
+}
 ```
+## 1 
