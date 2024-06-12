@@ -216,4 +216,4 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224046.png)
 
 ## 5 
-总的来说，Lo
+总的来说，LocalPlayer是在GameEngine::Init方法里，在创建完GameInstance之后，在创建这个UGameViewportClient里面创建的，并且只在客户端创建出来，这个创建的部分没有创建出对应的PlayerController。然后在LoadMap方法中，会通过GameInstance先将旧的
