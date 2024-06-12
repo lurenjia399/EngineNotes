@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,7 +32,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "preview",
                 "source": false
               }
@@ -105,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/player相关/UPlayer.md"
+                "file": "2 note/World和Level/World和Level.md"
               }
             }
           }
@@ -166,11 +166,11 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "c7fed1e5e2437a77",
+  "active": "021eddd639897515",
   "lastOpenFiles": [
+    "2 note/player相关/UPlayer.md",
     "2 note/World和Level/World和Level.md",
     "1 索引/索引.md",
-    "2 note/player相关/UPlayer.md",
     "2 note/player相关"
   ]
 }
