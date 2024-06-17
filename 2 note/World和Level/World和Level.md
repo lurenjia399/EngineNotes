@@ -618,6 +618,13 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	}
 	// 给新世界创建新的GameMode
 	WorldContext.World()->SetGameMode(URL);
+	// 如果是服务器的话，就监听客户端链接
+	if (Pending == NULL && (!GIsClient || URL.HasOption(TEXT("Listen"))) && !URL.HasOption(TEXT("DeferredListen")))
+	{
+		if (!WorldContext.World()->Listen(URL))
+		{
+		}
+	}
 	WorldContext.World()->CreateAISystem();
 	WorldContext.World()->InitializeActorsForPlay(URL, true, &Context);
 	FNavigationSystem::AddNavigationSystemToWorld(*WorldContext.World(), FNavigationSystemRunMode::GameMode);
