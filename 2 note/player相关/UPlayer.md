@@ -1,6 +1,6 @@
 基本知识 https://www.cnblogs.com/u-n-owen/p/16443936.html
 我们首先看下什么时候会创建LocalPlayer或者是创建LocalPlayer的PlayerController
-# 1 LocalPlayer
+# 1 创建LocalPlayer
 ## 1 UGameEngine::Init
 在GameEngine::init方法中会创建localPlayer
 ```cpp
