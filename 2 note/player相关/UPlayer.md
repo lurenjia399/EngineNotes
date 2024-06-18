@@ -116,8 +116,50 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(...)
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
 所以看上去Init这部分就是，在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
+## 2 蓝图中CreatePlayer
+这个应该是蓝图中创建的方法
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611223220.png)
+
+```cpp
+UFUNCTION(BlueprintCallable, Category = "Game", 
+		  meta = (DisplayName="Create Local Player", 
+		  WorldContext = "WorldContextObject", AdvancedDisplay = "2",
+		  UnsafeDuringActorConstruction = "true"))
+	static ENGINE_API class APlayerController* CreatePlayer(...);
+	
+	APlayerController* UGameplayStatics::CreatePlayer(...)
+{
+	return CreatePlayerFromPlatformUser(...);
+}
+
+APlayerController* UGameplayStatics::CreatePlayerFromPlatformUser(...)
+{
+	ULocalPlayer* LocalPlayer = World ? World->GetGameInstance()->CreateLocalPlayer(UserId, Error, bSpawnPlayerController) : nullptr;
+	return (LocalPlayer ? LocalPlayer->PlayerController : nullptr);
+}
+```
+### 1 UGameInstance::CreateLocalPlayer
+```cpp
+ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& OutError, bool bSpawnPlayerController)
+{
+	// 这个方法在上面看过了
+	// 就是创建出LocalPlayer
+	// 然后根据参数在服务器创建出LocalPlayer的PlayerController
+	NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
+	if (CurrentWorld->GetNetMode() != NM_Client
+	)
+	{
+		// server; spawn a new PlayerController immediately
+		if (!NewPlayer->SpawnPlayActor("", OutError, CurrentWorld))
+		{
+			RemoveLocalPlayer(NewPlayer);
+			NewPlayer = nullptr;
+		}
+	}
+}
+```
 # 2 创建LocalPlayer的PlayerController
-## 2 UEngine::LoadMap
+## 1 UEngine::LoadMap
 堆栈如下：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224440.png)
 
@@ -169,49 +211,8 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	}
 }
 ```
-在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance在新World中创建新的PlayerController，服务器和客户端都会走这个LoadMap方法，但是SpawnPlayActor这个只有客户端会走。
-## 3 CreatePlayer
-这个应该是蓝图中创建的方法
-![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611223220.png)
+在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance中的LocalPlayer数组，创建新的PlayerController。服务器没有LocalPlayer自然也就不会创建PlayerController。
 
-```cpp
-UFUNCTION(BlueprintCallable, Category = "Game", 
-		  meta = (DisplayName="Create Local Player", 
-		  WorldContext = "WorldContextObject", AdvancedDisplay = "2",
-		  UnsafeDuringActorConstruction = "true"))
-	static ENGINE_API class APlayerController* CreatePlayer(...);
-	
-	APlayerController* UGameplayStatics::CreatePlayer(...)
-{
-	return CreatePlayerFromPlatformUser(...);
-}
-
-APlayerController* UGameplayStatics::CreatePlayerFromPlatformUser(...)
-{
-	ULocalPlayer* LocalPlayer = World ? World->GetGameInstance()->CreateLocalPlayer(UserId, Error, bSpawnPlayerController) : nullptr;
-	return (LocalPlayer ? LocalPlayer->PlayerController : nullptr);
-}
-```
-### 1 UGameInstance::CreateLocalPlayer
-```cpp
-ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& OutError, bool bSpawnPlayerController)
-{
-	// 这个方法在上面看过了
-	// 就是创建出LocalPlayer
-	// 然后根据参数在服务器创建出LocalPlayer的PlayerController
-	NewPlayer = NewObject<ULocalPlayer>(GetEngine(), GetEngine()->LocalPlayerClass);
-	if (CurrentWorld->GetNetMode() != NM_Client
-	)
-	{
-		// server; spawn a new PlayerController immediately
-		if (!NewPlayer->SpawnPlayActor("", OutError, CurrentWorld))
-		{
-			RemoveLocalPlayer(NewPlayer);
-			NewPlayer = nullptr;
-		}
-	}
-}
-```
 ## 4 UGameInstance::StartPlayInEditorGameInstance
 感觉像是在编辑器启动的时候也会创建LoacalPlayer的PlayerController，就先不看了，堆栈如下
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224046.png)
