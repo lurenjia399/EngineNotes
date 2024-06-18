@@ -89,7 +89,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -166,7 +167,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "021eddd639897515",
+  "active": "87d4a4ddb3c55608",
   "lastOpenFiles": [
     "2 note/World和Level/World和Level.md",
     "2 note/网络/网络.md",
