@@ -616,6 +616,12 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 			WorldContext.World()->InitWorld();
 		}
 	}
+	// 如果Pending存在，也就是客户端
+	if( Pending )  
+	{
+		// 移交PendingNetGame中NetDriver的所有权，移交给World
+		MovePendingLevel(WorldContext);  
+	}
 	// 给新世界创建新的GameMode
 	WorldContext.World()->SetGameMode(URL);
 	// 如果是服务器的话，就监听客户端链接
