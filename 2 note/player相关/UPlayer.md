@@ -116,7 +116,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(...)
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
 所以看上去Init这部分就是，在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
-## 2 蓝图中CreatePlayer
+## 2 蓝图中方法CreatePlayer
 这个应该是蓝图中创建的方法
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611223220.png)
 
@@ -213,9 +213,9 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 ```
 在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance中的LocalPlayer数组，创建新的PlayerController。服务器没有LocalPlayer自然也就不会创建PlayerController。
 
-## 4 UGameInstance::StartPlayInEditorGameInstance
+## 2 UGameInstance::StartPlayInEditorGameInstance
 感觉像是在编辑器启动的时候也会创建LoacalPlayer的PlayerController，就先不看了，堆栈如下
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224046.png)
 
-## 5 
-总的来说，LocalPlayer是在GameEngine::Init方法里，在创建完GameInstance之后，在创建这个UGameViewportClient里面创建的，并且只在客户端创建出来，这个创建的部分没有创建出对应的PlayerController。然后在LoadMap方法中，会通过GameInstance先将旧的LocalPalyer对应的PlayerController销毁掉，然后在新的World中创建出PlayerController。最后还需注意的是，SpawnPlayActor这个方法生成了一个Dummy的PlayerController，之后会从服务器复制一个把这个假的替换掉（Look at APlayerController::OnActorChannelOpen + UNetConnection::HandleClientPlayer for the code the  replaces this fake player controller with the real replicated one from the server）。
+# 3 总结
+总的来说，LocalPlayer是在GameEngine::Init方法里，在创建完GameInstance之后，在创建这个UGameViewportClient里面创建的，并且只在客户端创建出来，这个创建的部分没有创建出对应的PlayerController。然后在LoadMap方法中，会通过GameInstance先将旧的LocalPalyer对应的PlayerController销毁掉，然后在新的World中创建出PlayerController。最后还需注意的是，通过LocalPlayer::SpawnPlayActor这个方法创建的PlayerController是一个Dummy的PlayerController，之后会从服务器复制一个把这个假的替换掉（Look at APlayerController::OnActorChannelOpen + UNetConnection::HandleClientPlayer for the code the  replaces this fake player controller with the real replicated one from the server）。
