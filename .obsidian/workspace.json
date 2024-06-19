@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/特效系统/特效系统Cascade.md",
                 "mode": "source",
                 "source": false
               }
@@ -32,7 +32,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/特效系统/特效系统Cascade.md",
                 "mode": "preview",
                 "source": false
               }
@@ -105,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/特效系统/特效系统Cascade.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +122,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/特效系统/特效系统Cascade.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +145,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/网络/网络.md"
+                "file": "2 note/特效系统/特效系统Cascade.md"
               }
             }
           }
@@ -168,9 +168,9 @@
   },
   "active": "021eddd639897515",
   "lastOpenFiles": [
-    "2 note/player相关/UPlayer.md",
-    "2 note/网络/网络.md",
     "1 索引/索引.md",
+    "2 note/网络/网络.md",
+    "2 note/player相关/UPlayer.md",
     "2 note/网络/网络.mdj",
     "2 note/World和Level/World和Level.md",
     "2 note/Tick逻辑/Tick逻辑.md",
