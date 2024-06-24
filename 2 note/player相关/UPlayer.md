@@ -216,7 +216,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 感觉像是在编辑器启动的时候也会创建LoacalPlayer的PlayerController，就先不看了，堆栈如下
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224046.png)
 
-# 3 客户端 真的PlayerController
+## 3 客户端 真的PlayerController
 客户端调用ULoaclPlayer::SpawnPlayActor这个方法创建的PlayerController都是临时占位的，实际的应该是服务器同步过来的PlayerController。
 客户端在加载完地图（UPendingNetGame::LoadMapCompleted）后会给服务器发送消息，进而服务器会创建playercontroller，并设置replicates为true。进而会触发网络同步，将这个服务器创建的PlayerController同步给客户端。
 
