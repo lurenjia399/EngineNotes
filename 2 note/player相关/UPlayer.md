@@ -212,6 +212,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 }
 ```
 在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance中的LocalPlayer数组，创建新的PlayerController。服务器没有LocalPlayer自然也就不会创建PlayerController。
+客户端在加载完地图后
 
 ## 2 UGameInstance::StartPlayInEditorGameInstance
 感觉像是在编辑器启动的时候也会创建LoacalPlayer的PlayerController，就先不看了，堆栈如下
