@@ -13,14 +13,27 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "source",
                 "source": false
               }
             },
             "group": "cc54e1ef1fb71dea"
+          },
+          {
+            "id": "9f2fdbead438cccf",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2 note/player相关/UPlayer.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       },
       {
         "id": "08c4a8ab8ec36a22",
@@ -32,7 +45,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "preview",
                 "source": false
               }
@@ -105,7 +118,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,7 +135,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -145,7 +158,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/网络/网络.md"
+                "file": "2 note/player相关/UPlayer.md"
               }
             }
           }
@@ -166,10 +179,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "021eddd639897515",
+  "active": "9f2fdbead438cccf",
   "lastOpenFiles": [
-    "2 note/player相关/UPlayer.md",
     "2 note/网络/网络.md",
+    "2 note/player相关/UPlayer.md",
     "2 note/World和Level/World和Level.md",
     "2 note/特效系统/特效系统Cascade.md",
     "1 索引/索引.md",
