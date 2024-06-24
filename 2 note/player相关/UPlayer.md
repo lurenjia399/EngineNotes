@@ -229,5 +229,38 @@ void APlayerController::OnActorChannelOpen(...)
 	Connection->HandleClientPlayer(this, Connection); 
 }
 ```
+
+```cpp
+void UNetConnection::HandleClientPlayer(... )
+{
+	// 这个方法就是找到客户端之前创建的playerController，然后销毁他
+	if( LocalPlayer->PlayerController && LocalPlayer->PlayerController->GetLevel() == PC->GetLevel())
+	{
+		if (LocalPlayer->PlayerController->GetLocalRole() == ROLE_Authority)
+		{
+			// local placeholder PC while waiting for connection to be established
+			LocalPlayer->PlayerController->GetWorld()->DestroyActor(LocalPlayer->PlayerController);
+		}
+		FNetControlMessage<NMT_PCSwap>::Send(this, Index);
+		}
+		LocalPlayer->PlayerController->Player = NULL;
+		LocalPlayer->PlayerController->NetConnection = NULL;
+		LocalPlayer->PlayerController = NULL;
+	}
+
+	LocalPlayer->CurrentNetSpeed = CurrentNetSpeed;
+
+	// Init the new playerpawn.
+	// 紧接着就重新
+	PC->SetRole(ROLE_AutonomousProxy);
+	PC->NetConnection = NetConnection;
+	PC->SetPlayer(LocalPlayer);
+	UE_LOG(LogNet, Verbose, TEXT("%s setplayer %s"),*PC->GetName(),*LocalPlayer->GetName());
+	LastReceiveTime = Driver->GetElapsedTime();
+	SetConnectionState(EConnectionState::USOCK_Open);
+	PlayerController = PC;
+	OwningActor = PC;
+}
+```
 # 3 总结
 总的来说，LocalPlayer是在GameEngine::Init方法里，在创建完GameInstance之后，在创建这个UGameViewportClient里面创建的，并且只在客户端创建出来，这个创建的部分没有创建出对应的PlayerController。然后在LoadMap方法中，会通过GameInstance先将旧的LocalPalyer对应的PlayerController销毁掉，然后在新的World中创建出PlayerController。最后还需注意的是，通过LocalPlayer::SpawnPlayActor这个方法创建的PlayerController是一个Dummy的PlayerController，之后会从服务器复制一个把这个假的替换掉（Look at APlayerController::OnActorChannelOpen + UNetConnection::HandleClientPlayer for the code the  replaces this fake player controller with the real replicated one from the server）。
