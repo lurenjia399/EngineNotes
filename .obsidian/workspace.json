@@ -18,10 +18,16 @@
                 "source": false
               }
             },
-            "group": "cc54e1ef1fb71dea"
-          },
+            "group": "e14748766376cb35"
+          }
+        ]
+      },
+      {
+        "id": "a53555c429cb7c40",
+        "type": "tabs",
+        "children": [
           {
-            "id": "9f2fdbead438cccf",
+            "id": "c7fed1e5e2437a77",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -30,27 +36,8 @@
                 "mode": "source",
                 "source": false
               }
-            }
-          }
-        ],
-        "currentTab": 1
-      },
-      {
-        "id": "08c4a8ab8ec36a22",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "c547562d3a11c4de",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/player相关/UPlayer.md",
-                "mode": "preview",
-                "source": false
-              }
             },
-            "group": "cc54e1ef1fb71dea"
+            "group": "e14748766376cb35"
           }
         ]
       }
@@ -179,15 +166,15 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "9f2fdbead438cccf",
+  "active": "021eddd639897515",
   "lastOpenFiles": [
-    "2 note/网络/网络.md",
-    "2 note/player相关/UPlayer.md",
-    "1 索引/索引.md",
-    "2 note/World和Level/World和Level.md",
-    "2 note/特效系统/特效系统Cascade.md",
+    "2 note/网络/未命名.md",
     "2 note/网络/网络.mdj",
+    "2 note/网络/网络.md",
+    "2 note/World和Level/World和Level.md",
+    "1 索引/索引.md",
     "2 note/Tick逻辑/Tick逻辑.md",
+    "2 note/player相关/UPlayer.md",
     "2 note/player相关"
   ]
 }
