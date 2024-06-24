@@ -19,8 +19,21 @@
               }
             },
             "group": "e14748766376cb35"
+          },
+          {
+            "id": "706e4d20083c2bba",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "1 索引/索引.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       },
       {
         "id": "a53555c429cb7c40",
@@ -166,11 +179,11 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "021eddd639897515",
+  "active": "706e4d20083c2bba",
   "lastOpenFiles": [
-    "2 note/网络/网络.md",
-    "1 索引/索引.md",
     "2 note/player相关/UPlayer.md",
+    "1 索引/索引.md",
+    "2 note/网络/网络.md",
     "2 note/网络/未命名.md",
     "2 note/网络/网络.mdj",
     "2 note/World和Level/World和Level.md",
