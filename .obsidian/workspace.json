@@ -102,7 +102,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -179,7 +180,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "66c652d27182c6dd",
+  "active": "87d4a4ddb3c55608",
   "lastOpenFiles": [
     "1 索引/索引.md",
     "2 note/网络/网络.md",
