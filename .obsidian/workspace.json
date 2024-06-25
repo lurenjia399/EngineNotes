@@ -25,15 +25,27 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "source",
                 "source": false
               }
             },
             "group": "af8091a62614e5b9"
+          },
+          {
+            "id": "3931ea913c3990d8",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "2 note/网络/网络.md",
+                "mode": "source",
+                "source": false
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       },
       {
         "id": "6e4074b88a962122",
@@ -45,7 +57,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "preview",
                 "source": false
               }
@@ -118,7 +130,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/网络/网络.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -135,7 +147,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/网络/网络.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -158,7 +170,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/World和Level/World和Level.md"
+                "file": "2 note/网络/网络.md"
               }
             }
           }
@@ -179,13 +191,13 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "706e4d20083c2bba",
+  "active": "3931ea913c3990d8",
   "lastOpenFiles": [
-    "2 note/网络/网络.md",
-    "2 note/Actor逻辑/Actor.md",
     "2 note/player相关/UPlayer.md",
-    "1 索引/索引.md",
+    "2 note/网络/网络.md",
     "2 note/World和Level/World和Level.md",
+    "2 note/Actor逻辑/Actor.md",
+    "1 索引/索引.md",
     "2 note/网络/未命名.md",
     "2 note/网络/网络.mdj",
     "2 note/Tick逻辑/Tick逻辑.md",
