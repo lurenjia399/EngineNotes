@@ -6,6 +6,7 @@
       {
         "id": "af71041353f852c2",
         "type": "tabs",
+        "dimension": 49.87309644670051,
         "children": [
           {
             "id": "021eddd639897515",
@@ -50,6 +51,7 @@
       {
         "id": "6e4074b88a962122",
         "type": "tabs",
+        "dimension": 50.1269035532995,
         "children": [
           {
             "id": "66c652d27182c6dd",
@@ -193,9 +195,9 @@
   },
   "active": "3931ea913c3990d8",
   "lastOpenFiles": [
-    "2 note/player相关/UPlayer.md",
     "2 note/World和Level/World和Level.md",
     "2 note/网络/网络.md",
+    "2 note/player相关/UPlayer.md",
     "2 note/Actor逻辑/Actor.md",
     "1 索引/索引.md",
     "2 note/网络/未命名.md",
