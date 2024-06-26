@@ -1968,6 +1968,7 @@ EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, F
 		// 本地的地图切换？，直接LoadMap
 		// 这也就是服务器应该走，所以uds上的url必须不能包括host等信息
 		// 服务器走Browse方法就直接会LoadMap
+		// 单机也是走这里的
 		// Local map file.
 		return LoadMap( WorldContext, URL, NULL, Error ) ? EBrowseReturnVal::Success : EBrowseReturnVal::Failure;
 	}
