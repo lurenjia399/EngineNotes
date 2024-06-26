@@ -39,7 +39,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/网络/网络.md",
                 "mode": "source",
                 "source": false
               }
@@ -132,7 +132,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/网络/网络.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -149,7 +149,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/player相关/UPlayer.md",
+                "file": "2 note/网络/网络.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -172,7 +172,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/player相关/UPlayer.md"
+                "file": "2 note/网络/网络.md"
               }
             }
           }
@@ -195,11 +195,11 @@
   },
   "active": "3931ea913c3990d8",
   "lastOpenFiles": [
+    "1 索引/索引.md",
     "2 note/网络/网络.md",
     "2 note/player相关/UPlayer.md",
     "2 note/World和Level/World和Level.md",
     "2 note/Actor逻辑/Actor.md",
-    "1 索引/索引.md",
     "2 note/网络/未命名.md",
     "2 note/网络/网络.mdj",
     "2 note/Tick逻辑/Tick逻辑.md",
