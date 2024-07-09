@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/网络/网络.md",
                 "mode": "source",
                 "source": false
               }
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/网络/网络.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md",
+                "file": "2 note/网络/网络.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/SCS 和 CDO/未命名.md"
+                "file": "2 note/网络/网络.md"
               }
             }
           }
@@ -173,6 +173,7 @@
   },
   "active": "3931ea913c3990d8",
   "lastOpenFiles": [
+    "2 note/SCS 和 CDO/未命名.md",
     "2 note/网络/网络.md",
     "2 note/player相关/UPlayer.md",
     "conflict-files-obsidian-git.md",
