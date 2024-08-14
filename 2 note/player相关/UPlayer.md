@@ -115,7 +115,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(...)
 }
 ```
 通过两个函数的转发创建出了LocalPlayer，并通过GameInstance添加到了数组中，然后会根据参数来判断是否要在服务器创建出对应的PlayerController。
-所以看上去Init这部分就是，如果在在客户端创建出了GameInstance，然后创建出LocalPlayer了，服务器只创建出了GameInstance。
+所以看上去Init这部分就是，如果在客户端创建出了GameInstance，然后创建出LocalPlayer，如果在服务器只创建出了GameInstance，如果是单机的话会在客户端的基础上再创建出PlayerController。
 ## 2 蓝图中方法CreatePlayer
 这个应该是蓝图中创建的方法
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611223220.png)
