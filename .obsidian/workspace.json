@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "mode": "source",
                 "source": false
               }
@@ -86,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/player相关/UPlayer.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/网络/网络.md"
+                "file": "2 note/player相关/UPlayer.md"
               }
             }
           }
@@ -147,10 +147,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "87d4a4ddb3c55608",
+  "active": "49630f4aed78d173",
   "lastOpenFiles": [
-    "2 note/player相关/UPlayer.md",
     "2 note/网络/网络.md",
+    "2 note/player相关/UPlayer.md",
     "1 索引/索引.md",
     "2 note/UObject构造流程/未命名.md",
     "2 note/UObject构造流程",
