@@ -149,7 +149,7 @@ ULocalPlayer* UGameInstance::CreateLocalPlayer(FPlatformUserId UserId, FString& 
 	if (CurrentWorld->GetNetMode() != NM_Client
 	)
 	{
-		// server; spawn a new PlayerController immediately
+		// server或者是单机; spawn a new PlayerController immediately
 		if (!NewPlayer->SpawnPlayActor("", OutError, CurrentWorld))
 		{
 			RemoveLocalPlayer(NewPlayer);
@@ -211,7 +211,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 	}
 }
 ```
-在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance中的LocalPlayer数组，创建新的PlayerController。服务器没有LocalPlayer自然也就不会创建PlayerController。
+在LoadMap中会首先把当前World中的LocalPlayer相关的都删掉，然后在根据GameInstance中的LocalPlayer数组，创建新的PlayerController，这里是单机和客户端会创建。服务器没有LocalPlayer自然也就不会创建PlayerController。
 ## 2 UGameInstance::StartPlayInEditorGameInstance 假的PlayerController
 感觉像是在编辑器启动的时候也会创建LoacalPlayer的PlayerController，就先不看了，堆栈如下
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20240611224046.png)
