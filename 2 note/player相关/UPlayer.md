@@ -23,7 +23,7 @@ void UGameEngine::Init(IEngineLoop* InEngineLoop)
 	}
 
 	// Initialize the viewport client.
-	// 核心，如果在客户端模式下，就创建出ViewportClient
+	// 核心，如果在非服务器模式下，也就是客户端和单机都会创建出ViewportClient
 	UGameViewportClient* ViewportClient = NULL;
 	if(GIsClient)
 	{
