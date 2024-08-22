@@ -434,5 +434,44 @@ int UMyTest::AddFunc(int a, int b)
 static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096); 
 
 static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
+
+/*
+这有两个静态的成员变量，看下他们的chu's
+*/
 ```
 我们看到有上述两个收集UClass信息的静态成员变量，在进一步查看调用 AutoInitializeUMyTest:
+```cpp
+static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096); 
+
+template <typename TClass>
+struct TClassCompiledInDefer : public FFieldCompiledInInfo
+{
+	TClassCompiledInDefer(const TCHAR* InName, SIZE_T InClassSize, uint32 InCrc)
+	: FFieldCompiledInInfo(InClassSize, InCrc)
+	{
+		UClassCompiledInDefer(this, InName, InClassSize, InCrc); // 收集信息
+	}
+	virtual UClass* Register() const override
+	{
+        LLM_SCOPE(ELLMTag::UObject);
+		return TClass::StaticClass();
+	}
+	virtual const TCHAR* ClassPackage() const override
+	{
+		return TClass::StaticPackage();
+	}
+};
+
+void UClassCompiledInDefer(FFieldCompiledInInfo* ClassInfo, const TCHAR* Name, SIZE_T ClassSize, uint32 Crc)
+{
+	const FName CPPClassName = Name;
+	// We will either create a new class or update the static class pointer of the existing one
+	GetDeferredClassRegistration().Add(ClassInfo); // 最终添加到了DeferredClassRegistration里面
+}
+
+static TArray<FFieldCompiledInInfo*>& GetDeferredClassRegistration()
+{
+	static TArray<FFieldCompiledInInfo*> DeferredClassRegistration;
+	return DeferredClassRegistration;
+}
+```
