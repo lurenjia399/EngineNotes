@@ -318,62 +318,69 @@ UFunction* Z_Construct_UFunction_UMyTest_AddFunc()
 	return ReturnFunction;
 }
 // 这里应该也是我们的那个function，导致添加的类-----------------结束
-	UClass* Z_Construct_UClass_UMyTest_NoRegister()
-	{
-		return UMyTest::StaticClass();
-	}
-	struct Z_Construct_UClass_UMyTest_Statics
-	{
-		static UObject* (*const DependentSingletons[])();
-		static const FClassFunctionLinkInfo FuncInfo[];
+
+UClass* Z_Construct_UClass_UMyTest_NoRegister()
+{
+	return UMyTest::StaticClass();
+}
+	
+// 这个是Z_Construct_UClass_UMyTest_Statics结构体的初始化，这里是开始
+struct Z_Construct_UClass_UMyTest_Statics
+{
+	static UObject* (*const DependentSingletons[])();
+	static const FClassFunctionLinkInfo FuncInfo[];
 #if WITH_METADATA
-		static const UE4CodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
+	static const UE4CodeGen_Private::FMetaDataPairParam Class_MetaDataParams[];
 #endif
-		static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
-		static const UE4CodeGen_Private::FClassParams ClassParams;
-	};
-	UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = {
-		(UObject* (*)())Z_Construct_UClass_UObject,
-		(UObject* (*)())Z_Construct_UPackage__Script_Azure,
-	};
-	const FClassFunctionLinkInfo Z_Construct_UClass_UMyTest_Statics::FuncInfo[] = {
-		{ &Z_Construct_UFunction_UMyTest_AddFunc, "AddFunc" }, // 1255610792
-	};
+	static const FCppClassTypeInfoStatic StaticCppClassTypeInfo;
+	static const UE4CodeGen_Private::FClassParams ClassParams;
+};
+UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = {
+	(UObject* (*)())Z_Construct_UClass_UObject,
+	(UObject* (*)())Z_Construct_UPackage__Script_Azure,
+};
+const FClassFunctionLinkInfo Z_Construct_UClass_UMyTest_Statics::FuncInfo[] = {
+	{ &Z_Construct_UFunction_UMyTest_AddFunc, "AddFunc" }, // 1255610792
+};
 #if WITH_METADATA
-	const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams[] = {
-		{ "Comment", "/**\n * \n */" },
-		{ "IncludePath", "MyTest.h" },
-		{ "ModuleRelativePath", "MyTest.h" },
-	};
+const UE4CodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams[] = {
+	{ "Comment", "/**\n * \n */" },
+	{ "IncludePath", "MyTest.h" },
+	{ "ModuleRelativePath", "MyTest.h" },
+};
 #endif
-	const FCppClassTypeInfoStatic Z_Construct_UClass_UMyTest_Statics::StaticCppClassTypeInfo = {
-		TCppClassTypeTraits<UMyTest>::IsAbstract,
-	};
-	const UE4CodeGen_Private::FClassParams Z_Construct_UClass_UMyTest_Statics::ClassParams = {
-		&UMyTest::StaticClass,//这个值后面会讲到
-		nullptr,
-		&StaticCppClassTypeInfo,
-		DependentSingletons,
-		FuncInfo,
-		nullptr,
-		nullptr,
-		UE_ARRAY_COUNT(DependentSingletons),
-		UE_ARRAY_COUNT(FuncInfo),
-		0,
-		0,
-		0x001000A0u,
-		METADATA_PARAMS(Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams))
-	};
-	UClass* Z_Construct_UClass_UMyTest()
+const FCppClassTypeInfoStatic Z_Construct_UClass_UMyTest_Statics::StaticCppClassTypeInfo = {
+	TCppClassTypeTraits<UMyTest>::IsAbstract,
+};
+const UE4CodeGen_Private::FClassParams Z_Construct_UClass_UMyTest_Statics::ClassParams = {
+	&UMyTest::StaticClass,//这个值后面会讲到
+	nullptr,
+	&StaticCppClassTypeInfo,
+	DependentSingletons,
+	FuncInfo,
+	nullptr,
+	nullptr,
+	UE_ARRAY_COUNT(DependentSingletons),
+	UE_ARRAY_COUNT(FuncInfo),
+	0,
+	0,
+	0x001000A0u,
+	METADATA_PARAMS(Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams))
+};
+// 这个是Z_Construct_UClass_UMyTest_Statics结构体的初始化，这里是结束
+
+UClass* Z_Construct_UClass_UMyTest()
+{
+	static UClass* OuterClass = nullptr;
+	if (!OuterClass)
 	{
-		static UClass* OuterClass = nullptr;
-		if (!OuterClass)
-		{
-			UE4CodeGen_Private::ConstructUClass(OuterClass, Z_Construct_UClass_UMyTest_Statics::ClassParams);
-		}
-		return OuterClass;
+		UE4CodeGen_Private::ConstructUClass(OuterClass, Z_Construct_UClass_UMyTest_Statics::ClassParams);
 	}
-	static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096); 
+	return OuterClass;
+}
+
+static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096);
+	 
 	UClass* UMyTest::GetPrivateStaticClass() 
 	{ 
 		static UClass* PrivateStaticClass = NULL; 
