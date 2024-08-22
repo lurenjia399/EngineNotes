@@ -271,7 +271,7 @@ void UMyTest::StaticRegisterNativesUMyTest()
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
----------//开始--------------- // 这里应该也是我们的那个function，导致添加的类-----------------
+// 这里应该也是我们的那个function，导致添加的类-----------------开始
 // 这个是Z_Construct_UFunction_UMyTest_AddFunc_Statics结构体的初始化，里面有静态成员变量，所以也需要初始化，这里是开始
 struct Z_Construct_UFunction_UMyTest_AddFunc_Statics
 {
@@ -317,7 +317,7 @@ UFunction* Z_Construct_UFunction_UMyTest_AddFunc()
 	}
 	return ReturnFunction;
 }
----------//结束--------------- // 这里应该也是我们的那个function，导致添加的类-----------------
+// 这里应该也是我们的那个function，导致添加的类-----------------结束
 	UClass* Z_Construct_UClass_UMyTest_NoRegister()
 	{
 		return UMyTest::StaticClass();
