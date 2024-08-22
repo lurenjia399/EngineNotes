@@ -381,37 +381,39 @@ UClass* Z_Construct_UClass_UMyTest()
 
 static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096);
 	 
-	UClass* UMyTest::GetPrivateStaticClass() 
+UClass* UMyTest::GetPrivateStaticClass() 
+{ 
+	static UClass* PrivateStaticClass = NULL; 
+	if (!PrivateStaticClass) 
 	{ 
-		static UClass* PrivateStaticClass = NULL; 
-		if (!PrivateStaticClass) 
-		{ 
-			/* this could be handled with templates, but we want it external to avoid code bloat */ 
-			GetPrivateStaticClassBody( 
-				StaticPackage(), 
-				(TCHAR*)TEXT("UMyTest") + 1 + ((StaticClassFlags & CLASS_Deprecated) ? 11 : 0), 
-				PrivateStaticClass, 
-				StaticRegisterNativesUMyTest, 
-				sizeof(UMyTest), 
-				alignof(UMyTest), 
-				(EClassFlags)UMyTest::StaticClassFlags, 
-				UMyTest::StaticClassCastFlags(), 
-				UMyTest::StaticConfigName(), 
-				(UClass::ClassConstructorType)InternalConstructor<UMyTest>, // 构造函数，在cdo创建过程中调用，这个值后面会讲到
-				(UClass::ClassVTableHelperCtorCallerType)InternalVTableHelperCtorCaller<UMyTest>, 
-				&UMyTest::AddReferencedObjects, 
-				&UMyTest::Super::StaticClass, 
-				&UMyTest::WithinClass::StaticClass 
-			); 
-		} 
-		return PrivateStaticClass; 
-	}
-	template<> AZURE_API UClass* StaticClass<UMyTest>()
-	{
-		return UMyTest::StaticClass();
-	}
-	static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
-	UMyTest::UMyTest(FVTableHelper& Helper) : Super(Helper) {};
+		/* this could be handled with templates, but we want it external to avoid code bloat */ 
+		GetPrivateStaticClassBody( 
+			StaticPackage(), 
+			(TCHAR*)TEXT("UMyTest") + 1 + ((StaticClassFlags & CLASS_Deprecated) ? 11 : 0), 
+			PrivateStaticClass, 
+			StaticRegisterNativesUMyTest, 
+			sizeof(UMyTest), 
+			alignof(UMyTest), 
+			(EClassFlags)UMyTest::StaticClassFlags, 
+			UMyTest::StaticClassCastFlags(), 
+			UMyTest::StaticConfigName(), 
+			(UClass::ClassConstructorType)InternalConstructor<UMyTest>, // 构造函数，在cdo创建过程中调用，这个值后面会讲到
+			(UClass::ClassVTableHelperCtorCallerType)InternalVTableHelperCtorCaller<UMyTest>, 
+			&UMyTest::AddReferencedObjects, 
+			&UMyTest::Super::StaticClass, 
+			&UMyTest::WithinClass::StaticClass 
+		); 
+	} 
+	return PrivateStaticClass; 
+}
+template<> AZURE_API UClass* StaticClass<UMyTest>()
+{
+	return UMyTest::StaticClass();
+}
+static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
+
+// 与.h文件中一一对应
+UMyTest::UMyTest(FVTableHelper& Helper) : Super(Helper) {};
 
 // -----------------------这里是我添加的展开 MyTest.gen.cpp 结束
 UMyTest::UMyTest()
