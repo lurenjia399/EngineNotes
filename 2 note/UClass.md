@@ -272,6 +272,7 @@ void UMyTest::StaticRegisterNativesUMyTest()
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
 ---------//开始--------------- // 这里应该也是我们的那个function，导致添加的类-----------------
+// 这个是Z_Construct_UFunction_UMyTest_AddFunc_Statics结构体的初始化，里面有静态
 struct Z_Construct_UFunction_UMyTest_AddFunc_Statics
 {
 	struct MyTest_eventAddFunc_Parms
@@ -284,9 +285,9 @@ struct Z_Construct_UFunction_UMyTest_AddFunc_Statics
 	static const UE4CodeGen_Private::FUnsizedIntPropertyParams NewProp_b;
 	static const UE4CodeGen_Private::FUnsizedIntPropertyParams NewProp_ReturnValue;
 	static const UE4CodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	#if WITH_METADATA
+#if WITH_METADATA
 	static const UE4CodeGen_Private::FMetaDataPairParam Function_MetaDataParams[];
-	#endif
+#endif
 	static const UE4CodeGen_Private::FFunctionParams FuncParams;
 };
 	const UE4CodeGen_Private::FUnsizedIntPropertyParams Z_Construct_UFunction_UMyTest_AddFunc_Statics::NewProp_a = { "a", 				nullptr, 			(EPropertyFlags)0x0010000000000080, UE4CodeGen_Private::EPropertyGenFlags::Int, 							RF_Public|RF_Transient|RF_MarkAsNative, 		1, 	STRUCT_OFFSET(MyTest_eventAddFunc_Parms, a), 								METADATA_PARAMS(nullptr, 0) };
