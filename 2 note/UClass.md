@@ -272,7 +272,7 @@ void UMyTest::StaticRegisterNativesUMyTest()
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
 ---------//开始--------------- // 这里应该也是我们的那个function，导致添加的类-----------------
-// 这个是Z_Construct_UFunction_UMyTest_AddFunc_Statics结构体的初始化，里面有静态
+// 这个是Z_Construct_UFunction_UMyTest_AddFunc_Statics结构体的初始化，里面有静态成员变量，所以也需要初始化，这里是开始
 struct Z_Construct_UFunction_UMyTest_AddFunc_Statics
 {
 	struct MyTest_eventAddFunc_Parms
@@ -306,15 +306,17 @@ struct Z_Construct_UFunction_UMyTest_AddFunc_Statics
 	const UE4CodeGen_Private::FFunctionParams Z_Construct_UFunction_UMyTest_AddFunc_Statics::FuncParams = { 
         (UObject*(*)())Z_Construct_UClass_UMyTest, nullptr, "AddFunc", nullptr, nullptr, sizeof(MyTest_eventAddFunc_Parms), 			Z_Construct_UFunction_UMyTest_AddFunc_Statics::PropPointers, 										 	  						UE_ARRAY_COUNT(Z_Construct_UFunction_UMyTest_AddFunc_Statics::PropPointers), 
         RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x00020401, 0, 0, 											 			METADATA_PARAMS(Z_Construct_UFunction_UMyTest_AddFunc_Statics::Function_MetaDataParams,  										UE_ARRAY_COUNT(Z_Construct_UFunction_UMyTest_AddFunc_Statics::Function_MetaDataParams)) };
-	UFunction* Z_Construct_UFunction_UMyTest_AddFunc()
+// 这个是Z_Construct_UFunction_UMyTest_AddFunc_Statics结构体的初始化，这里是而结束
+
+UFunction* Z_Construct_UFunction_UMyTest_AddFunc()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
 	{
-		static UFunction* ReturnFunction = nullptr;
-		if (!ReturnFunction)
-		{
-			UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UMyTest_AddFunc_Statics::FuncParams);
-		}
-		return ReturnFunction;
+		UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UMyTest_AddFunc_Statics::FuncParams);
 	}
+	return ReturnFunction;
+}
 ---------//结束--------------- // 这里应该也是我们的那个function，导致添加的类-----------------
 	UClass* Z_Construct_UClass_UMyTest_NoRegister()
 	{
