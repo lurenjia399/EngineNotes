@@ -414,8 +414,9 @@ template<> AZURE_API UClass* StaticClass<UMyTest>()
 // 与.h文件中一一对应
 UMyTest::UMyTest(FVTableHelper& Helper) : Super(Helper) {};
 
+// 这个静态变量用于收集UClass信息，后面详细看下
 static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096);
-
+// 这个静态变量也用于收集UClass信息，后面详细看下
 static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
 
 // -----------------------这里是我添加的展开 MyTest.gen.cpp 结束
@@ -428,4 +429,10 @@ int UMyTest::AddFunc(int a, int b)
 	return a + b;
 }
 ```
-### 
+### 收集UClass信息
+```cpp
+static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096); 
+
+static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
+```
+我们看到有上述两个收集UClass信息的静态成员变量，在进一步查看调用 AutoInitializeUMyTest:
