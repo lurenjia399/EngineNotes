@@ -436,10 +436,10 @@ static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), siz
 static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
 
 /*
-这有两个静态的成员变量，看下他们的chu's
+这有两个静态的成员变量，看下他们的初始化过程
 */
 ```
-我们看到有上述两个收集UClass信息的静态成员变量，在进一步查看调用 AutoInitializeUMyTest:
+#### AutoInitializeUMyTest
 ```cpp
 static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096); 
 
@@ -465,8 +465,8 @@ struct TClassCompiledInDefer : public FFieldCompiledInInfo
 void UClassCompiledInDefer(FFieldCompiledInInfo* ClassInfo, const TCHAR* Name, SIZE_T ClassSize, uint32 Crc)
 {
 	const FName CPPClassName = Name;
-	// We will either create a new class or update the static class pointer of the existing one
-	GetDeferredClassRegistration().Add(ClassInfo); // 最终添加到了DeferredClassRegistration里面
+	// 最终添加到了DeferredClassRegistration里面
+	GetDeferredClassRegistration().Add(ClassInfo); 
 }
 
 static TArray<FFieldCompiledInInfo*>& GetDeferredClassRegistration()
@@ -475,3 +475,43 @@ static TArray<FFieldCompiledInInfo*>& GetDeferredClassRegistration()
 	return DeferredClassRegistration;
 }
 ```
+#### Z_CompiledInDefer_UClass_UMyTest
+```cpp
+static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
+
+struct FCompiledInDefer
+{
+	FCompiledInDefer(class UClass *(*InRegister)(), class UClass *(*InStaticClass)(), const TCHAR* PackageName, const TCHAR* Name, bool bDynamic, const TCHAR* DynamicPackageName = nullptr, const TCHAR* DynamicPathName = nullptr, void 					(*InInitSearchableValues)(TMap<FName, FName>&) = nullptr)
+	{
+		if (bDynamic)
+		{
+		GetConvertedDynamicPackageNameToTypeName().Add(FName(DynamicPackageName), FName(Name));
+		}
+        // 收集信息
+		UObjectCompiledInDefer(InRegister, InStaticClass, Name, PackageName, bDynamic, DynamicPathName, InInitSearchableValues);
+	}
+};
+
+void UObjectCompiledInDefer(UClass *(*InRegister)(), UClass *(*InStaticClass)(), const TCHAR* Name, const TCHAR* PackageName, bool bDynamic, const TCHAR* DynamicPathName, void (*InInitSearchableValues)(TMap<FName, FName>&))
+{
+	if (!bDynamic)
+	{
+		{
+			FString NoPrefix(UObjectBase::RemoveClassPrefix(Name));
+			NotifyRegistrationEvent(PackageName, *NoPrefix, ENotifyRegistrationType::NRT_Class, ENotifyRegistrationPhase::NRP_Added, (UObject *(*)())(InRegister), false);
+			NotifyRegistrationEvent(PackageName, *(FString(DEFAULT_OBJECT_PREFIX) + NoPrefix), ENotifyRegistrationType::NRT_ClassCDO, ENotifyRegistrationPhase::NRP_Added, (UObject *(*)())(InRegister), false);
+
+			TArray<UClass *(*)()>& DeferredCompiledInRegistration = GetDeferredCompiledInRegistration();
+			checkSlow(!DeferredCompiledInRegistration.Contains(InRegister));
+			DeferredCompiledInRegistration.Add(InRegister); // 最终添加到了DeferredCompiledInRegistration数组里面
+		}
+	}
+}
+
+static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
+{
+	static TArray<class UClass *(*)()> DeferredCompiledInRegistration;
+	return DeferredCompiledInRegistration;
+}
+```
+
