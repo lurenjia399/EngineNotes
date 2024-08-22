@@ -379,8 +379,7 @@ UClass* Z_Construct_UClass_UMyTest()
 	return OuterClass;
 }
 
-static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096);
-	 
+// StaticClass方法就会调用GetPrivateStaticClass这个方法，返回Mytest的UClass
 UClass* UMyTest::GetPrivateStaticClass() 
 { 
 	static UClass* PrivateStaticClass = NULL; 
@@ -406,14 +405,19 @@ UClass* UMyTest::GetPrivateStaticClass()
 	} 
 	return PrivateStaticClass; 
 }
+// 模板UMyTest，就是调用下UMyTest::StaticClass
 template<> AZURE_API UClass* StaticClass<UMyTest>()
 {
 	return UMyTest::StaticClass();
 }
-static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
-
 // 与.h文件中一一对应
 UMyTest::UMyTest(FVTableHelper& Helper) : Super(Helper) {};
+
+static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), sizeof(UMyTest), 2889205096);
+
+static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
+
+
 
 // -----------------------这里是我添加的展开 MyTest.gen.cpp 结束
 UMyTest::UMyTest()
