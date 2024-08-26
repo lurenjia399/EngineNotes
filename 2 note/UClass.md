@@ -524,3 +524,6 @@ static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
 ## UClass注册，生成和CDO创建
 ### UObject的UClass创建
 ### MyTest的UClass创建流程
+ue会根据module来编译生成对应的dll，在引擎初始化的时候会加载这些dll，然后每次加载都会调用下面这个切入函数来完成UClass的注册。
+
+切入函数（ProcessNewlyLoadedUObjects），这个是加载咱们的那个dll之后会调用到这里：
