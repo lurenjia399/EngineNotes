@@ -527,3 +527,42 @@ static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
 ue会根据module来编译生成对应的dll，在引擎初始化的时候会加载这些dll，然后每次加载都会调用下面这个切入函数来完成UClass的注册。
 
 切入函数（ProcessNewlyLoadedUObjects），这个是加载咱们的那个dll之后会调用到这里：
+![image-20230601114508215.png](https://gitee.com/lurenjia399/image/raw/master/image/202408261639367.png)
+
+![image-20230531110405446.png](https://gitee.com/lurenjia399/image/raw/master/image/202408261639624.png)
+
+```cpp
+/*
+这个方法是通过回调调用进来的
+FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+*/
+void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
+{
+    //就留了这部分，其他全省略了
+	UClassRegisterAllCompiledInClasses();//使用上面讲的DeferredClassRegistration这个数组，创建出UClass
+
+	const TArray<UClass* (*)()>& DeferredCompiledInRegistration = GetDeferredCompiledInRegistration();
+	const TArray<FPendingStructRegistrant>& DeferredCompiledInStructRegistration = GetDeferredCompiledInStructRegistration();
+	const TArray<FPendingEnumRegistrant>& DeferredCompiledInEnumRegistration = GetDeferredCompiledInEnumRegistration();
+
+	bool bNewUObjects = false;
+	while (GFirstPendingRegistrant || DeferredCompiledInRegistration.Num() || DeferredCompiledInStructRegistration.Num() || 				DeferredCompiledInEnumRegistration.Num())
+	{
+		bNewUObjects = true;
+		UObjectProcessRegistrants();//完成实际注册
+		UObjectLoadAllCompiledInStructs();
+
+		FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
+
+		UObjectLoadAllCompiledInDefaultProperties();//使用上面讲的DeferredCompiledInRegistration这个数组，初始化属性，函数，CDO
+	}
+}
+```
+#### 1 UClassRegisterAllCompiledInClasses
+```c
+
+```
+
+
+
+
