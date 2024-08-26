@@ -543,6 +543,7 @@ int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 	{
 		LoadPreInitModules();
 	}
+	// 这里里面，和UClass创建相关的就是会广播FCoreDelegates::OnInit这个事件了
 	{
 		if (!AppInit())
 		{
@@ -577,7 +578,7 @@ virtual void StartupModule() override
 	UClassRegisterAllCompiledInClasses();
 	// 这个里面监听了事件，每有新的module加载进来会触发事件调用，注册UClass。还有就是完成UClass的注册
 	void InitUObject();
-	// 
+	// FCoreDelegates::OnInit这个事件，是由FEngineLoop::AppInit这个方法广播，就在加载完Module之后就会执行AppInit方法了
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
 
