@@ -545,6 +545,8 @@ int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 
 bool FEngineLoop::LoadCoreModules()
 {
+	// 这个LoadModule方法最终会走到具体模块的StartupModule方法中
+	// IMPLEMENT_MODULE( FCoreUObjectModule, CoreUObject );这个宏定义了CoreUObject模块
 	return FModuleManager::Get().LoadModule(TEXT("CoreUObject")) != nullptr;
 }
 ```
