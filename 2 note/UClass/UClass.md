@@ -549,15 +549,14 @@ bool FEngineLoop::LoadCoreModules()
 	// IMPLEMENT_MODULE( FCoreUObjectModule, CoreUObject );这个宏定义了CoreUObject模块，也就是说会走到FCoreUObjectModule类的StartupModule方法中
 	return FModuleManager::Get().LoadModule(TEXT("CoreUObject")) != nullptr;
 }
+// 这个就是FCoreUObjectModule类的StartupModule方法
 virtual void StartupModule() override
 {	
-	// 字面意思就是把CompiledInClasses这个里面的所有东西全部Register掉
+	// 字面意思就是把CompiledInClasses这个里面的所有东西全部Register掉，后面还会详细看下
 	UClassRegisterAllCompiledInClasses();
 	void InitUObject();
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
-
-
 ```
 
 
