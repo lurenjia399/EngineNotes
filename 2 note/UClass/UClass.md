@@ -531,6 +531,7 @@ static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
 // 这个方法里面执行的东西很多，就先列举下和UClass相关的
 int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 {
+	// 这个方法就是加载CoreUObject模块
 	{
 		if (!LoadCoreModules())
 		{
