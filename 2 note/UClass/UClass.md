@@ -581,7 +581,7 @@ void FEngineLoop::LoadPreInitModules()
 }
 
 ```
-#### 1 FCoreUObjectModule::StartupModule
+#### 0 FCoreUObjectModule::StartupModule
 ```cpp
 // 这个就是FCoreUObjectModule类的StartupModule方法
 virtual void StartupModule() override
@@ -593,8 +593,6 @@ virtual void StartupModule() override
 	// FCoreDelegates::OnInit这个事件，是由FEngineLoop::AppInit这个方法广播，就在加载完Module之后就会执行AppInit方法了
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
-
-
 ```
 #### 1 UClassRegisterAllCompiledInClasses
 ```cpp
@@ -721,6 +719,9 @@ FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 		UObjectLoadAllCompiledInDefaultProperties();//使用上面讲的DeferredCompiledInRegistration这个数组，初始化属性，函数，CDO
 	}
 }
+```
+#### 4 UObjectLoadAllCompiledInDefaultProperties
+```c
 
 ```
 
