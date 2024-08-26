@@ -673,6 +673,10 @@ void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* Packag
 
 	GUObjectArray.IndexToObject(InternalIndex)->ClearFlags(EInternalObjectFlags::PendingConstruction);
 }
+/*
+1 将全局链表按顺序添加到数组中，然后在根据数组元素在全局map中找到相应的注册项。
+2 根据注册项执行真正的注册操作，赋值OuterPrivate（MyTest对象属于哪个Package，就是物理上指出了这个对象存放在哪里，比如你有个蓝图，这个蓝图的OuterPrivate自然为自己，但如果这个蓝图的实例放到了level里面，那么这个实例的OuterPrivate就为level了），ClassPrivate（MyTest对象的UClass是哪个，GetClass()获取的就是这个值），和添加到全局对象数组中。
+*/
 ```
 
 
