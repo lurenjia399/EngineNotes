@@ -789,6 +789,12 @@ const UE4CodeGen_Private::FClassParams Z_Construct_UClass_UMyTest_Statics::Class
 */
 void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 {
+	// 注册依赖项
+	for (UObject* (*const *SingletonFunc)() = Params.DependencySingletonFuncArray, *(*const *SingletonFuncEnd)() = SingletonFunc + Params.NumDependencySingletons; SingletonFunc != SingletonFuncEnd; ++SingletonFunc)
+	{
+		(*SingletonFunc)();
+	}
+
 	// 赋值OutClass，也就是UMyTest::StaticClass方法
 	UClass* NewClass = Params.ClassNoRegisterFunc();
 	OutClass = NewClass;
