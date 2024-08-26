@@ -575,7 +575,9 @@ virtual void StartupModule() override
 {	
 	// 这个方法是调用每个类的StaticClass方法创建出UClass
 	UClassRegisterAllCompiledInClasses();
+	// 这个里面监听了事件，每有新的module加载进来会触发事件调用，注册UClass。还有就是完成UClass的注册
 	void InitUObject();
+	// 
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
 
