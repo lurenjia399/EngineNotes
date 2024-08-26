@@ -549,7 +549,15 @@ bool FEngineLoop::LoadCoreModules()
 	// IMPLEMENT_MODULE( FCoreUObjectModule, CoreUObject );这个宏定义了CoreUObject模块，也就是说会走到FCoreUObjectModule类的StartupModule方法中
 	return FModuleManager::Get().LoadModule(TEXT("CoreUObject")) != nullptr;
 }
-
+void FEngineLoop::LoadPreInitModules()
+{
+	// 这个方法看上去也全是加载模块
+	FModuleManager::Get().LoadModule(TEXT("Engine"));
+	FModuleManager::Get().LoadModule(TEXT("Renderer"));
+	FModuleManager::Get().LoadModule(TEXT("AnimGraphRuntime"));
+	FModuleManager::Get().LoadModule(TEXT("Landscape"));
+	FModuleManager::Get().LoadModule(TEXT("RenderCore"));
+}
 
 ```
 #### 1 FCoreUObjectModule::StartupModule
