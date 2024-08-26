@@ -713,15 +713,14 @@ void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObject
 	{
 		bNewUObjects = true;
 		UObjectProcessRegistrants();//继续注册UClass中信息，Outer，Name啥的
-		UObjectLoadAllCompiledInStructs();// 注册Struct的信息
+		UObjectLoadAllCompiledInStructs();// 这个是用来创建UEnum和UScriptStruct的
 FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
-
 		UObjectLoadAllCompiledInDefaultProperties();//使用上面讲的DeferredCompiledInRegistration这个数组，初始化属性，函数，CDO
 	}
 }
 ```
 #### 4 UObjectLoadAllCompiledInDefaultProperties
-```c
+```cpp
 
 ```
 
