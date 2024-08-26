@@ -596,7 +596,9 @@ void UClassRegisterAllCompiledInClasses()
 
 void InitUObject()
 {
+	// 这个方法是监听事件，这个事件是在module加载的时候会调用，
 	FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+	StaticUObjectInit();
 }
 
 
