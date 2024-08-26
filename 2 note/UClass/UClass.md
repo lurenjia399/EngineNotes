@@ -502,7 +502,6 @@ void UObjectCompiledInDefer(UClass *(*InRegister)(), UClass *(*InStaticClass)(),
 			NotifyRegistrationEvent(PackageName, *(FString(DEFAULT_OBJECT_PREFIX) + NoPrefix), ENotifyRegistrationType::NRT_ClassCDO, ENotifyRegistrationPhase::NRP_Added, (UObject *(*)())(InRegister), false);
 
 			TArray<UClass *(*)()>& DeferredCompiledInRegistration = GetDeferredCompiledInRegistration();
-			checkSlow(!DeferredCompiledInRegistration.Contains(InRegister));
 			DeferredCompiledInRegistration.Add(InRegister); // 最终添加到了DeferredCompiledInRegistration数组里面
 		}
 	}
@@ -595,6 +594,10 @@ virtual void StartupModule() override
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
 
+
+```
+#### 1 UClassRegisterAllCompiledInClasses
+```cpp
 /*
 	UClass* RegisteredClass = Class->Register();这个方法最终会调用到GetPrivateStaticClass这个里面，也就是创建出UClass了
 */
@@ -712,7 +715,7 @@ void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObject
 	{
 		bNewUObjects = true;
 		UObjectProcessRegistrants();//继续注册UClass中信息，Outer，Name啥的
-		UObjectLoadAllCompiledInStructs();// 注册Struct的xi
+		UObjectLoadAllCompiledInStructs();// 注册Struct的信息
 FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 
 		UObjectLoadAllCompiledInDefaultProperties();//使用上面讲的DeferredCompiledInRegistration这个数组，初始化属性，函数，CDO
