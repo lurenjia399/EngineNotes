@@ -559,8 +559,102 @@ void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObject
 }
 ```
 #### 1 UClassRegisterAllCompiledInClasses
-```c
+```cpp
+/*
+	字面意思就是把CompiledInClasses这个里面的所有东西全部Register掉
+*/
+void UClassRegisterAllCompiledInClasses()
+{
+	// 把所有热更的东西全都删掉了
+	SCOPED_BOOT_TIMING("UClassRegisterAllCompiledInClasses");
 
+    //获取DeferredClassRegistration数组，然后全部调用Register方法，上面讲过这个数组还记得么？
+	TArray<FFieldCompiledInInfo*>& DeferredClassRegistration = GetDeferredClassRegistration();
+	for (const FFieldCompiledInInfo* Class : DeferredClassRegistration)
+	{
+		UClass* RegisteredClass = Class->Register();
+	}
+	DeferredClassRegistration.Empty();
+}
+
+/*
+UClass* RegisteredClass = Class->Register();这个方法最终会调用到
+GetPrivateStaticClass这个里面，也就是创建出UClass了，这个咱们在创建UObject的UClass讲过了
+*/
+
+/*
+总结下这个方法：
+1 跟据DeferredClassRegistration这个数组里收集的元数据，依次通过placement new的方式创建出了UClass。
+2 初始化了新创建的这个UClass，设置了SuperStruct（记录对象父类的UClass，IsChildOf这里面使用的），ClassWithin(当前类可以属于哪个UClass）。
+3 初始注册步骤，没有实际注册，只是将信息添加到了PendingRegistrants数组中和FPendingRegistrant链表上。
+*/
+```
+#### 2 UObjectProcessRegistrants
+```cpp
+static void UObjectProcessRegistrants()
+{
+    // 把一些宏，注释，检查啥的乱七八糟的都去掉了
+    
+	TArray<FPendingRegistrant> PendingRegistrants;
+    // 这个方法就是通过上面那个全局链表，依次把链表上的东西都放到PendingRegistrants数组中，按顺序，下面看下
+	DequeuePendingAutoRegistrants(PendingRegistrants);
+
+	for(int32 RegistrantIndex = 0;RegistrantIndex < PendingRegistrants.Num();++RegistrantIndex)
+	{
+		const FPendingRegistrant& PendingRegistrant = PendingRegistrants[RegistrantIndex];
+		// 这个方法就是通过上面那个全局map，依次找到，然后调用DeferredRegister方法
+		UObjectForceRegistration(PendingRegistrant.Object, false);
+        // Register may have resulted in new pending registrants being enqueued, so dequeue those.
+        // 注册可能导致新的待定注册者被排队，所以重排
+        // 这是因为在注册一个UObject的时候，有可能会触发另一个module的加载，从而有新的注册项进来
+		DequeuePendingAutoRegistrants(PendingRegistrants);
+	}
+}
+
+// 就是个链表元素添加到数组中的操作
+static void DequeuePendingAutoRegistrants(TArray<FPendingRegistrant>& OutPendingRegistrants)
+{
+	FPendingRegistrant* NextPendingRegistrant = GFirstPendingRegistrant;
+	GFirstPendingRegistrant = NULL;
+	GLastPendingRegistrant = NULL;
+	while(NextPendingRegistrant)
+	{
+		FPendingRegistrant* PendingRegistrant = NextPendingRegistrant;
+		OutPendingRegistrants.Add(*PendingRegistrant);
+		NextPendingRegistrant = PendingRegistrant->NextAutoRegister;
+		delete PendingRegistrant;
+	};
+}
+
+void UObjectForceRegistration(UObjectBase* Object, bool bCheckForModuleRelease)
+{
+	TMap<UObjectBase*, FPendingRegistrantInfo>& PendingRegistrants = FPendingRegistrantInfo::GetMap();
+
+	FPendingRegistrantInfo* Info = PendingRegistrants.Find(Object);
+	if (Info)
+	{
+		const TCHAR* PackageName = Info->PackageName;
+		const TCHAR* Name = Info->Name;
+		PendingRegistrants.Remove(Object);  // delete this first so that it doesn't try to do it twice
+        // 这个才是真正的注册操作
+		Object->DeferredRegister(UClass::StaticClass(),PackageName,Name);
+	}
+}
+
+// 真正的注册操作
+void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* PackageName,const TCHAR* InName)
+{
+	UPackage* Package = CreatePackage(PackageName);
+	Package->SetPackageFlags(PKG_CompiledIn);
+	OuterPrivate = Package; //设置了这个Outer
+
+	ClassPrivate = UClassStaticClass;//设置了UClass*的类型
+
+	// Add to the global object table.
+	AddObject(FName(InName), EInternalObjectFlags::None);
+
+	GUObjectArray.IndexToObject(InternalIndex)->ClearFlags(EInternalObjectFlags::PendingConstruction);
+}
 ```
 
 
