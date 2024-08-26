@@ -604,13 +604,12 @@ void InitUObject()
 	// 这个方法是监听事件，这个事件是在module加载的时候会调用，UE的组织形式是Module，一个Module编译后可以生成一个dll。dll是可以动态加载的，因此如果在引擎初始化结束后，继续动态加载一个模块（即dll)，根据C++机制，会触发dll里面的static变量初始化。因此元数据信息就又收集到了一些。我们就需要继续利用这些元数据信息来为这个新dll里定义的类构造类型的UClass*对象
 FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(
 	ProcessNewlyLoadedUObjects);
-	// 这个方法是完成实际的注册
+	// 这个方法是继续UClass的注册
 	StaticUObjectInit();
 }
 
 void UObjectBaseInit()
 {
-	// 完成实际注册的方法
 	UObjectProcessRegistrants();
 }
 ```
@@ -666,7 +665,7 @@ void UObjectForceRegistration(UObjectBase* Object, bool bCheckForModuleRelease)
 	}
 }
 
-// 真正的注册操作
+// 继续UClass的注册
 void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* PackageName,const TCHAR* InName)
 {
 	UPackage* Package = CreatePackage(PackageName);
@@ -681,8 +680,7 @@ void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* Packag
 	GUObjectArray.IndexToObject(InternalIndex)->ClearFlags(EInternalObjectFlags::PendingConstruction);
 }
 /*
-1 将全局链表按顺序添加到数组中，然后在根据数组元素在全局map中找到相应的注册项。
-2 根据注册项执行真正的注册操作，赋值OuterPrivate（MyTest对象属于哪个Package，就是物理上指出了这个对象存放在哪里，比如你有个蓝图，这个蓝图的OuterPrivate自然为自己，但如果这个蓝图的实例放到了level里面，那么这个实例的OuterPrivate就为level了），ClassPrivate（MyTest对象的UClass是哪个，GetClass()获取的就是这个值），和添加到全局对象数组中。
+最后转发调用了UObjectBase的DeferredRegister在这里会把之前构建的UClass对象继续完善注册，创建了Package设置UClass的Outer，UClass对象的Class类型，AddObject会设置UClass名字，并将UClass对象加入到GUObjectArray中管理，这之后UClass已经有了一些基本的信息，但是离完整的UClass对象还差了一些，因为目前UClass中还没有反射信息，接下来就要看下最重要部分了，反射信息的注册。
 */
 ```
 
