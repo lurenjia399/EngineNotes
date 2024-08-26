@@ -550,6 +550,7 @@ bool FEngineLoop::LoadCoreModules()
 	return FModuleManager::Get().LoadModule(TEXT("CoreUObject")) != nullptr;
 }
 
+
 ```
 #### 1 FCoreUObjectModule::StartupModule
 ```cpp
