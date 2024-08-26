@@ -770,7 +770,23 @@ UClass* Z_Construct_UClass_UMyTest()
 ```
 
 ```cpp
-// 参数是nullptr，
+/* 参数是nullptr，和 这个Z_Construct_UClass_UMyTest_Statics::ClassParams。
+const UE4CodeGen_Private::FClassParams Z_Construct_UClass_UMyTest_Statics::ClassParams = {
+	&UMyTest::StaticClass,//这个值后面会讲到
+	nullptr,
+	&StaticCppClassTypeInfo,
+	DependentSingletons,
+	FuncInfo,
+	nullptr,
+	nullptr,
+	UE_ARRAY_COUNT(DependentSingletons),
+	UE_ARRAY_COUNT(FuncInfo),
+	0,
+	0,
+	0x001000A0u,
+	METADATA_PARAMS(Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams, UE_ARRAY_COUNT(Z_Construct_UClass_UMyTest_Statics::Class_MetaDataParams))
+};
+*/
 void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 {
 	
