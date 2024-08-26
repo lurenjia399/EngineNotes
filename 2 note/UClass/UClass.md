@@ -539,6 +539,7 @@ int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 			return 1;
 		}
 	}
+	// 也是加载一堆的模块
 	{
 		LoadPreInitModules();
 	}
