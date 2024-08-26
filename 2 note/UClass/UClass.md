@@ -769,6 +769,14 @@ UClass* Z_Construct_UClass_UMyTest()
 }
 ```
 
+```cpp
+// 参数是nullptr，
+void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
+{
+	
+}
+```
+
 
 
 ### MyTest的UClass创建流程
