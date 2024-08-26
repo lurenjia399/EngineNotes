@@ -522,4 +522,5 @@ static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
 这两个初始化注册的操作都是在执行main函数之前就完成的，因为他们都是静态的对象，所以在main函数执行之前，对应的两个数组中就已经有了相应的信息，只等着运行其中相应的函数了。
 
 ## UClass注册，生成和CDO创建
-
+### UObject的UClass创建
+### 
