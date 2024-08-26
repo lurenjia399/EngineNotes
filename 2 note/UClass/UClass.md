@@ -698,7 +698,26 @@ void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* Packag
 ```
 #### 3 ProcessNewlyLoadedUObjects
 ```cpp
+void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
+{
+    //这个方法上边看过了，就是会调用到StaticClass方法里面，创建出UClass
+	UClassRegisterAllCompiledInClasses();
 
+	const TArray<UClass* (*)()>& DeferredCompiledInRegistration = GetDeferredCompiledInRegistration();
+	const TArray<FPendingStructRegistrant>& DeferredCompiledInStructRegistration = GetDeferredCompiledInStructRegistration();
+	const TArray<FPendingEnumRegistrant>& DeferredCompiledInEnumRegistration = GetDeferredCompiledInEnumRegistration();
+
+	bool bNewUObjects = false;
+	while (GFirstPendingRegistrant || DeferredCompiledInRegistration.Num() || DeferredCompiledInStructRegistration.Num() || 				DeferredCompiledInEnumRegistration.Num())
+	{
+		bNewUObjects = true;
+		UObjectProcessRegistrants();//继续注册UClass中信息，Outer，Name啥的
+		UObjectLoadAllCompiledInStructs();// 注册Struct的xi
+FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
+
+		UObjectLoadAllCompiledInDefaultProperties();//使用上面讲的DeferredCompiledInRegistration这个数组，初始化属性，函数，CDO
+	}
+}
 
 ```
 
