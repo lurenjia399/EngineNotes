@@ -723,10 +723,7 @@ FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 ```cpp
 static void UObjectLoadAllCompiledInDefaultProperties()
 {
-	TRACE_LOADTIME_REQUEST_GROUP_SCOPE(TEXT("UObjectLoadAllCompiledInDefaultProperties"));
-
-
-    // 获取eferredCompiledInRegistration数组，里面全是函数。上面讲过这个数组还记得么？
+    // 获取DeferredCompiledInRegistration数组，里面全是函数。上面讲过这个数组还记得么？
 	TArray<UClass *(*)()>& DeferredCompiledInRegistration = GetDeferredCompiledInRegistration();
 
 	const bool bHaveRegistrants = DeferredCompiledInRegistration.Num() != 0;
@@ -755,6 +752,13 @@ static void UObjectLoadAllCompiledInDefaultProperties()
 		}
 	}
 }
+/*
+这个方法整体分成两部分，一部分是Registrant方法，注册反射信息。一部分是将UClass进行分类，进而创建CDO。
+*/
+```
+##### Registrant
+```
+
 ```
 
 
