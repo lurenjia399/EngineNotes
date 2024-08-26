@@ -573,6 +573,12 @@ virtual void StartupModule() override
 
 /*
 	字面意思就是把CompiledInClasses这个里面的所有东西全部Register掉
+	UClass* RegisteredClass = Class->Register();这个方法最终会调用到GetPrivateStaticClass这个里面，也就是创建出UClass了，这个咱们在创建UObject的UClass讲过了
+	
+	总结下：
+	1 跟据DeferredClassRegistration这个数组里收集的元数据，依次通过placement new的方式创建出了UClass
+	2 初始化了新创建的这个UClass，设置了SuperStruct（记录对象父类的UClass，IsChildOf这里面使用的），ClassWithin(当前类可以属于哪个UClass）
+	3 初始注册步骤，没有实际注册，只是将信息添加到了PendingRegistrants数组中和FPendingRegistrant链表上
 */
 void UClassRegisterAllCompiledInClasses()
 {
@@ -588,15 +594,11 @@ void UClassRegisterAllCompiledInClasses()
 	DeferredClassRegistration.Empty();
 }
 
-/*
-UClass* RegisteredClass = Class->Register();这个方法最终会调用到
-GetPrivateStaticClass这个里面，也就是创建出UClass了，这个咱们在创建UObject的UClass讲过了
+void InitUObject()
+{
+	FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+}
 
-总结下：
-1 跟据DeferredClassRegistration这个数组里收集的元数据，依次通过placement new的方式创建出了UClass
-2 初始化了新创建的这个UClass，设置了SuperStruct（记录对象父类的UClass，IsChildOf这里面使用的），ClassWithin(当前类可以属于哪个UClass）
-3 初始注册步骤，没有实际注册，只是将信息添加到了PendingRegistrants数组中和FPendingRegistrant链表上
-*/
 
 ```
 
