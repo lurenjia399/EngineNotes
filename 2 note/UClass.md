@@ -520,3 +520,6 @@ static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
 - Z_CompiledInDefer_UClass_UMyTest初始化，最终添加到DeferredCompiledInRegistration这个数组里面的Z_Construct_UClass_UMyTest这个方法（返回的也是上面创建出的UClass）。这里面的操作就是用创建出的UClass对象，在这个对象基础上在调用一些构造函数来初始化属性和函数等一些信息。
 
 这两个初始化注册的操作都是在执行main函数之前就完成的，因为他们都是静态的对象，所以在main函数执行之前，对应的两个数组中就已经有了相应的信息，只等着运行其中相应的函数了。
+
+## UClass注册，生成和CDO创建
+
