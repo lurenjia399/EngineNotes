@@ -528,7 +528,7 @@ static TArray<class UClass *(*)()>& GetDeferredCompiledInRegistration()
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202408261718309.png)
 根据关卡中的部分截图可知，引擎启动之后会走到FEngineLoop::PreInit方法中，在这个方法里面会执行PreInitPreStartupScreen方法，而这个PreInitPreStartupScreen方法中
 ```cpp
-// 这个方法里面执行的东西很多，就列举这两个吧，关于模块加载的方法
+// 这个方法里面执行的东西很多，就先列举下和UClass相关的
 int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 {
 	{
@@ -539,10 +539,9 @@ int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 		}
 	}
 	{
-		LoadPreInitModules();、、2246
+		LoadPreInitModules();
 	}
 	{
-		SCOPED_BOOT_TIMING("AppInit");
 		if (!AppInit())
 		{
 			return 1;
