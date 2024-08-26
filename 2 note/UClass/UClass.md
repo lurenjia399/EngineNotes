@@ -318,7 +318,6 @@ UFunction* Z_Construct_UFunction_UMyTest_AddFunc()
 	return ReturnFunction;
 }
 // 这里应该也是我们的那个function，导致添加的类-----------------结束
-
 UClass* Z_Construct_UClass_UMyTest_NoRegister()
 {
 	return UMyTest::StaticClass();
@@ -758,7 +757,16 @@ static void UObjectLoadAllCompiledInDefaultProperties()
 ```
 ##### Registrant
 ```cpp
-// 这个方法是DeferredCompiledInRegistration这个数组中
+// 这个方法是DeferredCompiledInRegistration这个数组中的元素，也就是 Z_Construct_UClass_UMyTest 这个方法
+UClass* Z_Construct_UClass_UMyTest()
+{
+	static UClass* OuterClass = nullptr;
+	if (!OuterClass)
+	{
+		UE4CodeGen_Private::ConstructUClass(OuterClass, Z_Construct_UClass_UMyTest_Statics::ClassParams);
+	}
+	return OuterClass;
+}
 ```
 
 
