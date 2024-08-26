@@ -549,6 +549,10 @@ bool FEngineLoop::LoadCoreModules()
 	// IMPLEMENT_MODULE( FCoreUObjectModule, CoreUObject );这个宏定义了CoreUObject模块，也就是说会走到FCoreUObjectModule类的StartupModule方法中
 	return FModuleManager::Get().LoadModule(TEXT("CoreUObject")) != nullptr;
 }
+
+```
+#### 1 FCoreUObjectModule::StartupModule
+```cpp
 // 这个就是FCoreUObjectModule类的StartupModule方法
 virtual void StartupModule() override
 {	
@@ -557,6 +561,29 @@ virtual void StartupModule() override
 	void InitUObject();
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
+
+/*
+	字面意思就是把CompiledInClasses这个里面的所有东西全部Register掉
+*/
+void UClassRegisterAllCompiledInClasses()
+{
+	// 把所有热更的东西全都删掉了
+	SCOPED_BOOT_TIMING("UClassRegisterAllCompiledInClasses");
+
+    //获取DeferredClassRegistration数组，然后全部调用Register方法，上面讲过这个数组还记得么？
+	TArray<FFieldCompiledInInfo*>& DeferredClassRegistration = GetDeferredClassRegistration();
+	for (const FFieldCompiledInInfo* Class : DeferredClassRegistration)
+	{
+		UClass* RegisteredClass = Class->Register();
+	}
+	DeferredClassRegistration.Empty();
+}
+
+/*
+UClass* RegisteredClass = Class->Register();这个方法最终会调用到
+GetPrivateStaticClass这个里面，也就是创建出UClass了，这个咱们在创建UObject的UClass讲过了
+*/
+
 ```
 
 
