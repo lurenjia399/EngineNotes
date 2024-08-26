@@ -721,7 +721,40 @@ FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 ```
 #### 4 UObjectLoadAllCompiledInDefaultProperties
 ```cpp
+static void UObjectLoadAllCompiledInDefaultProperties()
+{
+	TRACE_LOADTIME_REQUEST_GROUP_SCOPE(TEXT("UObjectLoadAllCompiledInDefaultProperties"));
 
+
+    // 获取eferredCompiledInRegistration数组，里面全是函数。上面讲过这个数组还记得么？
+	TArray<UClass *(*)()>& DeferredCompiledInRegistration = GetDeferredCompiledInRegistration();
+
+	const bool bHaveRegistrants = DeferredCompiledInRegistration.Num() != 0;
+	if( bHaveRegistrants )
+	{
+        // 移动这个数组，传出右值的形式，和std::move保持一致
+		TArray<UClass* (*)()> PendingRegistrants = MoveTemp(DeferredCompiledInRegistration);
+        // 遍历所有的
+		for (UClass* (*Registrant)() : PendingRegistrants)
+		{
+            // 执行数组中存储的函数，也就是执行了
+            // UE4CodeGen_Private::ConstructUClass(OuterClass, Z_Construct_UClass_UMyTest_Statics::ClassParams);
+            // 这个方法，返回的是咱们上边刚创建好的UClass
+            // 关键方法，生成反射信息
+			UClass* Class = Registrant();
+            // 下面这个分支就是根据不同类型，收集到临时数组中
+			NewClasses.Add(Class);
+		}
+		
+		{
+			for (UClass* Class : NewClasses)
+			{
+				// 创建CDO
+				Class->GetDefaultObject();
+			}
+		}
+	}
+}
 ```
 
 
