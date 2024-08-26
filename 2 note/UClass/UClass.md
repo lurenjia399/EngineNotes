@@ -757,8 +757,8 @@ static void UObjectLoadAllCompiledInDefaultProperties()
 */
 ```
 ##### Registrant
-```
-
+```cpp
+// 这个方法是DeferredCompiledInRegistration这个数组中
 ```
 
 
