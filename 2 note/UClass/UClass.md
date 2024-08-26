@@ -601,8 +601,9 @@ void UClassRegisterAllCompiledInClasses()
 
 void InitUObject()
 {
-	// 这个方法是监听事件，这个事件是在module加载的时候会调用，
-FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+	// 这个方法是监听事件，这个事件是在module加载的时候会调用，UE的组织形式是Module，一个Module编译后可以生成一个dll。dll是可以动态加载的，因此如果在引擎初始化结束后，继续动态加载一个模块（即dll)，根据C++机制，会触发dll里面的static变量初始化。因此元数据信息就又收集到了一些。我们就需要继续利用这些元数据信息来为这个新dll里定义的类构造类型的UClass*对象
+FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(
+	ProcessNewlyLoadedUObjects);
 	// 这个方法是完成实际的注册
 	StaticUObjectInit();
 }
