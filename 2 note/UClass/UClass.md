@@ -681,6 +681,7 @@ void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* Packag
 
 
 
+
 ### MyTest的UClass创建流程
 ue会根据module来编译生成对应的dll，在引擎初始化的时候会加载这些dll，然后每次加载都会调用下面这个切入函数来完成UClass的注册。
 
