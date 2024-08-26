@@ -789,7 +789,9 @@ const UE4CodeGen_Private::FClassParams Z_Construct_UClass_UMyTest_Statics::Class
 */
 void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 {
-	
+	// 赋值OutClass，也就是UMyTest::StaticClass方法
+	UClass* NewClass = Params.ClassNoRegisterFunc();
+	OutClass = NewClass;
 }
 ```
 
