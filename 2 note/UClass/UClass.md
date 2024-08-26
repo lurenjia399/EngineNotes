@@ -539,7 +539,14 @@ int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 		}
 	}
 	{
-		LoadPreInitModules();
+		LoadPreInitModules();、、2246
+	}
+	{
+		SCOPED_BOOT_TIMING("AppInit");
+		if (!AppInit())
+		{
+			return 1;
+		}
 	}
 }
 
