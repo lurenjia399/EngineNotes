@@ -573,7 +573,7 @@ void FEngineLoop::LoadPreInitModules()
 // 这个就是FCoreUObjectModule类的StartupModule方法
 virtual void StartupModule() override
 {	
-	// 字面意思就是把CompiledInClasses这个里面的所有东西全部Register掉，后面还会详细看下
+	// 这个方法是调用每个类的StaticClass方法创建出UClass
 	UClassRegisterAllCompiledInClasses();
 	void InitUObject();
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
