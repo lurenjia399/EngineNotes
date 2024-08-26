@@ -584,7 +584,6 @@ void UClassRegisterAllCompiledInClasses()
 {
 	// 把所有热更的东西全都删掉了
 	SCOPED_BOOT_TIMING("UClassRegisterAllCompiledInClasses");
-
     //获取DeferredClassRegistration数组，然后全部调用Register方法，上面讲过这个数组还记得么？
 	TArray<FFieldCompiledInInfo*>& DeferredClassRegistration = GetDeferredClassRegistration();
 	for (const FFieldCompiledInInfo* Class : DeferredClassRegistration)
@@ -597,7 +596,8 @@ void UClassRegisterAllCompiledInClasses()
 void InitUObject()
 {
 	// 这个方法是监听事件，这个事件是在module加载的时候会调用，
-	FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+FModuleManager::Get().OnProcessLoadedObjectsCallback().AddStatic(ProcessNewlyLoadedUObjects);
+	
 	StaticUObjectInit();
 }
 
