@@ -419,6 +419,9 @@ static TClassCompiledInDefer<UMyTest> AutoInitializeUMyTest(TEXT("UMyTest"), siz
 // 这个静态变量也用于收集UClass信息，后面详细看下
 static FCompiledInDefer Z_CompiledInDefer_UClass_UMyTest(Z_Construct_UClass_UMyTest, &UMyTest::StaticClass, TEXT("/Script/Azure"), TEXT("UMyTest"), false, nullptr, nullptr, nullptr);
 
+
+IMPLEMENT_CLASS(AActor, 2251998486);
+
 // -----------------------这里是我添加的展开 MyTest.gen.cpp 结束
 UMyTest::UMyTest()
 {
