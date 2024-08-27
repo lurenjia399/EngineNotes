@@ -800,6 +800,14 @@ void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 	OutClass = NewClass;
 }
 ```
+###### 1 注册依赖项
+```cpp
+UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = {
+		(UObject* (*)())Z_Construct_UClass_UObject,
+		(UObject* (*)())Z_Construct_UPackage__Script_Azure,
+	};
+
+```
 
 
 
