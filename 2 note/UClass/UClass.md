@@ -827,7 +827,6 @@ void UClass::CreateLinkAndAddChildFunctionsToMap(const FClassFunctionLinkInfo* F
 	{
 		const char* FuncNameUTF8 = Functions->FuncNameUTF8;
 		UFunction*  Func         = Functions->CreateFuncPtr();
-
 		// Func的链表吧，放在链表头
 		Func->Next = Children;
 		Children = Func;
