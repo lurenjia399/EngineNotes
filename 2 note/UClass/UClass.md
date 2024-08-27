@@ -632,7 +632,7 @@ static void UObjectProcessRegistrants()
     // 把一些宏，注释，检查啥的乱七八糟的都去掉了
     
 	TArray<FPendingRegistrant> PendingRegistrants;
-    // 这个方法就是通过上面那个全局链表，依次把链表上的东西都放到PendingRegistrants数组中，按顺序，下面看下
+    // 这个方法就是将DeferredClassRegistration这个数组里的，依次把链表上的东西都放到PendingRegistrants数组中，按顺序，下面看下
 	DequeuePendingAutoRegistrants(PendingRegistrants);
 
 	for(int32 RegistrantIndex = 0;RegistrantIndex < PendingRegistrants.Num();++RegistrantIndex)
