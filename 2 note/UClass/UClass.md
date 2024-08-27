@@ -542,7 +542,6 @@ int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 	{
 		if (!LoadCoreModules())
 		{
-			UE_LOG(LogInit, Error, TEXT("Failed to load Core modules."));
 			return 1;
 		}
 	}
