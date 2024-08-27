@@ -873,7 +873,7 @@ UObject* UClass::CreateDefaultObject()
 	}
 	 // 这个部分是通过FObjectInitializer来执行构造函数
 	(*ClassConstructor)(FObjectInitializer(ClassDefaultObject, ParentDefaultObject, false, bShouldInitializeProperties));
-	// 
+	// CDO创建之后执行的方法，啥都没有我们可以重写
 	ClassDefaultObject->PostCDOContruct();
 }
 
