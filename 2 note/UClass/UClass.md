@@ -866,7 +866,15 @@ UObject* GetDefaultObject(bool bCreateIfNeeded = true) const
 
 UObject* UClass::CreateDefaultObject()
 {
-	
+	if (ClassDefaultObject == NULL)
+	{
+		// 创建CDO的方法，看上去就是从池子里面找了个地方，然后也是placement new的形式，把CDO放进去了
+		ClassDefaultObject = StaticAllocateObject(this, GetOuter(), NAME_None, EObjectFlags(RF_Public|RF_ClassDefaultObject|RF_ArchetypeObject));
+	}
+	 // 这个部分是通过FObjectInitializer来执行构造函数
+	(*ClassConstructor)(FObjectInitializer(ClassDefaultObject, ParentDefaultObject, false, bShouldInitializeProperties));
+	// 
+	ClassDefaultObject->PostCDOContruct();
 }
 
 ```
