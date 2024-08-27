@@ -813,6 +813,13 @@ UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = 
 ```
 ###### 2 注册UFunction
 ```cpp
+/*
+这个Params.FunctionLinkArray参数就是下面反射生成的代码。AddFunc就是在.h文件中用UFunction修饰的方法
+const FClassFunctionLinkInfo Z_Construct_UClass_UMyTest_Statics::FuncInfo[] = {
+		{ &Z_Construct_UFunction_UMyTest_AddFunc, "AddFunc" }, // 1255610792
+	};
+*/
+NewClass->CreateLinkAndAddChildFunctionsToMap(Params.FunctionLinkArray, Params.NumFunctions);
 
 ```
 
