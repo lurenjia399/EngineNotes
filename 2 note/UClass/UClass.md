@@ -801,6 +801,8 @@ void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 	UObjectForceRegistration(NewClass);
 	// 注册所有UFunction到UClass中
 	NewClass->CreateLinkAndAddChildFunctionsToMap(Params.FunctionLinkArray, Params.NumFunctions);
+	// 注册所有的UProperty到UClass中
+	ConstructFProperties(NewClass, Params.PropertyArray, Params.NumProperties);
 }
 ```
 ###### 1 注册依赖项
@@ -819,6 +821,16 @@ NewClass->CreateLinkAndAddChildFunctionsToMap(Params.FunctionLinkArray, Params.N
 const FClassFunctionLinkInfo Z_Construct_UClass_UMyTest_Statics::FuncInfo[] = {
 		{ &Z_Construct_UFunction_UMyTest_AddFunc, "AddFunc" }, // 1255610792
 	};
+
+UFunction* Z_Construct_UFunction_UMyTest_AddFunc()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UE4CodeGen_Private::ConstructUFunction(ReturnFunction, Z_Construct_UFunction_UMyTest_AddFunc_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
 */
 
 void UClass::CreateLinkAndAddChildFunctionsToMap(const FClassFunctionLinkInfo* Functions, uint32 NumFunctions)
@@ -826,6 +838,7 @@ void UClass::CreateLinkAndAddChildFunctionsToMap(const FClassFunctionLinkInfo* F
 	for (; NumFunctions; --NumFunctions, ++Functions)
 	{
 		const char* FuncNameUTF8 = Functions->FuncNameUTF8;
+		// 这个CreateFuncPtr会执行Z_Construct_UFunction_UMyTest_AddFunc这个方法
 		UFunction*  Func         = Functions->CreateFuncPtr();
 		// Func的链表吧，放在链表头
 		Func->Next = Children;
