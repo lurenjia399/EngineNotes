@@ -754,7 +754,7 @@ static void UObjectLoadAllCompiledInDefaultProperties()
 这个方法整体分成两部分，一部分是Registrant方法，注册反射信息。一部分是将UClass进行分类，进而创建CDO。
 */
 ```
-##### Registrant
+##### 1 Registrant
 ```cpp
 // 这个方法是DeferredCompiledInRegistration这个数组中的元素，也就是 Z_Construct_UClass_UMyTest 这个方法
 UClass* Z_Construct_UClass_UMyTest()
@@ -853,8 +853,23 @@ void AddFunctionToFunctionMap(UFunction* Function, FName FuncName)
 }
 
 ```
-##### 创建CDO
+##### 2 创建CDO
+```cpp
+UObject* GetDefaultObject(bool bCreateIfNeeded = true) const
+{
+	if (ClassDefaultObject == nullptr && bCreateIfNeeded)
+	{
+		const_cast<UClass*>(this)->CreateDefaultObject();
+	}
+	return ClassDefaultObject;
+}
 
+UObject* UClass::CreateDefaultObject()
+{
+	
+}
+
+```
 
 
 ### MyTest的UClass创建流程
