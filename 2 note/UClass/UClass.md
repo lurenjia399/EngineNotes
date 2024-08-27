@@ -828,11 +828,16 @@ void UClass::CreateLinkAndAddChildFunctionsToMap(const FClassFunctionLinkInfo* F
 		const char* FuncNameUTF8 = Functions->FuncNameUTF8;
 		UFunction*  Func         = Functions->CreateFuncPtr();
 
+		// Func的链表吧，放在链表头
 		Func->Next = Children;
 		Children = Func;
-
+		// 将Func添加到UClass的FuncMap数组中
 		AddFunctionToFunctionMap(Func, FName(UTF8_TO_TCHAR(FuncNameUTF8)));
 	}
+}
+void AddFunctionToFunctionMap(UFunction* Function, FName FuncName)
+{
+	FuncMap.Add(FuncName, Function);
 }
 
 ```
