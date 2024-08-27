@@ -871,14 +871,16 @@ UObject* UClass::CreateDefaultObject()
 		// 创建CDO的方法，看上去就是从池子里面找了个地方，然后也是placement new的形式，把CDO放进去了
 		ClassDefaultObject = StaticAllocateObject(this, GetOuter(), NAME_None, EObjectFlags(RF_Public|RF_ClassDefaultObject|RF_ArchetypeObject));
 	}
-	 // 这个部分是通过FObjectInitializer来执行构造函数
+	 // 这个部分是通过FObjectInitializer来执行构造函数，这里也就看出CDO的创建在构造函数执行之前
 	(*ClassConstructor)(FObjectInitializer(ClassDefaultObject, ParentDefaultObject, false, bShouldInitializeProperties));
 	// CDO创建之后执行的方法，啥都没有我们可以重写
 	ClassDefaultObject->PostCDOContruct();
 }
+```
+###### FObjectInitializer执行构造函数
+```cpp
 
 ```
-
 
 ### MyTest的UClass创建流程
 ue会根据module来编译生成对应的dll，在引擎初始化的时候会加载这些dll，然后每次加载都会调用下面这个切入函数来完成UClass的注册。
