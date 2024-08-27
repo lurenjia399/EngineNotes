@@ -590,7 +590,7 @@ virtual void StartupModule() override
 	FCoreDelegates::OnInit.AddStatic(InitUObject);
 }
 ```
-## 1 UClassRegisterAllCompiledInClasses
+## 1 UClassRegisterAllCompiledInClasses UClass创建
 ```cpp
 /*
 	UClass* RegisteredClass = Class->Register();这个方法最终会调用到GetPrivateStaticClass这个里面，也就是创建出UClass了
@@ -715,7 +715,7 @@ FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 	}
 }
 ```
-## 4 UObjectLoadAllCompiledInDefaultProperties
+## 4 UObjectLoadAllCompiledInDefaultProperties 注册
 ```cpp
 static void UObjectLoadAllCompiledInDefaultProperties()
 {
