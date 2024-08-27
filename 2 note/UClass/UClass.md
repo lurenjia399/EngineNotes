@@ -799,7 +799,7 @@ void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 	OutClass = NewClass;
 	// 这个是注册UClass，这个方法上边写过，注册过了就不用走了
 	UObjectForceRegistration(NewClass);
-	
+	// 注册所有UFunction到UClass中
 	NewClass->CreateLinkAndAddChildFunctionsToMap(Params.FunctionLinkArray, Params.NumFunctions);
 }
 ```
@@ -811,11 +811,9 @@ UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = 
 		(UObject* (*)())Z_Construct_UPackage__Script_Azure,
 	};
 ```
-###### 2 赋值OutClass
+###### 2 注册UFunction
 ```cpp
-// 赋值OutClass，也就是UMyTest::StaticClass方法，之前创建过UClass了，这里就是在赋值下OutClass吧
-	UClass* NewClass = Params.ClassNoRegisterFunc();
-	OutClass = NewClass;
+
 ```
 
 
