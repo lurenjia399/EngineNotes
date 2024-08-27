@@ -807,6 +807,11 @@ UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = 
 		(UObject* (*)())Z_Construct_UClass_UObject,
 		(UObject* (*)())Z_Construct_UPackage__Script_Azure,
 	};
+```
+###### 2 赋值OutClass
+```cpp
+// 赋值OutClass，也就是UMyTest::StaticClass方法，之前
+
 
 ```
 
