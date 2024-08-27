@@ -802,6 +802,7 @@ void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 ```
 ###### 1 注册依赖项
 ```cpp
+// 这部分走的是.gen.cpp中这个部分。UHT生成了注册UClass对象需要得依赖项，可以看到需要先完成基类得UClass注册，然后继续完成所在Upackage的注册
 UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = {
 		(UObject* (*)())Z_Construct_UClass_UObject,
 		(UObject* (*)())Z_Construct_UPackage__Script_Azure,
