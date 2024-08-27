@@ -623,7 +623,7 @@ void UObjectBaseInit()
 	UObjectProcessRegistrants();
 }
 ```
-## 2 UObjectProcessRegistrants
+## 2 UObjectProcessRegistrants 进一步注册UClass
 ```cpp
 static void UObjectProcessRegistrants()
 {
@@ -693,7 +693,7 @@ void UObjectBase::DeferredRegister(UClass *UClassStaticClass,const TCHAR* Packag
 最后转发调用了UObjectBase的DeferredRegister在这里会把之前构建的UClass对象继续完善注册，创建了Package设置UClass的Outer，UClass对象的Class类型，AddObject会设置UClass名字，并将UClass对象加入到GUObjectArray中管理，这之后UClass已经有了一些基本的信息，但是离完整的UClass对象还差了一些，因为目前UClass中还没有反射信息，接下来就要看下最重要部分了，反射信息的注册。
 */
 ```
-## 3 ProcessNewlyLoadedUObjects
+## 3 ProcessNewlyLoadedUObjects 注册UClass反射信息，生成CDO
 ```cpp
 void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
 {
@@ -715,7 +715,7 @@ FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 	}
 }
 ```
-## 4 UObjectLoadAllCompiledInDefaultProperties 注册
+## 4 UObjectLoadAllCompiledInDefaultProperties
 ```cpp
 static void UObjectLoadAllCompiledInDefaultProperties()
 {
