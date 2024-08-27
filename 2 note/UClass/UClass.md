@@ -797,6 +797,10 @@ void ConstructUClass(UClass*& OutClass, const FClassParams& Params)
 	// 赋值OutClass，也就是UMyTest::StaticClass方法
 	UClass* NewClass = Params.ClassNoRegisterFunc();
 	OutClass = NewClass;
+	// 这个是注册UClass，这个方法上边写过，注册过了就不用走了
+	UObjectForceRegistration(NewClass);
+	
+	NewClass->CreateLinkAndAddChildFunctionsToMap(Params.FunctionLinkArray, Params.NumFunctions);
 }
 ```
 ###### 1 注册依赖项
