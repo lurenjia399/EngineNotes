@@ -879,7 +879,69 @@ UObject* UClass::CreateDefaultObject()
 ```
 ###### FObjectInitializer执行构造函数
 ```cpp
+/*
+(*ClassConstructor)(FObjectInitializer(ClassDefaultObject, ParentDefaultObject, false, bShouldInitializeProperties));
+参数就是后面构造函数中的X
 
+ClassConstructor是在创建UClass类的时候赋值的，也就是在GetPrivateStaticClassBody这个函数里面
+GetPrivateStaticClassBody( 
+     StaticPackage(), 
+     (TCHAR*)TEXT("UMyTest") + 1 + ((StaticClassFlags & CLASS_Deprecated) ? 11 : 0),
+     PrivateStaticClass,
+     StaticRegisterNativesUMyTest,
+     sizeof(UMyTest), 
+     alignof(UMyTest), 
+     (EClassFlags)UMyTest::StaticClassFlags,
+     UMyTest::StaticClassCastFlags(),
+     UMyTest::StaticConfigName(),
+     (UClass::ClassConstructorType)InternalConstructor<UMyTest>, // 这里传进来的就是这个值，然后赋值给ClassConstructor
+     (UClass::ClassVTableHelperCtorCallerType)InternalVTableHelperCtorCaller<UMyTest>, 
+     &UMyTest::AddReferencedObjects,
+     &UMyTest::Super::StaticClass, 
+     &UMyTest::WithinClass::StaticClass 
+); 
+
+点进去之后，就是当前这个类的默认构造函数，在MyTest.h文件中实现的__DefaultConstructor方法
+template<class T>
+void InternalConstructor( const FObjectInitializer& X )
+{ 
+	T::__DefaultConstructor(X);
+}
+
+static void __DefaultConstructor(const FObjectInitializer& X) { new((EInternal*)X.GetObj())UMyTest; }// 对构造函数和new重载的调用
+
+还记得在MyTest.h里面重载了placement new么，这时候会执行，然后就会执行到咱们自己写的那个MyTest()构造函数
+
+这里还有一小部分需要提醒下：
+上面这个__DefaultConstructor的长相是因为我定义了一个MyTest()空的构造函数
+如果我定义了一个
+UMyTest(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+UMyTest::UMyTest(const FObjectInitializer& ObjectInitializer)
+: Super(){} 这样的构造函数(在MyTest这个里面Super指的是UObject)
+生成的__DefaultConstructor就会变成：
+static void __DefaultConstructor(const FObjectInitializer& X) { new((EInternal*)X.GetObj())TClass(X); }
+差别在哪呢？
+就是后者还会把这个X传进去，就是构造函数接受的那个形参
+那么后者这个东西有什么用呢？有用的，下面我们看下
+*/
+
+/*
+在我们刚学习ue的时候，创建一个自己的移动compoent比如AzureCharacterMoveComponent，然后我们创建一个Character，这个Character会自动给自创建一个CharacterMovementComponent原生的component。欸，问题来了，我就不想用原生的，就想用我自己创建的这个怎么办呢？
+解决方案:
+AAzureCharacter::AAzureCharacter(const FObjectInitializer& ObjectInitializer)
+	:Super(ObjectInitializer.SetDefaultSubobjectClass<UAzureCharacterMoveComponent>(ACharacter::CharacterMovementComponentName))
+	{}
+如果想用，就必须现在初始化列表中根据名称设置component类型，然后通过
+CharacterMovement = CreateDefaultSubobject<UCharacterMovementComponent>(ACharacter::CharacterMovementComponentName);
+这个来创建出的MovementComponent就是咱们自己的了！！！
+
+总结一下：
+character会自己初始化移动组件，如果想使用自己的移动组件，就需要：
+	1 创建一个CharacterMovementComponent的子类
+	2 创建一个Character的子类
+	3 在Character子类的初始化列表中，把自己的子类注册到参数中，这样在创建相同名称的component的时候就会使用自己的Component了。
+	4 妙啊！！！
+*/
 ```
 
 ### MyTest的UClass创建流程
