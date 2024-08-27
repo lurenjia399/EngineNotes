@@ -810,9 +810,9 @@ UObject* (*const Z_Construct_UClass_UMyTest_Statics::DependentSingletons[])() = 
 ```
 ###### 2 赋值OutClass
 ```cpp
-// 赋值OutClass，也就是UMyTest::StaticClass方法，之前
-
-
+// 赋值OutClass，也就是UMyTest::StaticClass方法，之前创建过UClass了，这里就是在赋值下OutClass吧
+	UClass* NewClass = Params.ClassNoRegisterFunc();
+	OutClass = NewClass;
 ```
 
 
