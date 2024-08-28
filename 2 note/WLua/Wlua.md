@@ -1,17 +1,12 @@
 在GameInstance里
 
 ```cpp
-if (!m_AzureGame->Init(this))
-		return;
 
-
-	//	Init lua(cppInterface)
-	InitLua();
 void UAzureGameInstance::Init()
 {
 	if (!m_AzureGame->Init(this))
 		return;
-	// 在lua中创建GameInstance的table，并在table里放一些h
+	// 在lua中创建GameInstance的table，并在table里放一些函数
 	InitLua();
 }
 bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
