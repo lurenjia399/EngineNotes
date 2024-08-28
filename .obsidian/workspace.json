@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/WLua/未命名.md",
                 "mode": "source",
                 "source": false
               }
@@ -69,8 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -86,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/WLua/未命名.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -103,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/WLua/未命名.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -126,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/网络/网络.md"
+                "file": "2 note/WLua/未命名.md"
               }
             }
           }
@@ -149,9 +148,12 @@
   },
   "active": "3f043423e596d462",
   "lastOpenFiles": [
+    "2 note/网络/网络.md",
+    "2 note/WLua/未命名.md",
+    "2 note/未命名.md",
+    "2 note/WLua",
     "2 note/GarbageCollection/GC.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
-    "2 note/网络/网络.md",
     "2 note/UClass/UClass.md",
     "1 索引/索引.md",
     "2 note/UObject构造流程/UObject.md",
