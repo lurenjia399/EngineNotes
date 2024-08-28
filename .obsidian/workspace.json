@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/WLua/未命名.md",
+                "file": "2 note/WLua/Wlua.md",
                 "mode": "source",
                 "source": false
               }
@@ -69,7 +69,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -85,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/WLua/未命名.md",
+                "file": "2 note/WLua/Wlua.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/WLua/未命名.md",
+                "file": "2 note/WLua/Wlua.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/WLua/未命名.md"
+                "file": "2 note/WLua/Wlua.md"
               }
             }
           }
@@ -149,7 +150,7 @@
   "active": "3f043423e596d462",
   "lastOpenFiles": [
     "2 note/网络/网络.md",
-    "2 note/WLua/未命名.md",
+    "2 note/WLua/Wlua.md",
     "2 note/未命名.md",
     "2 note/WLua",
     "2 note/GarbageCollection/GC.md",
