@@ -14,4 +14,9 @@ void UAzureGameInstance::Init()
 	
 	InitLua();
 }
+bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
+{
+	wLua::LuaStatic::setLuaPath(LuaPath.c_str());
+	InitLuaModule();
+}
 ```
