@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/UPlayer,PlayerController/UPlayer.md",
+                "file": "2 note/GarbageCollection/GC.md",
                 "mode": "source",
                 "source": false
               }
@@ -69,7 +69,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -85,7 +86,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/UPlayer,PlayerController/UPlayer.md",
+                "file": "2 note/GarbageCollection/GC.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +103,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/UPlayer,PlayerController/UPlayer.md",
+                "file": "2 note/GarbageCollection/GC.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +126,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/UPlayer,PlayerController/UPlayer.md"
+                "file": "2 note/GarbageCollection/GC.md"
               }
             }
           }
@@ -148,6 +149,8 @@
   },
   "active": "3f043423e596d462",
   "lastOpenFiles": [
+    "2 note/UPlayer,PlayerController/UPlayer.md",
+    "2 note/GarbageCollection/GC.md",
     "2 note/网络/网络.md",
     "2 note/UClass/UClass.md",
     "1 索引/索引.md",
@@ -157,7 +160,6 @@
     "2 note/UClass",
     "2 note/Module",
     "2 note/SCS 和 CDO/未命名.md",
-    "2 note/UPlayer,PlayerController/UPlayer.md",
     "UPlayer.md",
     "2 note/UObject构造流程",
     "2 note/资源管理/未命名.md",
