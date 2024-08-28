@@ -17,7 +17,7 @@ void UAzureGameInstance::Init()
 bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 {
 	wLua::LuaStatic::setLuaPath(LuaPath.c_str());
-	// 创建
+	// 在lua中创建一些全局变量
 	InitLuaModule();
 }
 ```
