@@ -21,6 +21,7 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202408291046828.png)
 
 ```cpp
+// 这个方法总的来说就是在lua那边创建userdata，来和This一一对应，并设置一些元方法
 bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_State * inL)
 {
 	nativeClass = (!This->GetClass()->HasAnyClassFlags(CLASS_CompiledFromBlueprint) && This->GetClass()->HasAnyClassFlags(CLASS_Native));
