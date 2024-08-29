@@ -28,7 +28,7 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 
 	// 用lua中的require函数来加载，返回值就是require函数返回值在栈里的序号。require(*inLuaModule)
 	int nret = require_caller.CallWithMultiRet("require", TCHAR_TO_UTF8(*inLuaModule));
-	// 通过UObject对象hui'qu
+	// 通过UObject对象获取lua对象。
 	userdata = wLua::FLuaUtils::ReturnUObject(L, This); //uobj
 }
 ```
