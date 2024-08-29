@@ -39,7 +39,11 @@ LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
 {
 	return ReturnUObjectPrivate(L, Obj, STRONGWEAK_AUTO);
 }
+/*
+1.)首先会尝试从Lua的全局弱表（g_udref）中获取到UObject对应的LightUserData对象, 把这个lightuserdata尝试转换为LuaUObjectUserData对象，如果这个对象的flag是GC状态，那么就调用接口RemoveObjectReference把它从ScriptCreatedObjects中和Lua全局弱表（g_udref）中移出并置空该对象。如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中。
 
+2.)接着通过UE4的反射机制查找这个UObject本身的元表是否设置成功，如果没有的话重新设置元表（其中包括字段i-d，__gc, name),并注册到全局表_G中,然后设置该userdata的元表为以该UObject类名称（GetClass）为表名，并再Lua全局弱表中g_udref写入weakT[lud]= userdata(UELuaObject)
+*/
 LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefType luaRefType)
 {
 	// 首先会尝试从Lua的全局弱表（g_udref）中获取到UObject对应的LightUserData对象
