@@ -71,14 +71,31 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 			lua_pushstring(L, clsname);//ref,ud,key
 			// 从全局弱表中招键为clsname的原表，然后将原表放到栈顶
 			lua_rawget(L, LUA_REGISTRYINDEX); //ref,ud,mt
-			//lua_getglobal(L, clsname); //ref,ud,mt
+			// 如果原表不存在赋值exist为false,如果原表存在break
 			if (lua_isnil(L, -1))
 				exist = false;
 			else
 				break;
-
+			// 弹出元表
 			lua_pop(L, 1); //ref,ud
+			// 让cls指向下一个
 			cls = cls->GetSuperClass();
+		}
+		// 这部分是元表不存在，就创建一个
+		if(!exist)
+		{
+			FName fname = firstNativeClass->GetFName();
+			const FNameEntry* entry = fname.GetDisplayNameEntry();
+			ANSICHAR ansiName[NAME_SIZE];
+			entry->GetAnsiName(ansiName);
+			lua_pushstring(L, ansiName);//ref,ud,mt,mtname
+			lua_getglobal(L, "_G");//ref,ud,mt,mtname,global
+			lua_pushvalue(L, -2);//ref,ud,mt,mtname,global,mtname
+			lua_pushvalue(L, -4);//ref,ud,mt,mtname,global,mtname,mt
+			lua_settable(L, -3); //ref,ud,mt,mtname,global
+			lua_pop(L, 1);//ref,ud,mt,mtname
+			lua_pushvalue(L, -2);//ref,ud,mt,mtname,mt
+			lua_rawset(L, LUA_REGISTRYINDEX);//ref,ud,mt	 //for luaL_checkudata  //
 		}
 }
 ```
