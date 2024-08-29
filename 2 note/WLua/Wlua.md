@@ -16,3 +16,7 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 	InitLuaModule();
 }
 ```
+
+这个图显示的是，每个
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202408291046828.png)
+
