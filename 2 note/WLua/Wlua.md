@@ -44,11 +44,12 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 {
 	// 首先会尝试从Lua的全局弱表（g_udref）中获取到UObject对应的LightUserData对象
 	AzureHelpFuncs::tryGetUserdataFromWeakTable(L, Obj, regIndex);
-	、、如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
+	//如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
 	if (lua_isnil(L, -1) || !valid)
 	{
 		lua_pop(L, 1); //ref
 		int32 AlignedSize = isWeakPtr ? sizeof(LuaUObjectUserDataWeakPtr) : sizeof(LuaUObjectUserData);
+		// 创建Userdata，也就是生成LuaUObjectUserData对象
 		void * data = lua_newuserdata(L, AlignedSize); //ref,ud
 		if (isWeakPtr)
 			userdata = new(data) LuaUObjectUserDataWeakPtr;
@@ -57,14 +58,8 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		userdata->stamp = userdata;
 		userdata->uobj = Obj;
 		userdata->flag = wLua::LuaObjectFlag::BORN;
-		if (isWeakPtr)
-		{
-			userdata->flag |= (regIndex << 6);
-			static_cast<LuaUObjectUserDataWeakPtr*>(userdata)->ptr = Obj;
-			wLua::FLuaObjectReferencer::Get(L).AddWeakObjectReference(Obj, userdata->stamp); 
-		}
-		else
-			wLua::FLuaObjectReferencer::Get(L).AddObjectReference(Obj,userdata->stamp);
+		// 加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
+		wLua::FLuaObjectReferencer::Get(L).AddObjectReference(Obj,userdata-
 		ANSICHAR clsname[NAME_SIZE];
 		bool exist = true;
 		UClass * cls = Obj->GetClass();
