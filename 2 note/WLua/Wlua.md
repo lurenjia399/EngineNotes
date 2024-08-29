@@ -30,8 +30,9 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	int nret = require_caller.CallWithMultiRet("require", TCHAR_TO_UTF8(*inLuaModule));
 	// 通过UObject对象获取lua对象。
 	userdata = wLua::FLuaUtils::ReturnUObject(L, This); //uobj
-	// 这个是把require(*inLuaModule)这个返回值，放到了zhan'li
+	// 这个是把require(*inLuaModule)这个返回值，放到了栈里
 	lua_rawgeti(L, LUA_REGISTRYINDEX, inst);//uobj,obj
+	// 我猜这个就是将userdata和require(*inLuaModule)这个的返回值绑定起来
 	userdata->SetUserDataValue(L,-2);//uobj
 }
 ```
