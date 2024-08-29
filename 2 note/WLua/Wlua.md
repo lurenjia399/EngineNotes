@@ -81,7 +81,7 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 			// 让cls指向下一个
 			cls = cls->GetSuperClass();
 		}
-		// 这部分是元表不存在，就创建一个
+		// 这部分是元表不存在，就创建一个名称为clsname的元表
 		if(!exist)
 		{
 			FName fname = firstNativeClass->GetFName();
@@ -95,7 +95,15 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 			lua_settable(L, -3); //ref,ud,mt,mtname,global
 			lua_pop(L, 1);//ref,ud,mt,mtname
 			lua_pushvalue(L, -2);//ref,ud,mt,mtname,mt
-			lua_rawset(L, LUA_REGISTRYINDEX);//ref,ud,mt	 //for luaL_checkudata  //
+			lua_rawset(L, LUA_REGISTRYINDEX);//ref,ud,mt	 //for luaL_checkudata
 		}
+		// 将元表和ref绑定上吧
+		ua_setmetatable(L, -2); //ref,ud
+		lua_pushlightuserdata(L, Obj); //ref,ud,obj
+		lua_pushvalue(L, -2); //ref,ud,obj,ud
+		lua_settable(L, -4); //ref,ud
+		
+		lua_remove(L, -2); //ud
+		return userdata
 }
 ```
