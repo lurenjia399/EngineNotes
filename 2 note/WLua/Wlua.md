@@ -60,32 +60,5 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		userdata->flag = wLua::LuaObjectFlag::BORN;
 		// 加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
 		wLua::FLuaObjectReferencer::Get(L).AddObjectReference(Obj,userdata-
-		ANSICHAR clsname[NAME_SIZE];
-		bool exist = true;
-		UClass * cls = Obj->GetClass();
-		check(cls);
-		UClass* firstNativeClass = nullptr;
-		while (cls)
-		{
-			if (!cls->HasAnyClassFlags(CLASS_Native) || cls->HasAnyClassFlags(CLASS_CompiledFromBlueprint))
-			{
-				cls = cls->GetSuperClass();
-				continue;
-			}
-			else if (!firstNativeClass)
-				firstNativeClass = cls;
-
-			cls->GetFName().GetPlainANSIString(clsname);
-			lua_pushstring(L, clsname);//ref,ud,key
-			lua_rawget(L, LUA_REGISTRYINDEX); //ref,ud,mt
-			//lua_getglobal(L, clsname); //ref,ud,mt
-			if (lua_isnil(L, -1))
-				exist = false;
-			else
-				break;
-
-			lua_pop(L, 1); //ref,ud
-			cls = cls->GetSuperClass();
-		}
 }
 ```
