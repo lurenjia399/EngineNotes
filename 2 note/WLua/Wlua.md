@@ -66,7 +66,7 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		userdata->stamp = userdata;
 		userdata->uobj = Obj;
 		userdata->flag = wLua::LuaObjectFlag::BORN;
-		// 加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
+		// 将userdata加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
 		wLua::FLuaObjectReferencer::Get(L).AddObjectReference(Obj,userdata-
 		ANSICHAR clsname[NAME_SIZE];
 		bool exist = true;
