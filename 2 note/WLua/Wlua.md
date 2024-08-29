@@ -60,5 +60,25 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		userdata->flag = wLua::LuaObjectFlag::BORN;
 		// 加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
 		wLua::FLuaObjectReferencer::Get(L).AddObjectReference(Obj,userdata-
+		ANSICHAR clsname[NAME_SIZE];
+		bool exist = true;
+		UClass * cls = Obj->GetClass();
+		
+		UClass* firstNativeClass = nullptr;
+		while (cls)
+		{
+			cls->GetFName().GetPlainANSIString(clsname);
+			lua_pushstring(L, clsname);//ref,ud,key
+			// 从全局弱表中招键为clsname的原表，然后将原表放到栈顶
+			lua_rawget(L, LUA_REGISTRYINDEX); //ref,ud,mt
+			//lua_getglobal(L, clsname); //ref,ud,mt
+			if (lua_isnil(L, -1))
+				exist = false;
+			else
+				break;
+
+			lua_pop(L, 1); //ref,ud
+			cls = cls->GetSuperClass();
+		}
 }
 ```
