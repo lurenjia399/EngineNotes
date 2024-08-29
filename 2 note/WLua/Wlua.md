@@ -32,3 +32,65 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	userdata = wLua::FLuaUtils::ReturnUObject(L, This); //uobj
 }
 ```
+
+FLuaUtils::ReturnUObject
+```cpp
+LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
+{
+	return ReturnUObjectPrivate(L, Obj, STRONGWEAK_AUTO);
+}
+
+LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefType luaRefType)
+{
+	// 首先会尝试从Lua的全局弱表（g_udref）中获取到UObject对应的LightUserData对象
+	AzureHelpFuncs::tryGetUserdataFromWeakTable(L, Obj, regIndex);
+	、、如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
+	if (lua_isnil(L, -1) || !valid)
+	{
+		lua_pop(L, 1); //ref
+		int32 AlignedSize = isWeakPtr ? sizeof(LuaUObjectUserDataWeakPtr) : sizeof(LuaUObjectUserData);
+		void * data = lua_newuserdata(L, AlignedSize); //ref,ud
+		if (isWeakPtr)
+			userdata = new(data) LuaUObjectUserDataWeakPtr;
+		else
+			userdata = new(data) LuaUObjectUserData;
+		userdata->stamp = userdata;
+		userdata->uobj = Obj;
+		userdata->flag = wLua::LuaObjectFlag::BORN;
+		if (isWeakPtr)
+		{
+			userdata->flag |= (regIndex << 6);
+			static_cast<LuaUObjectUserDataWeakPtr*>(userdata)->ptr = Obj;
+			wLua::FLuaObjectReferencer::Get(L).AddWeakObjectReference(Obj, userdata->stamp); 
+		}
+		else
+			wLua::FLuaObjectReferencer::Get(L).AddObjectReference(Obj,userdata->stamp);
+		ANSICHAR clsname[NAME_SIZE];
+		bool exist = true;
+		UClass * cls = Obj->GetClass();
+		check(cls);
+		UClass* firstNativeClass = nullptr;
+		while (cls)
+		{
+			if (!cls->HasAnyClassFlags(CLASS_Native) || cls->HasAnyClassFlags(CLASS_CompiledFromBlueprint))
+			{
+				cls = cls->GetSuperClass();
+				continue;
+			}
+			else if (!firstNativeClass)
+				firstNativeClass = cls;
+
+			cls->GetFName().GetPlainANSIString(clsname);
+			lua_pushstring(L, clsname);//ref,ud,key
+			lua_rawget(L, LUA_REGISTRYINDEX); //ref,ud,mt
+			//lua_getglobal(L, clsname); //ref,ud,mt
+			if (lua_isnil(L, -1))
+				exist = false;
+			else
+				break;
+
+			lua_pop(L, 1); //ref,ud
+			cls = cls->GetSuperClass();
+		}
+}
+```
