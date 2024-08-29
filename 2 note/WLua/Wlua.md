@@ -30,6 +30,9 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	int nret = require_caller.CallWithMultiRet("require", TCHAR_TO_UTF8(*inLuaModule));
 	// 通过UObject对象获取lua对象。
 	userdata = wLua::FLuaUtils::ReturnUObject(L, This); //uobj
+	// 这个是把require(*inLuaModule)这个返回值，放到了zhan'li
+	lua_rawgeti(L, LUA_REGISTRYINDEX, inst);//uobj,obj
+	userdata->SetUserDataValue(L,-2);//uobj
 }
 ```
 
