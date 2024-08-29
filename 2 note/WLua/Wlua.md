@@ -21,5 +21,8 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202408291046828.png)
 
 ```cpp
-
+bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_State * inL)
+{
+	
+}
 ```
