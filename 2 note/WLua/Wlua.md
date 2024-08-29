@@ -23,6 +23,9 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 ```cpp
 bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_State * inL)
 {
-	
+	nativeClass = (!This->GetClass()->HasAnyClassFlags(CLASS_CompiledFromBlueprint) && This->GetClass()->HasAnyClassFlags(CLASS_Native));
+
+	// 用lua中的require函数
+	int nret = require_caller.CallWithMultiRet("require", TCHAR_TO_UTF8(*inLuaModule));
 }
 ```
