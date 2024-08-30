@@ -145,6 +145,7 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 			*pStatus = NullUObject;
 		return nullptr;
 	}
+	// 如果这些条件判断通过了，就清空userdata
 	if ((userdata->flag & wLua::LuaObjectFlag::DESTROYED)
 		|| (userdata->flag & wLua::LuaObjectFlag::GC)
 		|| (userdata->IsWeakPtr() && !userdata->IsValidUObject())
@@ -153,8 +154,13 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 		|| !IsValid(Obj)
 		)
 	{
-		
+		if (pStatus)
+			*pStatus = PendingKillUObject;
+		FLuaUtils::RemoveObjectReference(Obj,userdata->stamp ,L);
+		userdata->uobj = nullptr;
+		return nullptr;
 	}
+	return Obj;
 }
 
 ```
