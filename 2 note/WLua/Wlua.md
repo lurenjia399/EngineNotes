@@ -119,6 +119,6 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 # 关键点
 
 - lua是怎么拿到UObject对象的？
-> 
+> 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中，将这个userdata
 - lua是怎么模拟UObject对象的继承关系的？
 - lua是怎么调用到UObject的方法的呢？
