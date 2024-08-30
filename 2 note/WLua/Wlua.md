@@ -172,5 +172,5 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 - lua是怎么拿到UObject对象的？
 > 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中，将这个userdata返回到lua侧。这个方法首先就是从全局表中获取UObject对应的lightuserdata，如果获取不到就创建一个新的lightuserdata，然后就是设置lightuserdata的元表（元表的表名是GetClass的名称），如果元表不存在就创建一个并注册到全局表中。
 - lua是怎么模拟UObject对象的继承关系的？
-在GameInstance::Init的时候会先进行导出方法和类元表的注册，并将元表注册到lua全局表LUA_REGISTRYINDEX中，然后就会执行SetMtLink方法，通过UClass获取父类，然后通过元表中的__index和__newindex来
+> 在GameInstance::Init的时候会先进行导出方法和类元表的注册，并将元表注册到lua全局表LUA_REGISTRYINDEX中，然后就会执行SetMtLink方法，通过UClass获取父类，然后通过元表中的__index和__newindex来完成继承关系。
 - lua是怎么调用到UObject的方法的呢？
