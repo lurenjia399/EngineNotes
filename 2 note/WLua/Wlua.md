@@ -145,6 +145,16 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 			*pStatus = NullUObject;
 		return nullptr;
 	}
+	if ((userdata->flag & wLua::LuaObjectFlag::DESTROYED)
+		|| (userdata->flag & wLua::LuaObjectFlag::GC)
+		|| (userdata->IsWeakPtr() && !userdata->IsValidUObject())
+		|| ((userdata->flag & wLua::LuaObjectFlag::UNBIND) && !userdata->IsWeakPtr() && !wLua::FLuaObjectReferencer::Get(L).HasUObject(Obj, userdata->stamp))
+		|| ((userdata->flag & wLua::LuaObjectFlag::UNBIND) && userdata->IsWeakPtr() &&  !wLua::FLuaObjectReferencer::Get(L).HasWeakUObject(Obj, userdata->stamp))
+		|| !IsValid(Obj)
+		)
+	{
+		
+	}
 }
 
 ```
