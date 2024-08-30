@@ -115,3 +115,10 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		return userdata
 }
 ```
+
+# 关键点
+
+- lua是怎么拿到UObject对象的？
+> 
+- lua是怎么模拟UObject对象的继承关系的？
+- lua是怎么调用到UObject的方法的呢？
