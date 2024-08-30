@@ -174,3 +174,4 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 - lua是怎么模拟UObject对象的继承关系的？
 > 在GameInstance::Init的时候会先进行导出方法和类元表的注册，并将元表注册到lua全局表LUA_REGISTRYINDEX中，然后就会执行SetMtLink方法，通过UClass获取父类，然后通过元表中的__index和__newindex来完成继承关系。
 - lua是怎么调用到UObject的方法的呢？
+c侧会创建luaObject的user'da'ta
