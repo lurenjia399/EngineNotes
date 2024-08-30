@@ -13,6 +13,7 @@ void UAzureGameInstance::Init()
 bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 {
 	// 创建luaL_newstate。这个方法里会创建我们的_AzureWLuaImpl，然后调用Lua::Init方法。_AzureWLuaImpl是继承LuaImpl，LuaImpl是继承Lua的，在Lua::Init方法里面会执行OnPreInit和OnPostInit方法。在AzureWLuaImpl::OnPreInit这个方法里面就会执行每个类的Register。在_AzureWLuaImpl::OnPostInit这个方法里面会执行每个类的SetMtLink方法。
+	// 每个类的Register里面会注册类的静态导出方法，和将与类名相同的元表放到全局表中
 	InitLuaModule();
 }
 ```
