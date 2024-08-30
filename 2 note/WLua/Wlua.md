@@ -80,7 +80,7 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 			lua_pushstring(L, clsname);//ref,ud,key
 			// 从全局弱表中招键为clsname的原表，然后将原表放到栈顶
 			lua_rawget(L, LUA_REGISTRYINDEX); //ref,ud,mt
-			// 如果原表不存在赋值exist为false,如果原表存在break
+			// 如果名称为clsname原表不存在赋值exist为false,如果原表存在break
 			if (lua_isnil(L, -1))
 				exist = false;
 			else
