@@ -116,6 +116,16 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 }
 ```
 
+FLuaUtils::GetUObject
+```cpp
+UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex, const char * dummy,wLua::LuaUObjectUserData** ppUserData)
+{
+	return GetUObject(L, ParamIndex, ppUserData);
+}
+
+
+```
+
 # 关键点
 
 - lua是怎么拿到UObject对象的？
