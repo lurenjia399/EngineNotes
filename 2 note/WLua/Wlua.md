@@ -132,8 +132,19 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex, const char * dumm
 
 UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUserData** ppUserData,int * pStatus)
 {
-	// na'dao
+	// 拿到栈中ParamIndex索引处的userdata
 	wLua::LuaUObjectUserData * userdata = wLua::FLuaUtils::IsUObjectUserDataType(L, ParamIndex);
+	// 将userdata赋值到外部
+	if (ppUserData)
+		*ppUserData = userdata;
+	// 如果Object不存在了，就返回nullptr
+	UObject* Obj = userdata->uobj;
+	if (!Obj)
+	{
+		if (pStatus)
+			*pStatus = NullUObject;
+		return nullptr;
+	}
 }
 
 ```
