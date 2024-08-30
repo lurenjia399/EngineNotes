@@ -1,4 +1,4 @@
-在GameInstance里
+# 初始化
 
 ```cpp
 void UAzureGameInstance::Init()
@@ -17,7 +17,7 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 	InitLuaModule();
 }
 ```
-
+# 蓝图中绑定lua文件
 这个图显示的是UObject的初始化，在InitLuaActor方法中的第二个参数就是我们在蓝图里写的lua文件路径
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202408291046828.png)
 
