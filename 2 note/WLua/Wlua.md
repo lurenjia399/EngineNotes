@@ -37,7 +37,7 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	userdata->SetUserDataValue(L,-2);//uobj
 }
 ```
-
+# 通过UObject返回LuaObject
 FLuaUtils::ReturnUObject
 ```cpp
 LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
@@ -116,7 +116,7 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		return userdata
 }
 ```
-
+# 通过LuaObject返回UObject
 FLuaUtils::GetUObject
 ```cpp
 /*
