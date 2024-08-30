@@ -122,9 +122,7 @@ FLuaUtils::GetUObject
 GetUObject函数用来从Lua对象返回对应的UObject对象。首先获取Lua对象对应的FLuaObjectReferencer对象 但是如果满足以下条件就需要从ScriptCreatedObjects表以及Lua弱表g_udref里移除对应的映射关系，并返回nullptr
 
 1.)LuaUObjectUserData的flag是DESTORY或者GC
-
 2.)FLuaObjectReferencer对象里的UObject和ScriptCreatedObjects表里的UObject不是同一个对象
-
 3.)FLuaObjectReferencer对象里的UObject处于被销毁状态（IsPendingKill为true）
 */
 UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex, const char * dummy,wLua::LuaUObjectUserData** ppUserData)
@@ -132,6 +130,11 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex, const char * dumm
 	return GetUObject(L, ParamIndex, ppUserData);
 }
 
+UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUserData** ppUserData,int * pStatus)
+{
+	// na'dao
+	wLua::LuaUObjectUserData * userdata = wLua::FLuaUtils::IsUObjectUserDataType(L, ParamIndex);
+}
 
 ```
 
