@@ -118,12 +118,13 @@ LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefTyp
 		lua_remove(L, -2); //ud
 		return userdata
 }
-															void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
-	{
-		lua_rawgeti(L, LUA_REGISTRYINDEX, regIndex + 1);
-		lua_pushlightuserdata(L, Obj); //ref,obj
-		lua_gettable(L, -2); //ref,ud
-	}
+// 尝试从注册表里找到UObject对应的
+void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
+{
+	lua_rawgeti(L, LUA_REGISTRYINDEX, regIndex + 1);
+	lua_pushlightuserdata(L, Obj); //ref,obj
+	lua_gettable(L, -2); //ref,ud
+}
 ```
 # 通过LuaObject返回UObject
 FLuaUtils::GetUObject
