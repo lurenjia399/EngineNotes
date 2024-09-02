@@ -34,6 +34,7 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	// 这个是把require(*inLuaModule)这个返回值，放到了栈里
 	lua_rawgeti(L, LUA_REGISTRYINDEX, inst);//uobj,obj
 	userdata->SetUserDataValue(L,-2);//uobj
+	// 后面还有一系列的方法，看上去是将UFunction宏标记的函数导出到lua的表中？
 }
 ```
 # 通过UObject返回LuaObject
