@@ -176,4 +176,4 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 > c侧会创建luaObject的userdata，和userdata的元表，然后lua侧会保存这个userdata，lua侧调用方法就是会调用到userdata中的元表里的方法，元表里的方法是在每个类的Register方法里静态注册的。
 
 - lua是怎么和c++交互的呢？
-> 总共分成了几部分，1 lua如何表示UObject对象。2 lua如何模拟UObject对象的继承关系。3 lua如何调用到UObject的方法。4 c++如何调用lua的方法。对于第一部分，
+> 总共分成了几部分，1 lua如何表示UObject对象。2 lua如何模拟UObject对象的继承关系。3 lua如何调用到UObject的方法。4 c++如何调用lua的方法。第一部分是通过c++
