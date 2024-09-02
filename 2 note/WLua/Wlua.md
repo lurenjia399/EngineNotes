@@ -1,4 +1,4 @@
-
+LUA_REGISTRYINDEX注册表解释，c代码可以访问，lua无法访问
 https://www.cnblogs.com/zsb517/p/6418929.html
 
 # 初始化
