@@ -19,6 +19,18 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 	// 每个类的SetMtLink方法，就是通过类的UClass找到父类，然后通过类的元表__index和__newIndex来决定父类，建立继承关系
 	InitLuaModule();
 }
+void Lua::OnPreInit(lua_State *L)
+{
+	wLua::initDynamic(L);
+	wLua_wLuaCore::Register(L);
+	wLua::LuaBaseStruct::Register(L);
+}
+
+void Lua::OnPostInit(lua_State* L)
+{
+	wLua_wLuaCore::SetMtLink(L);
+	wLua::LuaBaseStruct::SetMtLink(L);
+}
 ```
 # 蓝图中绑定lua文件
 这个图显示的是UObject的初始化，在InitLuaActor方法中的第二个参数就是我们在蓝图里写的lua文件路径
