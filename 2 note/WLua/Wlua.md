@@ -201,4 +201,4 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 > 总共分成了几部分，1 lua如何表示UObject对象。2 lua如何模拟UObject对象的继承关系。3 lua如何调用到UObject的方法。4 c++如何调用lua的方法。
 > 第一部分是c++通过UObject来创建userdata，然后通过UObject的UClass来创建元表，并将元表保存到_G全局表和register表中key都为UClassName，然后设置userdata的元表以及将userdata存到register表里，key为UObject的lightuserdata。第二部分是在GanmeInstance::Init方法里面，会进行wlua类的注册和SetMtLink，在注册的时候就是将导出的方法设置到元表里，然后将元表保存到_G全局表里和Registry表里，key都是类名称。SetMtLink就是将父类和子类的元表关联起来。
 
-> 首先是初始化的过程，是在GameInstance::Init方法里面，执行wlua类的注册，
+> 首先是初始化的过程，是在GameInstance::Init方法里面，执行wlua类的注册，将导出的方法全写到元表里，并将元表保存到_G全局表和register表里，key都是类名称，然后就通过
