@@ -197,10 +197,6 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 - lua是怎么调用到UObject的方法的呢？
 > c侧会创建luaObject的userdata，和userdata的元表，然后lua侧会保存这个userdata，lua侧调用方法就是会调用到userdata中的元表里的方法，元表里的方法是在每个类的Register方法里静态注册的。
 
-- lua是怎么和c++交互的呢？
-> 总共分成了几部分，1 lua如何表示UObject对象。2 lua如何模拟UObject对象的继承关系。3 lua如何调用到UObject的方法。4 c++如何调用lua的方法。
-> 第一部分是c++通过UObject来创建userdata，然后通过UObject的UClass来创建元表，并将元表保存到_G全局表和register表中key都为UClassName，然后设置userdata的元表以及将userdata存到register表里，key为UObject的lightuserdata。第二部分是在GanmeInstance::Init方法里面，会进行wlua类的注册和SetMtLink，在注册的时候就是将导出的方法设置到元表里，然后将元表保存到_G全局表里和Registry表里，key都是类名称。SetMtLink就是将父类和子类的元表关联起来。
-
 > 第一部分是初始化的过程，是在GameInstance::Init方法里面，执行wlua类的注册，将静态导出的方法全写到元表里，并将元表保存到_G全局表和register表里，key都是类名称。然后就是往这个元表里填充信息，会将一个闭包给赋值__index字段，闭包的内容就是优先从类中找反射出来的属性或者方法找不到就是父类中找。
 > 第二部分就是lua通过userdata来表示UObject对象，c++创建userdata然后会通过UObject的名称从registry表里找对应元表，找到后就设置userdata的元表。并将userdata保存到registry表中，key为UObject对应的lightuserdata。并将UObject和userdata映射保存到管理类中，管理类重写了GC方法，在c++GC的时候找到UObject对应的lightuserdata，进而在registry表中清掉userdata。
 > 第三部分就是UObject和lua文件相关联使lua能够重写蓝图方法，需要在UObject蓝图中填上lua文件路径。然后会在SpawnActor的流程里面调用关联的方法InitLuaActor，在方法中首先通过require加载lua文件并将返回值保存到registry中，然后是遍历UClass中的UFunction，在lua文件中找同名的函数，清空原来UFunction上的字节码，然后替换成lua函数的。
