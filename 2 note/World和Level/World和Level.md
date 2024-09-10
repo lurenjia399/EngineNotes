@@ -2556,7 +2556,7 @@ end
 # 总结
 
 - 关卡是如何切换的？
-> 分成了客户端切换和服务器切换两部分，在服务器上切换是赋值World上的NextURL以及向客户端发送RPC切换关卡，在客户端上切换是赋值World上的TravelURL。真正的驱动切换流程是在World的UEngine::TickWorldTravel方法，这个方法分成了四部分，第一部分是无缝切换，第二部分就是读取NextURL，服务器上进行切换，第三部分是读取TravelURL，客户端进行切换，第四部分是处理PendingNetGame。第二部分会直接执行loadmap方法
+> 分成了客户端切换和服务器切换两部分，在服务器上切换是赋值World上的NextURL以及向客户端发送RPC切换关卡，在客户端上切换是赋值World上的TravelURL。真正的驱动切换流程是在World的UEngine::TickWorldTravel方法，这个方法分成了四部分，第一部分是无缝切换，第二部分就是读取NextURL，执行Browse方法最终执行loadmap方法，第三部分是读取TravelURL，执行Browse方法创建出PendingNetGame，第四部分是处理PendingNetGame。
 - 流式关卡是怎么切换的？
 
 
