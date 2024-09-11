@@ -40,7 +40,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -107,7 +107,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/网络/网络.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -124,7 +124,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/网络/网络.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -147,7 +147,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/World和Level/World和Level.md"
+                "file": "2 note/网络/网络.md"
               }
             }
           }
@@ -168,7 +168,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "b25851911a376b49",
+  "active": "72681d1e8deaee50",
   "lastOpenFiles": [
     "2 note/World和Level/World和Level.md",
     "1 索引/索引.md",
