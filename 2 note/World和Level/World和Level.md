@@ -2560,7 +2560,9 @@ end
 
 - loadmap都干什么了？
 > 第一步清理当前world：1 ShutdownWorldNetDriver, 2 FlushLevelStreaming, 3 销毁掉localplayer的playercontroller和其控制的pawn, 4 endplay world中的actor并从网络数组中移除, 5 删掉旧world,
-> 第二步加载新的world：1 通过URL先创建出world, 2 初始化world上数据, 3 如果是服务器会执行InitListen方法监听客户端链接, 4 初始化各种系统, 5 d
+> 第二步加载新的world：1 通过URL先创建出world, 2 初始化world上数据, 3 如果是服务器会执行InitListen方法监听客户端链接, 4 初始化各种系统, 5 地图切换完成
+
+
 - 流式关卡是怎么切换的？
 
 
