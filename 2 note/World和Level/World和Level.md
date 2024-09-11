@@ -2563,6 +2563,7 @@ end
 > 第二步加载新的world：1 通过URL先创建出world, 2 初始化world上数据, 3 如果是服务器会执行InitListen方法监听客户端链接, 4 初始化各种系统, 5 地图切换完成
 
 - 流式关卡是怎么切换的？
+> 整体上分成两部分，一部分是创建streamingLevel，一部分是StreamingLevel的状态切换
 > 
 > StreamingLevel的触发有三种情况，
 > 1 使用streamingVolume的形式：这个就是在场景中布置Volume，在world::tick中判断playerController的viewtarget和Volume的距离，如果在Volume中就改变三个标志位，ShouldBeVisible，ShouldBeLoaded，ShouldBeBlockOnLoad。
