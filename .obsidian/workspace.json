@@ -39,7 +39,8 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -167,10 +168,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3f043423e596d462",
+  "active": "b25851911a376b49",
   "lastOpenFiles": [
-    "1 索引/索引.md",
     "2 note/World和Level/World和Level.md",
+    "1 索引/索引.md",
     "2 note/网络/网络.md",
     "2 note/WLua/Wlua.md",
     "2 note/资源管理/未命名.md",
