@@ -2563,5 +2563,5 @@ end
 > 第二步加载新的world：1 通过URL先创建出world, 2 初始化world上数据, 3 如果是服务器会执行InitListen方法监听客户端链接, 4 初始化各种系统, 5 地图切换完成
 
 - 流式关卡是怎么切换的？
-> 
+> StreamingLevel的触发有三种情况，使用streamingVolume的形式在关卡中放置
 
