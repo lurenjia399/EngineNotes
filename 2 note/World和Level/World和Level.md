@@ -2567,4 +2567,5 @@ end
 > 1 使用streamingVolume的形式：这个就是在场景中布置Volume，在world::tick中判断playerController的viewtarget和Volume的距离，如果在Volume中就改变三个标志位，ShouldBeVisible，ShouldBeLoaded，ShouldBeBlockOnLoad。
 > 2 使用WoldComposition的方式，在worldComposition初始化的时候，他会遍历主关卡所在的文件夹，把其余关卡全加载成tilestreaminglevel的形式然后保存到数组中并把这些streaminglevel也添加到world的streaminglevel数组中。他会在world::tick中判断玩家和level之间的距离，然后将满足距离的level显示，不满足距离的level隐藏。
 > 3 蓝图有个接口，能直接显示streaminglevel，内部也是改变三个标志位。
+> 
 
