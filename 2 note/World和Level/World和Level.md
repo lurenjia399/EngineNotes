@@ -2572,5 +2572,5 @@ end
 > 3 蓝图有个接口，能直接显示streaminglevel，内部也是改变三个标志位。
 
 - 应用
-> 
+> uiscene：首先根据配置知道需要加载的关卡是哪个，然后将其加载成streamingLevel的形式，将streaminglevel添加到world的consider数组中，然后就是设置streamingLevel的三个标志位，ShouldBeVisiable,ShouldBeLoaded,ShouldBe
 
