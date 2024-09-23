@@ -364,7 +364,7 @@ void UGameInstance::InitializeStandalone(const FName InPackageName, UPackage* In
 	WorldContext->OwningGameInstance = this;
 
 	// In standalone create a dummy world from the beginning to avoid issues of not having a world until LoadMap gets us our real world
-	// 第二步，创建DummyWorld，虚假的World，知道LoadMap加在真正的world
+	// 第二步，创建DummyWorld，虚假的World，直到LoadMap加在真正的world
 	UWorld* DummyWorld = UWorld::CreateWorld(EWorldType::Game, false, InPackageName, InWorldPackage);
 	DummyWorld->SetGameInstance(this);
 	WorldContext->SetCurrentWorld(DummyWorld);
