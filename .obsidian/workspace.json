@@ -148,6 +148,8 @@
   },
   "active": "72681d1e8deaee50",
   "lastOpenFiles": [
+    "2 note/GarbageCollection/GC.md",
+    "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/UClass/UClass.md",
     "2 note/WLua/Wlua.md",
     "2 note/World和Level/World和Level.md",
@@ -156,7 +158,6 @@
     "1 索引/索引.md",
     "2 note/资源管理/未命名.md",
     "2 note/Actor逻辑/Actor.md",
-    "2 note/GarbageCollection/GC.md",
     "2 note/UObject构造流程/UObject.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/未命名.md",
@@ -171,7 +172,6 @@
     "2 note/interface",
     "2 note/网络/未命名.md",
     "2 note/网络/网络.mdj",
-    "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/UPlayer,PlayerController"
   ]
 }
