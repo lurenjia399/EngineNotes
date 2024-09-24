@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
                 "mode": "source",
                 "source": false
               }
@@ -97,7 +97,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,7 +114,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/World和Level/World和Level.md",
+                "file": "2 note/Tick逻辑/Tick逻辑.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -137,7 +137,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/World和Level/World和Level.md"
+                "file": "2 note/Tick逻辑/Tick逻辑.md"
               }
             }
           }
@@ -160,15 +160,15 @@
   },
   "active": "3f043423e596d462",
   "lastOpenFiles": [
-    "2 note/WLua/Wlua.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
+    "2 note/World和Level/World和Level.md",
+    "2 note/WLua/Wlua.md",
     "2 note/UClass/UClass.md",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/SCS 和 CDO/未命名.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
     "2 note/Actor逻辑/Actor.md",
     "2 note/特效系统/特效系统Cascade.md",
-    "2 note/World和Level/World和Level.md",
     "2 note/网络/网络.md",
     "1 索引/索引.md",
     "2 note/资源管理/未命名.md",
