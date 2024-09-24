@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/WLua/Wlua.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/WLua/Wlua.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/WLua/Wlua.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/WLua/Wlua.md"
+                "file": "2 note/World和Level/World和Level.md"
               }
             }
           }
@@ -148,11 +148,11 @@
   },
   "active": "72681d1e8deaee50",
   "lastOpenFiles": [
+    "2 note/WLua/Wlua.md",
     "2 note/World和Level/World和Level.md",
     "2 note/网络/网络.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/UClass/UClass.md",
-    "2 note/WLua/Wlua.md",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/GarbageCollection/GC.md",
     "conflict-files-obsidian-git.md",
