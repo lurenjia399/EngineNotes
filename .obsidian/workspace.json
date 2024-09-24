@@ -13,20 +13,20 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               }
             }
           },
           {
-            "id": "72681d1e8deaee50",
+            "id": "c4f2db71d6379b44",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
-                "mode": "preview",
+                "file": "conflict-files-obsidian-git.md",
+                "mode": "source",
                 "source": false
               }
             }
@@ -97,7 +97,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,7 +114,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -137,7 +137,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/网络/网络.md"
+                "file": "2 note/World和Level/World和Level.md"
               }
             }
           }
@@ -160,20 +160,21 @@
   },
   "active": "3f043423e596d462",
   "lastOpenFiles": [
-    "2 note/WLua/Wlua.md",
-    "2 note/Tick逻辑/Tick逻辑.md",
-    "2 note/UPlayer,PlayerController/UPlayer.md",
+    "conflict-files-obsidian-git.md",
     "2 note/World和Level/World和Level.md",
     "2 note/UClass/UClass.md",
-    "2 note/SCS 和 CDO/未命名.md",
+    "2 note/WLua/Wlua.md",
+    "2 note/网络/网络.md",
+    "2 note/UPlayer,PlayerController/UPlayer.md",
+    "2 note/UObject构造流程/UObject.md",
+    "2 note/资源管理/未命名.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
+    "2 note/Tick逻辑/Tick逻辑.md",
+    "2 note/SCS 和 CDO/未命名.md",
     "2 note/Actor逻辑/Actor.md",
     "2 note/特效系统/特效系统Cascade.md",
-    "2 note/网络/网络.md",
     "1 索引/索引.md",
-    "2 note/资源管理/未命名.md",
     "2 note/GarbageCollection/GC.md",
-    "2 note/UObject构造流程/UObject.md",
     "2 note/未命名.md",
     "2 note/WLua",
     "2 note/Module/未命名.md",
@@ -182,7 +183,6 @@
     "UPlayer.md",
     "2 note/UObject构造流程",
     "2 note/资源管理",
-    "conflict-files-obsidian-git.md",
     "2 note/interface",
     "2 note/网络/未命名.md",
     "2 note/网络/网络.mdj",
