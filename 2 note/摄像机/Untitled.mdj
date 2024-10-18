@@ -315,7 +315,7 @@
 											"font": "Arial;13;1",
 											"left": 621,
 											"top": 383,
-											"width": 252.53515625,
+											"width": 288.6533203125,
 											"height": 13,
 											"text": "AzureCamAnimInst"
 										},
@@ -359,7 +359,7 @@
 									"font": "Arial;13;0",
 									"left": 616,
 									"top": 376,
-									"width": 262.53515625,
+									"width": 298.6533203125,
 									"height": 25,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGSnoXCpKGo35g="
@@ -399,7 +399,7 @@
 											"font": "Arial;13;0",
 											"left": 621,
 											"top": 406,
-											"width": 252.53515625,
+											"width": 288.6533203125,
 											"height": 13,
 											"text": "+CameraManager: AAzureCameraManager",
 											"horizontalAlignment": 0
@@ -419,9 +419,29 @@
 											"font": "Arial;13;0",
 											"left": 621,
 											"top": 421,
-											"width": 252.53515625,
+											"width": 288.6533203125,
 											"height": 13,
 											"text": "+OwningCharacter: AAzureCharacterBase",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGSno7NNKHu8EU=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGsDgA="
+											},
+											"model": {
+												"$ref": "AAAAAAGSno7NMKHrJDc="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 621,
+											"top": 436,
+											"width": 288.6533203125,
+											"height": 13,
+											"text": "+OwningCharacterAnimInst: UAzureAnimInstance",
 											"horizontalAlignment": 0
 										}
 									],
@@ -431,8 +451,8 @@
 									"font": "Arial;13;0",
 									"left": 616,
 									"top": 401,
-									"width": 262.53515625,
-									"height": 38
+									"width": 298.6533203125,
+									"height": 53
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -448,8 +468,8 @@
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
 									"left": 616,
-									"top": 439,
-									"width": 262.53515625,
+									"top": 454,
+									"width": 298.6533203125,
 									"height": 10
 								},
 								{
@@ -498,8 +518,8 @@
 							"containerChangeable": true,
 							"left": 616,
 							"top": 376,
-							"width": 262.53515625,
-							"height": 73,
+							"width": 298.6533203125,
+							"height": 88,
 							"nameCompartment": {
 								"$ref": "AAAAAAGSnoXCpKGn6nw="
 							},
@@ -575,6 +595,15 @@
 							},
 							"name": "OwningCharacter",
 							"type": "AAzureCharacterBase"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGSno7NMKHrJDc=",
+							"_parent": {
+								"$ref": "AAAAAAGSnoXCpKGk1I8="
+							},
+							"name": "OwningCharacterAnimInst",
+							"type": "UAzureAnimInstance"
 						}
 					]
 				}
