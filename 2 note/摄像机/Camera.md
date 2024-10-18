@@ -62,7 +62,7 @@ void AAzureCameraManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	// 将创建的不同viewMode的SubObjectdo
+	// 将创建的不同viewMode的SubObject都添加到ActorComponents里
 	TArray<UActorComponent*> ActorComponents;
 	GetComponents(UAzurePlayerCameraViewModeComponentBase::StaticClass(), ActorComponents);
 	for (UActorComponent* ActorComponent : ActorComponents)
