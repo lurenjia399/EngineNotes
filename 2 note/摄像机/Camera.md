@@ -26,6 +26,7 @@ void APlayerController::PostInitializeComponents()
 
 	// 看注释说是，还不能用需要初始化？
 	bPlayerIsWaiting = true;
+	// 设置当前StateName
 	StateName = NAME_Spectating; // Don't use ChangeState, because we want to defer spawning the SpectatorPawn until the Player is received
 }
 ```
