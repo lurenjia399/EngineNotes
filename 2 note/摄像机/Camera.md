@@ -73,7 +73,7 @@ void AAzureCameraManager::PostInitializeComponents()
 			AddNewViewModeComponent(ViewModeComponentBase, ViewModeComponentBase->CameraViewModeBaseData.ViewModeIndex);
 		}
 	}
-	// 
+	// 在非uds情况，创建CameraAnimInst，动画蓝图
 	bNeedCamAnimInst = !UKismetSystemLibrary::IsDedicatedServer(this);
 	if (bNeedCamAnimInst)
 	{
