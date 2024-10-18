@@ -16,14 +16,15 @@ void APlayerController::PostInitializeComponents()
 	// ResetCameraMode
 	ResetCameraMode(); 
 
-	// 这边是在Client下创建一个
+	// 这边是在Client下创建一个HUD，好像不知道HUD是干嘛的
 	if ( GetNetMode() == NM_Client )
 	{
 		SpawnDefaultHUD();
 	}
-
+	// 创建CheatManager，作弊Manager。干嘛的不清楚
 	AddCheats();
 
+	// 看注释说是，还不能用需要初始化？
 	bPlayerIsWaiting = true;
 	StateName = NAME_Spectating; // Don't use ChangeState, because we want to defer spawning the SpectatorPawn until the Player is received
 }
