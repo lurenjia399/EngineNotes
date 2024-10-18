@@ -35,6 +35,7 @@ void APlayerController::PostInitializeComponents()
 
 ## AzureCameraManager 创建
 
+### 1 构造函数
 ```cpp
 AAzureCameraManager::AAzureCameraManager(const FObjectInitializer& ObjectInitializer)  
     : Super(ObjectInitializer)  
@@ -56,7 +57,7 @@ AAzureCameraManager::AAzureCameraManager(const FObjectInitializer& ObjectInitial
   
 }
 ```
-
+### InitializeComponents
 ```cpp
 void AAzureCameraManager::PostInitializeComponents()
 {
@@ -80,4 +81,27 @@ void AAzureCameraManager::PostInitializeComponents()
 		InitCamAnimInst();
 	}
 }
+```
+### 3 lua侧的ReceiveBeginPlay
+```lua
+def.method().ReceiveBeginPlay = function(self)
+    self.Super:ReceiveBeginPlay()
+
+    local bDedicatedServer = UEGlobal.KismetSystemLibrary.IsDedicatedServer(self)
+    if not bDedicatedServer then
+	    -- 初始化CameraMangaer中的数据
+        self:InitCameraManager()
+
+        self.bFinishReceiveBeginPlay = true
+        --Cpp.SetObjectTimerForNextTick(self, function()
+            LUA_LOG(LogCamera, "ReceiveBeginPlay: bFinishReceiveBeginPlay = true")
+
+            self:OnInit()
+
+            local AzureEventMgr = require "Runtime.Event.AzureEventMgr"
+            local CameraEvents = require "Event.CameraEvents"
+            AzureEventMgr.EventManager:raiseEvent(self, CameraEvents.CameraInitEvent())
+        --end)
+    end
+end
 ```
