@@ -86,22 +86,15 @@ void AAzureCameraManager::PostInitializeComponents()
 ```lua
 def.method().ReceiveBeginPlay = function(self)
     self.Super:ReceiveBeginPlay()
-
+    -- 非服务器情况下走
     local bDedicatedServer = UEGlobal.KismetSystemLibrary.IsDedicatedServer(self)
     if not bDedicatedServer then
 	    -- 初始化CameraMangaer中的self.CameraStateMaps。key是不同ViewMode的索引，value是不同的lua配置文件
         self:InitCameraManager()
-
+		-- 设置标志位，完成beginplay的创建
         self.bFinishReceiveBeginPlay = true
-        --Cpp.SetObjectTimerForNextTick(self, function()
-            LUA_LOG(LogCamera, "ReceiveBeginPlay: bFinishReceiveBeginPlay = true")
-
-            self:OnInit()
-
-            local AzureEventMgr = require "Runtime.Event.AzureEventMgr"
-            local CameraEvents = require "Event.CameraEvents"
-            AzureEventMgr.EventManager:raiseEvent(self, CameraEvents.CameraInitEvent())
-        --end)
+		-- 广播CameraInitEvent事件
+		AzureEventMgr.EventManager:raiseEvent(self, CameraEvents.CameraInitEvent())
     end
 end
 ```
