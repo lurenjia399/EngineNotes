@@ -57,7 +57,7 @@ AAzureCameraManager::AAzureCameraManager(const FObjectInitializer& ObjectInitial
   
 }
 ```
-### InitializeComponents
+### 2 InitializeComponents
 ```cpp
 void AAzureCameraManager::PostInitializeComponents()
 {
@@ -97,4 +97,25 @@ def.method().ReceiveBeginPlay = function(self)
 		AzureEventMgr.EventManager:raiseEvent(self, CameraEvents.CameraInitEvent())
     end
 end
+```
+
+### 4 Tick
+```cpp
+void AAzureCameraManager::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	//先更新相机的自定义动画效果。
+	if (bNeedCamAnimInst && CamManTickAnim != 0)
+	{
+		CheckCamAnimInst();
+		UpdateCamAnimInst(DeltaSeconds);
+	}
+	UpdateCameraEffects(DeltaSeconds);
+	bCachedCameraUpdateResult = BlueprintUpdateCameraCPP(DeltaSeconds);
+
+	PostUpdateCameraCPP(DeltaSeconds);
+
+	OnCameraUpdatedSet.Broadcast(this, DeltaSeconds);
+}
 ```
