@@ -51,7 +51,8 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": -240,
+											"left": -384,
+											"top": -528,
 											"height": 13
 										},
 										{
@@ -64,8 +65,8 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;1",
-											"left": 341,
-											"top": 455,
+											"left": 269,
+											"top": 191,
 											"width": 458.72607421875,
 											"height": 13,
 											"text": "AAzureCameraManager"
@@ -81,7 +82,8 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": -240,
+											"left": -384,
+											"top": -528,
 											"width": 82.3798828125,
 											"height": 13,
 											"text": "(from Model)"
@@ -97,7 +99,8 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": -240,
+											"left": -384,
+											"top": -528,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
@@ -106,8 +109,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 336,
-									"top": 448,
+									"left": 264,
+									"top": 184,
 									"width": 468.72607421875,
 									"height": 25,
 									"stereotypeLabel": {
@@ -146,11 +149,31 @@
 											"fillColor": "#a8d9db",
 											"fontColor": "#4a3575",
 											"font": "Arial;13;0",
-											"left": 341,
-											"top": 478,
+											"left": 269,
+											"top": 214,
 											"width": 458.72607421875,
 											"height": 13,
 											"text": "+ViewModeMap: TMap<int, UAzurePlayerCameraViewModeComponentBase*>",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGSnoYBRKHS0ww=",
+											"_parent": {
+												"$ref": "AAAAAAGSnmzUD6F5Q3c="
+											},
+											"model": {
+												"$ref": "AAAAAAGSnoYBQKHPJGE="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 269,
+											"top": 229,
+											"width": 458.72607421875,
+											"height": 13,
+											"text": "+CamAnimInst: AzureCamAnimInst",
 											"horizontalAlignment": 0
 										}
 									],
@@ -158,10 +181,10 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 336,
-									"top": 473,
+									"left": 264,
+									"top": 209,
 									"width": 468.72607421875,
-									"height": 23
+									"height": 38
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -176,8 +199,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": 336,
-									"top": 496,
+									"left": 264,
+									"top": 247,
 									"width": 468.72607421875,
 									"height": 10
 								},
@@ -195,7 +218,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": -120,
+									"left": -192,
+									"top": -264,
 									"width": 10,
 									"height": 10
 								},
@@ -213,7 +237,8 @@
 									"fillColor": "#a8d9db",
 									"fontColor": "#4a3575",
 									"font": "Arial;13;0",
-									"left": -120,
+									"left": -192,
+									"top": -264,
 									"width": 10,
 									"height": 10
 								}
@@ -223,10 +248,10 @@
 							"fontColor": "#4a3575",
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 336,
-							"top": 448,
+							"left": 264,
+							"top": 184,
 							"width": 468.72607421875,
-							"height": 58,
+							"height": 73,
 							"nameCompartment": {
 								"$ref": "AAAAAAGSnmzUDqF0sgo="
 							},
@@ -241,6 +266,254 @@
 							},
 							"templateParameterCompartment": {
 								"$ref": "AAAAAAGSnmzUD6F8O28="
+							}
+						},
+						{
+							"_type": "UMLClassView",
+							"_id": "AAAAAAGSnoXCpKGmznc=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"model": {
+								"$ref": "AAAAAAGSnoXCpKGk1I8="
+							},
+							"subViews": [
+								{
+									"_type": "UMLNameCompartmentView",
+									"_id": "AAAAAAGSnoXCpKGn6nw=",
+									"_parent": {
+										"$ref": "AAAAAAGSnoXCpKGmznc="
+									},
+									"model": {
+										"$ref": "AAAAAAGSnoXCpKGk1I8="
+									},
+									"subViews": [
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGSnoXCpKGo35g=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGn6nw="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 80,
+											"top": -544,
+											"height": 13
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGSnoXCpKGp7GM=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGn6nw="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;1",
+											"left": 621,
+											"top": 383,
+											"width": 252.53515625,
+											"height": 13,
+											"text": "AzureCamAnimInst"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGSnoXCpKGqZ8E=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGn6nw="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 80,
+											"top": -544,
+											"width": 73.67724609375,
+											"height": 13,
+											"text": "(from Model)"
+										},
+										{
+											"_type": "LabelView",
+											"_id": "AAAAAAGSnoXCpKGrRE0=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGn6nw="
+											},
+											"visible": false,
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 80,
+											"top": -544,
+											"height": 13,
+											"horizontalAlignment": 1
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 616,
+									"top": 376,
+									"width": 262.53515625,
+									"height": 25,
+									"stereotypeLabel": {
+										"$ref": "AAAAAAGSnoXCpKGo35g="
+									},
+									"nameLabel": {
+										"$ref": "AAAAAAGSnoXCpKGp7GM="
+									},
+									"namespaceLabel": {
+										"$ref": "AAAAAAGSnoXCpKGqZ8E="
+									},
+									"propertyLabel": {
+										"$ref": "AAAAAAGSnoXCpKGrRE0="
+									}
+								},
+								{
+									"_type": "UMLAttributeCompartmentView",
+									"_id": "AAAAAAGSnoXCpKGsDgA=",
+									"_parent": {
+										"$ref": "AAAAAAGSnoXCpKGmznc="
+									},
+									"model": {
+										"$ref": "AAAAAAGSnoXCpKGk1I8="
+									},
+									"subViews": [
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGSnoriqaHbvKo=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGsDgA="
+											},
+											"model": {
+												"$ref": "AAAAAAGSnorioqHY/Ts="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 621,
+											"top": 406,
+											"width": 252.53515625,
+											"height": 13,
+											"text": "+CameraManager: AAzureCameraManager",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGSnos0ZaHmhUU=",
+											"_parent": {
+												"$ref": "AAAAAAGSnoXCpKGsDgA="
+											},
+											"model": {
+												"$ref": "AAAAAAGSnos0YaHjwjs="
+											},
+											"lineColor": "#457b9d",
+											"fillColor": "#a8d9db",
+											"fontColor": "#4a3575",
+											"font": "Arial;13;0",
+											"left": 621,
+											"top": 421,
+											"width": 252.53515625,
+											"height": 13,
+											"text": "+OwningCharacter: AAzureCharacterBase",
+											"horizontalAlignment": 0
+										}
+									],
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 616,
+									"top": 401,
+									"width": 262.53515625,
+									"height": 38
+								},
+								{
+									"_type": "UMLOperationCompartmentView",
+									"_id": "AAAAAAGSnoXCpaGttkE=",
+									"_parent": {
+										"$ref": "AAAAAAGSnoXCpKGmznc="
+									},
+									"model": {
+										"$ref": "AAAAAAGSnoXCpKGk1I8="
+									},
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 616,
+									"top": 439,
+									"width": 262.53515625,
+									"height": 10
+								},
+								{
+									"_type": "UMLReceptionCompartmentView",
+									"_id": "AAAAAAGSnoXCpaGuBRA=",
+									"_parent": {
+										"$ref": "AAAAAAGSnoXCpKGmznc="
+									},
+									"model": {
+										"$ref": "AAAAAAGSnoXCpKGk1I8="
+									},
+									"visible": false,
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 40,
+									"top": -272,
+									"width": 10,
+									"height": 10
+								},
+								{
+									"_type": "UMLTemplateParameterCompartmentView",
+									"_id": "AAAAAAGSnoXCpaGvdhE=",
+									"_parent": {
+										"$ref": "AAAAAAGSnoXCpKGmznc="
+									},
+									"model": {
+										"$ref": "AAAAAAGSnoXCpKGk1I8="
+									},
+									"visible": false,
+									"lineColor": "#457b9d",
+									"fillColor": "#a8d9db",
+									"fontColor": "#4a3575",
+									"font": "Arial;13;0",
+									"left": 40,
+									"top": -272,
+									"width": 10,
+									"height": 10
+								}
+							],
+							"lineColor": "#457b9d",
+							"fillColor": "#a8d9db",
+							"fontColor": "#4a3575",
+							"font": "Arial;13;0",
+							"containerChangeable": true,
+							"left": 616,
+							"top": 376,
+							"width": 262.53515625,
+							"height": 73,
+							"nameCompartment": {
+								"$ref": "AAAAAAGSnoXCpKGn6nw="
+							},
+							"attributeCompartment": {
+								"$ref": "AAAAAAGSnoXCpKGsDgA="
+							},
+							"operationCompartment": {
+								"$ref": "AAAAAAGSnoXCpaGttkE="
+							},
+							"receptionCompartment": {
+								"$ref": "AAAAAAGSnoXCpaGuBRA="
+							},
+							"templateParameterCompartment": {
+								"$ref": "AAAAAAGSnoXCpaGvdhE="
 							}
 						}
 					]
@@ -261,6 +534,47 @@
 							},
 							"name": "ViewModeMap",
 							"type": "TMap<int, UAzurePlayerCameraViewModeComponentBase*>"
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGSnoYBQKHPJGE=",
+							"_parent": {
+								"$ref": "AAAAAAGSnmzUDaFxyhQ="
+							},
+							"name": "CamAnimInst",
+							"type": {
+								"$ref": "AAAAAAGSnoXCpKGk1I8="
+							}
+						}
+					]
+				},
+				{
+					"_type": "UMLClass",
+					"_id": "AAAAAAGSnoXCpKGk1I8=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "AzureCamAnimInst",
+					"attributes": [
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGSnorioqHY/Ts=",
+							"_parent": {
+								"$ref": "AAAAAAGSnoXCpKGk1I8="
+							},
+							"name": "CameraManager",
+							"type": {
+								"$ref": "AAAAAAGSnmzUDaFxyhQ="
+							}
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGSnos0YaHjwjs=",
+							"_parent": {
+								"$ref": "AAAAAAGSnoXCpKGk1I8="
+							},
+							"name": "OwningCharacter",
+							"type": "AAzureCharacterBase"
 						}
 					]
 				}
