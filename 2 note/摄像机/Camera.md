@@ -32,4 +32,50 @@ void APlayerController::PostInitializeComponents()
 ```
 # 项目中
  在BP_AzureRuntimeGameMode 中设置 BP_RuntimePlayerController，然后在PlayerController中设置的AzureCameraManagerBP。并且用AzurePlayerCameraManager.lua重写。
- 
+
+## AzureCameraManager 创建
+
+```cpp
+AAzureCameraManager::AAzureCameraManager(const FObjectInitializer& ObjectInitializer)  
+    : Super(ObjectInitializer)  
+{  
+    // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.  
+    PrimaryActorTick.bCanEverTick = true;  
+  
+    // TickGroup改到TG_PostPhysic，避免GameThread取Curve值卡顿  
+    PrimaryActorTick.TickGroup = ETickingGroup::TG_PostPhysics;  
+    PrimaryActorTick.EndTickGroup = ETickingGroup::TG_PostPhysics;  
+	// 创建了SubObject，都是不同模式的
+    ViewModeComponentTPS = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentTPS>(TEXT("ViewModeComponentTPS"));  
+    ViewModeComponentFPS = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentFPS>(TEXT("ViewModeComponentFPS"));  
+    ViewModeComponentVehicle = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentVehicle>(TEXT("ViewModeComponentVehicle"));  
+    ViewModeComponentFixed = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentFixed>(TEXT("ViewModeComponentFixed"));  
+    ViewModeComponentFree = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentFree>(TEXT("ViewModeComponentFree"));  
+    ViewModeComponentCustom = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentCustom>(TEXT("ViewModeComponentCustom"));  
+    ViewModeComponentHome = CreateDefaultSubobject<UAzurePlayerCameraViewModeComponentHome>(TEXT("ViewModeComponentHome"));  
+  
+}
+```
+
+```cpp
+void AAzureCameraManager::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	// 将创建的不同viewMode的SubObjectdo
+	TArray<UActorComponent*> ActorComponents;
+	GetComponents(UAzurePlayerCameraViewModeComponentBase::StaticClass(), ActorComponents);
+	for (UActorComponent* ActorComponent : ActorComponents)
+	{
+		if (UAzurePlayerCameraViewModeComponentBase* ViewModeComponentBase = Cast<UAzurePlayerCameraViewModeComponentBase>(ActorComponent))
+		{
+			AddNewViewModeComponent(ViewModeComponentBase, ViewModeComponentBase->CameraViewModeBaseData.ViewModeIndex);
+		}
+	}
+	bNeedCamAnimInst = !UKismetSystemLibrary::IsDedicatedServer(this);
+	if (bNeedCamAnimInst)
+	{
+		InitCamAnimInst();
+	}
+}
+```
