@@ -89,7 +89,7 @@ def.method().ReceiveBeginPlay = function(self)
 
     local bDedicatedServer = UEGlobal.KismetSystemLibrary.IsDedicatedServer(self)
     if not bDedicatedServer then
-	    -- 初始化CameraMangaer中的数据
+	    -- 初始化CameraMangaer中的self.CameraStateMaps。key是不同ViewMode的索引，value是不同的lua配置文件
         self:InitCameraManager()
 
         self.bFinishReceiveBeginPlay = true
