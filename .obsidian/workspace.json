@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/动画/动画.md",
+                "file": "2 note/摄像机/Camera.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/动画/动画.md",
+                "file": "2 note/摄像机/Camera.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "2 note/动画/动画.md",
+                "file": "2 note/摄像机/Camera.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "2 note/动画/动画.md"
+                "file": "2 note/摄像机/Camera.md"
               }
             }
           }
@@ -146,10 +146,12 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "72681d1e8deaee50",
+  "active": "87d4a4ddb3c55608",
   "lastOpenFiles": [
-    "conflict-files-obsidian-git.md",
     "2 note/动画/动画.md",
+    "2 note/摄像机/Camera.md",
+    "2 note/摄像机",
+    "conflict-files-obsidian-git.md",
     "2 note/网络/网络.md",
     "2 note/动画",
     "2 note/Tick逻辑/Tick逻辑.md",
