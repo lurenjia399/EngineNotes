@@ -7,12 +7,16 @@ void APlayerController::PostInitializeComponents()
 	if ( IsValid(this) && (GetNetMode() != NM_Client) )
 	{
 		// create a new player replication info
+		// 这个是在uds上创建playerState，playerState是需要同步到客户端的
 		InitPlayerState();
 	}
 
+	// 创建我们的PlayerCameraManager
 	SpawnPlayerCameraManager();
+	// ResetCameraMode
 	ResetCameraMode(); 
 
+	// 这边是在Client下创建一个
 	if ( GetNetMode() == NM_Client )
 	{
 		SpawnDefaultHUD();
