@@ -106,12 +106,15 @@ void AAzureCameraManager::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	//先更新相机的自定义动画效果。
+	// 这里边应该是涉及了放技能的时候摄像机的移动
 	if (bNeedCamAnimInst && CamManTickAnim != 0)
 	{
 		CheckCamAnimInst();
 		UpdateCamAnimInst(DeltaSeconds);
 	}
+	// 摄像机的特效
 	UpdateCameraEffects(DeltaSeconds);
+	// 这个我看就是正儿八经的处理she'xian
 	bCachedCameraUpdateResult = BlueprintUpdateCameraCPP(DeltaSeconds);
 
 	PostUpdateCameraCPP(DeltaSeconds);
