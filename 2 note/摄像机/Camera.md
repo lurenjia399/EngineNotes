@@ -144,16 +144,15 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 	// ChangeViewModeValue 拿到当前ViewModel切换的比例，用于融合时候用
 	float ChangeViewModeValue = CalculateChangeViewModeValue();
 
-	//deprecated逻辑
-	UWorld* CurWorld = GetWorld();
 	//把上一帧的数据存起来
 	LastFrameCacheCameraLocation = CameraLocation;
 	LastFrameCacheCameraRotation = CameraRotation;
 	LastFrameCacheCameraFOV = CameraFOV;
 
-	//完成了初始化
+	// bFinishReceiveBeginPlay就是一个标志位，蓝图走到了BeginPlay就会赋值这个标志位
 	if (bFinishReceiveBeginPlay)
 	{
+		// 提前声明的参数，分别是当前ViewMode的信息和上一帧ViewMode的信息
 		FVector CurViewModeLocation = FVector::ZeroVector;
 		FRotator CurViewModeRotation = FRotator::ZeroRotator;
 		float CurViewModeFOV = 90;
@@ -162,7 +161,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 		FRotator LastViewModeRotation = FRotator::ZeroRotator;
 		float LastViewModeFOV = 90;
 
-		//计算当前ViewMode
+		// 计算当前ViewMode，通过对dang'q
 		UAzurePlayerCameraViewModeComponentBase* CurViewModeComponent = GetCurViewModeReference();
 		if (CurViewModeComponent)
 		{
