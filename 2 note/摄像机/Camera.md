@@ -131,7 +131,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 {
 	PlayerCameraManagerDeltaTime = DeltaTime;
 
-	// 
+	// 更新切换时间，ChangeViewModeTimeCur表示ViewModel已经切换了多少时间，ChangeViewModeTimeTotal表示ViewModel切换所需的时间
 	if (ChangeViewModeTimeCur < ChangeViewModeTimeTotal)
 	{
 		ChangeViewModeTimeCur += DeltaTime;
@@ -141,7 +141,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 		ChangeViewModeTimeCur = ChangeViewModeTimeTotal;
 		OnChangeViewModeEnd();
 	}
-
+	// ChangeViewModeValue 拿到当前ViewModel切换的比例，用于融合时候用
 	float ChangeViewModeValue = CalculateChangeViewModeValue();
 
 	//deprecated逻辑
