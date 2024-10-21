@@ -204,7 +204,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 			}
 		}
 
-		// 上边都是对当前ViewMode和切换前ViewMode处理。这里是执行ViewMode改变的具体部分
+		// 上边都是对当前ViewMode和切换前ViewMode处理。这里是执行ViewMode改变的具体部分。也就是某一帧直接切换ViewMode为新，下一帧及其以后帧开始由切换前ViewMode插值到新的ViewMode
 		if (bCanChangeViewMode)
 		{
 			if (CurViewMode != DesiredViewMode)
