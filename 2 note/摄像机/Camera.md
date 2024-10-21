@@ -122,3 +122,113 @@ void AAzureCameraManager::Tick(float DeltaSeconds)
 	OnCameraUpdatedSet.Broadcast(this, DeltaSeconds);
 }
 ```
+
+BlueprintUpdateCameraCPP方法
+```cpp
+/*
+*/
+bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
+{
+	PlayerCameraManagerDeltaTime = DeltaTime;
+
+	// 
+	if (ChangeViewModeTimeCur < ChangeViewModeTimeTotal)
+	{
+		ChangeViewModeTimeCur += DeltaTime;
+	}
+	if (ChangeViewModeTimeCur > ChangeViewModeTimeTotal)
+	{
+		ChangeViewModeTimeCur = ChangeViewModeTimeTotal;
+		OnChangeViewModeEnd();
+	}
+
+	float ChangeViewModeValue = CalculateChangeViewModeValue();
+
+	//deprecated逻辑
+	UWorld* CurWorld = GetWorld();
+	//把上一帧的数据存起来
+	LastFrameCacheCameraLocation = CameraLocation;
+	LastFrameCacheCameraRotation = CameraRotation;
+	LastFrameCacheCameraFOV = CameraFOV;
+
+	//完成了初始化
+	if (bFinishReceiveBeginPlay)
+	{
+		FVector CurViewModeLocation = FVector::ZeroVector;
+		FRotator CurViewModeRotation = FRotator::ZeroRotator;
+		float CurViewModeFOV = 90;
+
+		FVector LastViewModeLocation = FVector::ZeroVector;
+		FRotator LastViewModeRotation = FRotator::ZeroRotator;
+		float LastViewModeFOV = 90;
+
+		//计算当前ViewMode
+		UAzurePlayerCameraViewModeComponentBase* CurViewModeComponent = GetCurViewModeReference();
+		if (CurViewModeComponent)
+		{
+			CurViewModeComponent->TickFunc(DeltaTime);
+			CurViewModeLocation = bCanChangeLocation ? CurViewModeComponent->GetCurCameraLocation() : LastFrameCacheCameraLocation;
+			CurViewModeRotation = bCanChangeRotation ? CurViewModeComponent->GetCurCameraRotation() : LastFrameCacheCameraRotation;
+			CurViewModeFOV = bCanChangeFOV ? CurViewModeComponent->GetCurCameraFOV() : LastFrameCacheCameraFOV;
+		}
+
+		UAzurePlayerCameraViewModeComponentBase* PrevViewModeComponent = nullptr;
+		if (ChangeViewModeValue < 1) //小于1说明状态切换不完全，还需要计算上一帧的ViewMode
+		{
+			//计算 LastViewMode
+			PrevViewModeComponent = GetViewModeReferenceByIndex(LastViewMode);
+			if (PrevViewModeComponent)
+			{
+				PrevViewModeComponent->TickFunc(DeltaTime);
+				LastViewModeLocation = bCanChangeLocation ? PrevViewModeComponent->GetCurCameraLocation() : LastFrameCacheCameraLocation;
+				LastViewModeRotation = bCanChangeRotation ? PrevViewModeComponent->GetCurCameraRotation() : LastFrameCacheCameraRotation;
+				LastViewModeFOV = bCanChangeFOV ? PrevViewModeComponent->GetCurCameraFOV() : LastFrameCacheCameraFOV;
+			}
+		}
+
+		CameraLocation = UKismetMathLibrary::VLerp(LastViewModeLocation, CurViewModeLocation, ChangeViewModeValue);
+		CameraRotation = LastViewModeRotation + ChangeViewModeValue * (CurViewModeRotation - LastViewModeRotation).GetNormalized();
+		CameraFOV = UKismetMathLibrary::Lerp(LastViewModeFOV, CurViewModeFOV, ChangeViewModeValue);
+
+
+		if (CurViewModeComponent && CurViewModeComponent->CameraViewModeBaseData.bCameraRotationSyncToController)
+		{
+			if (auto ch = GetCameraCharacter())
+			{
+				if (PrevViewModeComponent && PrevViewModeComponent->CameraViewModeBaseData.bCameraRotationSyncToController)
+				{
+					ch->SetControlRotation(CameraRotation);
+				}
+				else
+				{
+					ch->SetControlRotation(CurViewModeRotation);
+				}
+			}
+		}
+
+		//计算要切换的Viewmode
+		if (bCanChangeViewMode)
+		{
+			//如果当前和要切换的不一致，则得把要切换的算起来
+			if (CurViewMode != DesiredViewMode)
+			{
+				UAzurePlayerCameraViewModeComponentBase* DesiredViewModeComponent = GetDesiredViewModeReference();
+				if (DesiredViewModeComponent)
+				{
+					if (CurViewMode != DesiredViewMode)
+					{
+						DesiredViewModeComponent->TickFunc(DeltaTime);
+					}
+				}
+			}
+		}
+	}
+
+	CachedCameraModeLocation = CameraLocation;
+	CachedCameraModeRotation = CameraRotation;
+	CachedCameraModeFOV = CameraFOV;
+
+
+	return true;
+}
+```
