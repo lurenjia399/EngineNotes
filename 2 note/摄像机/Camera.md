@@ -188,7 +188,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 		CameraLocation = UKismetMathLibrary::VLerp(LastViewModeLocation, CurViewModeLocation, ChangeViewModeValue);
 		CameraRotation = LastViewModeRotation + ChangeViewModeValue * (CurViewModeRotation - LastViewModeRotation).GetNormalized();
 		CameraFOV = UKismetMathLibrary::Lerp(LastViewModeFOV, CurViewModeFOV, ChangeViewModeValue);
-		// 是否使用Contrller的旋转，如果当前ViewMode使用切换前ViewMode不使用，则直接设置旋转为当前ViewM
+		// 是否使用Contrller的旋转，如果当前ViewMode使用切换前ViewMode不使用，则直接设置旋转为当前ViewMode的旋转。如果当前ViewMode使用切换前ViewMode也使用，则设置插值出来的旋转
 		if (CurViewModeComponent && CurViewModeComponent->CameraViewModeBaseData.bCameraRotationSyncToController)
 		{
 			if (auto ch = GetCameraCharacter())
@@ -207,7 +207,6 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 		//计算要切换的Viewmode
 		if (bCanChangeViewMode)
 		{
-			//如果当前和要切换的不一致，则得把要切换的算起来
 			if (CurViewMode != DesiredViewMode)
 			{
 				UAzurePlayerCameraViewModeComponentBase* DesiredViewModeComponent = GetDesiredViewModeReference();
@@ -221,12 +220,10 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 			}
 		}
 	}
-
+	// 缓存下信息
 	CachedCameraModeLocation = CameraLocation;
 	CachedCameraModeRotation = CameraRotation;
 	CachedCameraModeFOV = CameraFOV;
-
-
 	return true;
 }
 ```
