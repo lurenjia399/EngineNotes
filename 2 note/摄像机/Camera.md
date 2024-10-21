@@ -184,12 +184,11 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 				LastViewModeFOV = bCanChangeFOV ? PrevViewModeComponent->GetCurCameraFOV() : LastFrameCacheCameraFOV;
 			}
 		}
-		// 将sh
+		// 将摄像机信息，对切换前信息和当前信息进行插值
 		CameraLocation = UKismetMathLibrary::VLerp(LastViewModeLocation, CurViewModeLocation, ChangeViewModeValue);
 		CameraRotation = LastViewModeRotation + ChangeViewModeValue * (CurViewModeRotation - LastViewModeRotation).GetNormalized();
 		CameraFOV = UKismetMathLibrary::Lerp(LastViewModeFOV, CurViewModeFOV, ChangeViewModeValue);
-
-
+		// 是否使用Contrller的旋转，如果当前ViewMode使用切换前ViewMode不使用，则直接设置旋转为当前ViewM
 		if (CurViewModeComponent && CurViewModeComponent->CameraViewModeBaseData.bCameraRotationSyncToController)
 		{
 			if (auto ch = GetCameraCharacter())
