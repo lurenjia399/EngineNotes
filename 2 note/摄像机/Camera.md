@@ -114,7 +114,7 @@ void AAzureCameraManager::Tick(float DeltaSeconds)
 	}
 	// 摄像机的特效
 	UpdateCameraEffects(DeltaSeconds);
-	// 这个我看就是正儿八经的处理she'xian
+	// 这个我看就是正儿八经的处理摄像机参数
 	bCachedCameraUpdateResult = BlueprintUpdateCameraCPP(DeltaSeconds);
 
 	PostUpdateCameraCPP(DeltaSeconds);
