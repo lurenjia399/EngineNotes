@@ -204,7 +204,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 			}
 		}
 
-		//计算要切换的Viewmode
+		// 上边都是对当前ViewMode和切换前ViewMode处理。这里是执行ViewMode改变的具体部分
 		if (bCanChangeViewMode)
 		{
 			if (CurViewMode != DesiredViewMode)
