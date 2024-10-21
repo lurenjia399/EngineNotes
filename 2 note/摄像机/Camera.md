@@ -161,7 +161,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 		FRotator LastViewModeRotation = FRotator::ZeroRotator;
 		float LastViewModeFOV = 90;
 
-		// 计算当前ViewMode，通过对dang'q
+		// 计算当前ViewMode，通过对当前ViewMode的Tick，计算出摄像机的信息
 		UAzurePlayerCameraViewModeComponentBase* CurViewModeComponent = GetCurViewModeReference();
 		if (CurViewModeComponent)
 		{
@@ -170,11 +170,11 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 			CurViewModeRotation = bCanChangeRotation ? CurViewModeComponent->GetCurCameraRotation() : LastFrameCacheCameraRotation;
 			CurViewModeFOV = bCanChangeFOV ? CurViewModeComponent->GetCurCameraFOV() : LastFrameCacheCameraFOV;
 		}
-
+		// ChangeViewModeValue 是当前切换ViewMode的比例，小于1就说明没有完全切换成功
 		UAzurePlayerCameraViewModeComponentBase* PrevViewModeComponent = nullptr;
-		if (ChangeViewModeValue < 1) //小于1说明状态切换不完全，还需要计算上一帧的ViewMode
+		if (ChangeViewModeValue < 1)
 		{
-			//计算 LastViewMode
+			// 计算切换前的ViewMode，通过对切换前ViewMode的Tick，计算出摄像机信息
 			PrevViewModeComponent = GetViewModeReferenceByIndex(LastViewMode);
 			if (PrevViewModeComponent)
 			{
@@ -184,7 +184,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 				LastViewModeFOV = bCanChangeFOV ? PrevViewModeComponent->GetCurCameraFOV() : LastFrameCacheCameraFOV;
 			}
 		}
-
+		// 将sh
 		CameraLocation = UKismetMathLibrary::VLerp(LastViewModeLocation, CurViewModeLocation, ChangeViewModeValue);
 		CameraRotation = LastViewModeRotation + ChangeViewModeValue * (CurViewModeRotation - LastViewModeRotation).GetNormalized();
 		CameraFOV = UKismetMathLibrary::Lerp(LastViewModeFOV, CurViewModeFOV, ChangeViewModeValue);
