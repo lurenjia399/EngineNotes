@@ -227,3 +227,78 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 	return true;
 }
 ```
+
+UAzurePlayerCameraViewModeComponentBase::TickFunc
+```cpp
+void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
+{
+	// 摄像机是否有效
+	if (!PlayerCameraManagerIsValid())
+	{
+		return;
+	}
+	if (bUseOverrideInTickFunc)
+	{
+		CameraViewModeBaseData.CurCameraLocation = CameraViewModeBaseData.OverrideLocation;
+		CameraViewModeBaseData.CurCameraRotation = CameraViewModeBaseData.OverrideRotation;
+		CameraViewModeBaseData.CurCameraFOV = CameraViewModeBaseData.OverrideFOV;
+		return;
+	}
+
+	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UsePawnLookAtBone)
+	{
+		AActor* LookTarget = CameraViewModeBaseData.LookAtTarget.Get();
+		AActor* CurTarget = LookTarget ? LookTarget : PlayerCameraManager->GetCurTargetActor();
+		if (!CurTarget)
+		{
+			return;
+		}
+	}
+
+	////先检查曲线时间
+	if (!CameraViewModeBaseData.bLockChangeStateTime)
+	{
+		if (CameraViewModeBaseData.ChangeStateTimeCur >= CameraViewModeBaseData.ChangeStateTimeTotal)
+		{
+			CameraViewModeBaseData.ChangeStateTimeCur = 0;
+			CameraViewModeBaseData.ChangeStateTimeTotal = 0;
+		}
+		else
+		{
+			if (CameraViewModeBaseData.ChangeStateTimeCur < CameraViewModeBaseData.ChangeStateTimeTotal)
+			{
+				CameraViewModeBaseData.ChangeStateTimeCur += DeltaTime;
+			}
+			if (CameraViewModeBaseData.ChangeStateTimeCur > CameraViewModeBaseData.ChangeStateTimeTotal)
+			{
+				CameraViewModeBaseData.ChangeStateTimeCur = CameraViewModeBaseData.ChangeStateTimeTotal;
+				if (PlayerCameraManagerIsValid())
+				{
+					PlayerCameraManager->BroadcastChangeStateEnd(CameraViewModeBaseData.ViewModeIndex);
+				}
+			}
+		}
+	}
+
+	UpdateCameraLocationOffset(DeltaTime);
+	UpdateCameraRotationOffset(DeltaTime);
+	UpdateCameraFovOffset(DeltaTime);
+
+
+	CalculateCurveValue();
+	UpdateCameraRotation(DeltaTime);
+	UpdateCameraOffset(DeltaTime);
+	UpdateTargetLocation(DeltaTime);
+	UpdatePivotOffset(DeltaTime);
+	UpdateCameraLocation(DeltaTime);
+	UpdateCameraFOV(DeltaTime);
+
+
+	UpdateDof(GetRealOffsetForwardDist());
+
+	if(!bSkipCheckCharacterLookAt)
+	{
+		CheckCharacterLookAt();
+	}
+}
+```
