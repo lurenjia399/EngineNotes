@@ -288,7 +288,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	// 和上面一样，插值FovOffset
 	UpdateCameraFovOffset(DeltaTime);
 
-	// 设置了StateChangeCurve，就是设置了State切换
+	// 设置了StateChangeCurve，就是设置了State切换曲线，曲线横坐标是切换百分比，纵坐标是曲线值，最大是1
 	CalculateCurveValue();
 	UpdateCameraRotation(DeltaTime);
 	UpdateCameraOffset(DeltaTime);
