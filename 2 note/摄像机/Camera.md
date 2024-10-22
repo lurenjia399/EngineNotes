@@ -281,6 +281,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 		}
 	}
 
+	// 这个是设置ResetLocationOffset的时间，也是一样通过timer记录经过的时间，
 	UpdateCameraLocationOffset(DeltaTime);
 	UpdateCameraRotationOffset(DeltaTime);
 	UpdateCameraFovOffset(DeltaTime);
