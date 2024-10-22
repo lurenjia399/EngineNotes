@@ -285,6 +285,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	UpdateCameraLocationOffset(DeltaTime);
 	// 和上面插值一样，插值ResetRotationOffset，都是从Offset到0的插值
 	UpdateCameraRotationOffset(DeltaTime);
+	// 和上面一样，插值FovOffset
 	UpdateCameraFovOffset(DeltaTime);
 
 
