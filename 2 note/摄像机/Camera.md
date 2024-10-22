@@ -256,7 +256,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 		}
 	}
 
-	// 如果不是锁定切换State的时间，就计算下切换时间
+	// 如果不是锁定切换State的时间，就计算下切换时间，和切换ViewMode的流程一样
 	if (!CameraViewModeBaseData.bLockChangeStateTime)
 	{
 		if (CameraViewModeBaseData.ChangeStateTimeCur >= CameraViewModeBaseData.ChangeStateTimeTotal)
