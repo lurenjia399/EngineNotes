@@ -232,11 +232,12 @@ UAzurePlayerCameraViewModeComponentBase::TickFunc
 ```cpp
 void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 {
-	// 摄像机是否有效
+	// 摄像机是否有效，无效返回
 	if (!PlayerCameraManagerIsValid())
 	{
 		return;
 	}
+	// 是否使用覆盖的信息
 	if (bUseOverrideInTickFunc)
 	{
 		CameraViewModeBaseData.CurCameraLocation = CameraViewModeBaseData.OverrideLocation;
@@ -244,7 +245,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 		CameraViewModeBaseData.CurCameraFOV = CameraViewModeBaseData.OverrideFOV;
 		return;
 	}
-
+	// 摄像机的Transform信息使用pawn身上的LookAtBone骨骼位置
 	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UsePawnLookAtBone)
 	{
 		AActor* LookTarget = CameraViewModeBaseData.LookAtTarget.Get();
@@ -255,7 +256,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 		}
 	}
 
-	////先检查曲线时间
+	// 如果不是锁定切换State的时间，就计算下切换时间
 	if (!CameraViewModeBaseData.bLockChangeStateTime)
 	{
 		if (CameraViewModeBaseData.ChangeStateTimeCur >= CameraViewModeBaseData.ChangeStateTimeTotal)
