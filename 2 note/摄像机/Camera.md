@@ -344,10 +344,21 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 	*/
 	switch (CameraViewModeBaseData.UpdateCameraRotationOffsetIndex)
 	{
-		// 这个是说用动画蓝图里的
+		// 这个是说用动画蓝图里的偏移，调用接口获取
 		case EUpdateRotationOffsetIndex::UseCamAnimRotationOffset:
 		{
 			CameraViewModeBaseData.CameraRotationOffset = PlayerCameraManager->GetAnimRotationOffset();
+			break;
+		}
+		// 这个是添加角色的呼吸，读取了配置的Offset，这里我们没用注掉了
+		case EUpdateRotationOffsetIndex::UseBreathRotationOffset:
+		{
+	// 		auto Char = Cast<AAzureCharacterBase>(PlayerCameraManager->GetControlledPawn());
+	// 		if (IsValid(Char))
+	// 		{
+	// 			CameraViewModeBaseData.CameraRotationOffset.Pitch = Char->BreathRotation.Pitch;
+	// 			CameraViewModeBaseData.CameraRotationOffset.Yaw = Char->BreathRotation.Yaw;
+	// 		}
 			break;
 		}
 	}
