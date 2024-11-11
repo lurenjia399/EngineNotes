@@ -306,3 +306,31 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	}
 }
 ```
+
+
+```cpp
+UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(float DeltaTime)
+{
+	/*
+	// 首先是根据下面这个枚举来计算DesiredRotation和DesiredSpeed
+	enum class EUpdateRotationIndex : uint8
+	{
+		UsePawnRotation = 0 UMETA(DisplayName = "使用Pawn的Rotation"),
+		UseControllerRotation = 1 UMETA(DisplayName = "使用Controller的Rotation"),
+		UseConfigRotation = 2 UMETA(DisplayName = "使用config配置Rotation"),
+		UseLastFrameRotation = 3 UMETA(DisplayName = "使用上一帧的旋转"),
+		UseFreeControl = 4 UMETA(DisplayName = "自由控制Rotation"),
+	};
+	*/
+	switch (CameraViewModeBaseData.UpdateCameraRotationIndex)
+	{
+		case EUpdateRotationIndex::UseFreeControl:
+	{
+		CameraViewModeBaseData.DesiredCameraRotation = UKismetMathLibrary::RLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraRotation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraRotation, CameraViewModeBaseData.CurCurveValue, true);
+		CameraViewModeBaseData.CameraRotationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraRotationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraRotationSpeed, CameraViewModeBaseData.CurCurveValue);
+		break;
+	}
+	}
+}
+
+```
