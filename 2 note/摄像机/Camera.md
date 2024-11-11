@@ -332,6 +332,25 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 			break;
 		}
 	}
+	/*
+	// 接下来是根据offset枚举来计算offset值
+	enum class EUpdateRotationOffsetIndex : uint8
+	{
+		UseNoneRotationOffset = 0 UMETA(DisplayName = "不使用增加的CameraOffset"),
+		UseCamAnimRotationOffset = 1 UMETA(DisplayName = "使用CamAnim里增加的CameraOffset"),
+		UseBreathRotationOffset = 2 UMETA(DisplayName = "使用呼吸的CameraOffset"),
+		UseCamAnimAndBreathRotationOffset = 3 UMETA(DisplayName = "使用CamAnim里增加的CameraOffset再叠加呼吸的CameraOffset"),
+	};
+	*/
+	switch (CameraViewModeBaseData.UpdateCameraRotationOffsetIndex)
+	{
+		// 这个是说用动画蓝图里的
+		case EUpdateRotationOffsetIndex::UseCamAnimRotationOffset:
+		{
+			CameraViewModeBaseData.CameraRotationOffset = PlayerCameraManager->GetAnimRotationOffset();
+			break;
+		}
+	}
 }
 
 ```
