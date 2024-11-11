@@ -361,6 +361,11 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 	// 		}
 			break;
 		}
+		default:
+		{
+			CameraViewModeBaseData.CameraRotationOffset = FRotator::ZeroRotator;
+			break;
+		}
 	}
 }
 
