@@ -368,6 +368,8 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 			break;
 		}
 	}
+	// 第三步就是计算CurCameraRotation，也是通过插值计算,目标值是DesiredCameraRotationWithCache
+	CameraViewModeBaseData.CurCameraRotation = UKismetMathLibrary::RInterpTo(CameraViewModeBaseData.CurCameraRotation, DesiredCameraRotationWithCache, DeltaTime, CameraViewModeBaseData.CameraRotationSpeed);
 }
 
 ```
