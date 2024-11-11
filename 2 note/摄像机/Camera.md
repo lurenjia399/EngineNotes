@@ -324,12 +324,13 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 	*/
 	switch (CameraViewModeBaseData.UpdateCameraRotationIndex)
 	{
+		// 就拿这一个举例了，就是对当前Rotation和DesiredRotation进行插值
 		case EUpdateRotationIndex::UseFreeControl:
-	{
-		CameraViewModeBaseData.DesiredCameraRotation = UKismetMathLibrary::RLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraRotation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraRotation, CameraViewModeBaseData.CurCurveValue, true);
-		CameraViewModeBaseData.CameraRotationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraRotationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraRotationSpeed, CameraViewModeBaseData.CurCurveValue);
-		break;
-	}
+		{
+			CameraViewModeBaseData.DesiredCameraRotation = UKismetMathLibrary::RLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraRotation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraRotation, CameraViewModeBaseData.CurCurveValue, true);
+			CameraViewModeBaseData.CameraRotationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraRotationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraRotationSpeed, CameraViewModeBaseData.CurCurveValue);
+			break;
+		}
 	}
 }
 
