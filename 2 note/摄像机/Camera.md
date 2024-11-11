@@ -288,7 +288,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	// 和上面一样，插值FovOffset
 	UpdateCameraFovOffset(DeltaTime);
 
-	// 设置了StateChangeCurve，就是设置了State切换曲线，曲线横坐标是切换百分比，纵坐标是曲线值，最大是1，设置了CurStageTimePercent和CurCurveValue，CurStageTimePercent代表Stage切换进度由ChangeStateTimeCur / ChangeStateTimeTotal得出，CurCurveValue代表CurStateChangeCurve曲线值，是一个曲线，值是由
+	// 设置了CurStageTimePercent和CurCurveValue，CurStageTimePercent代表Stage切换进度由ChangeStateTimeCur / ChangeStateTimeTotal得出，CurCurveValue代表曲线值，横坐标是切换进度，纵坐标是曲线值
 	CalculateCurveValue();
 	UpdateCameraRotation(DeltaTime);
 	UpdateCameraOffset(DeltaTime);
@@ -324,7 +324,7 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 	*/
 	switch (CameraViewModeBaseData.UpdateCameraRotationIndex)
 	{
-		// 就拿这一个举例了，就是对当前Rotation和DesiredRotation进行插值
+		// 就拿这一个举例了，就是对当前Rotation和DesiredRotation进行插值，插值的比例是Stage的切换进度
 		case EUpdateRotationIndex::UseFreeControl:
 		{
 			CameraViewModeBaseData.DesiredCameraRotation = UKismetMathLibrary::RLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraRotation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraRotation, CameraViewModeBaseData.CurCurveValue, true);
