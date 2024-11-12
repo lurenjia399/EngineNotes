@@ -307,7 +307,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 }
 ```
 
-
+UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation
 ```cpp
 UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(float DeltaTime)
 {
@@ -370,7 +370,8 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 	}
 	// 第三步就是计算CurCameraRotation，也是通过插值计算,目标值是DesiredCameraRotationWithCache是通过DesiredRotation和Offset等一系列相加的
 	CameraViewModeBaseData.CurCameraRotation = UKismetMathLibrary::RInterpTo(CameraViewModeBaseData.CurCameraRotation, DesiredCameraRotationWithCache, DeltaTime, CameraViewModeBaseData.CameraRotationSpeed);
-	
+	// 第四步就是刷新锁定的YawPitch
+	RefreshCoLookYawPitch(DeltaTime);
 }
 
 ```
