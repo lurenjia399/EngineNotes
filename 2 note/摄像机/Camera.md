@@ -391,6 +391,8 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 	FVector vCamToCoLookRoot = vCoLookAtRootPos - CameraViewModeBaseData.CurCameraLocation;
 	// 玩家根节点指向锁定目标向量
 	FVector vHostToCoLookRoot = vCoLookAtRootPos - CamLookAt_Host_Pos;
+	// 这个方法是根据配置，调整pitch轴
+	Inner_CoLookAt_AdjustPitch(fDist_CamToCoLookRoot, vCamToCoLookRoot, &pParamsCommon);
 	
 }
 ```
