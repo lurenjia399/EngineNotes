@@ -228,7 +228,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 }
 ```
 
-UAzurePlayerCameraViewModeComponentBase::TickFunc
+#### 4.1 UAzurePlayerCameraViewModeComponentBase::TickFunc
 ```cpp
 void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 {
@@ -307,7 +307,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 }
 ```
 
-UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation
+##### 4.2 UpdateCameraRotation_Implementation
 ```cpp
 UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(float DeltaTime)
 {
