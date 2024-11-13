@@ -407,13 +407,18 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			bLastRendered = MeshComp->WasRecentlyRendered(LastRenderedToleranceTime);
 		else
 			bLastRendered = pCoLookAtActor->WasRecentlyRendered(LastRenderedToleranceTime);
-		// 如果锁定
+		// 如果锁定目标未渲染，直接认定需要改变Yaw
 		if (!bLastRendered)
 		{
 			bYawNeedChange = true;
 		}
+		// 如果锁定目标已经渲染了，就需要判断其Bounds是否在屏幕里了
 		else
 		{
+			/*
+			判断是否在屏幕里的具体步骤:
+			1 
+			*/
 			bool bInView = UAzureGameplayLibrary::IsActorModelOrCapsuleInViewport(pCoLookAtActor,
 				m_pCoLookAtInfo->SkelSocketName,
 				pParamsCommon->JudgeInView_UseSkelSocketBoundExt,
