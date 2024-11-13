@@ -228,7 +228,7 @@ bool AAzureCameraManager::BlueprintUpdateCameraCPP(float DeltaTime)
 }
 ```
 
-#### 4.1 UAzurePlayerCameraViewModeComponentBase::TickFunc
+UAzurePlayerCameraViewModeComponentBase::TickFunc
 ```cpp
 void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 {
@@ -307,7 +307,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 }
 ```
 
-##### 4.2 UpdateCameraRotation_Implementation
+##### 4.1 UpdateCameraRotation_Implementation
 ```cpp
 UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(float DeltaTime)
 {
@@ -373,5 +373,11 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 	// 第四步就是刷新锁定的YawPitch
 	RefreshCoLookYawPitch(DeltaTime);
 }
+
+```
+
+#### 4.2 锁定具体实现RefreshCoLookYawPitch
+
+```cpp
 
 ```
