@@ -391,10 +391,45 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 	FVector vCamToCoLookRoot = vCoLookAtRootPos - CameraViewModeBaseData.CurCameraLocation;
 	// 玩家根节点指向锁定目标向量
 	FVector vHostToCoLookRoot = vCoLookAtRootPos - CamLookAt_Host_Pos;
-	// 这个方法是根据配置，调整pitch轴
-	Inner_CoLookAt_AdjustPitch(fDist_CamToCoLookRoot, vCamToCoLookRoot, &pParamsCommon);
 	// 摄像机指向玩家向量
 	FVector vLookDir_CamToLookDest = CameraViewModeBaseData.CurTargetLocation - CameraViewModeBaseData.CurCameraLocation;
+	// 这个方法是根据配置，调整pitch轴
+	Inner_CoLookAt_AdjustPitch(fDist_CamToCoLookRoot, vCamToCoLookRoot, &pParamsCommon);
 	
+	//	非AlwaysLock，且非ChangingYaw：在锁定目标pCoLookAtActor的Bounds出屏幕范围时才ChangeYaw
+	if (Mode != CAM_COLOOK_MODE::AlwaysLock && !bCoLookChangingYaw)
+	{
+		// 判断锁定目标的Comp是否渲染了
+		bool bLastRendered = false;
+		static const float LastRenderedToleranceTime = 0.1f;
+		auto MeshComp = UAzureGameplayLibrary::GetMeshComponentInActor(pCoLookAtActor);
+		if (MeshComp)
+			bLastRendered = MeshComp->WasRecentlyRendered(LastRenderedToleranceTime);
+		else
+			bLastRendered = pCoLookAtActor->WasRecentlyRendered(LastRenderedToleranceTime);
+		// 如果锁定
+		if (!bLastRendered)
+		{
+			bYawNeedChange = true;
+		}
+		else
+		{
+			bool bInView = UAzureGameplayLibrary::IsActorModelOrCapsuleInViewport(pCoLookAtActor,
+				m_pCoLookAtInfo->SkelSocketName,
+				pParamsCommon->JudgeInView_UseSkelSocketBoundExt,
+				pParamsCommon->JudgeInView_UseCapsuleBoundsFirst,
+				pParamsCommon->JudgeInView_ModelBoundsScale,
+				pParamsCommon->JudgeInView_ScreenWidthRatio,
+				pParamsCommon->JudgeInView_ScreenHeightRatio);
+			if (!bInView)
+				bYawNeedChange = true;
+		}
+
+		if (!bYawNeedChange)
+		{
+			Rot_CamToLookDest = FRotator(m_fPitchDegDest, m_fYawDegDest, CameraViewModeBaseData.CurCameraRotation.Roll);
+			fOrgCamToLookDestYaw = Rot_CamToLookDest.Yaw;
+		}
+	}
 }
 ```
