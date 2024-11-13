@@ -420,7 +420,8 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			1 获取屏幕显示范围，通过APlayerController::GetViewportSize方法
 			2 根据Socket构建AABB包围盒，没有Socket就通过Comp->Bounds属性获取FBox
 			3 调整屏幕判定矩形，屏幕显示范围 * 配置（0.9）
-			4 将Box的8个顶点依次投影到屏幕上，判断是否在判定矩形中。投影用
+			4 将Box的8个顶点依次投影到屏幕上，判断是否在判定矩形中。投影用APlayerController::ProjectWorldLocationToScreenWithDistance方法，判断点是否在矩形中就判断x,y坐标是否在矩形范围里就行
+			5 
 			*/
 			bool bInView = UAzureGameplayLibrary::IsActorModelOrCapsuleInViewport(pCoLookAtActor,
 				m_pCoLookAtInfo->SkelSocketName,
