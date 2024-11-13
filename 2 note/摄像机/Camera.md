@@ -432,7 +432,6 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			if (!bInView)
 				bYawNeedChange = true;
 		}
-
 		if (!bYawNeedChange)
 		{
 			Rot_CamToLookDest = FRotator(m_fPitchDegDest, m_fYawDegDest, CameraViewModeBaseData.CurCameraRotation.Roll);
