@@ -417,7 +417,8 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 		{
 			/*
 			判断是否在屏幕里的具体步骤:
-			1 
+			1 获取屏幕显示范围，通过APlayerController::GetViewportSize方法
+			2 根据Socket构建AABB包围盒，没有Socket就通过Comp-》Bounds
 			*/
 			bool bInView = UAzureGameplayLibrary::IsActorModelOrCapsuleInViewport(pCoLookAtActor,
 				m_pCoLookAtInfo->SkelSocketName,
