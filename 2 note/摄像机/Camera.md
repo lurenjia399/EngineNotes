@@ -379,5 +379,14 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 #### 4.2 锁定具体实现RefreshCoLookYawPitch
 
 ```cpp
-
+bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, int* piRet/* = nullptr*/)
+{
+	// 锁定目标的
+	FVector vCoLookAtRootPos = pCoLookAtActor->GetActorLocation();
+	FVector vCoLookPos = vCoLookAtRootPos + pCoLookAtActor->GetActorUpVector() * (m_pCoLookAtInfo->fHei * m_pCoLookAtInfo->fHeiRatio);
+	//玩家根节点
+	FVector CamLookAt_Host_Pos = CurTarget->GetActorLocation();
+	// 摄像机指向锁定目标向量
+	FVector vCamToCoLookRoot = vCoLookAtRootPos - CameraViewModeBaseData.CurCameraLocation;
+}
 ```
