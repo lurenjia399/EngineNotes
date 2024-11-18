@@ -423,8 +423,6 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			4 将Box的8个顶点依次投影到屏幕上，判断是否在判定矩形中，如果在矩形中就直接返回在屏幕里。投影用APlayerController::ProjectWorldLocationToScreenWithDistance方法，判断点是否在矩形中就判断x,y坐标是否在矩形范围里就行
 			5 如果没有点在矩形中，就需要判断FBox的12条边是否在矩形中。线段是否在矩形就判断是否与矩形的对角线相交就行，两条线段相交就判断线段端点是否在另一条的一侧，点在线段一侧用叉积就行
 			6 如果没有线段在矩形中，就需要改变摄像机的Yaw。根据配置计算出摄像机到LookTarget向量的Yaw
-			7 以玩家根节点作为圆心，摄像机偏移为半径画球，求摄像机到LookTarget向量与球的交点，作为摄像机位置，根据摄像机位置和玩家根节点得出摄像机RotationOffset
-			8 
 			*/
 			bool bInView = UAzureGameplayLibrary::IsActorModelOrCapsuleInViewport(pCoLookAtActor,
 				m_pCoLookAtInfo->SkelSocketName,
@@ -447,7 +445,6 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 	{
 		// 求得玩家到LockTarget 和 摄像机到LookTarget 夹角实际值并限制到[-180， 180]
 		fYawDiff = FMath::UnwindDegrees(Rot_HostToLookDest.Yaw - Rot_CamToLookDest.Yaw);
-
 		if (Mode == CAM_COLOOK_MODE::HalfLock || Mode == CAM_COLOOK_MODE::AlwaysLock)
 		{
 			// 根据摄像机偏移，插值求出 玩家到LockTarget 和 摄像机到LookTarget 夹角理论值
@@ -458,7 +455,7 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			float DesireYaw = FMath::Lerp(pParamsCommon->DesireYaw_MinDist, pParamsCommon->DesireYaw_MaxDist, fDistAlpha);
 			float _CoLookAt_fDiffYawRange = m_pCoLookAtInfo->m_bChangeRotateStart ? DesireYaw : pParamsCommon->DiffYawRange;
 			
-			// 根据
+			// 根据夹角实际值和夹角理论值，计算出摄像机到LookTarget的Yaw
 			if (fYawDiff > _CoLookAt_fDiffYawRange + COLOOK_YAW_ERROR)
 			{
 				Rot_CamToLookDest.Yaw += FMath::Max(fYawDiff - _CoLookAt_fDiffYawRange, _CoLookAt_fDiffYawRange * 0.1f);
@@ -473,5 +470,6 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			}
 		}
 	}
+	
 }
 ```
