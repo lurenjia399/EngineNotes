@@ -475,20 +475,69 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 		// 拿到LookTarget指向摄像机向量
 		vLookDir_CamToLookDest = Rot_CamToLookDest.Vector();
 		FVector vLookDir_LookDestToCam = -vLookDir_CamToLookDest;
-		// 用LookTarget指向摄像机向量 和 以玩家根节点为中心，摄像机位置偏移为半径的球qiu'jiao
+		// 用LookTarget指向摄像机向量 和 以玩家根节点为中心，摄像机位置偏移为半径的球求交，得到Desired的摄像机位置
 		float fHitLenInner = -1.f, fHitLenOuter = -1.f;
 		if (UAzureMathLibrary::LineSphereIntersectionWithHitOut(fHitLenInner, fHitLenOuter,
 			vCoLookAtDest, vLookDir_LookDestToCam, fLookDist_CamToLookDest, CamLookAt_Host_Pos, CurDistOffset)
 			&& fHitLenOuter > 0 //	用远距离的
 			)
 		{
+			// Desired摄像机位置
 			FVector vIntersect = vCoLookAtDest + vLookDir_LookDestToCam * fHitLenOuter;
+			// Desired摄像机位置看向玩家根节点
 			FVector vDesireCamDir = CamLookAt_Host_Pos - vIntersect;
 			float fLookDist_DesireCamDir;
 			vDesireCamDir.ToDirectionAndLength(vDesireCamDir, fLookDist_DesireCamDir);
 			FRotator vDesireCamDir_Rot = vDesireCamDir.ToOrientationRotator();
+			// 记录Yaw
 			m_fYawDegDest = vDesireCamDir_Rot.Yaw;
 		}
+	}
+	bool bReach = false;
+	if ( Mode == CAM_COLOOK_MODE::AlwaysLock || (m_pCoLookAtInfo && !m_pCoLookAtInfo->m_bChangeRotateEnd))
+	{
+		//	Adjust Yaw
+		FRotator fPreRotation = CameraViewModeBaseData.CurCameraRotation;
+		float CurYaw = CameraViewModeBaseData.CurCameraRotation.Yaw;
+		FRotator DesireRotaion = FRotator(m_fPitchDegDest, m_fYawDegDest, CameraViewModeBaseData.CurCameraRotation.Roll);
+		float fYawDegDiff = FMath::UnwindDegrees(m_fYawDegDest - CameraViewModeBaseData.CurCameraRotation.Yaw);
+
+		FRotator InterpRotation = UKismetMathLibrary::RInterpTo(fPreRotation, DesireRotaion, dt, GetCamChangeSpeed());
+
+		if (m_pCoLookAtInfo->m_CoLookType == CAM_COLOOK_TYPE::LockTarget || m_pCoLookAtInfo->Mode == CAM_COLOOK_MODE::AlwaysLock)
+			bReach = false;
+		else
+			bReach = FVector::DotProduct(InterpRotation.Vector(), DesireRotaion.Vector()) > COLOOK_ANGLE_THRESH_Cos;
+
+		CameraViewModeBaseData.RotationOffset_Cache += InterpRotation - fPreRotation;
+
+#if COLOOK_DEBUG
+		UE_LOG(LogTemp, Log, TEXT("bCoLookChangingYaw: Cur[%f -> %f], Dest[%f], fYawSpeed[%f], dt[%f], YawMaxSpeed[%f],fYawDegDiff[%f],bReach[%d],CoLookType[%d]"),
+			fPreRotation.Yaw, CurYaw, m_fYawDegDest, GetCamChangeSpeed(), dt, pParamsCommon->MaxRotateSpeed, fYawDegDiff, bReach?1:0,m_pCoLookAtInfo->m_CoLookType);
+#endif
+		m_pCoLookAtInfo->m_bChangeRotateStart = true;
+		if (Rot_CamToLookDest.Yaw != fOrgCamToLookDestYaw)
+			m_pCoLookAtInfo->m_bChangingYaw = true;
+		if (FMath::Abs(CameraViewModeBaseData.CurCameraRotation.Pitch - m_fPitchDegDest) > COLOOK_THRESH)
+			m_pCoLookAtInfo->m_bChangingPitch = true;
+
+		if (bReach)
+		{
+			if (m_pCoLookAtInfo)
+			{
+				m_pCoLookAtInfo->m_bChangingYaw = false;
+				m_pCoLookAtInfo->m_bChangingPitch = false;
+				m_pCoLookAtInfo->m_bChangeRotateStart = false;
+				m_pCoLookAtInfo->m_bChangeRotateEnd = true;
+			}
+		}
+
+#if COLOOK_DEBUG
+		//	Cur Dir
+		color = FColor::Green;
+		FVector rotCur = CameraViewModeBaseData.CurCameraRotation.Vector();
+		DrawDebugDirectionalArrow(pWorld, CameraViewModeBaseData.CurTargetLocation, CameraViewModeBaseData.CurTargetLocation + rotCur * fLen, arrowSize, color, false, fLifeTime);
+#endif
 	}
 }
 ```
