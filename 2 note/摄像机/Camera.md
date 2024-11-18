@@ -442,5 +442,32 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			fOrgCamToLookDestYaw = Rot_CamToLookDest.Yaw;
 		}
 	}
+	if (bYawNeedChange)
+	{
+		fYawDiff = FMath::UnwindDegrees(Rot_HostToLookDest.Yaw - Rot_CamToLookDest.Yaw);//玩家到目标 与 摄像机到看向目标 之间的夹角
+
+		if (Mode == CAM_COLOOK_MODE::HalfLock || Mode == CAM_COLOOK_MODE::AlwaysLock)
+		{
+			float fMinDist = GetMinOffsetDist();
+			float fMaxDist = GetMaxOffsetDist();
+			float fDistAlpha = (CurDistOffset - fMinDist) / (fMaxDist - fMinDist);
+			fDistAlpha = FMath::Clamp(fDistAlpha, 0.f, 1.f);
+			float DesireYaw = FMath::Lerp(pParamsCommon->DesireYaw_MinDist, pParamsCommon->DesireYaw_MaxDist, fDistAlpha);//理论值，根据摄像机距离玩家的偏移，算出的Desire的夹角
+			float _CoLookAt_fDiffYawRange = m_pCoLookAtInfo->m_bChangeRotateStart ? DesireYaw : pParamsCommon->DiffYawRange;
+
+			if (fYawDiff > _CoLookAt_fDiffYawRange + COLOOK_YAW_ERROR)//如果玩家到锁定目标与摄像机到看向目标之间夹角 大于 理论值
+			{
+				Rot_CamToLookDest.Yaw += FMath::Max(fYawDiff - _CoLookAt_fDiffYawRange, _CoLookAt_fDiffYawRange * 0.1f);
+			}
+			else if (fYawDiff < -_CoLookAt_fDiffYawRange - COLOOK_YAW_ERROR)
+			{
+				Rot_CamToLookDest.Yaw -= FMath::Max(-(fYawDiff + _CoLookAt_fDiffYawRange), _CoLookAt_fDiffYawRange * 0.1f);
+			}
+			else
+			{
+				bool b = true;
+			}
+		}
+	}
 }
 ```
