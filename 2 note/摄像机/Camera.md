@@ -422,7 +422,8 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			3 调整屏幕判定矩形，屏幕显示范围 * 配置（0.9）
 			4 将Box的8个顶点依次投影到屏幕上，判断是否在判定矩形中，如果在矩形中就直接返回在屏幕里。投影用APlayerController::ProjectWorldLocationToScreenWithDistance方法，判断点是否在矩形中就判断x,y坐标是否在矩形范围里就行
 			5 如果没有点在矩形中，就需要判断FBox的12条边是否在矩形中。线段是否在矩形就判断是否与矩形的对角线相交就行，两条线段相交就判断线段端点是否在另一条的一侧，点在线段一侧用叉积就行
-			6 如果没有线段在矩形中，就需要改变摄像机的Yaw。
+			6 如果没有线段在矩形中，就需要改变摄像机的Yaw。根据配置计算出摄像机到LookTarget向量的Yaw
+			7 以玩家gen'jie'di'a
 			*/
 			bool bInView = UAzureGameplayLibrary::IsActorModelOrCapsuleInViewport(pCoLookAtActor,
 				m_pCoLookAtInfo->SkelSocketName,
