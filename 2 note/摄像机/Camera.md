@@ -494,13 +494,14 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 		}
 	}
 	bool bReach = false;
+	// 如果有锁定目标，并没有停止旋转
 	if ( Mode == CAM_COLOOK_MODE::AlwaysLock || (m_pCoLookAtInfo && !m_pCoLookAtInfo->m_bChangeRotateEnd))
 	{
 		// 上一帧摄像机旋转
 		FRotator fPreRotation = CameraViewModeBaseData.CurCameraRotation;
 		// 计算出的Desired摄像机旋转，总共摄像机需要旋转到DesiredRotation
 		FRotator DesireRotaion = FRotator(m_fPitchDegDest, m_fYawDegDest, CameraViewModeBaseData.CurCameraRotation.Roll);
-		// 根据帧长和速度计算这一帧能够旋转多少，也就是计算旋转bu'jin
+		// 根据帧长和速度计算这一帧能够旋转多少，也就是计算旋转步经
 		FRotator InterpRotation = UKismetMathLibrary::RInterpTo(fPreRotation, DesireRotaion, dt, GetCamChangeSpeed());
 		// bReach 为true表示这一帧已经旋转到DesiredRotation了
 		if (m_pCoLookAtInfo->m_CoLookType == CAM_COLOOK_TYPE::LockTarget || m_pCoLookAtInfo->Mode == CAM_COLOOK_MODE::AlwaysLock)
@@ -509,17 +510,9 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			bReach = FVector::DotProduct(InterpRotation.Vector(), DesireRotaion.Vector()) > COLOOK_ANGLE_THRESH_Cos;
 		// 每帧将旋转步经添加到Offset上
 		CameraViewModeBaseData.RotationOffset_Cache += InterpRotation - fPreRotation;
-
-#if COLOOK_DEBUG
-		UE_LOG(LogTemp, Log, TEXT("bCoLookChangingYaw: Cur[%f -> %f], Dest[%f], fYawSpeed[%f], dt[%f], YawMaxSpeed[%f],fYawDegDiff[%f],bReach[%d],CoLookType[%d]"),
-			fPreRotation.Yaw, CurYaw, m_fYawDegDest, GetCamChangeSpeed(), dt, pParamsCommon->MaxRotateSpeed, fYawDegDiff, bReach?1:0,m_pCoLookAtInfo->m_CoLookType);
-#endif
+		// 标志位，记录开始旋转
 		m_pCoLookAtInfo->m_bChangeRotateStart = true;
-		if (Rot_CamToLookDest.Yaw != fOrgCamToLookDestYaw)
-			m_pCoLookAtInfo->m_bChangingYaw = true;
-		if (FMath::Abs(CameraViewModeBaseData.CurCameraRotation.Pitch - m_fPitchDegDest) > COLOOK_THRESH)
-			m_pCoLookAtInfo->m_bChangingPitch = true;
-
+		// 如果已经旋转完了，就改变标志位停止旋转
 		if (bReach)
 		{
 			if (m_pCoLookAtInfo)
@@ -530,13 +523,6 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 				m_pCoLookAtInfo->m_bChangeRotateEnd = true;
 			}
 		}
-
-#if COLOOK_DEBUG
-		//	Cur Dir
-		color = FColor::Green;
-		FVector rotCur = CameraViewModeBaseData.CurCameraRotation.Vector();
-		DrawDebugDirectionalArrow(pWorld, CameraViewModeBaseData.CurTargetLocation, CameraViewModeBaseData.CurTargetLocation + rotCur * fLen, arrowSize, color, false, fLifeTime);
-#endif
 	}
 }
 ```
