@@ -470,6 +470,25 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 			}
 		}
 	}
-	
+	if (bYawNeedChange)
+	{
+		// 拿到LookTarget指向摄像机向量
+		vLookDir_CamToLookDest = Rot_CamToLookDest.Vector();
+		FVector vLookDir_LookDestToCam = -vLookDir_CamToLookDest;
+		// 用LookTarget指向摄像机向量 和 以玩家根节点为中心，摄像机位置偏移为半径的球qiu'jiao
+		float fHitLenInner = -1.f, fHitLenOuter = -1.f;
+		if (UAzureMathLibrary::LineSphereIntersectionWithHitOut(fHitLenInner, fHitLenOuter,
+			vCoLookAtDest, vLookDir_LookDestToCam, fLookDist_CamToLookDest, CamLookAt_Host_Pos, CurDistOffset)
+			&& fHitLenOuter > 0 //	用远距离的
+			)
+		{
+			FVector vIntersect = vCoLookAtDest + vLookDir_LookDestToCam * fHitLenOuter;
+			FVector vDesireCamDir = CamLookAt_Host_Pos - vIntersect;
+			float fLookDist_DesireCamDir;
+			vDesireCamDir.ToDirectionAndLength(vDesireCamDir, fLookDist_DesireCamDir);
+			FRotator vDesireCamDir_Rot = vDesireCamDir.ToOrientationRotator();
+			m_fYawDegDest = vDesireCamDir_Rot.Yaw;
+		}
+	}
 }
 ```
