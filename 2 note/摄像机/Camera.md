@@ -496,14 +496,12 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 	bool bReach = false;
 	if ( Mode == CAM_COLOOK_MODE::AlwaysLock || (m_pCoLookAtInfo && !m_pCoLookAtInfo->m_bChangeRotateEnd))
 	{
-		//	Adjust Yaw
+		// 上一帧摄像机旋转
 		FRotator fPreRotation = CameraViewModeBaseData.CurCameraRotation;
-		float CurYaw = CameraViewModeBaseData.CurCameraRotation.Yaw;
+		// 计算出的Desired摄像机旋转，总共摄像机需要旋转到DesiredRotation
 		FRotator DesireRotaion = FRotator(m_fPitchDegDest, m_fYawDegDest, CameraViewModeBaseData.CurCameraRotation.Roll);
-		float fYawDegDiff = FMath::UnwindDegrees(m_fYawDegDest - CameraViewModeBaseData.CurCameraRotation.Yaw);
-
+		// 根据帧长和速度计算这一帧能够旋转多少
 		FRotator InterpRotation = UKismetMathLibrary::RInterpTo(fPreRotation, DesireRotaion, dt, GetCamChangeSpeed());
-
 		if (m_pCoLookAtInfo->m_CoLookType == CAM_COLOOK_TYPE::LockTarget || m_pCoLookAtInfo->Mode == CAM_COLOOK_MODE::AlwaysLock)
 			bReach = false;
 		else
