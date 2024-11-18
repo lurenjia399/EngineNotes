@@ -445,19 +445,21 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 	// bYawNeedChange 如果LockTarget不在屏幕中就为true，意为需要改变Yaw
 	if (bYawNeedChange)
 	{
-		// 玩家到LockTarget 和 摄像机到LookTarget 夹角插值并限制到[-180， 180]
+		// 求得玩家到LockTarget 和 摄像机到LookTarget 夹角实际值并限制到[-180， 180]
 		fYawDiff = FMath::UnwindDegrees(Rot_HostToLookDest.Yaw - Rot_CamToLookDest.Yaw);
 
 		if (Mode == CAM_COLOOK_MODE::HalfLock || Mode == CAM_COLOOK_MODE::AlwaysLock)
 		{
+			// 根据摄像机偏移，插值求出 玩家到LockTarget 和 摄像机到LookTarget 夹角理论值
 			float fMinDist = GetMinOffsetDist();
 			float fMaxDist = GetMaxOffsetDist();
 			float fDistAlpha = (CurDistOffset - fMinDist) / (fMaxDist - fMinDist);
 			fDistAlpha = FMath::Clamp(fDistAlpha, 0.f, 1.f);
 			float DesireYaw = FMath::Lerp(pParamsCommon->DesireYaw_MinDist, pParamsCommon->DesireYaw_MaxDist, fDistAlpha);
 			float _CoLookAt_fDiffYawRange = m_pCoLookAtInfo->m_bChangeRotateStart ? DesireYaw : pParamsCommon->DiffYawRange;
-
-			if (fYawDiff > _CoLookAt_fDiffYawRange + COLOOK_YAW_ERROR)//如果玩家到锁定目标与摄像机到看向目标之间夹角 大于 理论值
+			
+			// 根据
+			if (fYawDiff > _CoLookAt_fDiffYawRange + COLOOK_YAW_ERROR)
 			{
 				Rot_CamToLookDest.Yaw += FMath::Max(fYawDiff - _CoLookAt_fDiffYawRange, _CoLookAt_fDiffYawRange * 0.1f);
 			}
