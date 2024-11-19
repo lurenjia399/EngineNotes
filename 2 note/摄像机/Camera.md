@@ -376,7 +376,7 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 
 ```
 
-#### 4.2 锁定具体实现RefreshCoLookYawPitch
+##### 4.1.1 锁定具体实现RefreshCoLookYawPitch
 
 ```cpp
 bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, int* piRet)
