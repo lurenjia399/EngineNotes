@@ -288,7 +288,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	// 和上面一样，插值FovOffset
 	UpdateCameraFovOffset(DeltaTime);
 
-	// 设置了CurStageTimePercent和CurCurveValue，CurStageTimePercent代表Stage切换进度由ChangeStateTimeCur / ChangeStateTimeTotal得出，CurCurveValue代表曲线值，横坐标是切换进度，纵坐标是曲线值
+	// 设置了CurStageTimePercent和CurCurveValue，是在state切换的时候读取的切换曲线值，CurStageTimePercent代表Stage切换进度由ChangeStateTimeCur / ChangeStateTimeTotal得出，CurCurveValue代表曲线值，横坐标是切换进度，纵坐标是曲线值
 	CalculateCurveValue();
 	UpdateCameraRotation(DeltaTime);
 	UpdateCameraOffset(DeltaTime);
@@ -307,7 +307,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 }
 ```
 
-##### 4.1 UpdateCameraRotation_Implementation
+#### 4.1 UpdateCameraRotation_Implementation
 ```cpp
 UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(float DeltaTime)
 {
