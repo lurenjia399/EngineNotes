@@ -290,8 +290,9 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 
 	// 设置了CurStageTimePercent和CurCurveValue，是在state切换的时候读取的切换曲线值，CurStageTimePercent代表Stage切换进度由ChangeStateTimeCur / ChangeStateTimeTotal得出，CurCurveValue代表曲线值，横坐标是切换进度，纵坐标是曲线值
 	CalculateCurveValue();
-	// 计算
+	// 计算当前帧的CameraRotation，由RotationOffset和上一帧CameraRotation和RotationOffsetCache相加计算出的。RotationOffset是通过接口设置进来的，RotationOffsetCache是锁定功能计算出来的，每次算出来会在下一帧添加上
 	UpdateCameraRotation(DeltaTime);
+	
 	UpdateCameraOffset(DeltaTime);
 	UpdateTargetLocation(DeltaTime);
 	UpdatePivotOffset(DeltaTime);
