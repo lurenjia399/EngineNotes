@@ -546,7 +546,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 	// 插值出当前帧的 DesiredCameraOffset和CameraOffsetSpeed
 	CameraViewModeBaseData.DesiredCameraOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraOffset, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset, CameraViewModeBaseData.CurCurveValue);
 	CameraViewModeBaseData.CameraOffsetSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraOffsetSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraOffsetSpeed, CameraViewModeBaseData.CurCurveValue);
-
+	// 计算下当前帧的TargetOffset,就是通过DesiredCameraOffset和ZoomCameraOffset_Cache（外部系统设置的值）
 	FVector TargetOffset = CameraViewModeBaseData.DesiredCameraOffset + CameraViewModeBaseData.ZoomCameraOffset_Cache;
 	if (TargetOffset.Length() < CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset.Length())
 	{
