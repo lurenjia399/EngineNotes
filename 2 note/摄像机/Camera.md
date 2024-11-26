@@ -536,3 +536,43 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 	}
 }
 ```
+
+
+#### 4.2 UpdateCameraOffset_Implementation
+
+```cpp
+void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(float DeltaTime)
+{
+	CameraViewModeBaseData.DesiredCameraOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraOffset, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset, CameraViewModeBaseData.CurCurveValue);
+	CameraViewModeBaseData.CameraOffsetSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraOffsetSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraOffsetSpeed, CameraViewModeBaseData.CurCurveValue);
+
+	FVector TargetOffset = CameraViewModeBaseData.DesiredCameraOffset + CameraViewModeBaseData.ZoomCameraOffset_Cache;
+	if (TargetOffset.Length() < CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset.Length())
+	{
+		TargetOffset = CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset;
+	}
+
+	////速度不为0的时候直接检测 CurCameraOffset 和 DesiredCameraOffset 之间的距离差，最大值是200，超过这个数值的时候就会被拉过去
+	if (CameraViewModeBaseData.CurStageTimePercent < 1)
+	{
+		CameraViewModeBaseData.CurCameraOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.CurCameraOffset, TargetOffset, CameraViewModeBaseData.CurCurveValue);
+		return;
+	}
+	if (CameraViewModeBaseData.CameraOffsetSpeed == 0 || ShouldChangeToDesireImmediately())
+	{
+		CameraViewModeBaseData.CurCameraOffset = TargetOffset;
+	}
+	else
+	{
+		CameraViewModeBaseData.CurCameraOffset = UKismetMathLibrary::VInterpTo(CameraViewModeBaseData.CurCameraOffset, TargetOffset, DeltaTime, CameraViewModeBaseData.CameraOffsetSpeed);
+		FVector DeltaCameraOffset = CameraViewModeBaseData.CurCameraOffset - TargetOffset;
+
+		float DeltaCameraOffset_Length = DeltaCameraOffset.Size();
+		float MaxDeltaLength = CameraViewModeBaseData.MaxDeltaLength;
+		if (DeltaCameraOffset_Length > 0 && DeltaCameraOffset_Length > MaxDeltaLength)
+		{
+			CameraViewModeBaseData.CurCameraOffset = TargetOffset + DeltaCameraOffset * (MaxDeltaLength / DeltaCameraOffset_Length);
+		}
+	}
+}
+```
