@@ -559,6 +559,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 		CameraViewModeBaseData.CurCameraOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.CurCameraOffset, TargetOffset, CameraViewModeBaseData.CurCurveValue);
 		return;
 	}
+	// 插值速度为0就不要插值了，直接设置
 	if (CameraViewModeBaseData.CameraOffsetSpeed == 0 || ShouldChangeToDesireImmediately())
 	{
 		CameraViewModeBaseData.CurCameraOffset = TargetOffset;
