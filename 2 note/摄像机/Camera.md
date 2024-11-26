@@ -292,7 +292,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	CalculateCurveValue();
 	// 计算当前帧的CameraRotation，由RotationOffset和上一帧CameraRotation和RotationOffsetCache相加计算出的。RotationOffset是通过接口设置进来的，RotationOffsetCache是锁定功能计算出来的，每次算出来会在下一帧添加上
 	UpdateCameraRotation(DeltaTime);
-	
+	// 计算当前帧的CameraOffset
 	UpdateCameraOffset(DeltaTime);
 	UpdateTargetLocation(DeltaTime);
 	UpdatePivotOffset(DeltaTime);
@@ -582,4 +582,10 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 		}
 	}
 }
+```
+
+#### UpdateTargetLocation_Implementation
+
+```cpp
+
 ```
