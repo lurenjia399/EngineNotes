@@ -553,7 +553,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 		TargetOffset = CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset;
 	}
 
-	////速度不为0的时候直接检测 CurCameraOffset 和 DesiredCameraOffset 之间的距离差，最大值是200，超过这个数值的时候就会被拉过去
+	// 当前还在切换state的状态，直接插值返回了
 	if (CameraViewModeBaseData.CurStageTimePercent < 1)
 	{
 		CameraViewModeBaseData.CurCameraOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.CurCameraOffset, TargetOffset, CameraViewModeBaseData.CurCurveValue);
