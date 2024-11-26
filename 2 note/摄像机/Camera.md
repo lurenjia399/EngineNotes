@@ -584,7 +584,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 }
 ```
 
-#### UpdateTargetLocation_Implementation
+#### 4.3 UpdateTargetLocation_Implementation
 
 ```cpp
 void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
@@ -633,7 +633,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 	{
 		CameraViewModeBaseData.CurTargetLocation = UKismetMathLibrary::VInterpTo(CameraViewModeBaseData.CurTargetLocation, CameraViewModeBaseData.DesiredTargetLocation, DeltaTime, CameraViewModeBaseData.TargetLocationSpeed);
 		FVector DeltaTargetLocation = CameraViewModeBaseData.CurTargetLocation - CameraViewModeBaseData.DesiredTargetLocation;
-
+		
 		const float DeltaTargetLocation_Length = DeltaTargetLocation.Size();
 		const float MaxDeltaLength = CameraViewModeBaseData.MaxDeltaLength;
 		if (DeltaTargetLocation_Length > 0 && DeltaTargetLocation_Length > MaxDeltaLength)
@@ -647,6 +647,5 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 #### 4.4 UpdatePivotOffset_Implementation
 
 ```cpp
-
 
 ```
