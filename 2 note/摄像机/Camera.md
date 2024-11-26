@@ -371,6 +371,14 @@ UAzurePlayerCameraViewModeComponentBase::UpdateCameraRotation_Implementation(flo
 		}
 	}
 	// 第三步就是计算CurCameraRotation，也是通过插值计算,目标值是DesiredCameraRotationWithCache是通过DesiredRotation和Offset等一系列相加的
+	FRotator DesiredCameraRotationWithCache = FRotator::ZeroRotator;
+	const float TotalPitch = CameraViewModeBaseData.DesiredCameraRotation.Pitch + CameraViewModeBaseData.RotationOffset_Cache.Pitch + CameraViewModeBaseData.LookAroundRotation.Pitch + CameraViewModeBaseData.CameraRotationOffset.Pitch;
+	const float TotalYaw = CameraViewModeBaseData.DesiredCameraRotation.Yaw + CameraViewModeBaseData.RotationOffset_Cache.Yaw + CameraViewModeBaseData.LookAroundRotation.Yaw + CameraViewModeBaseData.CameraRotationOffset.Yaw;
+	const float TotalRoll = CameraViewModeBaseData.DesiredCameraRotation.Roll + CameraViewModeBaseData.RotationOffset_Cache.Roll + CameraViewModeBaseData.LookAroundRotation.Roll + CameraViewModeBaseData.CameraRotationOffset.Roll;
+	DesiredCameraRotationWithCache.Pitch = TotalPitch;
+	DesiredCameraRotationWithCache.Yaw = TotalYaw;
+	DesiredCameraRotationWithCache.Roll = TotalRoll;
+	
 	CameraViewModeBaseData.CurCameraRotation = UKismetMathLibrary::RInterpTo(CameraViewModeBaseData.CurCameraRotation, DesiredCameraRotationWithCache, DeltaTime, CameraViewModeBaseData.CameraRotationSpeed);
 	// 第四步就是刷新锁定的YawPitch
 	RefreshCoLookYawPitch(DeltaTime);
