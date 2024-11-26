@@ -564,16 +564,20 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 	{
 		CameraViewModeBaseData.CurCameraOffset = TargetOffset;
 	}
-	// CurCameraOffset距离TargetOffset超过200，就拉到200
+	// CurCameraOffset距离TargetOffset超过200，就拉近到200
 	else
 	{
+		// 当前帧插值出的CurCameraOffset
 		CameraViewModeBaseData.CurCameraOffset = UKismetMathLibrary::VInterpTo(CameraViewModeBaseData.CurCameraOffset, TargetOffset, DeltaTime, CameraViewModeBaseData.CameraOffsetSpeed);
+		// CurCameraOffset到TargetOffset的距离
 		FVector DeltaCameraOffset = CameraViewModeBaseData.CurCameraOffset - TargetOffset;
 
 		float DeltaCameraOffset_Length = DeltaCameraOffset.Size();
 		float MaxDeltaLength = 200;
+		// 如果距离 > 200
 		if (DeltaCameraOffset_Length > 0 && DeltaCameraOffset_Length > MaxDeltaLength)
 		{
+			// 重新设置CurCameraOffset，将CurCameraOffset和TargetOffset的距离为200
 			CameraViewModeBaseData.CurCameraOffset = TargetOffset + DeltaCameraOffset * (MaxDeltaLength / DeltaCameraOffset_Length);
 		}
 	}
