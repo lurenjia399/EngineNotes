@@ -543,6 +543,7 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 ```cpp
 void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(float DeltaTime)
 {
+	// 插值出当前帧的 DesiredCameraOffset和CameraOffsetSpeed
 	CameraViewModeBaseData.DesiredCameraOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredCameraOffset, CameraViewModeBaseData.Data_DesiredChangeState.DesiredCameraOffset, CameraViewModeBaseData.CurCurveValue);
 	CameraViewModeBaseData.CameraOffsetSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraOffsetSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraOffsetSpeed, CameraViewModeBaseData.CurCurveValue);
 
