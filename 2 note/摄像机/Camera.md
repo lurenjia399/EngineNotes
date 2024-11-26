@@ -622,5 +622,24 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 		CameraViewModeBaseData.DesiredTargetLocation = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredTargetLocation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredTargetLocation, CameraViewModeBaseData.CurCurveValue);
 		CameraViewModeBaseData.TargetLocationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.TargetLocationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.TargetLocationSpeed, CameraViewModeBaseData.CurCurveValue);
 	}
+
+	// 插值速度为0就不要插值了，直接设置
+	if (CameraViewModeBaseData.TargetLocationSpeed == 0 || ShouldChangeToDesireImmediately())
+	{
+		CameraViewModeBaseData.CurTargetLocation = CameraViewModeBaseData.DesiredTargetLocation;
+	}
+	// CurTargetLocation距离DesiredTargetLocation超过200，就拉近到200
+	else
+	{
+		CameraViewModeBaseData.CurTargetLocation = UKismetMathLibrary::VInterpTo(CameraViewModeBaseData.CurTargetLocation, CameraViewModeBaseData.DesiredTargetLocation, DeltaTime, CameraViewModeBaseData.TargetLocationSpeed);
+		FVector DeltaTargetLocation = CameraViewModeBaseData.CurTargetLocation - CameraViewModeBaseData.DesiredTargetLocation;
+
+		const float DeltaTargetLocation_Length = DeltaTargetLocation.Size();
+		const float MaxDeltaLength = CameraViewModeBaseData.MaxDeltaLength;
+		if (DeltaTargetLocation_Length > 0 && DeltaTargetLocation_Length > MaxDeltaLength)
+		{
+			CameraViewModeBaseData.CurTargetLocation = CameraViewModeBaseData.DesiredTargetLocation + DeltaTargetLocation * (MaxDeltaLength / DeltaTargetLocation_Length);
+		}
+	}
 }
 ```
