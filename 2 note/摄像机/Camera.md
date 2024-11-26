@@ -587,5 +587,38 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 #### UpdateTargetLocation_Implementation
 
 ```cpp
+void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
+{
+	// 首先是根据下面这个枚举来计算DesiredRotation和DesiredSpeed
+	/*
+	enum class EUpdateTargetLocationIndex : uint8
+{
+	UsePawnLookAtBone = 0 UMETA(DisplayName = "使用Pawn的LookAtBoneName的骨骼位置（默认是Root）"),
+	UseConfig = 1 UMETA(DisplayName = "使用config配置中的DesiredTargetLocation"),
+	UseLastFrame = 2 UMETA(DisplayName = "使用上一帧的CurTargetLocation作为DesiredTargetLocation"),
+};
+	*/
+	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UseLastFrame)
+	{
+		return;
+	}
+	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UsePawnLookAtBone)
+	{
+		if (ensure(CurTarget))
+		{
+			PlayerCameraManager->GetActorBoneLocation(CameraViewModeBaseData.DesiredTargetLocation, CurTarget, CameraViewModeBaseData.LookAtBoneName);
 
+			if (CameraViewModeBaseData.LastTargetActor != CurTarget)
+			{
+				CameraViewModeBaseData.LastTargetActor = CurTarget;
+				CameraViewModeBaseData.IsTargetChangeThisFrame = true;
+			}
+		}
+	}
+	else if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UseConfig)
+	{
+		CameraViewModeBaseData.DesiredTargetLocation = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredTargetLocation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredTargetLocation, CameraViewModeBaseData.CurCurveValue);
+		CameraViewModeBaseData.TargetLocationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.TargetLocationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.TargetLocationSpeed, CameraViewModeBaseData.CurCurveValue);
+	}
+}
 ```
