@@ -589,14 +589,14 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 ```cpp
 void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
 {
-	// 首先是根据下面这个枚举来计算DesiredRotation和DesiredSpeed
+	// 首先是根据下面这个枚举来计算DesiredTargetLocation
 	/*
 	enum class EUpdateTargetLocationIndex : uint8
-{
-	UsePawnLookAtBone = 0 UMETA(DisplayName = "使用Pawn的LookAtBoneName的骨骼位置（默认是Root）"),
-	UseConfig = 1 UMETA(DisplayName = "使用config配置中的DesiredTargetLocation"),
-	UseLastFrame = 2 UMETA(DisplayName = "使用上一帧的CurTargetLocation作为DesiredTargetLocation"),
-};
+	{
+		UsePawnLookAtBone = 0 UMETA(DisplayName = "使用Pawn的LookAtBoneName的骨骼位置（默认是Root）"),
+		UseConfig = 1 UMETA(DisplayName = "使用config配置中的DesiredTargetLocation"),
+		UseLastFrame = 2 UMETA(DisplayName = "使用上一帧的CurTargetLocation作为DesiredTargetLocation"),
+	};
 	*/
 	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UseLastFrame)
 	{
@@ -604,6 +604,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 	}
 	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UsePawnLookAtBone)
 	{
+		// 通过LookAtBone的话，就需要算出骨骼位置，然后赋值
 		if (ensure(CurTarget))
 		{
 			PlayerCameraManager->GetActorBoneLocation(CameraViewModeBaseData.DesiredTargetLocation, CurTarget, CameraViewModeBaseData.LookAtBoneName);
@@ -617,6 +618,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 	}
 	else if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UseConfig)
 	{
+		// 通过配置的话就直接插值
 		CameraViewModeBaseData.DesiredTargetLocation = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.DesiredTargetLocation, CameraViewModeBaseData.Data_DesiredChangeState.DesiredTargetLocation, CameraViewModeBaseData.CurCurveValue);
 		CameraViewModeBaseData.TargetLocationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.TargetLocationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.TargetLocationSpeed, CameraViewModeBaseData.CurCurveValue);
 	}
