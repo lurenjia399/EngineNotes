@@ -684,7 +684,9 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 	// 当前帧的PivotOffset
 	CameraViewModeBaseData.CurPivotOffset += CameraViewModeBaseData.PivotOffset_Cache;
 	FVector World_CurPivotOffset = CameraViewModeBaseData.CurPivotOffset;
-	
+	// 
+	FVector TargetLocationWithCache = CameraViewModeBaseData.CurTargetLocation + CameraViewModeBaseData.TargetLocation_Cache;
+	FVector targetPivotLocation = TargetLocationWithCache + World_CurPivotOffset;
 }
 
 ```
