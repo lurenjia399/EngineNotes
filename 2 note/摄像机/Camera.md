@@ -675,3 +675,9 @@ void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(f
 	}
 }
 ```
+
+#### 4.5 UpdateCameraLocation_Implementation
+
+```cpp
+
+```
