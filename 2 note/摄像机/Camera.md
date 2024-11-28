@@ -647,5 +647,31 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 #### 4.4 UpdatePivotOffset_Implementation
 
 ```cpp
+void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(float DeltaTime)
+{
+	// 插值出pivotOffset
+	CameraViewModeBaseData.MinDistPivotOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.MinDistPivotOffset, CameraViewModeBaseData.Data_DesiredChangeState.MinDistPivotOffset, CameraViewModeBaseData.CurCurveValue);
+	CameraViewModeBaseData.MaxDistPivotOffset = UKismetMathLibrary::VLerp(CameraViewModeBaseData.Data_BeforeChangeState.MaxDistPivotOffset, CameraViewModeBaseData.Data_DesiredChangeState.MaxDistPivotOffset, CameraViewModeBaseData.CurCurveValue);
+	FVector DesiredPivotOffset = GetPivotOffset_ByDist();
 
+	CameraViewModeBaseData.PivotOffsetSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.PivotOffsetSpeed, CameraViewModeBaseData.Data_DesiredChangeState.PivotOffsetSpeed, CameraViewModeBaseData.CurCurveValue);
+
+	////速度不为0的时候直接检测 CurPivotOffset 和 DesiredPivotOffset 之间的距离差，最大值是200，超过这个数值的时候就会被拉过去
+	if (CameraViewModeBaseData.PivotOffsetSpeed == 0 || ShouldChangeToDesireImmediately())
+	{
+		CameraViewModeBaseData.CurPivotOffset = DesiredPivotOffset;
+	}
+	else
+	{
+		CameraViewModeBaseData.CurPivotOffset = UKismetMathLibrary::VInterpTo_Constant(CameraViewModeBaseData.CurPivotOffset, DesiredPivotOffset, DeltaTime, CameraViewModeBaseData.PivotOffsetSpeed);
+		FVector DeltaPivotOffset = CameraViewModeBaseData.CurPivotOffset - DesiredPivotOffset;
+
+		float DeltaPivotOffset_Length = DeltaPivotOffset.Size();
+		float MaxDeltaLength = CameraViewModeBaseData.MaxDeltaLength;
+		if (DeltaPivotOffset_Length > 0 && DeltaPivotOffset_Length > MaxDeltaLength)
+		{
+			CameraViewModeBaseData.CurPivotOffset = DesiredPivotOffset + DeltaPivotOffset * (MaxDeltaLength / DeltaPivotOffset_Length);
+		}
+	}
+}
 ```
