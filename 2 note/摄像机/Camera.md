@@ -679,5 +679,12 @@ void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(f
 #### 4.5 UpdateCameraLocation_Implementation
 
 ```cpp
+void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementation(float DeltaTime)
+{
+	// 当前帧的PivotOffset
+	CameraViewModeBaseData.CurPivotOffset += CameraViewModeBaseData.PivotOffset_Cache;
+	FVector World_CurPivotOffset = CameraViewModeBaseData.CurPivotOffset;
+	
+}
 
 ```
