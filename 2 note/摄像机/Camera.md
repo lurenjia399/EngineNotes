@@ -703,7 +703,23 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 	CameraViewModeBaseData.DesiredCameraLocation += CameraViewModeBaseData.LocationOffset_Cache;
 	// 插值出摄像机速度
 	CameraViewModeBaseData.CameraLocationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraLocationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraLocationSpeed, CameraViewModeBaseData.CurCurveValue);
-	
+	// 设置摄像机的CurCameraLocation
+	if (CameraViewModeBaseData.CameraLocationSpeed == 0)
+	{
+		CameraViewModeBaseData.CurCameraLocation = CameraViewModeBaseData.DesiredCameraLocation;
+	}
+	else
+	{
+		CameraViewModeBaseData.CurCameraLocation = UKismetMathLibrary::VInterpTo(CameraViewModeBaseData.CurCameraLocation, CameraViewModeBaseData.DesiredCameraLocation, DeltaTime, CameraViewModeBaseData.CameraLocationSpeed);
+		FVector DeltaCameraLocation = CameraViewModeBaseData.CurCameraLocation - CameraViewModeBaseData.DesiredCameraLocation;
+		float DeltaCameraLocation_Length = DeltaCameraLocation.Size();
+		float MaxDeltaLength = CameraViewModeBaseData.MaxDeltaLength;
+		if (DeltaCameraLocation_Length > 0 && DeltaCameraLocation_Length > MaxDeltaLength)
+		{
+			CameraViewModeBaseData.CurCameraLocation = CameraViewModeBaseData.DesiredCameraLocation + DeltaCameraLocation * (MaxDeltaLength / DeltaCameraLocation_Length);
+		}
+	}
 }
 
 ```
+
