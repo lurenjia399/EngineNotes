@@ -300,7 +300,7 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	UpdatePivotOffset(DeltaTime);
 	// 计算当前帧的CameraLocation
 	UpdateCameraLocation(DeltaTime);
-	
+	// 计算当前帧的FOV
 	UpdateCameraFOV(DeltaTime);
 
 
@@ -741,7 +741,9 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 
 #### 4.6 UpdateCameraFOV
 ```cpp
-
+/*
+通过插值结算出的FOV，DesiredCameraFOV + FOVOffset_Cache
+*/
 void UAzurePlayerCameraViewModeComponentBase::UpdateCameraFOV(float DeltaTime)
 {
 	if (CameraViewModeBaseData.UpdateFOVIndex == EUpdateFOVIndex::UseLastFrameFOV)
@@ -761,6 +763,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraFOV(float DeltaTime)
 	}
 	// DesiredCameraFOV
 	const float DesiredCameraFOVWithCache = DesiredCameraFOV + CameraViewModeBaseData.FOVOffset_Cache;
+	// 插值计算出
 	if (CameraViewModeBaseData.CameraFOVSpeed == 0)
 	{
 		CameraViewModeBaseData.CurCameraFOV = DesiredCameraFOVWithCache;
