@@ -598,7 +598,7 @@ enum class EUpdateTargetLocationIndex : uint8
 };
 
 1 通过上述枚举来计算，如果是UsePawnLookAtBone，就采用LookTarget的骨骼位置。如果是UseConfig，就根据数据插值出来。如果是UseLastFrame，这一帧就不用处理直接返回。
-2 如果CurTargetLocation距离DesiredTargetLocation超过200，就拉回到200的距离
+2 如果CurTargetLocation距离DesiredTargetLocation超过每帧最大距离MaxDeltaLength，就拉回到MaxDeltaLength的距离
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
 {
@@ -653,7 +653,8 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 
 ```cpp
 /*
-计算PivotOffset，摄像机偏离LookTarget的位置，是通过
+1 计算PivotOffset，摄像机偏离LookTarget的位置，是通过设置MinDistPivotOffset和MaxDistPivotOffset来决定摄像机可以偏离的范围，再根据CameraOffset将偏离范围插值，计算出PivotOffset
+2 
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(float DeltaTime)
 {
