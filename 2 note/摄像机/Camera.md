@@ -679,6 +679,10 @@ void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(f
 #### 4.5 UpdateCameraLocation_Implementation
 
 ```cpp
+/*
+	总的来说：
+	摄像机位置 = LookTarget位置 + PivotOffset + 
+*/
 void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementation(float DeltaTime)
 {
 	// 当前帧的PivotOffset
