@@ -681,7 +681,10 @@ void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(f
 ```cpp
 /*
 	总的来说：
-	摄像机位置 = 看向目标点的位置(CurTargetLocation) + 目标点位置偏移(CurPivotOffset) + 摄像机偏移(CurCameraOffset) + 摄像机位置偏移()
+	摄像机位置 = 看向目标点的位置(CurTargetLocation + TargetLocation_Cache) 
+				+ 目标点位置偏移(CurPivotOffset + PivotOffset_Cache)
+				+ 摄像机偏移(CurCameraOffset + CameraOffset_Cache)
+				+ 摄像机位置偏移(LocationOffset_Cache)
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementation(float DeltaTime)
 {
@@ -694,7 +697,6 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 	FVector targetPivotLocation = TargetLocationWithCache + World_CurPivotOffset;
 	// 摄像机的CameraOffset
 	FVector World_CurCameraOffset = CameraViewModeBaseData.CurCameraOffset + CameraViewModeBaseData.CameraOffset_Cache;
-	
 	// 坐标向量求和
 	CameraViewModeBaseData.DesiredCameraLocation = CameraViewModeBaseData.TargetPivotLocation + World_CurCameraOffset;
 	// 加上LocationOffset
