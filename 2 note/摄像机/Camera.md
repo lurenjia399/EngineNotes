@@ -738,6 +738,41 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 }
 
 ```
+
+#### 4.6 UpdateCameraFOV
+```cpp
+
+void UAzurePlayerCameraViewModeComponentBase::UpdateCameraFOV(float DeltaTime)
+{
+	if (CameraViewModeBaseData.UpdateFOVIndex == EUpdateFOVIndex::UseLastFrameFOV)
+	{
+		return;
+	}
+
+	////目前所有ViewMode的FOV计算方式都是DesiredCameraFOV + FOVOffset_Cache,有需求的话可以判断ViewMode然后单独写逻辑
+	if (CameraViewModeBaseData.UpdateFOVIndex == EUpdateFOVIndex::UseConfig || CameraViewModeBaseData.UpdateFOVIndex == EUpdateFOVIndex::UpdateFOVByHostSpeed || CameraViewModeBaseData.UpdateFOVIndex == EUpdateFOVIndex::UpdateFOVByCameraDist)
+	{
+		////计算DesiredCameraFOV
+		CameraViewModeBaseData.MinDistFOV = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.MinDistFOV, CameraViewModeBaseData.Data_DesiredChangeState.MinDistFOV, CameraViewModeBaseData.CurCurveValue);
+		CameraViewModeBaseData.MaxDistFOV = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.MaxDistFOV, CameraViewModeBaseData.Data_DesiredChangeState.MaxDistFOV, CameraViewModeBaseData.CurCurveValue);
+		////计算速度
+		CameraViewModeBaseData.CameraFOVSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraFOVSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraFOVSpeed, CameraViewModeBaseData.CurCurveValue);
+		////现在FovOffset的计算逻辑也是插值了 详见UpdateCameraFovOffset
+	}
+	// DesiredCameraFOV
+	const float DesiredCameraFOVWithCache = DesiredCameraFOV + CameraViewModeBaseData.FOVOffset_Cache;
+	if (CameraViewModeBaseData.CameraFOVSpeed == 0)
+	{
+		CameraViewModeBaseData.CurCameraFOV = DesiredCameraFOVWithCache;
+	}
+	else
+	{
+		CameraViewModeBaseData.CurCameraFOV = UKismetMathLibrary::FInterpTo_Constant(CameraViewModeBaseData.CurCameraFOV, DesiredCameraFOVWithCache, DeltaTime, CameraViewModeBaseData.CameraFOVSpeed);
+	}
+}
+```
+
+
 #### 总结
 ``` cpp
 
