@@ -541,6 +541,9 @@ bool UAzurePlayerCameraViewModeComponentBase::RefreshCoLookYawPitch(float dt, in
 #### 4.2 UpdateCameraOffset_Implementation
 
 ```cpp
+/*
+直接插值出的CameraOffset
+*/
 void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(float DeltaTime)
 {
 	// 插值出当前帧的 DesiredCameraOffset和CameraOffsetSpeed
