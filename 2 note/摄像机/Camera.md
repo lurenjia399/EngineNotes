@@ -688,6 +688,8 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 	FVector TargetLocationWithCache = CameraViewModeBaseData.CurTargetLocation + CameraViewModeBaseData.TargetLocation_Cache;
 	// 摄像机LookTarget的位置在添加一个偏移
 	FVector targetPivotLocation = TargetLocationWithCache + World_CurPivotOffset;
+	// she'x
+	FVector World_CurCameraOffsetCameraViewModeBaseData.CurCameraOffset + CameraViewModeBaseData.CameraOffset_Cache;
 }
 
 ```
