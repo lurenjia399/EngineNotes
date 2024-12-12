@@ -654,7 +654,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 ```cpp
 /*
 1 计算PivotOffset，摄像机偏离LookTarget的位置，是通过设置MinDistPivotOffset和MaxDistPivotOffset来决定摄像机可以偏离的范围，再根据CameraOffset将偏离范围插值，计算出PivotOffset
-2 
+2 如果CurTargetLocation距离DesiredTargetLocation超过每帧最大距离MaxDeltaLength，就拉回到MaxDeltaLength的距离
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(float DeltaTime)
 {
