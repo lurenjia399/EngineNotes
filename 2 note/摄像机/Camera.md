@@ -597,7 +597,7 @@ enum class EUpdateTargetLocationIndex : uint8
 	UseLastFrame = 2 UMETA(DisplayName = "使用上一帧的CurTargetLocation作为DesiredTargetLocation"),
 };
 
-1 通过上述枚举来计算，如果是UsePawnLookAtBone，就采用LookTarget的骨骼位置。如果是UseConfig，就根据数据插值出来
+1 通过上述枚举来计算，如果是UsePawnLookAtBone，就采用LookTarget的骨骼位置。如果是UseConfig，就根据数据插值出来。如果是UseLastFrame，这一帧就不用处理直接返回。
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
 {
