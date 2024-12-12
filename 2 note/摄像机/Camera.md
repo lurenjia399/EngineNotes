@@ -691,10 +691,13 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 	// 摄像机的CameraOffset
 	FVector World_CurCameraOffsetCameraViewModeBaseData.CurCameraOffset + CameraViewModeBaseData.CameraOffset_Cache;
 	
-	//坐标向量求和
+	// 坐标向量求和
 	CameraViewModeBaseData.DesiredCameraLocation = CameraViewModeBaseData.TargetPivotLocation + World_CurCameraOffset;
-	//加上LocationOffset
+	// 加上LocationOffset
 	CameraViewModeBaseData.DesiredCameraLocation += CameraViewModeBaseData.LocationOffset_Cache;
+	// 插值出摄像机速度
+	CameraViewModeBaseData.CameraLocationSpeed = UKismetMathLibrary::Lerp(CameraViewModeBaseData.Data_BeforeChangeState.CameraLocationSpeed, CameraViewModeBaseData.Data_DesiredChangeState.CameraLocationSpeed, CameraViewModeBaseData.CurCurveValue);
+	
 }
 
 ```
