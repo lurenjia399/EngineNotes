@@ -653,7 +653,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementatio
 
 ```cpp
 /*
-
+计算PivotOffset，摄像机偏离LookTarget的位置，是通过
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(float DeltaTime)
 {
