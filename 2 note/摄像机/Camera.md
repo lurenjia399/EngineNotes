@@ -294,8 +294,11 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	UpdateCameraRotation(DeltaTime);
 	// 计算当前帧的CameraOffset
 	UpdateCameraOffset(DeltaTime);
+	// 计算当前帧的TargetLocation
 	UpdateTargetLocation(DeltaTime);
+	// 计算当前帧的PivotOffset
 	UpdatePivotOffset(DeltaTime);
+	// 计算
 	UpdateCameraLocation(DeltaTime);
 	UpdateCameraFOV(DeltaTime);
 
