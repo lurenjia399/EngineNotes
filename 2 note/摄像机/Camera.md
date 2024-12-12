@@ -693,6 +693,8 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraLocation_Implementatio
 	
 	//坐标向量求和
 	CameraViewModeBaseData.DesiredCameraLocation = CameraViewModeBaseData.TargetPivotLocation + World_CurCameraOffset;
+	//加上LocationOffset
+	CameraViewModeBaseData.DesiredCameraLocation += CameraViewModeBaseData.LocationOffset_Cache;
 }
 
 ```
