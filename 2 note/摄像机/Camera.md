@@ -303,7 +303,6 @@ void UAzurePlayerCameraViewModeComponentBase::TickFunc(float DeltaTime)
 	// 计算当前帧的FOV
 	UpdateCameraFOV(DeltaTime);
 
-
 	UpdateDof(GetRealOffsetForwardDist());
 
 	if(!bSkipCheckCharacterLookAt)
