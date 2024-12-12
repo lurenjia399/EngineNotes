@@ -587,6 +587,16 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraOffset_Implementation(
 #### 4.3 UpdateTargetLocation_Implementation
 
 ```cpp
+/*
+这个方法主要就是计算 CurTargetLocation，摄像机LookTarget的位置。
+enum class EUpdateTargetLocationIndex : uint8
+{
+	UsePawnLookAtBone = 0 UMETA(DisplayName = "使用Pawn的LookAtBoneName的骨骼位置（默认是Root）"),
+	UseConfig = 1 UMETA(DisplayName = "使用config配置中的DesiredTargetLocation"),
+	UseLastFrame = 2 UMETA(DisplayName = "使用上一帧的CurTargetLocation作为DesiredTargetLocation"),
+};
+1 
+*/
 void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
 {
 	// 首先是根据下面这个枚举来计算DesiredTargetLocation
