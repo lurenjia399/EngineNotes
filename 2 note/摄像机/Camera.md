@@ -598,18 +598,11 @@ enum class EUpdateTargetLocationIndex : uint8
 };
 
 1 通过上述枚举来计算，如果是UsePawnLookAtBone，就采用LookTarget的骨骼位置。如果是UseConfig，就根据数据插值出来。如果是UseLastFrame，这一帧就不用处理直接返回。
+2 如果CurTargetLocation距离DesiredTargetLocation超过200，就拉回到200的距离
 */
 void UAzurePlayerCameraViewModeComponentBase::UpdateTargetLocation_Implementation()
 {
 	// 首先是根据下面这个枚举来计算DesiredTargetLocation
-	/*
-	enum class EUpdateTargetLocationIndex : uint8
-	{
-		UsePawnLookAtBone = 0 UMETA(DisplayName = "使用Pawn的LookAtBoneName的骨骼位置（默认是Root）"),
-		UseConfig = 1 UMETA(DisplayName = "使用config配置中的DesiredTargetLocation"),
-		UseLastFrame = 2 UMETA(DisplayName = "使用上一帧的CurTargetLocation作为DesiredTargetLocation"),
-	};
-	*/
 	if (CameraViewModeBaseData.UpdateTargetLocationIndex == EUpdateTargetLocationIndex::UseLastFrame)
 	{
 		return;
