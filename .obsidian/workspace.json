@@ -52,7 +52,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "(https://gitee.com/lurenjia399/image/raw/master/image/202412191811280.pn",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -163,7 +164,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "d67c74eb1cebdf43",
+  "active": "3f043423e596d462",
   "lastOpenFiles": [
     "2 note/摄像机/Camera.md",
     "2 note/动画/动画.md",
