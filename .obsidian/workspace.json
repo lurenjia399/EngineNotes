@@ -73,8 +73,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -163,7 +162,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3f043423e596d462",
+  "active": "87d4a4ddb3c55608",
   "lastOpenFiles": [
     "2 note/摄像机/Camera.md",
     "2 note/动画/动画.md",
