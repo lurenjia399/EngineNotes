@@ -52,7 +52,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "https://gitee.com/lurenjia399/image/raw/master/image/202411081634123.png)",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -73,12 +73,12 @@
               "title": "书签"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -163,7 +163,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3f043423e596d462",
+  "active": "d67c74eb1cebdf43",
   "lastOpenFiles": [
     "2 note/动画/动画.md",
     "().md",
