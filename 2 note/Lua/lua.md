@@ -206,4 +206,32 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 # lua中按步骤执行
 
 ## 1 Coroutine
+
+```lua
+local function main()
+    local index = 0
+    while true do
+        index = index + 1
+        coroutine.yield(function()
+            if index == 1 then
+                print("打开冰箱门")
+            elseif index == 2 then
+                print("把大象放进去")
+            elseif index == 3 then
+                print("关上冰箱门")
+            end
+        end)
+    end
+end
+
+local co = coroutine.create(main)
+
+local flag, step = coroutine.resume(co)
+step()
+flag, step = coroutine.resume(co)
+step()
+flag, step = coroutine.resume(co)
+step()
+
+```
 ## 2 Closure
