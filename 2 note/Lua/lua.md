@@ -1,7 +1,8 @@
+# WLua
 LUA_REGISTRYINDEX注册表解释，c代码可以访问，lua无法访问
 https://www.cnblogs.com/zsb517/p/6418929.html
 
-# 初始化
+## 初始化
 
 ```cpp
 void UAzureGameInstance::Init()
@@ -32,7 +33,7 @@ void Lua::OnPostInit(lua_State* L)
 	wLua::LuaBaseStruct::SetMtLink(L);
 }
 ```
-# 蓝图中绑定lua文件
+## 蓝图中绑定lua文件
 这个图显示的是UObject的初始化，在InitLuaActor方法中的第二个参数就是我们在蓝图里写的lua文件路径
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202408291046828.png)
 
@@ -52,7 +53,7 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	// 后面还有一系列的方法，看上去是将UFunction宏标记的函数导出到lua的表中？
 }
 ```
-# 通过UObject返回LuaObject
+## 通过UObject返回LuaObject
 FLuaUtils::ReturnUObject
 ```cpp
 LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
@@ -138,7 +139,7 @@ void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
 	lua_gettable(L, -2); //ref,ud
 }
 ```
-# 通过LuaObject返回UObject
+## 通过LuaObject返回UObject
 FLuaUtils::GetUObject
 ```cpp
 /*

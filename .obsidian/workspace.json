@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/动画/动画.md",
+                "file": "2 note/Lua/lua.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "动画"
+              "title": "lua"
             }
           }
         ]
@@ -73,8 +73,7 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -163,14 +162,14 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "d67c74eb1cebdf43",
+  "active": "3f043423e596d462",
   "lastOpenFiles": [
     "2 note/动画/动画.md",
     "().md",
     "2 note/摄像机/Camera.md",
     "1 索引/索引.md",
     "2 note/网络/网络.md",
-    "2 note/WLua/Wlua.md",
+    "2 note/Lua/lua.md",
     "2 note/UClass/UClass.md",
     "2 note/UObject构造流程/UObject.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
@@ -187,7 +186,7 @@
     "2 note/Actor逻辑/Actor.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/未命名.md",
-    "2 note/WLua",
+    "2 note/Lua",
     "2 note/Module/未命名.md",
     "2 note/UClass",
     "2 note/Module",
