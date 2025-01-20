@@ -235,3 +235,19 @@ step()
 
 ```
 ## 2 Closure
+
+```lua
+local task = closureType(function(index)
+    if index == 1 then
+        print("打开冰箱门")
+    elseif index == 2 then
+        print("把大象放进去")
+    elseif index == 3 then
+        print("关上冰箱门")
+    end
+end)
+
+task()
+task()
+task()
+```
