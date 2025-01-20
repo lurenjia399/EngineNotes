@@ -212,26 +212,21 @@ local function main()
     local index = 0
     while true do
         index = index + 1
-        coroutine.yield(function()
-            if index == 1 then
-                print("打开冰箱门")
-            elseif index == 2 then
-                print("把大象放进去")
-            elseif index == 3 then
-                print("关上冰箱门")
-            end
-        end)
+        if index == 1 then
+            print("打开冰箱门")
+        elseif index == 2 then
+            print("把大象放进去")
+        elseif index == 3 then
+            print("关上冰箱门")
+        end
+        coroutine.yield()
     end
 end
 
 local co = coroutine.create(main)
-
-local flag, step = coroutine.resume(co)
-step()
-flag, step = coroutine.resume(co)
-step()
-flag, step = coroutine.resume(co)
-step()
+coroutine.resume(co)
+coroutine.resume(co)
+coroutine.resume(co)
 
 ```
 ## 2 Closure
