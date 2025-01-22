@@ -264,7 +264,7 @@ do
 	collectgarbage()
 	print(#strongTable) -- 3，gc后表依然还有3个数据
 end
-setmetatable(strongTable, {__mode = "v"}) --设置表为弱引用表
+setmetatable(strongTable, {__mode = "v"}) --设置表为弱引用表，value是弱引用
 do 
 	--print(#strongTable) -- 3，表有3个数据
 	--collectgarbage()
@@ -278,4 +278,4 @@ do
 end
 
 ```
-1 应用场景，怪物上有个属性需要从0慢慢增长到100。服务器是每1s同步一下属性值，我这就需要通过速度和时间来模拟这个属性，
+1 应用场景，怪物上有个属性需要从0慢慢增长到100。服务器是每1s同步一下属性值，我这就需要通过速度和时间来模拟这个属性，就需要额外的变量，然后我创建了一个弱表，key是怪物，value就是
