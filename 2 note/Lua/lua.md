@@ -248,4 +248,9 @@ task()
 ```
 
 # 肉鸽
-# ruo
+# 弱引用的使用
+https://www.cnblogs.com/sifenkesi/p/3850760.html
+
+```
+
+```
