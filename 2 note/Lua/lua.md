@@ -251,6 +251,25 @@ task()
 # 弱引用的使用
 https://www.cnblogs.com/sifenkesi/p/3850760.html
 
-```
+```lua
+-- 创建一个强引用表，这个表里有3个属性
+strongTable = {}
+strongTable[1] = function() print("强引用表1") end
+strongTable[2] = function() print("强引用表2") end
+strongTable[3] = {1,2,3}
 
+print(#strongTable) -- 3，强引用bi'a
+collectgarbage()
+print(#strongTable) -- 3
+
+setmetatable(strongTable, {__mode = "v"})
+
+--print(#strongTable) -- 3
+--collectgarbage()
+--print(#strongTable) -- 0 弱表情况下，gc就回收掉了
+
+globalref = strongTable[1]
+print(#strongTable) -- 3
+collectgarbage()
+print(#strongTable) -- 1 有一个依然在被引用着
 ```
