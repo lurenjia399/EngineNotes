@@ -258,18 +258,22 @@ strongTable[1] = function() print("强引用表1") end
 strongTable[2] = function() print("强引用表2") end
 strongTable[3] = {1,2,3}
 
-print(#strongTable) -- 3，表有3个数据
-collectgarbage()
-print(#strongTable) -- 3，gc后表依然还有3个数据
-
+do
+	print(#strongTable) -- 3，表有3个数据
+	collectgarbage()
+	print(#strongTable) -- 3，gc后表依然还有3个数据
+end
 setmetatable(strongTable, {__mode = "v"}) --设置表为弱引用表
+do 
+	--print(#strongTable) -- 3，表有3个数据
+	--collectgarbage()
+	--print(#strongTable) -- 0，弱表情况下，gc后表中就没数据了
+end
+do
+	globalref = strongTable[1] -- 引用一个弱表中的数据
+	print(#strongTable) -- 3，表有3个数据
+	collectgarbage()
+	print(#strongTable) -- 1，弱表情况下，gc后表中还有一个被引用的数据
+end
 
---print(#strongTable) -- 3，表有3个数据
---collectgarbage()
---print(#strongTable) -- 0，弱表情况下，gc后表中就没数据了
-
-globalref = strongTable[1]
-print(#strongTable) -- 3
-collectgarbage()
-print(#strongTable) -- 1 有一个依然在被引用着
 ```
