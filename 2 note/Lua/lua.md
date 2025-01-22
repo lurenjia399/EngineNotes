@@ -252,21 +252,21 @@ task()
 https://www.cnblogs.com/sifenkesi/p/3850760.html
 
 ```lua
--- 创建一个强引用表，这个表里有3个属性
+-- 创建一表，默认的表是强引用的，这个表里有3个属性
 strongTable = {}
 strongTable[1] = function() print("强引用表1") end
 strongTable[2] = function() print("强引用表2") end
 strongTable[3] = {1,2,3}
 
-print(#strongTable) -- 3，强引用bi'a
+print(#strongTable) -- 3，表有3个数据
 collectgarbage()
-print(#strongTable) -- 3
+print(#strongTable) -- 3，gc后表依然还有3个数据
 
-setmetatable(strongTable, {__mode = "v"})
+setmetatable(strongTable, {__mode = "v"}) --设置表为弱引用表
 
---print(#strongTable) -- 3
+--print(#strongTable) -- 3，表有3个数据
 --collectgarbage()
---print(#strongTable) -- 0 弱表情况下，gc就回收掉了
+--print(#strongTable) -- 0，弱表情况下，gc后表中就没数据了
 
 globalref = strongTable[1]
 print(#strongTable) -- 3
