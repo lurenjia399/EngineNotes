@@ -283,6 +283,7 @@ end
 
 
 ```cpp
-
 // 游戏中进入副本会通过StreamLevel的方法是加载，
 ```
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202501241038250.png)
+1 肉鸽第一次进入的主关卡包含了三个AlwaysLoad的子关卡（光照地图，navmesh地图，中间房间）和两个手动加载的子关卡（开始房间，结束房间）
