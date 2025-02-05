@@ -232,6 +232,10 @@ coroutine.resume(co)
 ## 2 Closure
 
 ```lua
+local function closureType()
+	
+end
+
 local task = closureType(function(index)
     if index == 1 then
         print("打开冰箱门")
