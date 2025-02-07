@@ -25,6 +25,12 @@ UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool 
 {
 	// ResolveName方法
 	ResolveName(InOuter, StrName, true, true, LoadFlags & (LOAD_EditorOnly | LOAD_NoVerify | LOAD_Quiet | LOAD_NoWarn | LOAD_DeferDependencyLoads), InstancingContext);
+	// InOuter由ResoveName创建出，蓝图package的话是空的
+	if (InOuter)  
+	{
+		// 从package中找Object，因为是空
+		Result = StaticFindObjectFast(ObjectClass, InOuter, *StrName);
+	}
 }
 ```
 2 ResolveName方法，拿到所需资源的package。如果不是蓝图package，就通过loadPackage方法加载，如果是蓝图package，就创建新的package并设置flags为PKG_CompiledIn。
