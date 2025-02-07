@@ -5,6 +5,10 @@ https://zhuanlan.zhihu.com/p/140339299
 
 
 
-StaticLoadObject
+# 1 StaticLoadObject
+
+```cpp
+
+```
 NewObject
 
