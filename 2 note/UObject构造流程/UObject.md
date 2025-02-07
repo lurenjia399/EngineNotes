@@ -23,9 +23,10 @@ UObject* StaticLoadObject(...)
 ```cpp
 UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool Create, bool Throw, uint32 LoadFlags /*= LOAD_None*/, const FLinkerInstancingContext* InstancingContext)
 {
-	// ResolveName方法，如果InOutName
+	// ResolveName方法
 	ResolveName(InOuter, StrName, true, true, LoadFlags & (LOAD_EditorOnly | LOAD_NoVerify | LOAD_Quiet | LOAD_NoWarn | LOAD_DeferDependencyLoads), InstancingContext);
 }
 ```
+2 ResolveName方法，通过InOutName字符串能判断出bIsScriptPackage是否是蓝图package。
 NewObject
 
