@@ -27,6 +27,6 @@ UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool 
 	ResolveName(InOuter, StrName, true, true, LoadFlags & (LOAD_EditorOnly | LOAD_NoVerify | LOAD_Quiet | LOAD_NoWarn | LOAD_DeferDependencyLoads), InstancingContext);
 }
 ```
-2 ResolveName方法，通过InOutName字符串能判断出bIsScriptPackage是否是蓝图package。
+2 ResolveName方法，拿到所需资源的package。如果不是蓝图package，就通过loadPackage方法加载，如果是蓝图package就
 NewObject
 
