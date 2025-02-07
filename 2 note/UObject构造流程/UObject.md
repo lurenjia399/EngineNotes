@@ -48,7 +48,8 @@ UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool 
 }
 ```
 1 调用StaticLoadObjectInternal方法，这个方法主要就是两部分，一部分加载package，一部分通过package找到Object。
-2 ResolveName方法，拿到所需资源的package。如果不是内置package，就通过loadPackage方法加载，如果是内置package，就创建新的package并设置flags为PKG_CompiledIn。
+2 ResolveName方法就是加载package。如果不是内置package，就通过loadPackage方法加载。
 
+3 
 NewObject
 
