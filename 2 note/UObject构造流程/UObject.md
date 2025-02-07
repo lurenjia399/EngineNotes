@@ -23,7 +23,7 @@ UObject* StaticLoadObject(...)
 ```cpp
 UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool Create, bool Throw, uint32 LoadFlags /*= LOAD_None*/, const FLinkerInstancingContext* InstancingContext)
 {
-	// ResolveName方法，如果需要加载的
+	// ResolveName方法，如果InOutName
 	ResolveName(InOuter, StrName, true, true, LoadFlags & (LOAD_EditorOnly | LOAD_NoVerify | LOAD_Quiet | LOAD_NoWarn | LOAD_DeferDependencyLoads), InstancingContext);
 }
 ```
