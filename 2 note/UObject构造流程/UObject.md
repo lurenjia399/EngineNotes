@@ -48,6 +48,7 @@ UPackage* LoadPackage(...)
 
 UPackage* LoadPackageInternal(...)
 {
+	// 通过NewObject创建了一个空的U
 	CreatedPackage = CreatePackage(*PackageNameToCreate);
 	if (FLinkerLoad* Result = FLinkerLoad::FindExistingLinkerForPackage(TargetPackage))
 	{
