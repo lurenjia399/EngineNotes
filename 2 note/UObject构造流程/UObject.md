@@ -69,6 +69,14 @@ FLinkerLoad* FLinkerLoad::CreateLinker(...)
 	// 具体执行，里边就两个部分，一个是将蓝图序列化到内存中，一个是加载外部依赖
 	Linker->Tick(0.f, false, false, nullptr)
 }
+
+FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
+{
+	// 1 将蓝图序列化到内存中
+	CreateLoader(TFunction<void()>([]() {}));
+	// 2 加载wa
+	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
+}
 ```
 3 
 NewObject
