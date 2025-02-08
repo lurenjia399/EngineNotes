@@ -54,6 +54,12 @@ UPackage* LoadPackageInternal(...)
 
 	Linker->LoadAllObjects(GEventDrivenLoaderEnabled);
 	
+	if (!bFullyLoadSkipped)
+	{
+		// Mark package as loaded.
+		Result->SetFlags(RF_WasLoaded);
+	}
+	return Result;
 }
 ```
 3 
