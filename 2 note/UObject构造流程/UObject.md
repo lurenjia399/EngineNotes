@@ -48,7 +48,27 @@ UPackage* LoadPackage(...)
 
 UPackage* LoadPackageInternal(...)
 {
-	
+	CreatedPackage = CreatePackage(*PackageNameToCreate);
+	if (FLinkerLoad* Result = FLinkerLoad::FindExistingLinkerForPackage(TargetPackage))
+	{
+		if (InExistingContext)
+		{
+			if ((Result->GetSerializeContext() && Result->GetSerializeContext()->HasStartedLoading() && InExistingContext->GetBeginLoadCount() == 1) ||
+				(IsInAsyncLoadingThread() && Result->GetSerializeContext()))
+			{
+				*InOutLoadContext = Result->GetSerializeContext();
+			}
+			else
+			{
+				if (Result->GetSerializeContext() && Result->GetSerializeContext() != InExistingContext)
+				{
+					InExistingContext->AddUniqueLoadedObjects(Result->GetSerializeContext()->PRIVATE_GetObjectsLoadedInternalUseOnly());
+				}
+				Result->SetSerializeContext(InExistingContext);
+			}
+		}
+		return Result;
+	}
 }
 ```
 3 
