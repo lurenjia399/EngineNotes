@@ -48,9 +48,11 @@ UPackage* LoadPackage(...)
 
 UPackage* LoadPackageInternal(...)
 {
-	// 在GetPackageLinker方法中，会通过NewObject创建了一个空的UPackage，还会创建LinkerLoad
 	FLinkerLoad* Linker = nullptr;
+	// 在GetPackageLinker方法中，会通过NewObject创建了一个空的UPackage，还会创建LinkerLoad
 	Linker = GetPackageLinker(InOuter, PackagePath, LoadFlags, nullptr, InReaderOverride, &InOutLoadContext, ImportLinker, InstancingContext);
+
+	
 }
 ```
 3 
