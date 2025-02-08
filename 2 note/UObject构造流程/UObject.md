@@ -48,28 +48,10 @@ UPackage* LoadPackage(...)
 
 UPackage* LoadPackageInternal(...)
 {
-	// 通过NewObject创建了一个空的UPackage
+	// 在GetPackageLinker方法中通过NewObject创建了一个空的UPackage
 	CreatedPackage = CreatePackage(*PackageNameToCreate);
-	if (FLinkerLoad* Result = FLinkerLoad::FindExistingLinkerForPackage(TargetPackage))
-	{
-		if (InExistingContext)
-		{
-			if ((Result->GetSerializeContext() && Result->GetSerializeContext()->HasStartedLoading() && InExistingContext->GetBeginLoadCount() == 1) ||
-				(IsInAsyncLoadingThread() && Result->GetSerializeContext()))
-			{
-				*InOutLoadContext = Result->GetSerializeContext();
-			}
-			else
-			{
-				if (Result->GetSerializeContext() && Result->GetSerializeContext() != InExistingContext)
-				{
-					InExistingContext->AddUniqueLoadedObjects(Result->GetSerializeContext()->PRIVATE_GetObjectsLoadedInternalUseOnly());
-				}
-				Result->SetSerializeContext(InExistingContext);
-			}
-		}
-		return Result;
-	}
+	// 
+	FLinkerLoad* Result = FLinkerLoad::CreateLinker(LoadContext, TargetPackage, PackagePath, LoadFlags, InReaderOverride, InstancingContext);
 }
 ```
 3 
