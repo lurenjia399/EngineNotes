@@ -66,7 +66,7 @@ FLinkerLoad* FLinkerLoad::CreateLinker(...)
 {
 	// 创建LinkerLoad
 	FLinkerLoad* Linker = CreateLinkerAsync(LoadContext, Parent, PackagePath, LoadFlags, InstancingContext,TFunction<void()>([](){}));
-	// 具体执行
+	// 具体执行，里边就两个部分，一个是将蓝图序列化到内存中，一个是加载外部依赖
 	Linker->Tick(0.f, false, false, nullptr)
 }
 ```
