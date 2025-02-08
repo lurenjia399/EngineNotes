@@ -30,15 +30,6 @@ UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool 
 	{
 		// 从package中找Object
 		Result = StaticFindObjectFast(ObjectClass, InOuter, *StrName);
-		if (!Result)
-		{
-			// 如果找不见并且package还是内置，就在加载package再找
-			if (!InOuter->GetOutermost()->HasAnyPackageFlags(PKG_CompiledIn))
-			{
-				LoadPackage(NULL, *InOuter->GetOutermost()->GetName(), LoadFlags & ~LOAD_Verify, nullptr, InstancingContext);
-			}
-			Result = StaticFindObjectFast(ObjectClass, InOuter, *StrName);
-		}
 	}
 	if (Result && UE::GC::GIsIncrementalReachabilityPending)  
 	{  
@@ -52,7 +43,7 @@ UObject* StaticLoadObjectInternal(UObject*& InPackage, FString& InOutName, bool 
 ```cpp
 UPackage* LoadPackage(...)
 {
-	return LoadPackageInternal(InOuter, PackagePath, LoadFlags, /*ImportLinker =*/ nullptr, InReaderOverride, InstancingContext, DiffPackagePath);
+	return LoadPackageInternal(InOuter, PackagePath, LoadFlags, nullptr, InReaderOverride, InstancingContext, DiffPackagePath);
 }
 
 UPackage* LoadPackageInternal(...)
