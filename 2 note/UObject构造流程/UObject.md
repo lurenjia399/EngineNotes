@@ -74,7 +74,7 @@ FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 {
 	// 1 将蓝图序列化到内存中
 	CreateLoader(TFunction<void()>([]() {}));
-	// 2 加载wa
+	// 2 加载外部依赖
 	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
 }
 ```
