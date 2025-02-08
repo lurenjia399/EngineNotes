@@ -61,6 +61,14 @@ UPackage* LoadPackageInternal(...)
 	}
 	return Result;
 }
+
+FLinkerLoad* FLinkerLoad::CreateLinker(...)
+{
+	// 创建LinkerLoad
+	FLinkerLoad* Linker = CreateLinkerAsync(LoadContext, Parent, PackagePath, LoadFlags, InstancingContext,TFunction<void()>([](){}));
+	// 具体执行
+	Linker->Tick(0.f, false, false, nullptr)
+}
 ```
 3 
 NewObject
