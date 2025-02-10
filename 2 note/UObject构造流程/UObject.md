@@ -76,7 +76,7 @@ FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 {
 	// 1 创建序列化工具类，用于将硬盘中蓝图资源序列化到内存当中
 	CreateLoader(TFunction<void()>([]() {}));
-	// 2 具体的序列化内容，ImportMap，ExpoertMap等等
+	// 2 具体的序列化内容，ImportMap，ExpoertMap等等，这里也只会将依赖的那些信息jia
 	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
 }
 ```
