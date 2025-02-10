@@ -74,9 +74,9 @@ FLinkerLoad* FLinkerLoad::CreateLinker(...)
 
 FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 {
-	// 1 创建家去
+	// 1 创建序列化工具类，用于将硬盘中蓝图资源序列化到内存当中
 	CreateLoader(TFunction<void()>([]() {}));
-	// 2 加载外部依赖
+	// 2 具体的序列化内容，ImportMap，ExpoertMap等等
 	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
 }
 ```
