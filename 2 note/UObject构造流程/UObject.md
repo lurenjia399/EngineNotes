@@ -96,7 +96,11 @@ void FLinkerLoad::Verify()
 }
 FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 {
-	
+	FObjectImport& Import = ImportMap[ImportIndex];
+	if (Import.OuterIndex.IsNull() && Import.ClassName!=NAME_Package )
+	{
+		return false;
+	}
 }
 ```
 4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖则是在ProcessPackageSummary方法中。
