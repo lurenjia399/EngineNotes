@@ -134,26 +134,12 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 		}
 	}
 	bool bCameFromMemoryOnlyPackage = false;
-	// 
+	// Pkg表示要想获取import的Object，从哪个package里找。TmpPkg表示了最上层的package。
 	if (!Pkg && TmpPkg &&
 		(TmpPkg->HasAnyPackageFlags(PKG_InMemoryOnly) || IsContextInstanced()))
 	{
-		Pkg = TmpPkg; // this is a package that exists in memory only, so that is the package to search regardless of FindIfFail
+		Pkg = TmpPkg;
 		bCameFromMemoryOnlyPackage = true;
-
-		if (IsCoreUObjectPackage(Import.ClassPackage) && Import.ClassName == NAME_Package && !TmpPkg->GetOuter())
-		{
-			if (InstancingContext.RemapPackage(Import.ObjectName) == TmpPkg->GetFName())
-			{
-				// except if we are looking for _the_ package...in which case we are looking for TmpPkg, so we are done
-				Import.XObject = TmpPkg;
-				FUObjectSerializeContext* CurrentLoadContext = GetSerializeContext();
-				check(CurrentLoadContext);
-				CurrentLoadContext->IncrementImportCount();
-				FLinkerManager::Get().AddLoaderWithNewImports(this);
-				return false;
-			}
-		}
 	}
 }
 ```
