@@ -150,8 +150,15 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 		Import.ClassPackage.ToString(ImportClassTemp);
 		// 从全局中找到ClassPackage代表的package
 		UObject* ClassPackage = FindObject<UPackage>( nullptr, *ImportClassTemp );
+		// 从Package中找到ClassName代表的UClass
 		Import.ClassName.ToString(ImportClassTemp);
-			UClass* FindClass = FindObject<UClass>(ClassPackage, *ImportClassTemp);
+		UClass* FindClass = FindObject<UClass>(ClassPackage, *ImportClassTemp);
+		// 从Package中找到名称为ObjectName这个的UObject
+		UObject* FindObject = FindImportFast(FindClass, bFindObjectByName ? nullptr : FindOuter, Import.ObjectName, bFindObjectByName);
+		if (FindObject != nullptr)
+		{
+			Import.XObject = FindObject;
+		}
 	}
 }
 ```
