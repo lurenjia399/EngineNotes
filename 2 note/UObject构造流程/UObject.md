@@ -121,20 +121,37 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 				FObjectImport* Top;
 				for (Top = &OuterImport; Top->OuterIndex.IsImport(); Top = &Imp(Top->OuterIndex))
 				{
-					// for loop does what we need
 				}
-
+				// 把最上层的package赋值给TmpPkg
 				UPackage* Package = Cast<UPackage>(Top->XObject);
-				if (Package &&
-					(Package->HasAnyPackageFlags(PKG_InMemoryOnly) || IsContextInstanced()))
-				{
-					TmpPkg = Package;
-				}
+				TmpPkg = Package;
 			}
-			// 如果没有SourceLinker，就用outer的SourceLinker
+			// 如果没有SourceLinker，就用outer的SourceLinker，outer如果是脚本package，也是没有SourceLinker的
 			if (!Import.SourceLinker)
 			{
 				Import.SourceLinker = OuterImport.SourceLinker;
+			}
+		}
+	}
+	bool bCameFromMemoryOnlyPackage = false;
+	// 
+	if (!Pkg && TmpPkg &&
+		(TmpPkg->HasAnyPackageFlags(PKG_InMemoryOnly) || IsContextInstanced()))
+	{
+		Pkg = TmpPkg; // this is a package that exists in memory only, so that is the package to search regardless of FindIfFail
+		bCameFromMemoryOnlyPackage = true;
+
+		if (IsCoreUObjectPackage(Import.ClassPackage) && Import.ClassName == NAME_Package && !TmpPkg->GetOuter())
+		{
+			if (InstancingContext.RemapPackage(Import.ObjectName) == TmpPkg->GetFName())
+			{
+				// except if we are looking for _the_ package...in which case we are looking for TmpPkg, so we are done
+				Import.XObject = TmpPkg;
+				FUObjectSerializeContext* CurrentLoadContext = GetSerializeContext();
+				check(CurrentLoadContext);
+				CurrentLoadContext->IncrementImportCount();
+				FLinkerManager::Get().AddLoaderWithNewImports(this);
+				return false;
 			}
 		}
 	}
