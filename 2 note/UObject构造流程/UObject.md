@@ -97,6 +97,7 @@ void FLinkerLoad::Verify()
 FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 {
 	FObjectImport& Import = ImportMap[ImportIndex];
+	// 没有outer的情况下，className也不是package。有问题应该舍弃掉
 	if (Import.OuterIndex.IsNull() && Import.ClassName!=NAME_Package )
 	{
 		return false;
