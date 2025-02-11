@@ -102,6 +102,16 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 	{
 		return false;
 	}
+	// 没有outer,className是package。就说明import了一个package，直接加载package就行
+	else if (Import.OuterIndex.IsNull())
+	{
+		TmpPkg = LoadImportPackage(Import, SlowTask);
+	}
+	// 有outer的情况下
+	else
+	{
+		
+	}
 }
 ```
 4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖则是在ProcessPackageSummary方法中。
