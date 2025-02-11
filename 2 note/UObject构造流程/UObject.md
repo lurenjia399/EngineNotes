@@ -79,6 +79,8 @@ FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 	// 2 具体的序列化内容，ImportMap，ExpoertMap等等，这里也只会将依赖的那些信息加载到内存中，但是实际的object还没加载，会在序列化的最一步FinalizeCreation中将依赖的object加载到内存
 	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
 }
+
+
 ```
 3 
 NewObject
