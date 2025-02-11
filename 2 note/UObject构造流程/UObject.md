@@ -73,7 +73,6 @@ FLinkerLoad* FLinkerLoad::CreateLinker(...)
 	// 具体执行，里边就两个部分，一个是将蓝图序列化到内存中，一个是加载外部依赖
 	Linker->Tick(0.f, false, false, nullptr);
 }
-
 FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 {
 	// 1 创建序列化工具类，用于将硬盘中蓝图资源序列化到内存当中
@@ -82,6 +81,23 @@ FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
 }
 
+// 下面就开始加载依赖的Object了
+FLinkerLoad::ELinkerStatus FLinkerLoad::FinalizeCreation(...)
+{
+	Verify();
+}
+void FLinkerLoad::Verify()
+{
+	for (int32 ImportIndex = 0; ImportIndex < Summary.ImportCount; ImportIndex++)
+	{
+		FObjectImport& Import = ImportMap[ImportIndex];
+		VerifyImport( ImportIndex );
+	}
+}
+FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
+{
+	
+}
 ```
 4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖则是在ProcessPackageSummary方法中。
 5 
