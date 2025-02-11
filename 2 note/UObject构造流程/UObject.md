@@ -115,6 +115,22 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 		{
 			VerifyImport(Import.OuterIndex.ToImport());
 			FObjectImport& OuterImport = Imp(Import.OuterIndex);
+			// !OuterImport.SourceLinker 说明OuterImport是一个脚本package。XObject存在说明，OuterImport对应的package已经在内存中了
+			if (!OuterImport.SourceLinker && OuterImport.XObject)
+			{
+				FObjectImport* Top;
+				for (Top = &OuterImport; Top->OuterIndex.IsImport(); Top = &Imp(Top->OuterIndex))
+				{
+					// for loop does what we need
+				}
+
+				UPackage* Package = Cast<UPackage>(Top->XObject);
+				if (Package &&
+					(Package->HasAnyPackageFlags(PKG_InMemoryOnly) || IsContextInstanced()))
+				{
+					TmpPkg = Package;
+				}
+			}
 			// 如果没有SourceLinker，就用outer的SourceLinker
 			if (!Import.SourceLinker)
 			{
