@@ -155,6 +155,7 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 		UClass* FindClass = FindObject<UClass>(ClassPackage, *ImportClassTemp);
 		// 从Package中找到名称为ObjectName这个的UObject
 		UObject* FindObject = FindImportFast(FindClass, bFindObjectByName ? nullptr : FindOuter, Import.ObjectName, bFindObjectByName);
+		// 最后将找到的Object赋值
 		if (FindObject != nullptr)
 		{
 			Import.XObject = FindObject;
@@ -162,7 +163,7 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 	}
 }
 ```
-4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖则是在ProcessPackageSummary方法中。
+4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖的Object则是在ProcessPackageSummary方法中。
 5 
 
 NewObject
