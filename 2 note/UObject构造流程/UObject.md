@@ -63,8 +63,6 @@ UPackage* LoadPackageInternal(...)
 	}
 	return Result;
 }
-
-
 ```
 3 在LoadPackageInternal方法中主要就是两个部分，第一部分是创建LinkerLoad序列化蓝图资源并加载以来，然后是
 ```cpp
@@ -87,5 +85,6 @@ FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 ```
 4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖则是在ProcessPackageSummary方法中。
 5 
+
 NewObject
 
