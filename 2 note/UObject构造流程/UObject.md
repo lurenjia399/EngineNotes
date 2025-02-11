@@ -141,6 +141,13 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 		Pkg = TmpPkg;
 		bCameFromMemoryOnlyPackage = true;
 	}
+	// 如果有Pkg，就能在Pkg里按照名字找到Object
+	const bool bFindObjectByName = (Pkg == nullptr) && ((LoadFlags & LOAD_FindIfFail) != 0);
+	
+	if( Import.SourceIndex==INDEX_NONE && (Pkg!=nullptr || bFindObjectByName))
+	{
+		
+	}
 }
 ```
 4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖则是在ProcessPackageSummary方法中。
