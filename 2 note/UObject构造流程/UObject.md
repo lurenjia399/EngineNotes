@@ -79,9 +79,8 @@ FLinkerLoad::ELinkerStatus FLinkerLoad::Tick(...)
 	// 2 具体的序列化内容，ImportMap，ExpoertMap等等，这里也只会将依赖的那些信息加载到内存中，但是实际的object还没加载，会在序列化的最一步FinalizeCreation中将依赖的object加载到内存
 	ProcessPackageSummary(ObjectNameWithOuterToExportMap);
 }
-
-
 ```
-3 
+3 在LoadPackageInternal方法中主要就是两个部分，第一部分是创建LinkerLoad序列化蓝图资源并加载以来，然后是
+4 先看di'yi
 NewObject
 
