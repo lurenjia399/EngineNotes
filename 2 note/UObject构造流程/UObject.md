@@ -143,10 +143,15 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 	}
 	// 如果有Pkg，就能在Pkg里按照名字找到Object
 	const bool bFindObjectByName = (Pkg == nullptr) && ((LoadFlags & LOAD_FindIfFail) != 0);
-	
+	// Import.SourceIndex表示Object的ExportMap索引
 	if( Import.SourceIndex==INDEX_NONE && (Pkg!=nullptr || bFindObjectByName))
 	{
-		
+		TStringBuilder<256> ImportClassTemp;
+		Import.ClassPackage.ToString(ImportClassTemp);
+		// 从全局中找到ClassPackage代表的package
+		UObject* ClassPackage = FindObject<UPackage>( nullptr, *ImportClassTemp );
+		Import.ClassName.ToString(ImportClassTemp);
+			UClass* FindClass = FindObject<UClass>(ClassPackage, *ImportClassTemp);
 	}
 }
 ```
