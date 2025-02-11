@@ -165,7 +165,7 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 ```
 4 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖的Object则是在ProcessPackageSummary方法中。
 有这么几种情况：import依赖的Object没有outer，那么就直接认为是package，直接加载package，如果package是CoreUObjectPackage，就直接找到了依赖的Object，就是加载出来的package。
-5 如果import依赖的Object有outer，
+5 如果import依赖的Object有outer，就会一直沿着outer往上找，找到最终的package，
 
 NewObject
 
