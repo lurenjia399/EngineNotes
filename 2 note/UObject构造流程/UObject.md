@@ -110,25 +110,12 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 	// 有outer的情况下
 	else
 	{
-		// 如果outer也在importmap里，那就递归Verify
+		// 如果outer也在importmap里，那就递归Verify。
 		if (Import.OuterIndex.IsImport())
 		{
 			VerifyImport(Import.OuterIndex.ToImport());
 			FObjectImport& OuterImport = Imp(Import.OuterIndex);
-			if (!OuterImport.SourceLinker && OuterImport.XObject)
-			{
-				FObjectImport* Top;
-				for (Top = &OuterImport; Top->OuterIndex.IsImport(); Top = &Imp(Top->OuterIndex))
-				{
-					// for loop does what we need
-				}
-				UPackage* Package = Cast<UPackage>(Top->XObject);
-				if (Package &&
-					(Package->HasAnyPackageFlags(PKG_InMemoryOnly) || IsContextInstanced()))
-				{
-					TmpPkg = Package;
-				}
-			}
+			// 如果没有SourceLinker，就用outer的SourceLinker
 			if (!Import.SourceLinker)
 			{
 				Import.SourceLinker = OuterImport.SourceLinker;
