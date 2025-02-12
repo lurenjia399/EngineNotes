@@ -180,7 +180,7 @@ void FLinkerLoad::LoadAllObjects(bool bForcePreload)
 }
 UObject* FLinkerLoad::CreateExport( int32 Index )
 {
-	// 获取对象对应的UClass，最终会执行到CreateExport方法里
+	// 获取对象对应的UClass，UClass是引擎启动的时候就加载到内存的，从package中找就行
 	UClass* LoadClass = GetExportLoadClass(Index);
 	
 }
