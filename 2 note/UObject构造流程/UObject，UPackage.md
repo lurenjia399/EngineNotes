@@ -180,6 +180,7 @@ void FLinkerLoad::LoadAllObjects(bool bForcePreload)
 }
 UObject* FLinkerLoad::CreateExport( int32 Index )
 {
+	// 获取对象对应的UClass，最终会执行到CreateExport方法里
 	UClass* LoadClass = GetExportLoadClass(Index);
 	
 }
