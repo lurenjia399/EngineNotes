@@ -51,7 +51,7 @@ UPackage* LoadPackage(...)
 UPackage* LoadPackageInternal(...)
 {
 	FLinkerLoad* Linker = nullptr;
-	// 在GetPackageLinker方法中，会通过NewObject创建了一个空的UPackage，还会创建LinkerLoad
+	// 在GetPackageLinker方法中，会通过NewObject创建了一个空的UPackage，还会创建LinkerLoad，通过LinkerLoad加载资源中的
 	Linker = GetPackageLinker(InOuter, PackagePath, LoadFlags, nullptr, InReaderOverride, &InOutLoadContext, ImportLinker, InstancingContext);
 
 	Linker->LoadAllObjects(GEventDrivenLoaderEnabled);
