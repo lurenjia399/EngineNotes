@@ -197,6 +197,8 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 	LoadClass->GetDefaultObject();
 	// 根据package,uclass,name来创建ExportObject
 	Export.Object = StaticConstructObject_Internal(Params);
+	Export.Object->SetLinker( this, Index );
+	CurrentLoadContext->AddLoadedObject(Export.Object);
 	
 }
 ```
