@@ -164,8 +164,8 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 }
 ```
 4.1 先看第一部分，序列化蓝图资源是在CreateLoader方法中，加载依赖的Object则是在ProcessPackageSummary方法中。
-有这么几种情况：import依赖的Object没有outer，那么依赖的肯定是个package，直接加载package即可，加载出来的package就是依赖的Object。
-如果import依赖的Object有outer，就先认证（Verify）outer，因为outer的最上层肯定是package，就从package中找到依赖的Object即可。
+有这么几种情况：import依赖的Object没有outer，那么依赖的肯定是个package，直接加载package即可，加载出来的package就是依赖的Object。如果import依赖的Object有outer，就先认证（Verify）outer，因为outer的最上层肯定是package，就从package中找到依赖的Object即可。总的来说就是找到依赖的Object，如果依赖的package就直接加载，如果不是就从package中找到依赖的Object。
+4.2 第二部分
 
 NewObject
 
