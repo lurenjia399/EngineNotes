@@ -183,6 +183,8 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 	// 获取对象对应的UClass，UClass是引擎启动的时候就加载到内存的，从package中找就行
 	UClass* LoadClass = GetExportLoadClass(Index);
 	
+	UObject* Template = UObject::GetArchetypeFromRequiredInfo(LoadClass, ThisParent, Export.ObjectName, Export.ObjectFlags);
+	
 }
 ```
 4.2 第二部分，
