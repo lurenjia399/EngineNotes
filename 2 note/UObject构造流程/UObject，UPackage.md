@@ -172,7 +172,7 @@ NewObject
 # 问题
 
 - UPackage是什么？
-UPackage是硬盘上的蓝图资源在内存上的对应。举个例子，我们手上有一个TestA蓝图继承自
+UPackage是硬盘上的蓝图资源在内存上的对应。举个例子，我们手上有一个名称为TestA的空蓝图继承自Actor。我们通过StaticLoadObject方法来加载TestA蓝图，首先就会创建一个空的package
 
 
 
