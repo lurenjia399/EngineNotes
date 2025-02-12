@@ -172,6 +172,7 @@ NewObject
 # 问题
 
 - UPackage是什么？
+UPackage是硬盘上的蓝图资源在内存上的对应。举个例子，我们手上有一个TestA蓝图继承自
 
 
 
