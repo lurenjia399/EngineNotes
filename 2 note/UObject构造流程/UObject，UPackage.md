@@ -178,6 +178,18 @@ void FLinkerLoad::LoadAllObjects(bool bForcePreload)
 		LinkerRoot->MarkAsFullyLoaded();
 	}
 }
+UObject* FLinkerLoad::CreateExportAndPreload(int32 ExportIndex, bool bForcePreload)
+{
+	// 创建或找到了ExportObject
+	UObject* Object = CreateExport(ExportIndex);
+	// 
+	if (Object && (bForcePreload || dynamic_cast<UClass*>(Object) || Object->IsTemplate() || dynamic_cast<UObjectRedirector*>(Object)))
+	{
+		Preload(Object);
+	}
+
+	return Object;
+}
 UObject* FLinkerLoad::CreateExport( int32 Index )
 {
 	// 获取ExportObject的UClass。这个Class肯定是在importMap依赖里的，就从对应的package中找出来就行。
@@ -212,6 +224,7 @@ NewObject
 
 - UPackage是什么？
 UPackage是硬盘上的蓝图资源在内存上的对应。举个例子，我们手上有一个名称为TestA的空蓝图继承自Actor。我们通过StaticLoadObject方法来加载TestA蓝图，首先就会创建一个空的Package，然后为这个package创建LinkerLoad，然后通过LinkerLoad来序列化蓝图资源，进而加载importMap和exportMap。除此之外我们通过SpawnActor来创建TestA的对象，对象的outer是level，level的outer是world，world的outer是UPackage，这也说明了每个UObject的最上层都是一个UPackage，决定了UObject会序列化到内存的哪个地方。
+- Archetype到底是啥啊
 
 
 
