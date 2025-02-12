@@ -195,14 +195,16 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 	}
 	// 创建出ExportObject的UClass的CDO
 	LoadClass->GetDefaultObject();
-	// 根据package,uclass,name来创建ExportObject
+	// 根据outer,uclass,name来创建ExportObject
 	Export.Object = StaticConstructObject_Internal(Params);
+	// 设置linker
 	Export.Object->SetLinker( this, Index );
+	// 添加ExportObject
 	CurrentLoadContext->AddLoadedObject(Export.Object);
 	
 }
 ```
-4.2 第二部分，
+4.2 第二部分，加载ExportMap中的Object，根据
 
 NewObject
 
