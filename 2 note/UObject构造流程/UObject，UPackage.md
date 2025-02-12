@@ -178,6 +178,11 @@ void FLinkerLoad::LoadAllObjects(bool bForcePreload)
 		LinkerRoot->MarkAsFullyLoaded();
 	}
 }
+UObject* FLinkerLoad::CreateExport( int32 Index )
+{
+	UClass* LoadClass = GetExportLoadClass(Index);
+	
+}
 ```
 4.2 第二部分，
 
