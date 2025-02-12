@@ -184,7 +184,7 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 	UClass* LoadClass = GetExportLoadClass(Index);
 	// 获取ExportObject的UClass的CDO
 	UObject* Template = UObject::GetArchetypeFromRequiredInfo(LoadClass, ThisParent, Export.ObjectName, Export.ObjectFlags);
-	// 从ThisParen，也就是从this->LinkerRoot(package)中找下ExportObject
+	// 从ThisParent，也就是从this->LinkerRoot(package)中找下ExportObject
 	UObject* ActualObjectWithTheName = StaticFindObjectFastInternal(nullptr, ThisParent, Export.ObjectName, true);
 	// 如果找见了ExportObject，就返回
 	if (ActualObjectWithTheName && (ActualObjectWithTheName->GetClass() == LoadClass))
@@ -193,8 +193,9 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 		Export.Object->SetLinker(this, Index);
 		return Export.Object;
 	}
-	
+	// 创建出ExportObject的UClass的CDO
 	LoadClass->GetDefaultObject();
+	// 根据package,uclass,name来创建ExportObject
 	Export.Object = StaticConstructObject_Internal(Params);
 	
 }
