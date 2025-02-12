@@ -185,6 +185,7 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 	
 	UObject* Template = UObject::GetArchetypeFromRequiredInfo(LoadClass, ThisParent, Export.ObjectName, Export.ObjectFlags);
 	LoadClass->GetDefaultObject();
+	Export.Object = StaticConstructObject_Internal(Params);
 	
 }
 ```
