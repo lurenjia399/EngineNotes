@@ -182,7 +182,7 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 {
 	// 获取ExportObject的UClass。这个Class肯定是在importMap依赖里的，就从对应的package中找出来就行。
 	UClass* LoadClass = GetExportLoadClass(Index);
-	
+	// 获取ExportObject的UClass的CDO
 	UObject* Template = UObject::GetArchetypeFromRequiredInfo(LoadClass, ThisParent, Export.ObjectName, Export.ObjectFlags);
 	LoadClass->GetDefaultObject();
 	Export.Object = StaticConstructObject_Internal(Params);
