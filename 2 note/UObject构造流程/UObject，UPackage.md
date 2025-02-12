@@ -180,8 +180,7 @@ void FLinkerLoad::LoadAllObjects(bool bForcePreload)
 }
 UObject* FLinkerLoad::CreateExport( int32 Index )
 {
-	// 获取对象对应的UClass，UClass是引擎启动的时候就加载到内存的，从package中找就行
-	// 获取ExportObject的UClass。这个Class可丁
+	// 获取ExportObject的UClass。这个Class肯定是在importMap依赖里的，就从对应的package中找出来就行。
 	UClass* LoadClass = GetExportLoadClass(Index);
 	
 	UObject* Template = UObject::GetArchetypeFromRequiredInfo(LoadClass, ThisParent, Export.ObjectName, Export.ObjectFlags);
