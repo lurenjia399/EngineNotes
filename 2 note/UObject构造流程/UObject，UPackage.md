@@ -169,3 +169,11 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 
 NewObject
 
+# 问题
+
+- UPackage是什么？
+
+
+
+
+
