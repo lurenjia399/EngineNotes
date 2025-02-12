@@ -52,7 +52,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "https://gitee.com/lurenjia399/image/raw/master/image/202411081634123.png)",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -77,8 +77,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -165,16 +164,19 @@
   },
   "active": "3f043423e596d462",
   "lastOpenFiles": [
-    "2 note/Lua/lua.md",
-    "2 note/World和Level/World和Level.md",
-    "1 索引/索引.md",
     "2 note/动画/动画.md",
+    "2 note/UObject构造流程/UObject，UPackage.md",
+    "2 note/Lua/lua.md",
+    "2 note/Lua",
     "().md",
     "2 note/摄像机/Camera.md",
+    "1 索引/索引.md",
     "2 note/网络/网络.md",
+    "2 note/WLua/Wlua.md",
     "2 note/UClass/UClass.md",
-    "2 note/UObject构造流程/UObject，UPackage.md",
+    "2 note/UObject构造流程/UObject.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
+    "2 note/World和Level/World和Level.md",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/特效系统/特效系统Cascade.md",
     "2 note/摄像机/Untitled.mdj",
@@ -187,7 +189,7 @@
     "2 note/Actor逻辑/Actor.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/未命名.md",
-    "2 note/Lua",
+    "2 note/WLua",
     "2 note/Module/未命名.md",
     "2 note/UClass",
     "2 note/Module",
@@ -195,7 +197,6 @@
     "2 note/UObject构造流程",
     "2 note/资源管理",
     "2 note/interface",
-    "2 note/网络/未命名.md",
-    "2 note/网络/网络.mdj"
+    "2 note/网络/未命名.md"
   ]
 }
