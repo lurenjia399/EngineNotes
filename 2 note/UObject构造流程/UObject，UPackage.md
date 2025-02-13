@@ -221,7 +221,7 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 # 问题
 
 - staticloadobject流程？
-内部执行loadpackage方法，首先会创建一个空的upackage，然后创建linkerload来加载蓝图资源，通过对蓝图资源中的各种段进行解析，比如importmap来加载
+内部执行loadpackage方法，首先会创建一个空的upackage，然后创建linkerload来加载蓝图资源，通过对蓝图资源中的各种段进行解析，比如importmap来加载依赖（一般都是写uclass），exportmap来加载可以被其他资源依赖的object。通过staticloadobjet来加载蓝图，会返回蓝图类也就是blueprintgeneratedclass，所在的package
 
 - UPackage是什么？
 UPackage是硬盘上的蓝图资源在内存上的对应。举个例子，我们手上有一个名称为TestA的空蓝图继承自Actor。我们通过StaticLoadObject方法来加载TestA蓝图，首先就会创建一个空的Package，然后为这个package创建LinkerLoad，然后通过LinkerLoad来序列化蓝图资源，进而加载importMap和exportMap。除此之外我们通过SpawnActor来创建TestA的对象，对象的outer是level，level的outer是world，world的outer是UPackage，这也说明了每个UObject的最上层都是一个UPackage，决定了UObject会序列化到内存的哪个地方。
