@@ -182,7 +182,7 @@ UObject* FLinkerLoad::CreateExportAndPreload(int32 ExportIndex, bool bForcePrelo
 {
 	// 创建或找到了ExportObject
 	UObject* Object = CreateExport(ExportIndex);
-	// 
+	// 如果ExportObject是UClass类型就从蓝图资源中找数据序列化到UClass里
 	if (Object && (bForcePreload || dynamic_cast<UClass*>(Object) || Object->IsTemplate() || dynamic_cast<UObjectRedirector*>(Object)))
 	{
 		Preload(Object);
