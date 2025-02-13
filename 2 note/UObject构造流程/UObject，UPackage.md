@@ -217,6 +217,8 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 }
 ```
 4.2 第二部分，加载ExportMap中的Object，根据outer，ucalss, name来创建出来。
+# 2 FindObject，FindObjectFast，FindObjectChecked，FindObjectSafe
+
 
 # 问题
 
