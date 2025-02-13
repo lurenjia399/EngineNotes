@@ -55,16 +55,15 @@ UPackage* LoadPackageInternal(...)
 	Linker = GetPackageLinker(InOuter, PackagePath, LoadFlags, nullptr, InReaderOverride, &InOutLoadContext, ImportLinker, InstancingContext);
 	// 加载资源中的ExportMap
 	Linker->LoadAllObjects(GEventDrivenLoaderEnabled);
-	
+	// 标记package的flag为加载完成
 	if (!bFullyLoadSkipped)
 	{
-		// Mark package as loaded.
 		Result->SetFlags(RF_WasLoaded);
 	}
 	return Result;
 }
 ```
-3 在LoadPackageInternal方法中主要就是两个部分，第一部分是创建LinkerLoad序列化蓝图资源并加载依赖，然后是
+3 在LoadPackageInternal方法中主要就是两个部分，第一部分是创建LinkerLoad序列化蓝图资源并加载依赖，然后是加载创建ExportObject
 ```cpp
 FLinkerLoad* FLinkerLoad::CreateLinker(...)
 {
@@ -168,11 +167,12 @@ FLinkerLoad::EVerifyResult FLinkerLoad::VerifyImport(int32 ImportIndex)
 ```cpp
 void FLinkerLoad::LoadAllObjects(bool bForcePreload)
 {
+	// 加载创建ExportObject
 	for(int32 ExportIndex = 0; ExportIndex < ExportMap.Num(); ++ExportIndex)
 	{
 		UObject* LoadedObject = CreateExportAndPreload(ExportIndex, bForcePreload);
 	}
-	
+	// 设置一个标志位，标记package里面的ExportObject都加载完了
 	if( LinkerRoot )
 	{
 		LinkerRoot->MarkAsFullyLoaded();
