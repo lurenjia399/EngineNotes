@@ -213,7 +213,6 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 	Export.Object->SetLinker( this, Index );
 	// 添加ExportObject
 	CurrentLoadContext->AddLoadedObject(Export.Object);
-	
 }
 ```
 4.2 第二部分，加载ExportMap中的Object，根据outer，ucalss, name来创建出来。
