@@ -6,7 +6,8 @@ https://zhuanlan.zhihu.com/p/140339299
 https://zhuanlan.zhihu.com/p/529711999
 
 
-
+查看蓝图资源格式：
+资产既然可以被序列化成文件保存在硬盘，那它是以怎样的格式存储对象呢？打开 Edit Preferences , General->Experimental->Core->Text Asset Format Support (勾选)
 # 1 StaticLoadObject
 
 ```cpp
