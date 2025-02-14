@@ -138,9 +138,11 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	// 将整个簇数组划分，每个工作线程划分几个簇，记录在FMarkClustersState结构中
 	FMarkClustersState GatherClustersState;
 	GatherClustersState.Start(Options, ClusterArray.Num(), 0, NumThreads);
-	ParallelFor(TEXT("GC.MarkClusteredObjectsAsReachable"), GatherClustersState.NumWorkerThreads(), 1, [&ThreadIterators, &ClusterArray, &TotalClusteredObjects](int32 ThreadIndex)
-		{
-		}
+	// 通过工作线程来遍历
+	ParallelFor(...)
+	{
+		
+	}
 }
 ```
 
