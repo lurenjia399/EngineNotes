@@ -17,3 +17,13 @@ void UObjectBase::AddObject(...)
 	GUObjectArray.AllocateUObjectIndex(this, InternalFlagsToSet, InInternalIndex, InSerialNumber);
 }
 ```
+最终会将我们的Object组装成FUObjectItem结构，放入到GUObjectArray数组中。
+```cpp
+struct FUObjectItem
+{
+	class UObjectBase* Object;//对应的就是我们Object
+	int32 Flags;
+	int32 ClusterRootIndex;	
+	int32 SerialNumber;
+}
+```
