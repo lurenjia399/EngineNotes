@@ -4,6 +4,10 @@ UObject解析
 https://zhuanlan.zhihu.com/p/140339299
 基础概念
 https://zhuanlan.zhihu.com/p/529711999
+UE4资源加载
+https://blog.csdn.net/qq_43034470/article/details/120888095
+UE4的资源管理
+https://zhuanlan.zhihu.com/p/357904199
 
 
 查看蓝图资源格式：
