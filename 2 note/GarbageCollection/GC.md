@@ -42,6 +42,7 @@ enum class EInternalObjectFlags : int32
 	AsyncLoading = 1 << 27,// 对象正在异步加载
 	Unreachable = 1 << 28,// 对象不可达，会被gc回收
 	RootSet = 1 << 30, // 根节点，不会被gc回收，即使没有被引用
-	PendingConstruction = 1 << 31,  
+	PendingConstruction = 1 << 31,// 对象正在执行构造函数，UObjectBase的构造函数
+	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
