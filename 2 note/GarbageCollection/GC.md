@@ -187,6 +187,7 @@ GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
 			GUObjectClusters.SetClustersNeedDissolving();
 		}
 	}
+	// 对 簇的根可达或者簇中有可达Object 的情况处理
 	for (FUObjectItem* ObjectItem : MarkClustersResults.KeepClusters)
 	{
 		MarkReferencedClustersAsReachable<EGCOptions::None>(ObjectItem->GetClusterIndex(), OutRootObjects);
