@@ -103,7 +103,7 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 ```cpp
 void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
-
+	// 开始可达性分析
 	StartReachabilityAnalysis(KeepFlags, Options);
 	StartVerseGC();
 	do
@@ -114,3 +114,4 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 	
 }
 ```
+3 StartReachabilityAnalysis这个方法里
