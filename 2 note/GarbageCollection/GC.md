@@ -22,8 +22,8 @@ void UObjectBase::AddObject(...)
 struct FUObjectItem
 {
 	class UObjectBase* Object;//对应的就是我们Object
-	int32 Flags;
-	int32 ClusterRootIndex;	
+	int32 Flags;//EInternalObjectFlags 的标志位
+	int32 ClusterRootIndex;// 当前所属簇的索引
 	int32 SerialNumber;
 }
 ```
