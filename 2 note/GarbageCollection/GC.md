@@ -111,7 +111,34 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 		PerformReachabilityAnalysisPass(Options);
 	
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
+}
+
+void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
+{
+	BeginInitialReferenceCollection(Options);
+
+	// Reset object count.
+	GObjectCountDuringLastMarkPhase.Reset();
 	
+	InitialObjects.Reset();
+
+	// Make sure GC referencer object is checked for references to other objects even if it resides in permanent object pool
+	if (FPlatformProperties::RequiresCookedData() && GUObjectArray.IsDisregardForGC(FGCObject::GGCObjectReferencer))
+	{
+		InitialObjects.Add(FGCObject::GGCObjectReferencer);
+	}
+
+	{
+		const double StartTime = FPlatformTime::Seconds();
+		MarkObjectsAsUnreachable(KeepFlags);
+		const double ElapsedTime = FPlatformTime::Seconds() - StartTime;
+		if (!Stats.bFoundGarbageRef)
+		{
+			GGCStats.MarkObjectsAsUnreachableTime = ElapsedTime;
+		}
+		UE_LOG(LogGarbage, Verbose, TEXT("%f ms for MarkObjectsAsUnreachable Phase (%d Objects To Serialize)"), ElapsedTime * 1000, InitialObjects.Num());
+	}
 }
 ```
+
 3 StartReachabilityAnalysis这个方法里
