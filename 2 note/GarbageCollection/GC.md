@@ -31,9 +31,9 @@ enum class EInternalObjectFlags : int32
 	None = 0,
 
 	// 三个可达标志位
-	ReachabilityFlag0 = 1 << 0,
-	ReachabilityFlag1 = 1 << 1,
-	ReachabilityFlag2 = 1 << 2,
+	ReachabilityFlag0 = 1 << 0,//可达的Object
+	ReachabilityFlag1 = 1 << 1,//不可达的Object
+	ReachabilityFlag2 = 1 << 2,//可能不可达的Object
 	
 	LoaderImport = 1 << 20,//对象由其他package依赖，导致需要加载
 	Garbage = 1 << 21,// 标记对象为垃圾
@@ -153,7 +153,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 				RootItem->FastMarkAsReachableInterlocked_ForGC();
 				ThreadState.Payload.KeepClusters.Add(RootItem);
 			}
-			// 处理簇中
+			// 处理簇中的其他Object
 			for (int32 ObjectIndex : Cluster.Objects)
 			{
 				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
