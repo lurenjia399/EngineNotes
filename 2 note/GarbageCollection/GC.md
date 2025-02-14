@@ -159,6 +159,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 			for (int32 ObjectIndex : Cluster.Objects)
 			{
 				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
+				// 簇中的Obj
 				ClusteredItem->FastMarkAsReachableAndClearReachaleInClusterInterlocked_ForGC();
 
 			}
