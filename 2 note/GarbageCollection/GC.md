@@ -117,26 +117,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
-	GObjectCountDuringLastMarkPhase.Reset();
-	
-	InitialObjects.Reset();
-
-	// Make sure GC referencer object is checked for references to other objects even if it resides in permanent object pool
-	if (FPlatformProperties::RequiresCookedData() && GUObjectArray.IsDisregardForGC(FGCObject::GGCObjectReferencer))
-	{
-		InitialObjects.Add(FGCObject::GGCObjectReferencer);
-	}
-
-	{
-		const double StartTime = FPlatformTime::Seconds();
-		MarkObjectsAsUnreachable(KeepFlags);
-		const double ElapsedTime = FPlatformTime::Seconds() - StartTime;
-		if (!Stats.bFoundGarbageRef)
-		{
-			GGCStats.MarkObjectsAsUnreachableTime = ElapsedTime;
-		}
-		UE_LOG(LogGarbage, Verbose, TEXT("%f ms for MarkObjectsAsUnreachable Phase (%d Objects To Serialize)"), ElapsedTime * 1000, InitialObjects.Num());
-	}
+	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
 3 StartReachabilityAnalysis这个方法里会优先执行BeginInitialReferenceCollection方法，这个方法就是用多线程将继承自GCObject的对象放到InitialReferences数组中
