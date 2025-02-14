@@ -52,11 +52,32 @@ enum class EInternalObjectFlags : int32
 ```
 # 2 触发GC
 ```cpp
-UWorld::ForceGarbageCollection( bool bFullPurge)
-
+// 手动通过这个方法来gc，设置bFullPurgeTriggered标志位，在下一帧调用gc
+void UEngine::ForceGarbageCollection(bool bForcePurge)
+{
+	TimeSinceLastPendingKillPurge = 1.0f + GetTimeBetweenGarbageCollectionPasses();
+	bFullPurgeTriggered = bFullPurgeTriggered || bForcePurge;
+}
 void UWorld::Tick(...)
 {
 	// 在World的Tick里会触发gc
 	GEngine->ConditionalCollectGarbage();
+}
+void UEngine::ConditionalCollectGarbage()
+{
+	// TryCollectGarbage 调用gc
+	if (bFullPurgeTriggered)
+	{
+		if (TryCollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS, true))
+		{
+			ForEachObjectOfClass(UWorld::StaticClass(),[](UObject* World)
+			{
+				CastChecked<UWorld>(World)->CleanupActors();
+			});
+			bFullPurgeTriggered = false;
+			bShouldDelayGarbageCollect = false;
+			TimeSinceLastPendingKillPurge = 0.0f;
+		}
+	}
 }
 ```
