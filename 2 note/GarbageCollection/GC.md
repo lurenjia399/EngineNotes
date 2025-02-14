@@ -123,7 +123,14 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到考虑数组中。第二部分标记Object为不可达，w
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到考虑数组中。第二部分标记Object为不可达，我们主要看下第二部分。
 ```cpp
-
+FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
+{
+	// 先标记簇
+	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
+	// 后标记Object
+	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
+}
 ```
+
