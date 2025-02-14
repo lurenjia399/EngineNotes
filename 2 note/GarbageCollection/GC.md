@@ -123,4 +123,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到考虑数组中。第二部分标记Object为不可达，w
+```cpp
+
+```
