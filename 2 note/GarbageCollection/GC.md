@@ -35,10 +35,10 @@ enum class EInternalObjectFlags : int32
 	ReachabilityFlag2 = 1 << 2,
 	LoaderImport = 1 << 20,
 	Garbage = 1 << 21,
-	ReachableInCluster = 1 << 23,
-	ClusterRoot = 1 << 24,
-	Native = 1 << 25,
-	Async = 1 << 26,
+	ReachableInCluster = 1 << 23,// 簇中可达
+	ClusterRoot = 1 << 24,// 簇根节点，不会被gc回收
+	Native = 1 << 25,//C++类对象
+	Async = 1 << 26,//异步对象，不存在于游戏线程，存在于其他工作线程
 	AsyncLoading = 1 << 27,
 	RootSet = 1 << 30, 
 	PendingConstruction = 1 << 31,  
