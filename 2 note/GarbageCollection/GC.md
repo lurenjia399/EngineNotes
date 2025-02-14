@@ -116,8 +116,6 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	BeginInitialReferenceCollection(Options);
-
-	// Reset object count.
 	GObjectCountDuringLastMarkPhase.Reset();
 	
 	InitialObjects.Reset();
