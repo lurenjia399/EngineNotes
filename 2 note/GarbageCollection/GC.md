@@ -50,3 +50,13 @@ enum class EInternalObjectFlags : int32
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
+# 2 触发GC
+```cpp
+UWorld::ForceGarbageCollection( bool bFullPurge)
+
+void UWorld::Tick(...)
+{
+	// 在World的Tick里会触发gc
+	GEngine->ConditionalCollectGarbage();
+}
+```
