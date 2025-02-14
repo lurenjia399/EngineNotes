@@ -34,7 +34,7 @@ enum class EInternalObjectFlags : int32
 	ReachabilityFlag1 = 1 << 1,
 	ReachabilityFlag2 = 1 << 2,
 	LoaderImport = 1 << 20,
-	Garbage = 1 << 21,
+	Garbage = 1 << 21,// 标记对象为垃圾
 	ReachableInCluster = 1 << 23,// 簇中可达
 	ClusterRoot = 1 << 24,// 簇根节点，不会被gc回收
 	Native = 1 << 25,//C++类对象
@@ -43,6 +43,8 @@ enum class EInternalObjectFlags : int32
 	Unreachable = 1 << 28,// 对象不可达，会被gc回收
 	RootSet = 1 << 30, // 根节点，不会被gc回收，即使没有被引用
 	PendingConstruction = 1 << 31,// 对象正在执行构造函数，UObjectBase的构造函数
+
+	// 拥有这个标记的，在gc中会被跳过
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
