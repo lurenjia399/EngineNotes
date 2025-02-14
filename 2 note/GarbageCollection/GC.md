@@ -172,20 +172,24 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		}
 		else
 		{
-			
+			ThreadState.Payload.ClustersToDissolve.Add(RootItem);
 		}
-		ThreadState.Payload.ClustersToDissolve.Add(RootItem);
 	}
 	// 将所有工作线程处理的结果整合到MarkClustersResults中
 	FMarkClustersArrays MarkClustersResults;
 	GatherClustersState.Finish(MarkClustersResults);
+	// 对 簇的根是垃圾 的情况处理
 	for (FUObjectItem* ObjectItem : MarkClustersResults.ClustersToDissolve)
 	{
 		if (ObjectItem->HasAnyFlags(EInternalObjectFlags::ClusterRoot))
 		{
-			GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
+GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
 			GUObjectClusters.SetClustersNeedDissolving();
 		}
+	}
+	for (FUObjectItem* ObjectItem : MarkClustersResults.KeepClusters)
+	{
+		MarkReferencedClustersAsReachable<EGCOptions::None>(ObjectItem->GetClusterIndex(), OutRootObjects);
 	}
 }
 ```
