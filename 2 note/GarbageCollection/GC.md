@@ -162,14 +162,29 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
 				// 簇中的Object标记为可达并从簇中移出去
 				ClusteredItem->FastMarkAsReachableAndClearReachaleInClusterInterlocked_ForGC();
-				// 如果不保留簇，但簇中Object有保留的，就簇放到keepCluster数组中，但簇的根Object依然是不可达
+				// 如果不保留簇，但簇中Object有保留的，就簇放到keepCluster数组中
 				if (!bKeepCluster && ClusteredItem->HasAnyFlags(EInternalObjectFlags_RootFlags))
 				{
 					ThreadState.Payload.KeepClusters.Add(RootItem);
 					bKeepCluster = true;
 				}
-
 			}
+		}
+		else
+		{
+			
+		}
+		ThreadState.Payload.ClustersToDissolve.Add(RootItem);
+	}
+	// 将所有工作线程处理的结果整合到MarkClustersResults中
+	FMarkClustersArrays MarkClustersResults;
+	GatherClustersState.Finish(MarkClustersResults);
+	for (FUObjectItem* ObjectItem : MarkClustersResults.ClustersToDissolve)
+	{
+		if (ObjectItem->HasAnyFlags(EInternalObjectFlags::ClusterRoot))
+		{
+			GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
+			GUObjectClusters.SetClustersNeedDissolving();
 		}
 	}
 }
