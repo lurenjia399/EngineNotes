@@ -115,6 +115,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
+	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
 	GObjectCountDuringLastMarkPhase.Reset();
 	
@@ -138,5 +139,4 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	}
 }
 ```
-
-3 StartReachabilityAnalysis这个方法里
+3 StartReachabilityAnalysis这个方法里会优先执行BeginInitialReferenceCollection方法，这个方法就是用多线程将继承自GCObject的对象放到InitialReferences数组中
