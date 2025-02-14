@@ -24,6 +24,23 @@ struct FUObjectItem
 	class UObjectBase* Object;//对应的就是我们Object
 	int32 Flags;//EInternalObjectFlags 的标志位
 	int32 ClusterRootIndex;// 当前所属簇的索引
-	int32 SerialNumber;
+	int32 SerialNumber;//Object的序列码
 }
+enum class EInternalObjectFlags : int32
+{
+	None = 0,
+
+	ReachabilityFlag0 = 1 << 0,
+	ReachabilityFlag1 = 1 << 1,
+	ReachabilityFlag2 = 1 << 2,
+	LoaderImport = 1 << 20,
+	Garbage = 1 << 21,
+	ReachableInCluster = 1 << 23,
+	ClusterRoot = 1 << 24,
+	Native = 1 << 25,
+	Async = 1 << 26,
+	AsyncLoading = 1 << 27,
+	RootSet = 1 << 30, 
+	PendingConstruction = 1 << 31,  
+};
 ```
