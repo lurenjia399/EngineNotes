@@ -99,4 +99,10 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 	GC.PerformReachabilityAnalysis(KeepFlags, Options);
 }
 ```
-2 最终走到garbe的PerformReachabilityAnalysis可达性分析方法里面
+2 最终走到GarbageCollection.cpp的PerformReachabilityAnalysis可达性分析方法里面。
+```cpp
+void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
+{
+	
+}
+```
