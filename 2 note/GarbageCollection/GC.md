@@ -103,6 +103,9 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 ```cpp
 void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
+
+	StartReachabilityAnalysis(KeepFlags, Options);
+	StartVerseGC();
 	do
 	{
 		PerformReachabilityAnalysisPass(Options);
