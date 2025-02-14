@@ -135,12 +135,12 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 
 FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options, TArray<UObject*>& OutRootObjects)
 {
-	// 将整个簇数组划分，每个工作线程划分几个簇，记录在FMarkClustersState结构中
 	FMarkClustersState GatherClustersState;
+	// 将整个簇数组划分，每个工作线程负责几个簇，记录在FMarkClustersState结构中
 	GatherClustersState.Start(Options, ClusterArray.Num(), 0, NumThreads);
-	// 通过工作线程来遍历
+	// 通过工作线程来遍历簇数组，有几个工作线程遍历几次，每个工作线程只处理自己负责的簇
 	ParallelFor(...)
-	{
+	{// 工作线程处理主体
 		
 	}
 }
