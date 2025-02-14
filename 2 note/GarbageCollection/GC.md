@@ -86,14 +86,17 @@ void UEngine::ConditionalCollectGarbage()
 bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
 	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
+	
 	CollectGarbageImpl<true>(KeepFlags);
 }
 
 void CollectGarbageImpl(EObjectFlags KeepFlags)
 {
+	// Options里应该就包括一个多线程gc的标志位EGCOptions::Parallel
 	const EGCOptions Options = GetReferenceCollectorOptions(bPerformFullPurge);
 	FRealtimeGC GC;
 	// 可达性分析
 	GC.PerformReachabilityAnalysis(KeepFlags, Options);
 }
 ```
+2 最终走到garbe的PerformReachabilityAnalysis可达性分析方法里面
