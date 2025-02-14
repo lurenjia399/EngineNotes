@@ -112,7 +112,10 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 	
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
 }
-
+```
+3 分成了三部分，第一部分StartReachabilityAnalysis
+## StartReachabilityAnalysis
+```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
@@ -120,4 +123,4 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-3 StartReachabilityAnalysis这个方法里会优先执行BeginInitialReferenceCollection方法，这个方法就是用多线程将继承自GCObject的对象放到InitialReferences数组中
+1 StartReachabilityAnalysis 又分为了两部分
