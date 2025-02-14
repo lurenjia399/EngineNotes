@@ -39,8 +39,9 @@ enum class EInternalObjectFlags : int32
 	ClusterRoot = 1 << 24,// 簇根节点，不会被gc回收
 	Native = 1 << 25,//C++类对象
 	Async = 1 << 26,//异步对象，不存在于游戏线程，存在于其他工作线程
-	AsyncLoading = 1 << 27,
-	RootSet = 1 << 30, 
+	AsyncLoading = 1 << 27,// 对象正在异步加载
+	Unreachable = 1 << 28,// 对象不可达，会被gc回收
+	RootSet = 1 << 30, // 根节点，不会被gc回收，即使没有被引用
 	PendingConstruction = 1 << 31,  
 };
 ```
