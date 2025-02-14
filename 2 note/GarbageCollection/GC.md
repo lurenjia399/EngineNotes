@@ -141,7 +141,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	// 通过工作线程来遍历簇数组，有几个工作线程遍历几次，每个工作线程只处理自己负责的簇
 	ParallelFor(...)
 	{// 工作线程处理主体
-		// 从全局数组中拿到簇的ObjectItem
+		// 从全局数组中拿到簇的根ObjectItem
 		FUObjectItem* RootItem = &GUObjectArray.GetObjectItemArrayUnsafe()[Cluster.RootIndex];
 		// 族还不是垃圾
 		if (!RootItem->IsGarbage())
@@ -158,8 +158,9 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 			// 处理簇中的其他Object
 			for (int32 ObjectIndex : Cluster.Objects)
 			{
+				// 簇中的ObjectItem
 				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
-				// 簇中的Obj
+				// 簇中的Object标记为可达并从簇中移出去
 				ClusteredItem->FastMarkAsReachableAndClearReachaleInClusterInterlocked_ForGC();
 
 			}
