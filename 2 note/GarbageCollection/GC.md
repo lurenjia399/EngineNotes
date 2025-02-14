@@ -30,10 +30,12 @@ enum class EInternalObjectFlags : int32
 {
 	None = 0,
 
+	// 三个可达标志位
 	ReachabilityFlag0 = 1 << 0,
 	ReachabilityFlag1 = 1 << 1,
 	ReachabilityFlag2 = 1 << 2,
-	LoaderImport = 1 << 20,
+	
+	LoaderImport = 1 << 20,//对象由其他package依赖，导致需要加载
 	Garbage = 1 << 21,// 标记对象为垃圾
 	ReachableInCluster = 1 << 23,// 簇中可达
 	ClusterRoot = 1 << 24,// 簇根节点，不会被gc回收
