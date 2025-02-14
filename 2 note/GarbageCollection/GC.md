@@ -132,5 +132,15 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 	// 后标记Object
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
+
+FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options, TArray<UObject*>& OutRootObjects)
+{
+	// 将整个簇数组划分，每个工作线程划分几个簇，记录在FMarkClustersState结构中
+	FMarkClustersState GatherClustersState;
+	GatherClustersState.Start(Options, ClusterArray.Num(), 0, NumThreads);
+	ParallelFor(TEXT("GC.MarkClusteredObjectsAsReachable"), GatherClustersState.NumWorkerThreads(), 1, [&ThreadIterators, &ClusterArray, &TotalClusteredObjects](int32 ThreadIndex)
+		{
+		}
+}
 ```
 
