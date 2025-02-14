@@ -11,4 +11,9 @@ UObjectBase::UObjectBase(...)
 {
 	AddObject(InName, InInternalFlags, InInternalIndex, InSerialNumber);
 }
+void UObjectBase::AddObject(...)
+{
+	// 将Object放到了GUObject数组里面
+	GUObjectArray.AllocateUObjectIndex(this, InternalFlagsToSet, InInternalIndex, InSerialNumber);
+}
 ```
