@@ -146,11 +146,13 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		// 族还不是垃圾
 		if (!RootItem->IsGarbage())
 		{
-			// 处理簇的根Object
-			bool bKeepCluster = RootItem->HasAnyFlags(EInternalObjectFlags_RootFlags);
+			// 处理簇的根Object。EInternalObjectFlags_RootFlags含义是跳过gc
+		   bool bKeepCluster=RootItem->HasAnyFlags(EInternalObjectFlags_RootFlags);
 			if (bKeepCluster)
 			{
+				// 标记簇的根Object为可达
 				RootItem->FastMarkAsReachableInterlocked_ForGC();
+				// 把可达的保存起来
 				ThreadState.Payload.KeepClusters.Add(RootItem);
 			}
 			// 处理簇中的其他Object
