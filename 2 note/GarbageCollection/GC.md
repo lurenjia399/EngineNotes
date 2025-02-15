@@ -119,11 +119,11 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
-	// 将簇和根Object都标记为可达。
+	// 将簇中根Object和根Object都标记为可达。
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分遍历簇，遍历GRoots根数组，来将不是垃圾的Object收集到InitialObjects数组中，将根Object，簇中Object，簇根都标记为可达。我们主要看下第二部分。
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分遍历簇，遍历GRoots根数组，将根Object，簇中Object，簇根都标记为可达。我们主要看下第二部分。
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
