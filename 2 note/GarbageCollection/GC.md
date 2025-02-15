@@ -122,7 +122,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到考虑数组中。第二部分名称是标记Object为不可达，实际是遍历所有的Object来根据标志位决定是否可达。我们主要看下第二部分。
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分名称是标记Object为不可达，实际是遍历所有的Object来根据标志位决定是否可达。我们主要看下第二部分。
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
