@@ -103,12 +103,11 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 ```cpp
 void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
-	// 开始可达性分析
+	// 开始可达性分析，就好像一个初始化的过程
 	StartReachabilityAnalysis(KeepFlags, Options);
 	do
 	{
 		PerformReachabilityAnalysisPass(Options);
-	
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
 }
 ```
