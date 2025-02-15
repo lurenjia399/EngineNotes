@@ -224,6 +224,20 @@ void PerformReachabilityAnalysisOnObjectsInternal(FWorkerContext& Context)
 	TReachabilityProcessor<Options> Processor;
 	CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
 }
+
+FORCEINLINE void CollectReferencesForGC(ProcessorType& Processor, UE::GC::FWorkerContext& Context)
+{
+	// 多线程版本执行的
+	if constexpr (IsParallel(ProcessorType::Options))
+	{
+		ProcessAsync([](void* P, FWorkerContext& C) { FastReferenceCollector(*reinterpret_cast<ProcessorType*>(P)).ProcessObjectArray(C); }, &Processor, Context);
+	}
+	// 没有多线程执行的，执行的逻辑是一样的
+	else
+	{
+		FastReferenceCollector(Processor).ProcessObjectArray(Context);
+	}
+}
 ```
 
 
