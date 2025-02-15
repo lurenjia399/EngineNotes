@@ -142,7 +142,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	{// 工作线程处理主体
 		// 从全局数组中拿到簇的根ObjectItem
 		FUObjectItem* RootItem = &GUObjectArray.GetObjectItemArrayUnsafe()[Cluster.RootIndex];
-		// 簇根还不是垃圾，就把簇中Object都标记为可达
+		// 簇中根Object还不是垃圾，就把簇中其余Object都标记为可达
 		if (!RootItem->IsGarbage())
 		{
 			// 处理簇的根Object。如果簇根是根或者跳过gc则标记为可达
@@ -183,7 +183,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		GUObjectClusters.SetClustersNeedDissolving();
 		}
 	}
-	/* 如果簇根是根Object或者是跳过gc，则就需要保留簇。
+	/* 如果簇根是根Object或者是跳过gc，，则就需要保留簇。
 	MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。第一步处理簇引用的其他簇根，如果其他簇根不是垃圾，就标记为可达，如果是垃圾就清掉引用。第二步处理簇中MutableObjects（不在簇中但依然被簇引用。看上去是object属于多个簇，但只在一个簇中这种情况。），如果Object不是垃圾就标记为可达，并将其添加到InitialObjects数组中，如果是垃圾就清掉引用。第三步，如果簇中有垃圾（无论是引用的簇根还是mutableObjects中有垃圾），我们就把簇中Object都添加到InitialObjects数组中，并解散簇。
 	*/
 	for (FUObjectItem* ObjectItem : MarkClustersResults.KeepClusters)
