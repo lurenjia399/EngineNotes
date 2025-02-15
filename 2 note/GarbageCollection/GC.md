@@ -195,4 +195,27 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 ```
 ## PerformReachabilityAnalysisPass
 
+```cpp
+void PerformReachabilityAnalysisPass(const EGCOptions Options)
+{
+	if (!Private::GReachableObjects.IsEmpty())
+	{
+		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
+		ConditionallyAddBarrierReferencesToHistory(*Context);
+	}
+	if (!Private::GReachableClusters.IsEmpty())
+	{
+		TArray<FUObjectItem*> KeepClusterRefs;
+		Private::GReachableClusters.PopAllAndEmpty(KeepClusterRefs);
+		for (FUObjectItem* ObjectItem : KeepClusterRefs)
+		{
+			MarkReferencedClustersAsReachable<EGCOptions::None>(ObjectItem->GetClusterIndex(), InitialObjects);
+		}
+	}
+	Context->SetInitialObjectsUnpadded(InitialObjects);
+	// 处理Object之间的引用关系
+	PerformReachabilityAnalysisOnObjects(Context, Options);
+}
+```
+
 
