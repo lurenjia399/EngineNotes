@@ -2,6 +2,8 @@ https://zhuanlan.zhihu.com/p/392864278
 
 gc基本概念
 https://zhuanlan.zhihu.com/p/401956734
+基本概念
+https://mytechplayer.com/archives/ue5%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%8E%9F%E7%90%86
 
 ue这边使用的算法是标记清除的算法，也就是两个阶段，先标记后清除。要想标记就需要先获得所有的Object对象，然后再用某种清楚规则来清除。
 
