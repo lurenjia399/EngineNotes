@@ -152,14 +152,11 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 				RootItem->FastMarkAsReachableInterlocked_ForGC();
 				ThreadState.Payload.KeepClusters.Add(RootItem);
 			}
-			// 处理簇中的其他Object
+			// 处理簇中的Object。直接标记为可达
 			for (int32 ObjectIndex : Cluster.Objects)
 			{
-				// 簇中的ObjectItem
 				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
-				// 簇中的Object标记为可达
 				ClusteredItem->FastMarkAsReachableAndClearReachaleInClusterInterlocked_ForGC();
-				// 如果不保留簇，但簇中Object有保留的，就簇放到keepCluster数组中
 				if (!bKeepCluster && ClusteredItem->HasAnyFlags(EInternalObjectFlags_RootFlags))
 				{
 					ThreadState.Payload.KeepClusters.Add(RootItem);
@@ -175,7 +172,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	// 将所有工作线程处理的结果整合到MarkClustersResults中
 	FMarkClustersArrays MarkClustersResults;
 	GatherClustersState.Finish(MarkClustersResults);
-	/*
+	/* 如果簇根是垃圾，
 	DissolveClusterAndMarkObjectsAsUnreachable，解散簇的方法。第一步设置簇中object的所属簇索引为0，并将object标记为可能不可达。第二步解散掉簇引用的其他簇，递归调用。
 	*/
 	for (FUObjectItem* ObjectItem : MarkClustersResults.ClustersToDissolve)
