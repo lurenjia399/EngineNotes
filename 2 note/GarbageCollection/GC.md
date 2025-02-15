@@ -188,7 +188,6 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		GUObjectClusters.SetClustersNeedDissolving();
 		}
 	}
-	// 簇是可达的，也需要保证簇引用的其他簇也是可达的
 	/*
 	MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。第一步处理簇引用的其他簇根，如果其他簇根不是垃圾，就标记为可达，如果是垃圾就清掉引用。第二步处理簇中MutableObjects（不在簇中但依然被簇引用。看上去是object属于多个簇，但只在一个簇中这种情况。），如果Object不是垃圾就标记为可达，并将其添加到InitialObjects数组中，如果是垃圾就清掉引用。第三步，如果簇中有垃圾（无论是引用的簇根还是mutableObjects中有垃圾），我们就把簇中Object都添加到InitialObjects数组中，并解散簇。
 	*/
