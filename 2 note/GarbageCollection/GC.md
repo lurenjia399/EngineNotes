@@ -120,10 +120,11 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
+	// 名称是标记Object为不可达，实际是遍历所有的Object来根据标志位决定是否可达
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到考虑数组中。第二部分标记Object为不可达，我们主要看下第二部分。
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到考虑数组中。第二部分名称是标记Object为不可达，实际是遍历所有的Object来根据标志位决定是否可达。我们主要看下第二部分。
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
@@ -183,7 +184,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	{
 		if (ObjectItem->HasAnyFlags(EInternalObjectFlags::ClusterRoot))
 		{
-GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
+		GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
 			GUObjectClusters.SetClustersNeedDissolving();
 		}
 	}
