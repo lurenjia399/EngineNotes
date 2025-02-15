@@ -119,7 +119,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
-	// 将簇中的Object都标记为可达，簇中若含有垃圾则解散簇并将簇中Object添加到InitialObjects数组中。将根Object也都标记为可达
+	// 将簇中的Object都标记为可达，簇中若含有垃圾则解散簇并将簇中Object添加到InitialObjects数组中。将根Object也都标记为可达，并将根Object添加到InitialObjects数组中
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
@@ -193,6 +193,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
+2 StartReachabilityAnalysis 方法之后InitialObjects数组中肯定存在的就是根Object，有可能含有簇中的Object。
 
 ## PerformReachabilityAnalysisPass
 
