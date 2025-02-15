@@ -194,7 +194,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 }
 ```
 2 DissolveClusterAndMarkObjectsAsUnreachable，解散簇的方法
-3 MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。第一步处理簇引用的其他簇，如果其他簇不是垃圾，就标记为可达，如果是垃圾就清掉引用。第二步处理簇中MutableObject（不在簇中但依然被簇引用。看上去是object属于多个簇，但只在一个簇中这种情况。也可能是其他簇的根被簇引用。），
+3 MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。第一步处理簇引用的其他簇，如果其他簇不是垃圾，就标记为可达，如果是垃圾就清掉引用。第二步处理簇中MutableObject（不在簇中但依然被簇引用。看上去是object属于多个簇，但只在一个簇中这种情况。），
 ## PerformReachabilityAnalysisPass
 
 ```cpp
