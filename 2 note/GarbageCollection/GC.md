@@ -197,7 +197,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 MarkObjectsAsUnreachable这个方法的作用就是，
+2 MarkObjectsAsUnreachable这个方法的作用就是，遍历所有的Object，把可达的Object添加到InitialObjects数组中。
 
 ## PerformReachabilityAnalysisPass
 
