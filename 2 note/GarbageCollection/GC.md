@@ -105,7 +105,6 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 {
 	// 开始可达性分析
 	StartReachabilityAnalysis(KeepFlags, Options);
-	StartVerseGC();
 	do
 	{
 		PerformReachabilityAnalysisPass(Options);
