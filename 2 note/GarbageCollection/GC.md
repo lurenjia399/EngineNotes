@@ -37,7 +37,7 @@ enum class EInternalObjectFlags : int32
 	
 	LoaderImport = 1 << 20,//对象由其他package依赖，导致需要加载
 	Garbage = 1 << 21,// 标记对象为垃圾
-	ReachableInCluster = 1 << 23,// 簇中可达
+	ReachableInCluster = 1 << 23,// object是
 	ClusterRoot = 1 << 24,// 簇根节点，不会被gc回收
 	Native = 1 << 25,//C++类对象
 	Async = 1 << 26,//异步对象，不存在于游戏线程，存在于其他工作线程
