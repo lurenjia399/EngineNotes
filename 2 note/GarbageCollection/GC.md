@@ -194,7 +194,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 }
 ```
 2 DissolveClusterAndMarkObjectsAsUnreachable，解散簇的方法
-3 MarkReferencedClustersAsReachable：
+3 MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。
 ## PerformReachabilityAnalysisPass
 
 ```cpp
