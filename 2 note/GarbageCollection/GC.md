@@ -127,7 +127,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
-	// 处理簇，先将簇中根Object和簇中Object标记为可达
+	// 处理簇，先将簇中根Object和簇中Object标记为可达。
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
 	// 方法和处理簇的方法一样，通过工作线程遍历GRoots数组和GUObjectArray并标记为可达
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
@@ -193,7 +193,6 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 MarkObjectsAsUnreachable这个方法的作用就是，遍历所有的Object，把不是垃圾的Object添加到InitialObjects数组中。
 
 ## PerformReachabilityAnalysisPass
 
