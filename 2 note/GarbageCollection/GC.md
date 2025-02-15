@@ -142,7 +142,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	{// 工作线程处理主体
 		// 从全局数组中拿到簇的根ObjectItem
 		FUObjectItem* RootItem = &GUObjectArray.GetObjectItemArrayUnsafe()[Cluster.RootIndex];
-		// 族还不是垃圾
+		// 簇根还不是垃圾，就把簇中Object都标记为可达
 		if (!RootItem->IsGarbage())
 		{
 			// 处理簇的根Object。EInternalObjectFlags_RootFlags含义是跳过gc
