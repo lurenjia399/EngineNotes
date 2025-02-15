@@ -198,7 +198,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 StartReachabilityAnalysis这个方法的作用就是，
+2 MarkObjectsAsUnreachable这个方法的作用就是，
 
 ## PerformReachabilityAnalysisPass
 
