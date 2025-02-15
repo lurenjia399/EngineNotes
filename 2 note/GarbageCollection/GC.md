@@ -119,7 +119,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
-	// 名称是标记Object为不可达，实际是遍历所有的Object来根据标志位决定是否可达
+	// 通过工作线程来根据Object的标志位，设置是否可达的标记，类似那种初始化的过程
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
