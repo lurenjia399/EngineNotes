@@ -213,8 +213,16 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		}
 	}
 	Context->SetInitialObjectsUnpadded(InitialObjects);
-	// 处理Object之间的引用关系
+	// 处理Object引用关系，最终会执行PerformReachabilityAnalysisOnObjectsInternal方法
 	PerformReachabilityAnalysisOnObjects(Context, Options);
+}
+```
+
+```cpp
+void PerformReachabilityAnalysisOnObjectsInternal(FWorkerContext& Context)
+{
+	TReachabilityProcessor<Options> Processor;
+	CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
 }
 ```
 
