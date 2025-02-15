@@ -183,7 +183,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		if (ObjectItem->HasAnyFlags(EInternalObjectFlags::ClusterRoot))
 		{
 		GUObjectClusters.DissolveClusterAndMarkObjectsAsUnreachable(ObjectItem);
-			GUObjectClusters.SetClustersNeedDissolving();
+		GUObjectClusters.SetClustersNeedDissolving();
 		}
 	}
 	// 簇是可达的，也需要保证簇引用的其他簇也是可达的
@@ -193,6 +193,8 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
+2 DissolveClusterAndMarkObjectsAsUnreachable，解散簇的方法
+3 MarkReferencedClustersAsReachable：
 ## PerformReachabilityAnalysisPass
 
 ```cpp
