@@ -159,7 +159,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 			{
 				// 簇中的ObjectItem
 				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
-				// 簇中的Object标记为可达并从簇中移出去
+				// 簇中的Object标记为可达
 				ClusteredItem->FastMarkAsReachableAndClearReachaleInClusterInterlocked_ForGC();
 				// 如果不保留簇，但簇中Object有保留的，就簇放到keepCluster数组中
 				if (!bKeepCluster && ClusteredItem->HasAnyFlags(EInternalObjectFlags_RootFlags))
