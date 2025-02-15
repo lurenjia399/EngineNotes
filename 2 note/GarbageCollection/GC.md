@@ -127,9 +127,9 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
-	// 先标记簇
+	// 处理簇，先将簇标记为可达或者不可达
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
-	// 后标记Object
+	// 方法和处理簇的方法一样，通过工作线程遍历GRoots数组和GUObjectArray并标记为可达
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
 
