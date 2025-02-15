@@ -178,7 +178,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	// 将所有工作线程处理的结果整合到MarkClustersResults中
 	FMarkClustersArrays MarkClustersResults;
 	GatherClustersState.Finish(MarkClustersResults);
-	// 对 簇的根是垃圾 的情况处理
+	// 簇的根Object都是垃圾，需要解散簇
 	for (FUObjectItem* ObjectItem : MarkClustersResults.ClustersToDissolve)
 	{
 		if (ObjectItem->HasAnyFlags(EInternalObjectFlags::ClusterRoot))
