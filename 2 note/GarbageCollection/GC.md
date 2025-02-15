@@ -119,17 +119,17 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
-	// 通过工作线程来根据Object的标志位，设置是否可达的标记，类似那种初始化的过程
+	// 将簇和根Object都标记为可达。
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分遍历簇，遍历GRoots根数组，遍历GUObjectArray全局数组，来将不是垃圾的Object收集到InitialObjects数组中，将根Object，簇中Object，簇根都标记为可达。我们主要看下第二部分。
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分遍历簇，遍历GRoots根数组，来将不是垃圾的Object收集到InitialObjects数组中，将根Object，簇中Object，簇根都标记为可达。我们主要看下第二部分。
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
 	// 处理簇，先将簇中根Object和簇中Object标记为可达。
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
-	// 方法和处理簇的方法一样，通过工作线程遍历GRoots数组和GUObjectArray并标记为可达
+	// 方法和处理簇的方法一样，将根Object标记为可达。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
 
