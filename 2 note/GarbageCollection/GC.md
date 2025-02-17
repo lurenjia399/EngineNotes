@@ -259,4 +259,6 @@ FORCEINLINE void CollectReferencesForGC(ProcessorType& Processor, UE::GC::FWorke
 
 # 问题
 
+- GReachabilityState.GetNumIterations()这是什么含义？
+
 
