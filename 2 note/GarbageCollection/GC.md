@@ -265,6 +265,17 @@ FORCEINLINE void CollectReferencesForGC(ProcessorType& Processor, UE::GC::FWorke
 }
 ```
 
+```cpp
+void ProcessObjectArray(FWorkerContext& Context)
+{
+	// 遍历InitialNativeReferences数组
+	for (UObject** InitialReference : Context.InitialNativeReferences)
+	{
+		Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
+	}
+}
+```
+
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
