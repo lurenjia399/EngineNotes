@@ -95,7 +95,7 @@ bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 	
 	CollectGarbageImpl<true>(KeepFlags);
 
-	// 增加可达性fe
+	// 增加可达性分析次数，就像一个计数器
 	FinishIteration();
 }
 
@@ -220,6 +220,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
 		ConditionallyAddBarrierReferencesToHistory(*Context);
 	}
+	// 第一次进行可达性分析 || (没有发现引用垃圾 && 没有暂停可达性分析)
 	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
 	{
 		Context->InitialNativeReferences = GetInitialReferences(Options);
