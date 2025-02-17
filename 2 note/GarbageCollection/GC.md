@@ -95,6 +95,7 @@ bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 	
 	CollectGarbageImpl<true>(KeepFlags);
 
+	// 增加可达性fe
 	FinishIteration();
 }
 
