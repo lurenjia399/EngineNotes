@@ -138,7 +138,7 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 		// 交换可达标记和可能不可达标记，这边直接交换的是标志位，也就是变量名是GReachableObjectFlag可达的，但是代表的数据是不可达的
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
-	// 处理簇，先将簇中根Object和簇中Object标记为可达（可达和可能不可达交换了,所以代表不可达），如果簇中有垃圾，我们就把簇中Object都添加到InitialObjects数组中。
+	// 处理簇，先将簇中根Object和簇中Object标记为可达（可达和可能不可达交换了,所以代表不可达），如果簇中有垃圾，我们就把簇中Object都添加到InitialObjects数组中并解散簇。
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
 	// 方法和处理簇的方法一样，将根Object标记为可达（可达和可能不可达交换了,所以代表不可达），然后将根Object添加到InitialObjects数组中。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
