@@ -216,6 +216,10 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
 		ConditionallyAddBarrierReferencesToHistory(*Context);
 	}
+	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
+	{
+		Context->InitialNativeReferences = GetInitialReferences(Options);
+	}
 	if (!Private::GReachableClusters.IsEmpty())
 	{
 		TArray<FUObjectItem*> KeepClusterRefs;
