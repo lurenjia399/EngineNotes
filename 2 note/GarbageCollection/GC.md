@@ -125,7 +125,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
-	// 将继承自GCObject的对象放到InitialReferences数组中
+	// 用另一个线程将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
 	// 标记Object为不可达
 	MarkObjectsAsUnreachable(KeepFlags);
