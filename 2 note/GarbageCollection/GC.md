@@ -157,7 +157,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		// 簇中根Object还不是垃圾，就把簇中其余Object都标记为可达
 		if (!RootItem->IsGarbage())
 		{
-			// 处理簇的根Object。如果簇根是根或者跳过gc则标记为可达
+			// 处理簇的根Object。如果簇根是根或者跳过gc则标记为可达。
 		   bool bKeepCluster=RootItem->HasAnyFlags(EInternalObjectFlags_RootFlags);
 			if (bKeepCluster)
 			{
@@ -204,7 +204,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 StartReachabilityAnalysis 方法之后InitialObjects数组中肯定存在的就是根Object，有可能含有簇中的Object。MarkObjectsAsUnreachable这个方法是标记所有的Object为可能不可达，里面首先交换可达和可能不可达标记，然后就调用
+2 MarkObjectsAsUnreachable这个方法是标记所有的Object为可能不可达，里面首先交换可达和可能不可达标记，然后就调用标记可达的相关方法来实现可能不可达标记。
 
 ## PerformReachabilityAnalysisPass
 
