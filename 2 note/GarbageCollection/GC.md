@@ -131,6 +131,11 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
+	if (!Stats.bFoundGarbageRef)
+	{
+		// 交换可达标记和可能不可达标记
+		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
+	}
 	// 处理簇，先将簇中根Object和簇中Object标记为可达。
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
 	// 方法和处理簇的方法一样，将根Object标记为可达。
