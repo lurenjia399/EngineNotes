@@ -263,5 +263,7 @@ FORCEINLINE void CollectReferencesForGC(ProcessorType& Processor, UE::GC::FWorke
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
+可达性分析的次数，看上去就是一个计数器，在每次可达性分析（FReachabilityAnalysisState::PerformReachabilityAnalysis）之后会++。
+- 
 
 
