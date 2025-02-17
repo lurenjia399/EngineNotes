@@ -20,21 +20,8 @@
               "icon": "lucide-file",
               "title": "GC"
             }
-          },
-          {
-            "id": "dca3f8a8f3e0ca72",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.8.4"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.8.4"
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -176,7 +163,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "dca3f8a8f3e0ca72",
+  "active": "3f043423e596d462",
   "lastOpenFiles": [
     "2 note/Lua/lua.md",
     "2 note/UObject构造流程/UObject，UPackage.md",
