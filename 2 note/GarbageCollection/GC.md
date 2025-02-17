@@ -134,7 +134,7 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 	// 如果没有引用垃圾
 	if (!Stats.bFoundGarbageRef)
 	{
-		// 交换可达标记和可能不可达标记
+		// 交换可达标记和可能不可达标记，这边直接交换的是标志位，也就是变量名是GReachableObjectFlag可达的，但是dai'b
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
 	// 处理簇，先将簇中根Object和簇中Object标记为可达。
