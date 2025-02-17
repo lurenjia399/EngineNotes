@@ -108,7 +108,7 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 ```cpp
 void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
-	// 开始可达性分析，就好像一个初始化的过程
+	// 开始可达性分析，标记可能不可达标记
 	StartReachabilityAnalysis(KeepFlags, Options);
 	do
 	{
