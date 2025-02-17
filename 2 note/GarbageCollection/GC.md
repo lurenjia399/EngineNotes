@@ -185,7 +185,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	FMarkClustersArrays MarkClustersResults;
 	GatherClustersState.Finish(MarkClustersResults);
 	/* 如果簇根是垃圾，直接解散簇
-	DissolveClusterAndMarkObjectsAsUnreachable，解散簇的方法。第一步设置簇中object的所属簇索引为0，并将object标记为可能不可达。第二步解散掉簇引用的其他簇，递归调用。
+	DissolveClusterAndMarkObjectsAsUnreachable，解散簇的方法。第一步设置簇中object的所属簇索引为0，并将object标记为可能不可达（这里虽然标记为可能不可达，但是之前有交换所以这里实际标记成可达了，为啥呢？）。第二步解散掉簇引用的其他簇，递归调用。
 	*/
 	for (FUObjectItem* ObjectItem : MarkClustersResults.ClustersToDissolve)
 	{
