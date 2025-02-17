@@ -127,7 +127,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分将簇中的Object都标记为可达（可达和可能不可达交换了,所以代表不可达），簇中若含有垃圾则解散簇并将簇中Object添加到InitialObjects数组中。我们主要看下第二部分。
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分将簇中的Object都标记为可达（可达和可能不可达交换了,所以代表不可达），簇中若含有垃圾则解散簇并将簇中Object添加到InitialObjects数组中，然后还将根Object添加到InitialObjects数组中。我们主要看下第二部分。
 ```cpp
 
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
