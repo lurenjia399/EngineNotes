@@ -223,6 +223,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 	// 第一次进行可达性分析 || (没有发现引用垃圾 && 没有暂停可达性分析)
 	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
 	{
+		// 目的是将GGCObjectReferencer数组中的值添加到InitialReferences数组中。
 		Context->InitialNativeReferences = GetInitialReferences(Options);
 	}
 	if (!Private::GReachableClusters.IsEmpty())
