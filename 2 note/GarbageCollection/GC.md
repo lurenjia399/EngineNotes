@@ -273,7 +273,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 	{
 		TReachabilityProcessor<Options> Processor;
 		CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
-		// 这个Dispa
+		// 这个Dispatcher的类型是TDirectDispatcher<TReachabilityProcessor<Parallel>>
 		Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 	}
 }
