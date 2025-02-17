@@ -131,6 +131,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 ```cpp
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
+	// 如果没有引用垃圾
 	if (!Stats.bFoundGarbageRef)
 	{
 		// 交换可达标记和可能不可达标记
