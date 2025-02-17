@@ -271,6 +271,9 @@ void ProcessObjectArray(FWorkerContext& Context)
 	// 遍历InitialNativeReferences数组
 	for (UObject** InitialReference : Context.InitialNativeReferences)
 	{
+		TReachabilityProcessor<Options> Processor;
+		CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
+		// 这个Dispa
 		Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 	}
 }
