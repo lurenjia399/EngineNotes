@@ -272,7 +272,10 @@ void ProcessObjectArray(FWorkerContext& Context)
 	for (UObject** InitialReference : Context.InitialNativeReferences)
 	{
 		TReachabilityProcessor<Options> Processor;
+		
+		CollectorType Collector(Processor, Context);
 		CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
+		
 		// 这个Dispatcher的类型是TDirectDispatcher<TReachabilityProcessor<Parallel>>
 		Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 	}
