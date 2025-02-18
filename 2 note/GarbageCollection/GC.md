@@ -288,6 +288,9 @@ void ProcessObjectArray(FWorkerContext& Context)
 	}
 }
 
+```
+1 判断Object之间的引用关系，通过HandleKillableReference方法
+```cpp
 // TBatchDispatcher 类中的方法
 void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origin)
 {
