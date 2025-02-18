@@ -210,7 +210,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 ```
 2 MarkObjectsAsUnreachable这个方法是标记所有的Object为可能不可达，里面首先交换可达和可能不可达标记，然后就调用标记可达的相关方法来实现可能不可达标记。
 
-## PerformReachabilityAnalysisPass
+## 标记引用关系 PerformReachabilityAnalysisPass
 
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
@@ -286,6 +286,12 @@ void ProcessObjectArray(FWorkerContext& Context)
 		// 这个Dispatcher的类型是TDirectDispatcher<TReachabilityProcessor<Parallel>>
 		Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 	}
+}
+
+// TBatchDispatcher 类中的方法
+void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origin)
+{
+	QueueReference(Context.GetReferencingObject(), Object, MemberId, ProcessorType::MayKill(Origin, true));
 }
 ```
 
