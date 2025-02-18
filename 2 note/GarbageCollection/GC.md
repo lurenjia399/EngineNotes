@@ -308,6 +308,7 @@ void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMember
 }
 void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 {
+	// 会往UnvalidatedReferences数组里添加，直到添加满了就执行DrainUnvalidatedFull方法，这个是核心方法，会遍历查看是否有引用
 	UnvalidatedReferences.Push(UnvalidatedReference);
 	if (UnvalidatedReferences.IsFull())
 	{
