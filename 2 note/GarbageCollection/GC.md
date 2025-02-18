@@ -273,7 +273,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 	{
 		// TReachabilityProcessor<Options> Processor;
 		// CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
-		// 这里是获取Dispatcher，通过GetDispatcher，
+		// 这里是获取Dispatcher，GetDispatcher的定义有两个地方，一个是默认的，一个是TReachabilityCollector类里的，后者是全特化版本。实际执行会根据Collector类型的不同执行不同的版本，TReachabilityCollector类型执行后者，TDefaultCollector类型执行前者。这里Collector的类型是TReachabilityCollector，所以Dispatcher是TBatchDispatcher类型。
 		CollectorType Collector(Processor, Context);
 		decltype(GetDispatcher(Collector, Processor, Context)) Dispatcher = GetDispatcher(Collector, Processor, Context);
 		
