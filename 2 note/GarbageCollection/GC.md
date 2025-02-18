@@ -293,6 +293,27 @@ void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origi
 {
 	QueueReference(Context.GetReferencingObject(), Object, MemberId, ProcessorType::MayKill(Origin, true));
 }
+void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMemberId MemberId, EKillable Killable)
+{
+	// 蓝图类型为true，其他类型为false
+	if (Killable == EKillable::Yes)
+	{
+		FPlatformMisc::Prefetch(&Object);
+		KillableBatcher.PushReference(FMutableReference{&Object});
+	}
+	else
+	{
+		ImmutableBatcher.PushReference(FImmutableReference{Object});
+	}
+}
+void PushReference(UnvalidatedReferenceType UnvalidatedReference)
+{
+	UnvalidatedReferences.Push(UnvalidatedReference);
+	if (UnvalidatedReferences.IsFull())
+	{
+		DrainUnvalidatedFull();
+	}
+}
 ```
 
 # 问题
