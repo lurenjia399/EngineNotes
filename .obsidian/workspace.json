@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "ArrayDim",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,7 +74,8 @@
               "title": "书签"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -163,7 +164,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3f043423e596d462",
+  "active": "d67c74eb1cebdf43",
   "lastOpenFiles": [
     "2 note/UClass/UClass.md",
     "2 note/GarbageCollection/GC.md",
