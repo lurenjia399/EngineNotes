@@ -410,8 +410,11 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 	FMemberWord* FirstWord = (FMemberWord*)(Header + 1);
 	FMemory::Memcpy(FirstWord, Packed.Words.GetData(), sizeof(FMemberWord) * Packed.Words.Num());
 	FMemory::Memcpy(FirstWord + Packed.Words.Num(), Packed.DebugNames.GetData(), sizeof(FName) * Packed.DebugNames.Num());
+	// 返回首地址handler组成的FSchemaView
+	return BuiltSchema.Emplace(FSchemaView(FirstWord)).Get();
 }
 ```
+3 通过Build方法，首先将Schema中的数据根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
