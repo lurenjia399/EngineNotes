@@ -357,6 +357,15 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 	// 没有创建过Token，也就是没有CLASS_TokenStreamAssembled标志位，才会走进去
 	if (!HasAnyClassFlags(CLASS_TokenStreamAssembled) || bForce)
 	{
+		FSchemaBuilder Schema(0);
+		FSchemaView SuperSchema;
+		// 首先将父类的SuperSchema组装到Schema到开头
+		if (UClass* SuperClass = GetSuperClass())
+		{
+			SuperClass->AssembleReferenceTokenStreamInternal();	
+			SuperSchema = SuperClass->ReferenceSchema.Get();
+			Schema.Append(SuperSchema);
+		}
 		
 	}
 }
