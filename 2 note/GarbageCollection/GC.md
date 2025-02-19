@@ -376,7 +376,16 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 	}
 }
 ```
-1 UClass中每个不同的FProperty都有不同的EmitReferenceInfo方法。我们拿
+1 UClass中每个不同的FProperty都有不同的EmitReferenceInfo方法。我们拿UObject的举例
+```cpp
+void FObjectProperty::EmitReferenceInfo(...)
+{
+	for (int32 Idx = 0, Num = ArrayDim; Idx < Num; ++Idx)
+	{
+		Schema.Add(UE::GC::DeclareMember(DebugPath, BaseOffset + GetOffset_ForGC() + Idx * sizeof(FObjectPtr), UE::GC::EMemberType::Reference));
+	}
+}
+```
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
