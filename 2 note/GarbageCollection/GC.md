@@ -402,9 +402,14 @@ void FObjectProperty::EmitReferenceInfo(...)
 // 构建FSchemaView
 FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 {
-	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的灾后
+	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的在后
 	Algo::SortBy(Members, &FMemberDeclaration::Offset);
+	// 然后还把ARO(AddReferenceObject函数指针)指向的添加进来
 	Members.Add(GenerateTerminator(ARO));
+	// 分配内存，存放Members中的数据
+	FMemberWord* FirstWord = (FMemberWord*)(Header + 1);
+	FMemory::Memcpy(FirstWord, Packed.Words.GetData(), sizeof(FMemberWord) * Packed.Words.Num());
+	FMemory::Memcpy(FirstWord + Packed.Words.Num(), Packed.DebugNames.GetData(), sizeof(FName) * Packed.DebugNames.Num());
 }
 ```
 # 问题
