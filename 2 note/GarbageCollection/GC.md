@@ -378,6 +378,9 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 		{
 			Schema.Append(UE::GC::GetIntrinsicSchema(this));
 		}
+		// 通过将Schema构建成FSchemaView，最后将其保存到UClass的ReferenceSchema结构中
+		FSchemaView View(bReuseSuper ? SuperSchema : Schema.Build(GetARO(this)), Origin);
+		ReferenceSchema.Set(View);
 	}
 }
 ```
