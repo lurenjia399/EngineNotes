@@ -281,8 +281,6 @@ void ProcessObjectArray(FWorkerContext& Context)
 		{
 			Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 		}
-		
-		
 		// 这个Dispatcher的类型是TDirectDispatcher<TReachabilityProcessor<Parallel>>
 		Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 	}
