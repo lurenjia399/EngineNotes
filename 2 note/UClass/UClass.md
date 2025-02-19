@@ -713,6 +713,18 @@ void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObject
 FCoreUObjectDelegates::CompiledInUObjectsRegisteredDelegate.Broadcast(Package);
 		UObjectLoadAllCompiledInDefaultProperties();//使用上面讲的DeferredCompiledInRegistration这个数组，初始化属性，函数，CDO
 	}
+	// gc中使用，为class创建token，在gc中介绍吧，这里不介绍了
+	if (bNewUObjects && !GIsInitialLoad)
+	{
+		for (UClass* Class : AllNewClasses)
+		{
+			// Assemble reference token stream for garbage collection/ RTGC.
+			if (!Class->HasAnyFlags(RF_ClassDefaultObject) && !Class->HasAnyClassFlags(CLASS_TokenStreamAssembled))
+			{
+				Class->AssembleReferenceTokenStream();
+			}
+		}
+	}
 }
 ```
 ## 4 UObjectLoadAllCompiledInDefaultProperties
