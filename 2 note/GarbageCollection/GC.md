@@ -336,7 +336,7 @@ void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObject
 		}
 	}
 }
-// cpp的UClass不用上锁，其余的需要上锁
+// cpp的UClass不用上锁，其余的需要上锁，防止多线程数据竞争
 void UClass::AssembleReferenceTokenStream(bool bForce)
 {
 	if (ClassFlags & CLASS_Native)
@@ -347,6 +347,17 @@ void UClass::AssembleReferenceTokenStream(bool bForce)
 	{
 		FScopeLock NonNativeLock(&GAssembleSchemaLock);
 		AssembleReferenceTokenStreamInternal(bForce);
+	}
+}
+```
+
+```cpp
+void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
+{
+	// 没有创建过Token，也就是没有CLASS_TokenStreamAssembled标志位，才会走进去
+	if (!HasAnyClassFlags(CLASS_TokenStreamAssembled) || bForce)
+	{
+		
 	}
 }
 ```
