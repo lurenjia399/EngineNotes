@@ -387,7 +387,7 @@ void FObjectProperty::EmitReferenceInfo(...)
 	}
 }
 ```
-2 向Schema中添加
+2 向Schema中添加DeclareMember结构，这个结构记录了DebugPath，当前属性在类中偏移量，属性标志位。这个偏移量的计算用到了GetOffset_ForGC方法，这个方法返回Offset_Internal成员变量，Offset_Internal的赋值是在创建属性FProperty的时候赋值的，也就是在U
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
