@@ -380,6 +380,7 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 		}
 		// 通过将Schema构建成FSchemaView，最后将其保存到UClass的ReferenceSchema结构中
 		FSchemaView View(bReuseSuper ? SuperSchema : Schema.Build(GetARO(this)), Origin);
+		// 最后将首地址存到UClass中
 		ReferenceSchema.Set(View);
 		// 记录已经处理过的标志位
 		ClassFlags |= CLASS_TokenStreamAssembled;
@@ -414,7 +415,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 	return BuiltSchema.Emplace(FSchemaView(FirstWord)).Get();
 }
 ```
-3 通过Build方法，首先将Schema中的数据根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将
+3 通过Build方法，首先将Schema中的数据（UObject中存在的UProperty修饰的属性）根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将这块内存的首地址返回。
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
