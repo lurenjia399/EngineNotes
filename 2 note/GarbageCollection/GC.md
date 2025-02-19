@@ -324,12 +324,11 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 // 这个方法是在UClass创建的过程中执行的
 void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
 {
-	// 其余部分全都省略了，这里只关注gc的信息
+	// 其余部分全都省略了，这里只关注gc的部分
 	if (bNewUObjects && !GIsInitialLoad)
 	{
 		for (UClass* Class : AllNewClasses)
 		{
-			// Assemble reference token stream for garbage collection/ RTGC.
 			if (!Class->HasAnyFlags(RF_ClassDefaultObject) && !Class->HasAnyClassFlags(CLASS_TokenStreamAssembled))
 			{
 				Class->AssembleReferenceTokenStream();
