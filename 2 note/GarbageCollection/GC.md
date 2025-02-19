@@ -336,6 +336,19 @@ void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObject
 		}
 	}
 }
+// cpp的UClass不用上锁，其余的需要上锁
+void UClass::AssembleReferenceTokenStream(bool bForce)
+{
+	if (ClassFlags & CLASS_Native)
+	{
+		AssembleReferenceTokenStreamInternal(bForce);
+	}
+	else
+	{
+		FScopeLock NonNativeLock(&GAssembleSchemaLock);
+		AssembleReferenceTokenStreamInternal(bForce);
+	}
+}
 ```
 # 问题
 
