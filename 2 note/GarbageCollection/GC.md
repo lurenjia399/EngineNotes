@@ -373,10 +373,10 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 			FPropertyStackScope PropertyScope(DebugPath, Property);
 			Property->EmitReferenceInfo(Schema, 0, EncounteredStructProps, DebugPath);
 		}
-		
 	}
 }
 ```
+1 UClass中每个不同的FProperty都有不同的EmitReferenceInfo方法。我们拿
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
