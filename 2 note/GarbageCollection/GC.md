@@ -373,6 +373,11 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 			FPropertyStackScope PropertyScope(DebugPath, Property);
 			Property->EmitReferenceInfo(Schema, 0, EncounteredStructProps, DebugPath);
 		}
+		// 这边还处理了没有经过UHT的c++类，就是那种裸的C++类
+		if (ClassFlags & CLASS_Intrinsic)
+		{
+			Schema.Append(UE::GC::GetIntrinsicSchema(this));
+		}
 	}
 }
 ```
