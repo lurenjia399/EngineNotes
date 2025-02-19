@@ -387,6 +387,7 @@ void FObjectProperty::EmitReferenceInfo(...)
 	}
 }
 ```
+2 向Schema中添加
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
