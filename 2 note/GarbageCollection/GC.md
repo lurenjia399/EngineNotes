@@ -381,6 +381,8 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 		// 通过将Schema构建成FSchemaView，最后将其保存到UClass的ReferenceSchema结构中
 		FSchemaView View(bReuseSuper ? SuperSchema : Schema.Build(GetARO(this)), Origin);
 		ReferenceSchema.Set(View);
+		// 记录已经处理过的标志位
+		ClassFlags |= CLASS_TokenStreamAssembled;
 	}
 }
 ```
@@ -396,6 +398,15 @@ void FObjectProperty::EmitReferenceInfo(...)
 }
 ```
 2 向Schema中添加DeclareMember结构，这个结构记录了DebugPath，当前属性在类中偏移量，属性标志位。这个偏移量的计算用到了GetOffset_ForGC方法，这个方法返回Offset_Internal成员变量，Offset_Internal的赋值是在创建属性FProperty的时候赋值的，也就是在UClass创建的时候。
+```cpp
+// 构建FSchemaView
+FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
+{
+	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的灾后
+	Algo::SortBy(Members, &FMemberDeclaration::Offset);
+	Members.Add(GenerateTerminator(ARO));
+}
+```
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
