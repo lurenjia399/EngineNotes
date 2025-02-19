@@ -366,6 +366,13 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 			SuperSchema = SuperClass->ReferenceSchema.Get();
 			Schema.Append(SuperSchema);
 		}
+		// 遍历UClass中的Property，不遍历父类中的Property，每个Property都执行EmitReferenceInfo方法，EmitReferenceInfo这个方法每种Property都是自己实现的。
+		for (TFieldIterator<FProperty> It(this, EFieldIteratorFlags::ExcludeSuper); It; ++It)
+		{
+			FProperty* Property = *It;
+			FPropertyStackScope PropertyScope(DebugPath, Property);
+			Property->EmitReferenceInfo(Schema, 0, EncounteredStructProps, DebugPath);
+		}
 		
 	}
 }
