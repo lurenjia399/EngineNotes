@@ -121,7 +121,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 }
 ```
 3 分成了三部分，第一部分StartReachabilityAnalysis
-## 标记初始化 StartReachabilityAnalysis
+# 3 标记初始化 StartReachabilityAnalysis
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
@@ -210,7 +210,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 ```
 2 MarkObjectsAsUnreachable这个方法是标记所有的Object为可能不可达，里面首先交换可达和可能不可达标记，然后就调用标记可达的相关方法来实现可能不可达标记。
 
-## 通过引用关系修改标记 PerformReachabilityAnalysisPass
+# 4 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
@@ -319,7 +319,25 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 	}
 }
 ```
-
+# 5 引用关系的信息收集
+```cpp
+// 这个方法是在UClass创建的过程中执行的
+void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
+{
+	// 其余部分全都省略了，这里只关注gc的信息
+	if (bNewUObjects && !GIsInitialLoad)
+	{
+		for (UClass* Class : AllNewClasses)
+		{
+			// Assemble reference token stream for garbage collection/ RTGC.
+			if (!Class->HasAnyFlags(RF_ClassDefaultObject) && !Class->HasAnyClassFlags(CLASS_TokenStreamAssembled))
+			{
+				Class->AssembleReferenceTokenStream();
+			}
+		}
+	}
+}
+```
 # 问题
 
 - GReachabilityState.GetNumIterations()这是什么含义？
