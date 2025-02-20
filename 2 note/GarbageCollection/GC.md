@@ -365,6 +365,12 @@ void DrainValidated(const uint32 Num)
 	}
 	ValidatedReferences.Num = 0;
 }
+
+static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
+{
+	DetectGarbageReference(Context, Metadata);
+	HandleValidReference(Context, Reference, Metadata);
+}
 ```
 # 5 引用关系的信息收集
 ```cpp
