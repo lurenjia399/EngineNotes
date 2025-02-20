@@ -372,6 +372,8 @@ static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference 
 	DetectGarbageReference(Context, Metadata);
 	HandleValidReference(Context, Reference, Metadata);
 }
+
+
 ```
 # 5 引用关系的信息收集
 ```cpp
