@@ -317,6 +317,45 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 	}
 }
 ```
+2 DrainUnvalidatedFull 方法会统计Object的有效引用
+```cpp
+void DrainUnvalidated(const uint32 Num)
+{
+	check(Num <= UnvalidatedBatchSize);
+	Context.Stats.AddReferences(Num);
+
+	FPermanentObjectPoolExtents Permanent(PermanentPool);
+	FValidatedBitmask ValidsA, ValidsB;
+	for (uint32 Idx = 0; Idx < Num; ++Idx)
+	{
+		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
+		uint64 ObjectAddress = reinterpret_cast<uint64>(Object);
+		ValidsA.Set(Idx, !Permanent.Contains(Object));
+	}
+
+	for (uint32 Idx = 0; Idx < Num; ++Idx)
+	{
+		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
+		ValidsB.Set(Idx, (!!Object) & IsObjectHandleResolved(reinterpret_cast<FObjectHandle&>(Object))); //-V792
+	}
+	
+	FValidatedBitmask Validations = FValidatedBitmask::And(ValidsA, ValidsB);
+	uint32 NumValid = Validations.CountBits();
+	uint32 UnvalidatedIdx = 0;
+	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize) //-V1021
+	{
+		QueueValidReferences(Slack, Validations, /* in-out */  UnvalidatedIdx);
+		check(ValidatedReferences.IsFull());
+		DrainValidatedFull();
+		NumValid -= Slack;
+	}
+
+	QueueValidReferences(NumValid, Validations, UnvalidatedIdx);
+	check(!ValidatedReferences.IsFull());
+
+	UnvalidatedReferences.Num = 0;
+}
+```
 # 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
