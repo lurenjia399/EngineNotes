@@ -337,8 +337,9 @@ void DrainUnvalidated(const uint32 Num)
 		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
 		ValidsB.Set(Idx, (!!Object) & IsObjectHandleResolved(reinterpret_cast<FObjectHandle&>(Object))); //-V792
 	}
-	// ValidsA和ValidsB进行与的操作，最后
+	// ValidsA和ValidsB进行与的操作，最后不在永久对象池并且在内存中的Object会被标记为1
 	FValidatedBitmask Validations = FValidatedBitmask::And(ValidsA, ValidsB);
+	// 数Validations中1的数量，也就是Object的数量
 	uint32 NumValid = Validations.CountBits();
 	uint32 UnvalidatedIdx = 0;
 	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize) //-V1021
