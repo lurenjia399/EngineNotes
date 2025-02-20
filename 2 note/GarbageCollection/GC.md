@@ -317,7 +317,7 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 	}
 }
 ```
-2 DrainUnvalidatedFull 方法会统计Object的有效引用
+2 DrainUnvalidatedFull 方法会执行DrainUnvalidated方法
 ```cpp
 void DrainUnvalidated(const uint32 Num)
 {
@@ -341,15 +341,15 @@ void DrainUnvalidated(const uint32 Num)
 	FValidatedBitmask Validations = FValidatedBitmask::And(ValidsA, ValidsB);
 	// 数Validations中1的数量，也就是Object的数量
 	uint32 NumValid = Validations.CountBits();
+	// 会将Validations中记录的Object添加到
 	uint32 UnvalidatedIdx = 0;
 	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize) //-V1021
 	{
-		QueueValidReferences(Slack, Validations, /* in-out */  UnvalidatedIdx);
+		QueueValidReferences(Slack, Validations,  UnvalidatedIdx);
 		check(ValidatedReferences.IsFull());
 		DrainValidatedFull();
 		NumValid -= Slack;
 	}
-
 	QueueValidReferences(NumValid, Validations, UnvalidatedIdx);
 	check(!ValidatedReferences.IsFull());
 
