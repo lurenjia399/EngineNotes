@@ -510,7 +510,8 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 3 通过Build方法，首先将Schema中的数据（UObject中存在的UProperty修饰的属性）根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将这块内存的首地址返回，最后将首地址存到UClass中。
 # 问题
 
-- 
+- FProperty类的ArrayDim属性是什么含义？
+用于表示该属性是一个 **静态数组（Static Array）** 的大小，也就是用UPROPERTY修饰的数组。类似于int Test[10]。
 - GReachabilityState.GetNumIterations()这是什么含义？
 可达性分析的次数，看上去就是一个计数器，在每次可达性分析（FReachabilityAnalysisState::PerformReachabilityAnalysis）之后会++。
 - gc的标记流程是什么样的呢？
