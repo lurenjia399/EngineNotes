@@ -373,7 +373,25 @@ static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference 
 	HandleValidReference(Context, Reference, Metadata);
 }
 
+FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
+	{
+		// Object是可达的才会走进来，并标记为可能不可达
+		if (Metadata.ObjectItem->MarkAsReachableInterlocked_ForGC())
+		{
+			if (!Metadata.Has(EInternalObjectFlags::ClusterRoot))
+			{
+				Context.ObjectsToSerialize.Add<Options>(Reference.Object);
+			}
+			else
+			{
+				MarkReferencedClustersAsReachableThunk<Options>(Metadata.ObjectItem->GetClusterIndex(), Context.ObjectsToSerialize);
+			}
 
+			return true;
+		}
+		
+		return false;
+	}
 ```
 # 5 引用关系的信息收集
 ```cpp
