@@ -296,7 +296,7 @@ void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origi
 }
 void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMemberId MemberId, EKillable Killable)
 {
-	// 蓝图类型为true，其他类型为false
+	// 蓝图类型为EKillable::Yes，其他类型为EKillable::No
 	if (Killable == EKillable::Yes)
 	{
 		FPlatformMisc::Prefetch(&Object);
@@ -356,7 +356,15 @@ void DrainUnvalidated(const uint32 Num)
 ```
 3 DrainUnvalidated方法主要就是遍历UnvalidatedReferences数组里Object，将满足条件的Object添加到ValidatedReferences这个数组里。条件是Object不存在永久对象池并且Object依然还在内存中。在ValidatedReferences数组满了的时候，会调用DrainValidated方法
 ```cpp
-
+void DrainValidated(const uint32 Num)
+{
+	// 遍历ValidatedReferences数组，对里边每个Object执行HandleBatchedReference方法
+	for (uint32 Idx = 0; Idx < Num; ++Idx)
+	{
+		ProcessorType::HandleBatchedReference(Context, ValidatedReferences[Idx], Metadatas[Idx]);
+	}
+	ValidatedReferences.Num = 0;
+}
 ```
 # 5 引用关系的信息收集
 ```cpp
