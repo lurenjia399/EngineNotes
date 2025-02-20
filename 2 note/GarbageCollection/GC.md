@@ -223,7 +223,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 	// 第一次进行可达性分析 || (没有发现引用垃圾 && 没有暂停可达性分析)
 	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
 	{
-		// 目的是将GGCObjectReferencer数组中的值添加到InitialReferences数组中,然后返回
+		//目的是将GGCObjectReferencer数组中的值添加到InitialReferences数组中,然后返回
 		Context->InitialNativeReferences = GetInitialReferences(Options);
 	}
 	// 把InitialObjects数组里的值塞到Context里
@@ -324,7 +324,7 @@ void DrainUnvalidated(const uint32 Num)
 	// 记录GUObjectAllocator中的永久对象池
 	FPermanentObjectPoolExtents Permanent(PermanentPool);
 	FValidatedBitmask ValidsA, ValidsB;
-	// ValidsA里每一位代表Object
+	// ValidsA里每一位代表Object是否在永久对象池里，0代表在，1代表不在。所以表示不在永久对象池里的Object才会被gc处理。
 	for (uint32 Idx = 0; Idx < Num; ++Idx)
 	{
 		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
