@@ -321,9 +321,7 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 ```cpp
 void DrainUnvalidated(const uint32 Num)
 {
-	check(Num <= UnvalidatedBatchSize);
-	Context.Stats.AddReferences(Num);
-
+	// 记录全局
 	FPermanentObjectPoolExtents Permanent(PermanentPool);
 	FValidatedBitmask ValidsA, ValidsB;
 	for (uint32 Idx = 0; Idx < Num; ++Idx)
