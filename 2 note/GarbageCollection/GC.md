@@ -321,9 +321,10 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 ```cpp
 void DrainUnvalidated(const uint32 Num)
 {
-	// 记录全局
+	// 记录GUObjectAllocator中的永久对象池
 	FPermanentObjectPoolExtents Permanent(PermanentPool);
 	FValidatedBitmask ValidsA, ValidsB;
+	// ValidsA里每一位代表Object
 	for (uint32 Idx = 0; Idx < Num; ++Idx)
 	{
 		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
