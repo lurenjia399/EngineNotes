@@ -341,7 +341,7 @@ void DrainUnvalidated(const uint32 Num)
 	FValidatedBitmask Validations = FValidatedBitmask::And(ValidsA, ValidsB);
 	// 数Validations中1的数量，也就是Object的数量
 	uint32 NumValid = Validations.CountBits();
-	// 会将Validations中记录的Object添加到
+	// 会将Validations中记录的Object添加到ValidatedReferences数组中，如果ValidatedReferences满了就执行DrainValidatedFull方法
 	uint32 UnvalidatedIdx = 0;
 	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize) //-V1021
 	{
@@ -351,11 +351,11 @@ void DrainUnvalidated(const uint32 Num)
 		NumValid -= Slack;
 	}
 	QueueValidReferences(NumValid, Validations, UnvalidatedIdx);
-	check(!ValidatedReferences.IsFull());
-
+	// 清掉UnvalidatedReferences数组的内容
 	UnvalidatedReferences.Num = 0;
 }
 ```
+3 DrainUnvalidated方法主要就是遍历UnvalidatedReferences数组里Object，将满足条件的Object添加到
 # 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
