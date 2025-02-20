@@ -368,6 +368,7 @@ void DrainValidated(const uint32 Num)
 
 static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
 {
+	// 记录是否引用垃圾了，如果不是清除垃圾阶段 && Object是
 	DetectGarbageReference(Context, Metadata);
 	HandleValidReference(Context, Reference, Metadata);
 }
