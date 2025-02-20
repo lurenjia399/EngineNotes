@@ -309,7 +309,7 @@ void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMember
 }
 void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 {
-	// 会往UnvalidatedReferences数组里添加，直到添加满了就执行DrainUnvalidatedFull方法，这个是核心方法，会遍历查看是否有引用
+	// 会往UnvalidatedReferences数组里添加，直到添加满了就执行DrainUnvalidatedFull方法，
 	UnvalidatedReferences.Push(UnvalidatedReference);
 	if (UnvalidatedReferences.IsFull())
 	{
@@ -346,7 +346,6 @@ void DrainUnvalidated(const uint32 Num)
 	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize) //-V1021
 	{
 		QueueValidReferences(Slack, Validations,  UnvalidatedIdx);
-		check(ValidatedReferences.IsFull());
 		DrainValidatedFull();
 		NumValid -= Slack;
 	}
@@ -355,7 +354,10 @@ void DrainUnvalidated(const uint32 Num)
 	UnvalidatedReferences.Num = 0;
 }
 ```
-3 DrainUnvalidated方法主要就是遍历UnvalidatedReferences数组里Object，将满足条件的Object添加到
+3 DrainUnvalidated方法主要就是遍历UnvalidatedReferences数组里Object，将满足条件的Object添加到ValidatedReferences这个数组里。条件是Object不存在永久对象池并且Object依然还在内存中。在ValidatedReferences数组满了的时候，会调用DrainValidated方法
+```cpp
+
+```
 # 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
