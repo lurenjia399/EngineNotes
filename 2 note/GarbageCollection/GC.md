@@ -331,7 +331,7 @@ void DrainUnvalidated(const uint32 Num)
 		uint64 ObjectAddress = reinterpret_cast<uint64>(Object);
 		ValidsA.Set(Idx, !Permanent.Contains(Object));
 	}
-
+	// ValidsB里每一位dao
 	for (uint32 Idx = 0; Idx < Num; ++Idx)
 	{
 		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
