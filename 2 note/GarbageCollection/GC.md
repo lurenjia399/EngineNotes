@@ -281,7 +281,26 @@ void ProcessObjectArray(FWorkerContext& Context)
 		{
 			Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 		}
-		
+		while (true)
+		{
+			ProcessObjects(Dispatcher, CurrentObjects);
+			// Free finished work block
+			if (CurrentObjects.GetData() != Context.InitialObjects.GetData())
+			{
+				Context.ObjectsToSerialize.FreeOwningBlock(CurrentObjects.GetData());
+			}
+
+			if (Processor.IsTimeLimitExceeded())
+			{
+				FlushWork(Dispatcher);
+				Dispatcher.Suspend();
+				SuspendWork(Context);
+				return;
+			}
+
+			int32 BlockSize = FWorkBlock::ObjectCapacity;
+			FWorkBlockifier& RemainingObjects = Context.ObjectsToSerialize;
+			FWorkBlock* Block = RemainingObjects.PopFullBlock<Options>();
 	}
 }
 
