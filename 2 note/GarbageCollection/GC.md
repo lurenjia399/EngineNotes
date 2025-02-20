@@ -375,18 +375,18 @@ static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference 
 
 FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
 	{
-		// Object是可达的才会走进来，并标记为可能不可达
+		// Object是可达的才会走进来，并标记为可能不可达。原因是前边交换了
 		if (Metadata.ObjectItem->MarkAsReachableInterlocked_ForGC())
 		{
 			if (!Metadata.Has(EInternalObjectFlags::ClusterRoot))
 			{
+				// 添加到ObjectsToSerialize数组里
 				Context.ObjectsToSerialize.Add<Options>(Reference.Object);
 			}
 			else
 			{
 				MarkReferencedClustersAsReachableThunk<Options>(Metadata.ObjectItem->GetClusterIndex(), Context.ObjectsToSerialize);
 			}
-
 			return true;
 		}
 		
