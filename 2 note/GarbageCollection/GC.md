@@ -179,7 +179,7 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
-	// 将根Object标记为理论可达（可达和可能不可达交换了,所以代表不可达），然后将根Object添加到InitialObjects数组中。
+	// 将根Object去掉理论可能不可达标记，并标记为理论可达，然后将根Object添加到InitialObjects数组中。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
 
@@ -465,11 +465,12 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 		}
 		else
 		{
+			// 这个是对簇的处理
 			MarkReferencedClustersAsReachableThunk<Options>(Metadata.ObjectItem->GetClusterIndex(), Context.ObjectsToSerialize);
 		}
 		return true;
 	}
-	// 如果Object没有理论可能不可达标记
+	// 如果Object没有理论可能不可达标记，else是对簇的处理
 	else  
 	{
 		
