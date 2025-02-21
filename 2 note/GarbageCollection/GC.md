@@ -285,19 +285,6 @@ void ProcessObjectArray(FWorkerContext& Context)
 		{
 			// 处理每个Object，先处理Object的Class和Outer，然后再根据UClass里的Schema来处理Object的引用,schema里记录了引用属性的偏移，获取Object的位置在加上偏移就能获取引用对象了。
 			ProcessObjects(Dispatcher, CurrentObjects);
-			// Free finished work block
-			if (CurrentObjects.GetData() != Context.InitialObjects.GetData())
-			{
-				Context.ObjectsToSerialize.FreeOwningBlock(CurrentObjects.GetData());
-			}
-
-			if (Processor.IsTimeLimitExceeded())
-			{
-				FlushWork(Dispatcher);
-				Dispatcher.Suspend();
-				SuspendWork(Context);
-				return;
-			}
 
 			int32 BlockSize = FWorkBlock::ObjectCapacity;
 			FWorkBlockifier& RemainingObjects = Context.ObjectsToSerialize;
