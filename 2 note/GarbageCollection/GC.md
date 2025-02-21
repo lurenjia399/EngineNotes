@@ -311,10 +311,13 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 		{			
 			Class->AssembleReferenceTokenStream();
 		}
+		// 获取UClass的Schema
 		FSchemaView Schema = Class->ReferenceSchema.Get();
-		Dispatcher.Context.ReferencingObject = CurrentObject;
+		// 标记UClass
 		Dispatcher.HandleImmutableReference(Class, EMemberlessId::Class, EOrigin::Other);
+		// 标记Outer
 		Dispatcher.HandleImmutableReference(Outer, EMemberlessId::Outer, EOrigin::Other);
+		// 如果Schema存在，就通过Schema标记Object的引用。
 		if (!Schema.IsEmpty())
 		{
 			Private::VisitMembers(Dispatcher, Schema, CurrentObject);
