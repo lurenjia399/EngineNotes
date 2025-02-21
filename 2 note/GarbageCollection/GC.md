@@ -356,7 +356,7 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 	}
 }
 ```
-2 DrainUnvalidatedFull 方法会执行DrainUnvalidated方法
+会将每个Object添加到UnvalidatedReferences无效引用数组里，如果无效引用数组满了，就会执行DrainUnvalidated方法。下面详细看下。
 ```cpp
 void DrainUnvalidated(const uint32 Num)
 {
@@ -374,7 +374,7 @@ void DrainUnvalidated(const uint32 Num)
 	for (uint32 Idx = 0; Idx < Num; ++Idx)
 	{
 		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
-		ValidsB.Set(Idx, (!!Object) & IsObjectHandleResolved(reinterpret_cast<FObjectHandle&>(Object))); //-V792
+		ValidsB.Set(Idx, (!!Object) & IsObjectHandleResolved(reinterpret_cast<FObjectHandle&>(Object)));
 	}
 	// ValidsA和ValidsB进行与的操作，最后不在永久对象池并且在内存中的Object会被标记为1
 	FValidatedBitmask Validations = FValidatedBitmask::And(ValidsA, ValidsB);
