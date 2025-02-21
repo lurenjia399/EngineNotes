@@ -154,6 +154,12 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 用另一个线程将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
+	InitialObjects.Reset();
+
+	if (FPlatformProperties::RequiresCookedData() && GUObjectArray.IsDisregardForGC(FGCObject::GGCObjectReferencer))
+	{
+		InitialObjects.Add(FGCObject::GGCObjectReferencer);
+	}
 	// 标记Object为不可达
 	MarkObjectsAsUnreachable(KeepFlags);
 }
