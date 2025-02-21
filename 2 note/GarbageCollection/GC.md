@@ -106,7 +106,7 @@ void FReachabilityAnalysisState::CollectGarbage(...)
 void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurgeGarbage(bool bReachabilityUsingTimeLimit)
 {
 	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
-	// 这个方法会转发到
+	// 这个方法会转发到CollectGarbageImpl这个方法里
 	PerformReachabilityAnalysis();
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
