@@ -361,7 +361,7 @@ void DrainUnvalidated(const uint32 Num)
 	uint32 NumValid = Validations.CountBits();
 	// 会将Validations中记录的Object添加到ValidatedReferences数组中，如果ValidatedReferences满了就执行DrainValidatedFull方法
 	uint32 UnvalidatedIdx = 0;
-	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize) //-V1021
+	for (uint32 Slack = ValidatedReferences.Slack(); NumValid >= Slack; Slack = ValidatedBatchSize)
 	{
 		QueueValidReferences(Slack, Validations,  UnvalidatedIdx);
 		DrainValidatedFull();
