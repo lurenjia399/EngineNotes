@@ -244,12 +244,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 MarkObjectsAsUnreachable这个方法主要是标记根Object为可达的，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable在这个方法的开头就交换了可达和可能不可达标记，很巧妙的交换了可达和可能不可达。举个例子就是：A代表可达，B代表可能不可达，交换后A代表可能不可达，B代表可达。在mei'y
-现在的标记情况为：
-
-| 理论： | 不可达 | 可能不可达 | 可达    |
-| --- | --- | ----- | ----- |
-| 实际  | 不可达 | 可达    | 可能不可达 |
+2 MarkObjectsAsUnreachable这个方法主要是标记根Object为可达的，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable在这个方法的开头就交换了可达和可能不可达标记，很巧妙的交换了可达和可能不可达。举个例子就是：A代表可达，B代表可能不可达，交换后A代表可能不可达，B代表可达。并没有根据含义去改变值，而是直接改变了值得含义，很巧妙。
 此时InitialObjects数组里就只有根Object吧，并且标记都为理论可达，实际为可能不可达。
 # 4 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
