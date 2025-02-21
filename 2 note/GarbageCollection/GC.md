@@ -292,8 +292,36 @@ void ProcessObjectArray(FWorkerContext& Context)
 }
 
 ```
-1 会通过ProcessObjects方法来处理，里边就是遍历每个Object，查看其引用的对象
+1 会通过ProcessObjects方法来处理，里边就是遍历每个Object，标记其引用的对象。
 ## 1 ProcessObjects
+```cpp
+FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArrayView<UObject*> CurrentObjects)
+{
+	// 遍历Object数组，对每个Object进行处理
+	for (FPrefetchingObjectIterator It(CurrentObjects); It.HasMore(); It.Advance())
+	{
+		// Object对象
+		UObject* CurrentObject = It.GetCurrentObject();
+		// Object的UClass
+		UClass* Class = CurrentObject->GetClass();
+		// Object的Outer
+		UObject* Outer = CurrentObject->GetOuter();
+		// 如果UClass没创建Schema，就再这里创建下
+		if (!!(Options & EGCOptions::AutogenerateSchemas) && !Class->HasAnyClassFlags(CLASS_TokenStreamAssembled))
+		{			
+			Class->AssembleReferenceTokenStream();
+		}
+		FSchemaView Schema = Class->ReferenceSchema.Get();
+		Dispatcher.Context.ReferencingObject = CurrentObject;
+		Dispatcher.HandleImmutableReference(Class, EMemberlessId::Class, EOrigin::Other);
+		Dispatcher.HandleImmutableReference(Outer, EMemberlessId::Outer, EOrigin::Other);
+		if (!Schema.IsEmpty())
+		{
+			Private::VisitMembers(Dispatcher, Schema, CurrentObject);
+		}
+	}
+}
+```
 
 ## 1 判断Object之间的引用关系，通过HandleKillableReference方法
 ```cpp
