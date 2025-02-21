@@ -347,7 +347,7 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 		}
 		// 获取UClass的Schema
 		FSchemaView Schema = Class->ReferenceSchema.Get();
-		// 标记UClass
+		// 标记UClass，直接添加到UnvalidatedReferences数组中
 		Dispatcher.HandleImmutableReference(Class, EMemberlessId::Class, EOrigin::Other);
 		// 标记Outer
 		Dispatcher.HandleImmutableReference(Outer, EMemberlessId::Outer, EOrigin::Other);
@@ -472,7 +472,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 	return false;
 }
 ```
-3 最终标记流程结束，从根Object开始，一步一步处理其引用Object（还需要保证Object不在永久对象池以及在内存中），并将其去掉理论可能不可达标记，添加理论可达标记。实际上就是标记为可能不可达。标记流程就是把所有遍历到的Object都标记为可能不可达，没有遍历到的Object还依然是可达。
+3 最终标记流程结束，从根Object开始，获取根Object得UClass，Outer，引用，将其一步一步处理其引用Object（还需要保证Object不在永久对象池以及在内存中），并将其去掉理论可能不可达标记，添加理论可达标记。实际上就是标记为可能不可达。标记流程就是把所有遍历到的Object都标记为可能不可达，没有遍历到的Object还依然是可达。
 # 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
