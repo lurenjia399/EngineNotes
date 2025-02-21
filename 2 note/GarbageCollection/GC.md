@@ -245,7 +245,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 }
 ```
 2 MarkObjectsAsUnreachable这个方法主要是标记根Object为可达的，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable在这个方法的开头就交换了可达和可能不可达标记，很巧妙的交换了可达和可能不可达。举个例子就是：A代表可达，B代表可能不可达，交换后A代表可能不可达，B代表可达。并没有根据含义去改变值，而是直接改变了值得含义，很巧妙。
-此时InitialObjects数组里就只有根Object吧，并且标记都为理论可达，实际为可能不可达。
+此时InitialObjects数组里就只有根Object吧，并且标记都为可达。
 # 4 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
 ```cpp
@@ -256,7 +256,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
 		ConditionallyAddBarrierReferencesToHistory(*Context);
 	}
-	// 第一次进行可达性分析 || (没有发现引用垃圾 && 没有暂停可达性分析)
+	// 第一次进行可达性分析 || (引用垃圾 && 没有暂停可达性分析)
 	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
 	{
 		//目的是将GGCObjectReferencer数组中的值添加到InitialReferences数组中,然后返回
