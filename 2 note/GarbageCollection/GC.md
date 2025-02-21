@@ -34,10 +34,10 @@ enum class EInternalObjectFlags : int32
 {
 	None = 0,
 
-	// 三个可达标志位，可达，可能不可达，不可达。会有
-	ReachabilityFlag0 = 1 << 0,//可达的Object
-	ReachabilityFlag1 = 1 << 1,//不可达的Object
-	ReachabilityFlag2 = 1 << 2,//可能不可达的Object
+	// 三个可达标志位，可达，可能不可达，不可达。含义会改变所以这里命令是这样。
+	ReachabilityFlag0 = 1 << 0,
+	ReachabilityFlag1 = 1 << 1,
+	ReachabilityFlag2 = 1 << 2,
 	
 	LoaderImport = 1 << 20,//对象由其他package依赖，导致需要加载
 	Garbage = 1 << 21,// 标记对象为垃圾
@@ -175,7 +175,7 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 	// 如果没有引用垃圾
 	if (!Stats.bFoundGarbageRef)
 	{
-		// 交换可达标记和可能不可达标记，这边直接交换的是标志位，也就是变量名是GReachableObjectFlag可达的，但是代表的数据是不可达的
+		// 交换可达和可能不可达的含义，将所有Object都标记为了可能不可达。
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
