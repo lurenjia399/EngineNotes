@@ -417,9 +417,9 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 	// 如果Object有可达标记，就去掉可达标记并标记为可能不可达
 	if (Metadata.ObjectItem->MarkAsReachableInterlocked_ForGC())
 	{
+		// 如果Object不是簇根，就添加到ObjectsToSerialize数组里，后边继续处理
 		if (!Metadata.Has(EInternalObjectFlags::ClusterRoot))
 		{
-			// 添加到ObjectsToSerialize数组里
 			Context.ObjectsToSerialize.Add<Options>(Reference.Object);
 		}
 		else
