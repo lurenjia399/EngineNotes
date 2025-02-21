@@ -88,7 +88,8 @@ void UEngine::ConditionalCollectGarbage()
 1 可以通过ForceGarbageCollection手动触发gc，在下一帧就会调用TryCollectGarbage方法来走gc流程。
 ```cpp
 // KeepFlags = GIsEditor ? RF_Standalone : RF_NoFlags
-// 这块代码删减了挺多的还
+// 这个KeepFlags只有再编辑器下才会有值，其余的全为RF_NoFlags
+// z
 bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
 	UE::GC::CollectGarbageInternal(KeepFlags, bPerformFullPurge);
