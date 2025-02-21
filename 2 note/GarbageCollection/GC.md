@@ -97,6 +97,22 @@ bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 
 	// 增加可达性分析次数，就像一个计数器
 	FinishIteration();
+
+	UE::GC::CollectGarbageInternal(KeepFlags, bPerformFullPurge);
+}
+
+void CollectGarbageInternal(EObjectFlags KeepFlags, bool bPerformFullPurge)
+{
+	GReachabilityState.CollectGarbage(KeepFlags, bPerformFullPurge);
+}
+void FReachabilityAnalysisState::CollectGarbage(...)
+{
+	PerformReachabilityAnalysisAndConditionallyPurgeGarbage(
+	bReachabilityUsingTimeLimit);
+}
+void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurgeGarbage(bool bReachabilityUsingTimeLimit)
+{
+	
 }
 
 void CollectGarbageImpl(EObjectFlags KeepFlags)
@@ -107,6 +123,7 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 	// 可达性分析
 	GC.PerformReachabilityAnalysis(KeepFlags, Options);
 }
+
 ```
 2 最终走到GarbageCollection.cpp的PerformReachabilityAnalysis可达性分析方法里面。
 ```cpp
