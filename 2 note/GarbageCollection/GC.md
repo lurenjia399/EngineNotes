@@ -164,7 +164,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分将根Object去掉理论ke'neng'bu。我们主要看下第二部分。
+1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分将根Object去掉理论可能不可达标记并添加理论可达标记。我们主要看下第二部分。
 ```cpp
 
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
@@ -175,9 +175,8 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 		// 交换可达标记和可能不可达标记，这边直接交换的是标志位，也就是变量名是GReachableObjectFlag可达的，但是代表的数据是不可达的
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
-	// 处理簇，先将簇中根Object和簇中Object标记为可达（可达和可能不可达交换了,所以代表不可达），如果簇中有垃圾，我们就把簇中Object都添加到InitialObjects数组中并解散簇。
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
-	// 方法和处理簇的方法一样，将根Object标记为可达（可达和可能不可达交换了,所以代表不可达），然后将根Object添加到InitialObjects数组中。
+	// 将根Object标记为理论可达（可达和可能不可达交换了,所以代表不可达），然后将根Object添加到InitialObjects数组中。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
 
