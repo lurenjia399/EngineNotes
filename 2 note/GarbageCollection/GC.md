@@ -293,7 +293,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 
 ```
 1 会通过ProcessObjects方法来处理，里边就是遍历每个Object，标记其引用的对象。
-## 1 ProcessObjects
+## 1 查找Object引用，ProcessObjects
 ```cpp
 FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArrayView<UObject*> CurrentObjects)
 {
@@ -325,8 +325,8 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 	}
 }
 ```
-标记
-## 1 判断Object之间的引用关系，通过HandleKillableReference方法
+标记对象的流程走的TBatchDispatcher的HandleKillableReference方法，下面详细看下。
+## 2 标记方法，HandleKillableReference
 ```cpp
 // TBatchDispatcher 类中的方法
 void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origin)
