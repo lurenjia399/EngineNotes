@@ -356,7 +356,7 @@ void PushReference(UnvalidatedReferenceType UnvalidatedReference)
 	}
 }
 ```
-会将每个Object添加到UnvalidatedReferences无效引用数组里，如果无效引用数组满了，就会执行DrainUnvalidated方法。下面详细看下。
+1 会将每个Object添加到UnvalidatedReferences无效引用数组里，如果无效引用数组满了，就会执行DrainUnvalidated方法。下面详细看下。
 ```cpp
 void DrainUnvalidated(const uint32 Num)
 {
@@ -393,7 +393,7 @@ void DrainUnvalidated(const uint32 Num)
 	UnvalidatedReferences.Num = 0;
 }
 ```
-3 DrainUnvalidated方法主要就是遍历UnvalidatedReferences数组里Object，将满足条件的Object添加到ValidatedReferences这个数组里。条件是Object不存在永久对象池并且Object依然还在内存中。在ValidatedReferences数组满了的时候，会调用DrainValidated方法
+2 DrainUnvalidated方法主要就是遍历UnvalidatedReferences数组里Object，将满足条件的Object添加到ValidatedReferences这个数组里。条件是Object不存在永久对象池中并且Object依然还在内存中。在ValidatedReferences数组满了的时候，会调用DrainValidated方法。
 ```cpp
 void DrainValidated(const uint32 Num)
 {
