@@ -326,7 +326,7 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 }
 ```
 标记对象的流程走的TBatchDispatcher的HandleKillableReference方法，下面详细看下。
-## 2 标记方法，HandleKillableReference
+## 2 标记Object，HandleKillableReference
 ```cpp
 // TBatchDispatcher 类中的方法
 void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origin)
