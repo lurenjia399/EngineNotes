@@ -363,7 +363,7 @@ void DrainUnvalidated(const uint32 Num)
 	// 记录GUObjectAllocator中的永久对象池
 	FPermanentObjectPoolExtents Permanent(PermanentPool);
 	FValidatedBitmask ValidsA, ValidsB;
-	// ValidsA里每一位代表Object是否在永久对象池里，0代表在，1代表不在。所以表示不在永久对象池里的Object才会被gc处理。
+	// ValidsA里每一位代表Object是否在永久对象池里，0代表在，1代表不在。所以表示不在永久对象池里的Object才会被gc处理。（现在游戏里的UClass都是再永久对象池的吧）
 	for (uint32 Idx = 0; Idx < Num; ++Idx)
 	{
 		UObject* Object = GetObject(UnvalidatedReferences[Idx]);
