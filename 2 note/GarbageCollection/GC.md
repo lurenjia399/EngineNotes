@@ -479,7 +479,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 	return false;
 }
 ```
-3 最终标记流程结束，从根Object开始，一步一步处理其引用Object，并将其去掉理论
+3 最终标记流程结束，从根Object开始，一步一步处理其引用Object（还需要保证Object不在永久对象池以及在内存中），并将其去掉理论可能不可达标记，添加理论可达标记。实际上就是标记为可能不可达。
 # 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
