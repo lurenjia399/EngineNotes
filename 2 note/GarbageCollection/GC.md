@@ -347,7 +347,7 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 		}
 		// 获取UClass的Schema
 		FSchemaView Schema = Class->ReferenceSchema.Get();
-		// 标记UClass，直接添加到UnvalidatedReferences数组中
+		// 标记UClass
 		Dispatcher.HandleImmutableReference(Class, EMemberlessId::Class, EOrigin::Other);
 		// 标记Outer
 		Dispatcher.HandleImmutableReference(Outer, EMemberlessId::Outer, EOrigin::Other);
