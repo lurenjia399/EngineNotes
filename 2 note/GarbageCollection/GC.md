@@ -89,7 +89,7 @@ void UEngine::ConditionalCollectGarbage()
 ```cpp
 // KeepFlags = GIsEditor ? RF_Standalone : RF_NoFlags
 // 这个KeepFlags只有再编辑器下才会有值，其余的全为RF_NoFlags
-// z
+// 这个bPerformFullPurge为true，可能是代表全量gc？
 bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
 	UE::GC::CollectGarbageInternal(KeepFlags, bPerformFullPurge);
@@ -243,7 +243,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 MarkObjectsAsUnreachable这个方法是标记所有的Object为可能不可达，里面首先交换可达和可能不可达标记，然后就调用标记可达的相关方法来实现可能不可达标记。
+2 MarkObjectsAsUnreachable这个方法主要是标记根Object为理论可达，并将根Object添加到InitialObjects数组中。
 
 # 4 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
