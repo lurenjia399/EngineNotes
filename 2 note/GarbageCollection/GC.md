@@ -98,8 +98,10 @@ void CollectGarbageInternal(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
 	GReachabilityState.CollectGarbage(KeepFlags, bPerformFullPurge);
 }
-void FReachabilityAnalysisState::CollectGarbage(...)
+void FReachabilityAnalysisState::CollectGarbage(EObjectFlags KeepFlags, bool bFullPurge)
 {
+	ObjectKeepFlags = KeepFlags;
+	bPerformFullPurge = bFullPurge;
 	PerformReachabilityAnalysisAndConditionallyPurgeGarbage(
 	bReachabilityUsingTimeLimit);
 }
