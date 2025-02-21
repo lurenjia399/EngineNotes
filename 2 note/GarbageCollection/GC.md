@@ -414,7 +414,7 @@ static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference 
 
 FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
 {
-	// Object是可达的才会走进来，并标记为可能不可达。原因是前边交换了
+	// 如果Object有可达标记，就去掉可达标记并标记为可能不可达
 	if (Metadata.ObjectItem->MarkAsReachableInterlocked_ForGC())
 	{
 		if (!Metadata.Has(EInternalObjectFlags::ClusterRoot))
@@ -427,6 +427,11 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 			MarkReferencedClustersAsReachableThunk<Options>(Metadata.ObjectItem->GetClusterIndex(), Context.ObjectsToSerialize);
 		}
 		return true;
+	}
+	// 如果Object没有可达标记
+	else  
+	{
+		
 	}
 	
 	return false;
