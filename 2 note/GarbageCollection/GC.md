@@ -179,7 +179,7 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
-	// 将根Object去掉理论可能不可达标记，并标记为理论可达，然后将根Object添加到InitialObjects数组中。
+	// 将根Object去掉可能不可达标记，并添加可达标记。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
 }
 
