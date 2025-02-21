@@ -307,8 +307,6 @@ void ProcessObjectArray(FWorkerContext& Context)
 	// 遍历InitialNativeReferences数组
 	for (UObject** InitialReference : Context.InitialNativeReferences)
 	{
-		// TReachabilityProcessor<Options> Processor;
-		// CollectReferencesForGC<TReachabilityCollector<Options>>(Processor, Context);
 		// 这里是获取Dispatcher，GetDispatcher的定义有两个地方，一个是默认的，一个是TReachabilityCollector类里的，后者是全特化版本。实际执行会根据Collector类型的不同执行不同的版本，TReachabilityCollector类型执行后者，TDefaultCollector类型执行前者。这里Collector的类型是TReachabilityCollector，所以Dispatcher是TBatchDispatcher类型。
 		CollectorType Collector(Processor, Context);
 		decltype(GetDispatcher(Collector, Processor, Context)) Dispatcher = GetDispatcher(Collector, Processor, Context);
@@ -450,8 +448,7 @@ static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference 
 
 FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
 {
-	// 清掉理论可能不可达标记，并添加可达标记。如果成功清掉标记才会返回true。
-	// 所以根Object不会走进来，他们已经在可达性分析最开始就清掉标记了。
+	// 清掉可能不可达标记添加可达标记。如果成功清掉可能不可达标记就wei
 	if (Metadata.ObjectItem->MarkAsReachableInterlocked_ForGC())
 	{
 		// 如果Object不是簇根，就添加到ObjectsToSerialize数组里，后边继续处理
