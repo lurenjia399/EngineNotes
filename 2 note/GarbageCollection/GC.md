@@ -91,13 +91,6 @@ void UEngine::ConditionalCollectGarbage()
 // 这块代码删减了挺多的还
 bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
-	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
-	
-	CollectGarbageImpl<true>(KeepFlags);
-
-	// 增加可达性分析次数，就像一个计数器
-	FinishIteration();
-
 	UE::GC::CollectGarbageInternal(KeepFlags, bPerformFullPurge);
 }
 
@@ -112,7 +105,10 @@ void FReachabilityAnalysisState::CollectGarbage(...)
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurgeGarbage(bool bReachabilityUsingTimeLimit)
 {
-	
+	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
+	// 这个方法会转发到
+	PerformReachabilityAnalysis();
+	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
 
 void CollectGarbageImpl(EObjectFlags KeepFlags)
