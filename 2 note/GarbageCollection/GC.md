@@ -110,6 +110,20 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	PerformReachabilityAnalysis();
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
+void FReachabilityAnalysisState::PerformReachabilityAnalysis()
+{
+	// 如果没有暂停，就把Iteration计数归0
+	if (!bIsSuspended)
+	{
+		NumIterations = 0;
+	}
+	if (bPerformFullPurge)
+	{
+		UE::GC::CollectGarbageFull(ObjectKeepFlags);
+	}
+	// 执行完可达性分析后就增加计数
+	NumIterations++;
+}
 
 void CollectGarbageImpl(EObjectFlags KeepFlags)
 {
