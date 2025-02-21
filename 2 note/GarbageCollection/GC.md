@@ -34,7 +34,7 @@ enum class EInternalObjectFlags : int32
 {
 	None = 0,
 
-	// 三个可达标志位
+	// 三个可达标志位，可达，可能不可达，不可达。会有
 	ReachabilityFlag0 = 1 << 0,//可达的Object
 	ReachabilityFlag1 = 1 << 1,//不可达的Object
 	ReachabilityFlag2 = 1 << 2,//可能不可达的Object
