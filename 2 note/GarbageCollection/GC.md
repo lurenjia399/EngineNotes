@@ -317,7 +317,7 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 		Dispatcher.HandleImmutableReference(Class, EMemberlessId::Class, EOrigin::Other);
 		// 标记Outer
 		Dispatcher.HandleImmutableReference(Outer, EMemberlessId::Outer, EOrigin::Other);
-		// 如果Schema存在，就通过Schema标记Object的引用。
+		// 如果Schema存在，就通过Schema标记Object引用的对象。Schema中记录了Object引用对象的偏移，我们通过Object的位置加上偏移，就能得到引用对象了。
 		if (!Schema.IsEmpty())
 		{
 			Private::VisitMembers(Dispatcher, Schema, CurrentObject);
@@ -325,7 +325,7 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 	}
 }
 ```
-
+标记
 ## 1 判断Object之间的引用关系，通过HandleKillableReference方法
 ```cpp
 // TBatchDispatcher 类中的方法
