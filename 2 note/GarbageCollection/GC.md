@@ -243,7 +243,12 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 	}
 }
 ```
-2 MarkObjectsAsUnreachable这个方法主要是标记根Object为理论可达，并将根Object添加到InitialObjects数组中。
+2 MarkObjectsAsUnreachable这个方法主要是标记根Object为理论可达，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable再这个方法里交换了可达和可能不可达标记，也就是这个方法之后理论可达都实际代表了可能不可达。
+
+| 理论： | 不可达 | 可能不可达 | 可达    |
+| --- | --- | ----- | ----- |
+| 实际  | 不可达 | 可达    | 可能不可达 |
+
 
 # 4 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
