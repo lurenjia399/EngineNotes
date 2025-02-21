@@ -454,7 +454,7 @@ static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference 
 
 FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
 {
-	// 如果Object有理论可能不可达标记，那么就去掉理论可能不可达标记，并添加理论可达标记
+	// 清掉理论可能不可达标记，并添加可达标记。如果成功清掉标记才会返回true。
 	if (Metadata.ObjectItem->MarkAsReachableInterlocked_ForGC())
 	{
 		// 如果Object不是簇根，就添加到ObjectsToSerialize数组里，后边继续处理
