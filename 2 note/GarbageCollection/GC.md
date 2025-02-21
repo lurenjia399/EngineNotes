@@ -285,7 +285,6 @@ void ProcessObjectArray(FWorkerContext& Context)
 		{
 			// 处理每个Object，先处理Object的Class和Outer，然后再根据UClass里的Schema来处理Object的引用,schema里记录了引用属性的偏移，获取Object的位置在加上偏移就能获取引用对象了。
 			ProcessObjects(Dispatcher, CurrentObjects);
-
 			int32 BlockSize = FWorkBlock::ObjectCapacity;
 			FWorkBlockifier& RemainingObjects = Context.ObjectsToSerialize;
 			FWorkBlock* Block = RemainingObjects.PopFullBlock<Options>();
@@ -293,7 +292,10 @@ void ProcessObjectArray(FWorkerContext& Context)
 }
 
 ```
-1 判断Object之间的引用关系，通过HandleKillableReference方法
+1 会通过ProcessObjects方法来处理，里边就是遍历每个Object，查看其引用的对象
+## 1 ProcessObjects
+
+## 1 判断Object之间的引用关系，通过HandleKillableReference方法
 ```cpp
 // TBatchDispatcher 类中的方法
 void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origin)
