@@ -245,8 +245,6 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		//目的是将GGCObjectReferencer数组中的值添加到InitialReferences数组中,然后返回
 		Context->InitialNativeReferences = GetInitialReferences(Options);
 	}
-	// 把InitialObjects数组里的值塞到Context里
-	Context->SetInitialObjectsUnpadded(InitialObjects);
 	if (!Private::GReachableClusters.IsEmpty())
 	{
 		TArray<FUObjectItem*> KeepClusterRefs;
@@ -256,6 +254,8 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 			MarkReferencedClustersAsReachable<EGCOptions::None>(ObjectItem->GetClusterIndex(), InitialObjects);
 		}
 	}
+	// 把InitialObjects数组里的值塞到Context里
+	Context->SetInitialObjectsUnpadded(InitialObjects);
 	// 处理Object引用关系，最终会执行PerformReachabilityAnalysisOnObjectsInternal方法
 	PerformReachabilityAnalysisOnObjects(Context, Options);
 }
