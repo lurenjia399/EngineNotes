@@ -158,7 +158,7 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	// 用另一个线程将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
 	InitialObjects.Reset();
-
+	// 如果需要cook也就是不是编辑器 && FGCObject::GGCObjectReferencer这个对象
 	if (FPlatformProperties::RequiresCookedData() && GUObjectArray.IsDisregardForGC(FGCObject::GGCObjectReferencer))
 	{
 		InitialObjects.Add(FGCObject::GGCObjectReferencer);
