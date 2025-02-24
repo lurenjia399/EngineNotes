@@ -197,24 +197,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		// 簇中根Object还不是垃圾，就把簇中其余Object都标记为可达
 		if (!RootItem->IsGarbage())
 		{
-			// 处理簇的根Object。如果簇根是根或者跳过gc则标记为可达。这里虽然是可达标记但实际是可能不可达，因为前边交换过可达和可能不可达
-		   bool bKeepCluster=RootItem->HasAnyFlags(EInternalObjectFlags_RootFlags);
-			if (bKeepCluster)
-			{
-				RootItem->FastMarkAsReachableInterlocked_ForGC();
-				ThreadState.Payload.KeepClusters.Add(RootItem);
-			}
-			// 处理簇中的Object。和处理簇的根Object同理
-			for (int32 ObjectIndex : Cluster.Objects)
-			{
-				FUObjectItem* ClusteredItem = &GUObjectArray.GetObjectItemArrayUnsafe()[ObjectIndex];
-				ClusteredItem->FastMarkAsReachableAndClearReachaleInClusterInterlocked_ForGC();
-				if (!bKeepCluster && ClusteredItem->HasAnyFlags(EInternalObjectFlags_RootFlags))
-				{
-					ThreadState.Payload.KeepClusters.Add(RootItem);
-					bKeepCluster = true;
-				}
-			}
+			// 代码就省略了，处理簇中Object，如果Object带有把簇根和簇中Object都标记为可达 处理簇的根Object。如果簇根是根或者跳过gc则标记为可达。这里虽然是可达标记但实际是可能不可达，因为前边交换过可达和可能不可达
 		}
 		else
 		{
