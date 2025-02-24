@@ -563,5 +563,6 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 - 如何记录UObject之间的引用关系呢？
 - gc是如何清除的？
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
+- gc多线程是怎么使用的
 
 
