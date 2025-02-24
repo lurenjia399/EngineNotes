@@ -146,11 +146,11 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 	StartReachabilityAnalysis(KeepFlags, Options);
 	do
 	{
+		// 可达性分析的pass
 		PerformReachabilityAnalysisPass(Options);
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
 }
 ```
-3 分成了三部分，第一部分StartReachabilityAnalysis
 # 3 标记初始化 StartReachabilityAnalysis
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
