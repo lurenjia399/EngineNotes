@@ -256,7 +256,6 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 			MarkReferencedClustersAsReachable<EGCOptions::None>(ObjectItem->GetClusterIndex(), InitialObjects);
 		}
 	}
-	Context->SetInitialObjectsUnpadded(InitialObjects);
 	// 处理Object引用关系，最终会执行PerformReachabilityAnalysisOnObjectsInternal方法
 	PerformReachabilityAnalysisOnObjects(Context, Options);
 }
