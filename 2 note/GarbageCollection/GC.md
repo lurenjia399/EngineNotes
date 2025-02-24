@@ -142,7 +142,7 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 ```cpp
 void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
-	// 开始可达性分析，标记可能不可达标记
+	// 开始可达性分析，将所有Object标记为可能不可达并将根Object标记为可达。
 	StartReachabilityAnalysis(KeepFlags, Options);
 	do
 	{
