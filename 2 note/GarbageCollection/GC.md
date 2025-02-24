@@ -197,7 +197,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		// 簇中根Object还不是垃圾，就把簇中其余Object都标记为可达
 		if (!RootItem->IsGarbage())
 		{
-			// 代码就省略了，处理簇中Object，如果Object带有把簇根和簇中Object都标记为可达 处理簇的根Object。如果簇根是根或者跳过gc则标记为可达。这里虽然是可达标记但实际是可能不可达，因为前边交换过可达和可能不可达
+			// 代码就省略了，处理簇中Object，如果Object带有跳过gc标志位，把簇根和簇中Object都标记为可达
 		}
 		else
 		{
@@ -219,7 +219,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 		}
 	}
 	/* 如果簇根是根Object或者是跳过gc，簇中其余Object是根或者跳过gc，则就需要保留簇，这个方法中首先将簇根和簇中Object都标记为可能不可达。
-	MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。第一步处理簇引用的其他簇根，如果其他簇根不是垃圾，就标记为可达（交换后的代表可能不可达），如果是垃圾就清掉引用。第二步处理簇中MutableObjects（不在簇中但依然被簇引用。看上去是object属于多个簇，但只在一个簇中这种情况。），将其中Object标记为可达（交换后的代表可能不可达），将从可达变为可能不可达的Object添加到ObjectsToSerialize数组中。第三步，如果簇中有垃圾（无论是引用的簇根还是mutableObjects中有垃圾），我们就把簇中Object都添加到InitialObjects数组中，并解散簇。
+	MarkReferencedClustersAsReachable：把簇中引用的object都标记为可达。第一步处理簇引用的其他簇根，如果其他簇根不是垃圾，就标记为可达，如果是垃圾就清掉引用。第二步处理簇中MutableObjects（不在簇中但依然被簇引用。看上去是object属于多个簇，但只在一个簇中这种情况。），将其中Object标记为可达（交换后的代表可能不可达），将从可达变为可能不可达的Object添加到ObjectsToSerialize数组中。第三步，如果簇中有垃圾（无论是引用的簇根还是mutableObjects中有垃圾），我们就把簇中Object都添加到InitialObjects数组中，并解散簇。
 	*/
 	for (FUObjectItem* ObjectItem : MarkClustersResults.KeepClusters)
 	{
