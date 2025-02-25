@@ -321,7 +321,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 }
 
 ```
-1 会开启一个死循环，每次循环都会通过ProcessObjects方法，处理CurrentObjects数组中的Object对象，标记每个对象的引用Object为可达，将新增的可达对象添加到ObjectsToSerialize
+1 会开启一个死循环，每次循环都会通过ProcessObjects方法，处理CurrentObjects数组中的Object对象，标记每个对象的引用Object为可达，将新增的可达对象添加到ObjectsToSerialize中。ProcessObjects方法结束，就会更新CurrentObjects数组，将新增的可达对象放到CurrentObjects数组里，供下次循环使用。直到ObjectsToSerialize中不存在任何Object或者时间到了，退出死循环。
 ## 1 标记Object方法，ProcessObjects
 ```cpp
 FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArrayView<UObject*> CurrentObjects)
