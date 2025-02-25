@@ -299,9 +299,10 @@ void ProcessObjectArray(FWorkerContext& Context)
 		}
 		while (true)
 		{
-			// 处理每个Object，先处理Object的Class和Outer，然后再根据UClass里的Schema来处理Object的引用,schema里记录了引用属性的偏移，获取Object的位置在加上偏移就能获取引用对象了。
+			// 处理Object，标记Object和其相关的Object
 			ProcessObjects(Dispatcher, CurrentObjects);
 			int32 BlockSize = FWorkBlock::ObjectCapacity;
+			// 标记的过程中，新增加d
 			FWorkBlockifier& RemainingObjects = Context.ObjectsToSerialize;
 			FWorkBlock* Block = RemainingObjects.PopFullBlock<Options>();
 	}
