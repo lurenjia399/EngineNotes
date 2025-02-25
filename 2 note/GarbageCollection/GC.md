@@ -309,7 +309,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 
 ```
 1 会通过ProcessObjects方法来处理，里边就是遍历每个Object，标记其引用的对象。
-## 1 查找Object引用，ProcessObjects
+## 1 标记Object方法，ProcessObjects
 ```cpp
 FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArrayView<UObject*> CurrentObjects)
 {
