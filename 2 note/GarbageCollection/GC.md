@@ -303,6 +303,12 @@ void ProcessObjectArray(FWorkerContext& Context)
 		{
 			// 处理Object，标记Object和其相关的Object
 			ProcessObjects(Dispatcher, CurrentObjects);
+			// 每次循环的时候，如果不是第一次循环，就需要将ObjectsToSerialize中的block内存释放掉
+			if (CurrentObjects.GetData() != Context.InitialObjects.GetData())
+			{
+			Context.ObjectsToSerialize.FreeOwningBlock(CurrentObjects.GetData());
+			}
+			// 每个Block的大小
 			int32 BlockSize = FWorkBlock::ObjectCapacity;
 			// ProcessObjects的过程中，从可能不可达到可达新增的Object
 			FWorkBlockifier& RemainingObjects = Context.ObjectsToSerialize;
