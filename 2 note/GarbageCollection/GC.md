@@ -302,9 +302,14 @@ void ProcessObjectArray(FWorkerContext& Context)
 			// 处理Object，标记Object和其相关的Object
 			ProcessObjects(Dispatcher, CurrentObjects);
 			int32 BlockSize = FWorkBlock::ObjectCapacity;
-			// 标记的过程中，新增加d
+			// ProcessObjects的过程中，从可能不可达到可达新增的Object
 			FWorkBlockifier& RemainingObjects = Context.ObjectsToSerialize;
+			// 弹出Block
 			FWorkBlock* Block = RemainingObjects.PopFullBlock<Options>();
+			if(!Block)
+			{
+				
+			}
 	}
 }
 
