@@ -310,6 +310,8 @@ void ProcessObjectArray(FWorkerContext& Context)
 			FWorkBlock* Block = RemainingObjects.PopFullBlock<Options>();
 			if(!Block)
 			{
+				// ba
+				FlushWork(Dispatcher);
 				if (!Block)
 				{
 					break;
@@ -322,7 +324,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 
 ```
 1 会开启一个死循环，每次循环都会通过ProcessObjects方法，处理CurrentObjects数组中的Object对象，标记每个对象的引用Object为可达，将新增的可达对象添加到ObjectsToSerialize中。ProcessObjects方法结束，就会更新CurrentObjects数组，将新增的可达对象放到CurrentObjects数组里，供下次循环使用。直到ObjectsToSerialize中不存在任何Object或者时间到了，退出死循环。
-2 ObjectsToSerialize这个是FWorkBlockifier结构，看上去是一个链表，链表的每个节点都是一个block，每个block就相当于一个数组，数组中存放的是Object。在往ObjectsToSerialize添加Object的时候会先添加到block中，如果block满了就会在创建一个block，把他们连起来。所以在mei'ci
+2 ObjectsToSerialize这个是FWorkBlockifier结构，看上去是一个链表，链表的每个节点都是一个block，每个block就相当于一个数组，数组中存放的是Object。在往ObjectsToSerialize添加Object的时候会先添加到block中，如果block满了就会在创建一个block，把他们连起来。所以在每次循环处理结束后，会弹出block。
 ## 1 标记Object方法，ProcessObjects
 ```cpp
 FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArrayView<UObject*> CurrentObjects)
