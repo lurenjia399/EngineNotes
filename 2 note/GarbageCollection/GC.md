@@ -312,10 +312,9 @@ void ProcessObjectArray(FWorkerContext& Context)
 			{
 				// 把积压在UnvalidatedReferences或者是在ValidatedReferences中的Object都强行处理掉
 				FlushWork(Dispatcher);
-				// 在弹出Block
-				if ( Block = RemainingObjects.PopFullBlock<Options>());
-				
-				
+				// 处理完积压的后在弹出Block
+				Block = RemainingObjects.PopFullBlock<Options>()
+				// 如果Block仍然为空，就结束死循环
 				if (!Block)
 				{
 					break;
