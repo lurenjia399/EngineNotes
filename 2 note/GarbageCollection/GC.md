@@ -297,6 +297,8 @@ void ProcessObjectArray(FWorkerContext& Context)
 		{
 			Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
 		}
+		// CurrentObjects是while循环中需要处理的Object数组
+		TConstArrayView<UObject*> CurrentObjects = Context.InitialObjects;
 		while (true)
 		{
 			// 处理Object，标记Object和其相关的Object
@@ -308,8 +310,13 @@ void ProcessObjectArray(FWorkerContext& Context)
 			FWorkBlock* Block = RemainingObjects.PopFullBlock<Options>();
 			if(!Block)
 			{
-				
+				if (!Block)
+				{
+					break;
+				}
 			}
+			// while循环结束后，更新下一次循环需要处理的Object数组
+			CurrentObjects = MakeArrayView(Block->Objects, BlockSize);
 	}
 }
 
