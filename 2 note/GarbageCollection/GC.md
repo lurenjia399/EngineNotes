@@ -606,7 +606,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	}
 	// 解锁Object的HashTable
 	UnlockUObjectHashTables();
-	// 
+	// 垃圾收集是否正在进行的标志位，这里为false，就证明收集阶段结束了
 	GIsGarbageCollecting = false;
 }
 ```
