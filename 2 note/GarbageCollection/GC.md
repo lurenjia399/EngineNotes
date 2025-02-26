@@ -613,6 +613,36 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 }
 ```
 
+```cpp
+bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
+{
+	// GUnrechableObjectIndex这个变量是在收集不可达Object方法中初始化为0的
+	const bool bFirstIteration = (GUnrechableObjectIndex == 0);
+	// 不可达数组中的索引
+	while (GUnrechableObjectIndex < GUnreachableObjects.Num())
+	{
+		FUObjectItem* ObjectItem = GUnreachableObjects[GUnrechableObjectIndex++];
+		{
+			UObject* Object = static_cast<UObject*>(ObjectItem->Object);
+			FScopedCBDProfile Profile(Object);
+			// Begin the object's asynchronous destruction.
+			Object->ConditionalBeginDestroy();
+		}
+
+		const bool bPollTimeLimit = ((TimePollCounter++) % TimeLimitEnforcementGranularityForBeginDestroy == 0);
+		if (bUseTimeLimit & bPollTimeLimit) //-V792
+		{
+			LastPollTime = FPlatformTime::Seconds();
+			if ((LastPollTime - StartTime) > TimeLimit)
+			{
+				break;
+			}
+		}
+	}
+}
+
+```
+
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
