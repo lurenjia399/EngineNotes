@@ -643,6 +643,8 @@ void UObject::BeginDestroy()
 {
 	// 设置自己的LinkerLoad为空，
 	SetLinker( NULL, INDEX_NONE );
+	LowLevelRename(NAME_None);
+	SetExternalPackage(nullptr);
 }
 ```
 
@@ -658,5 +660,6 @@ void UObject::BeginDestroy()
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
+- LinkerLoad是每个UObject都有啊
 
 
