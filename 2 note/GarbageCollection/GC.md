@@ -608,11 +608,12 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	UnlockUObjectHashTables();
 	// 垃圾收集是否正在进行的标志位
 	GIsGarbageCollecting = false;
+	// 在全局hash表中移除不可达Object的信息
 	UnhashUnreachableObjects(false);
 	IncrementalPurgeGarbage(false);
 }
 ```
-## 1 去掉Object的相关引用
+## 1 在hash表中移除信息
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 {
@@ -649,7 +650,8 @@ void UObject::BeginDestroy()
 	SetExternalPackage(nullptr);
 }
 ```
-1 最终调用了Begi
+1 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息
+
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
