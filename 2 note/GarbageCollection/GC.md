@@ -612,7 +612,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	IncrementalPurgeGarbage(false);
 }
 ```
-
+## 1 去掉hash相关引用
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 {
