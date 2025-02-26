@@ -596,8 +596,9 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	// 解散掉不可达的簇，参数是否是多线程
 	const EGatherOptions GatherOptions = GetObjectGatherOptions();
 	DissolveUnreachableClusters(GatherOptions);
-	
+	// 清掉弱引用，但是什么情况下会有弱引用呢？
 	ClearWeakReferences<true>(AllContexts);
+	
 	GGatherUnreachableObjectsState.Init();
 	if (bPerformFullPurge || !GAllowIncrementalGather)
 	{
