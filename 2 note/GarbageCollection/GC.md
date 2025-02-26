@@ -612,7 +612,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	IncrementalPurgeGarbage(false);
 }
 ```
-## 1 去掉hash相关引用
+## 1 去掉Object的相关引用
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 {
@@ -641,15 +641,15 @@ bool UObject::ConditionalBeginDestroy()
 
 void UObject::BeginDestroy()
 {
-	// 设置自己的LinkerLoad为空，
+	// 设置自己的LinkerLoad为空
 	SetLinker( NULL, INDEX_NONE );
-	// 在hash表中移除自己的hash，然后再hash一个空的名字
+	// 在hash表中移除自己及和自己相关的uclass，outer
 	LowLevelRename(NAME_None);
 	// 从hash表中移除package和自己的联系
 	SetExternalPackage(nullptr);
 }
 ```
-
+1 最终调用了Begi
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
