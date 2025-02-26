@@ -591,7 +591,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 ```cpp
 void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 {
-	// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object
+	// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object标记成不可达。
 	Swap(GUnreachableObjectFlag, GMaybeUnreachableObjectFlag);
 }
 ```
