@@ -643,9 +643,9 @@ void UObject::BeginDestroy()
 {
 	// 设置自己的LinkerLoad为空，
 	SetLinker( NULL, INDEX_NONE );
-	// 重新hashUObject，hash一个空的名字，也就是在hash表中找不到了
+	// 在hash表中移除自己的hash，然后再hash一个空的名字
 	LowLevelRename(NAME_None);
-	// 从hash表中移除
+	// 从hash表中移除package和自己的联系
 	SetExternalPackage(nullptr);
 }
 ```
