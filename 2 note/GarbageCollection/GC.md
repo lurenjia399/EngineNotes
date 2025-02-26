@@ -641,6 +641,7 @@ bool UObject::ConditionalBeginDestroy()
 
 void UObject::BeginDestroy()
 {
+	// 设置自己的LinkerLoad为空，
 	SetLinker( NULL, INDEX_NONE );
 }
 ```
