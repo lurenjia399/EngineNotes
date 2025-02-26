@@ -588,7 +588,13 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 3 通过Build方法，首先将Schema中的数据（UObject中存在的UProperty修饰的属性）根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将这块内存的首地址返回，最后将首地址存到UClass中。
 # 6 清除阶段
 
-
+```cpp
+void PostCollectGarbageImpl(EObjectFlags KeepFlags)
+{
+	// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object
+	Swap(GUnreachableObjectFlag, GMaybeUnreachableObjectFlag);
+}
+```
 
 # 问题
 
