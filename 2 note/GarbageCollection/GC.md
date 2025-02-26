@@ -598,6 +598,12 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	DissolveUnreachableClusters(GatherOptions);
 	
 	ClearWeakReferences<true>(AllContexts);
+	GGatherUnreachableObjectsState.Init();
+	if (bPerformFullPurge || !GAllowIncrementalGather)
+	{
+		GatherUnreachableObjects(GatherOptions, 0.0);
+	}
+	UnlockUObjectHashTables();
 }
 ```
 
