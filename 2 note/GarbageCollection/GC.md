@@ -608,7 +608,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	UnlockUObjectHashTables();
 	// 垃圾收集是否正在进行的标志位
 	GIsGarbageCollecting = false;
-	UnhashUnreachableObjects(/**bUseTimeLimit = */ false);
+	UnhashUnreachableObjects(false);
 	IncrementalPurgeGarbage(false);
 }
 ```
