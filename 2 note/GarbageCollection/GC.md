@@ -586,6 +586,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 }
 ```
 3 通过Build方法，首先将Schema中的数据（UObject中存在的UProperty修饰的属性）根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将这块内存的首地址返回，最后将首地址存到UClass中。
+
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
