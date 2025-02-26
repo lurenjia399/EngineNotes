@@ -643,6 +643,7 @@ void UObject::BeginDestroy()
 {
 	// 设置自己的LinkerLoad为空，
 	SetLinker( NULL, INDEX_NONE );
+	// 重新hashUObject
 	LowLevelRename(NAME_None);
 	SetExternalPackage(nullptr);
 }
