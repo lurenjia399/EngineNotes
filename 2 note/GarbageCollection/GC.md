@@ -593,6 +593,11 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 {
 	// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object标记成不可达。
 	Swap(GUnreachableObjectFlag, GMaybeUnreachableObjectFlag);
+	// 解散掉不可达的簇，参数是否是多线程
+	const EGatherOptions GatherOptions = GetObjectGatherOptions();
+	DissolveUnreachableClusters(GatherOptions);
+	
+	ClearWeakReferences<true>(AllContexts);
 }
 ```
 
