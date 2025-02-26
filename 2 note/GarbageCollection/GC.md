@@ -598,13 +598,16 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	DissolveUnreachableClusters(GatherOptions);
 	// 清掉弱引用，但是什么情况下会有弱引用呢？
 	ClearWeakReferences<true>(AllContexts);
-	
+	// 收集不可达Object
 	GGatherUnreachableObjectsState.Init();
 	if (bPerformFullPurge || !GAllowIncrementalGather)
 	{
 		GatherUnreachableObjects(GatherOptions, 0.0);
 	}
+	// 解锁Object的HashTable
 	UnlockUObjectHashTables();
+	// 
+	GIsGarbageCollecting = false;
 }
 ```
 
