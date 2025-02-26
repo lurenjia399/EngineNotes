@@ -630,7 +630,19 @@ bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 		}
 	}
 }
+bool UObject::ConditionalBeginDestroy()
+{
+	if( !HasAnyFlags(RF_BeginDestroyed) )
+	{
+		SetFlags(RF_BeginDestroyed);
+		BeginDestroy();
+	}
+}
 
+void UObject::BeginDestroy()
+{
+	SetLinker( NULL, INDEX_NONE );
+}
 ```
 
 # 问题
