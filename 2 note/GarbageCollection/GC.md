@@ -644,5 +644,6 @@ bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 - gc是如何清除的？
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
 - gc多线程是怎么使用的
+- FUObjectHashTables这个hash桶是干嘛的
 
 
