@@ -765,12 +765,19 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理完了，也就是没有到时间限制
 		if (GObjCurrentPurgeObjectIndex >= GUnreachableObjects.Num())
 		{
+			// 如果又需要延迟销毁的，就遍历，
+			while( GGCObjectsPendingDestructionCount > 0 )
+			{
+				
+			}
 			// 没有需要延迟销毁的，都及时销毁了
 			if( GGCObjectsPendingDestructionCount == 0 )
 			{
-				// 标识不可达数组中元素是否
+				// 标识不可达数组中元素是否都处理完了
 				GObjFinishDestroyHasBeenRoutedToAllObjects = true;
+				// 是否需要重置不可达清除索引
 				GObjCurrentPurgeObjectIndexNeedsReset = true;
+				// 显示gc到时间了的警告？
 				GWarningTimeOutHasBeenDisplayedGC = false;
 			}
 		}
