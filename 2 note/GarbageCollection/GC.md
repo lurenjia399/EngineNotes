@@ -722,7 +722,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 {
 	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
 	TGuardValue<bool> GuardIsGarbageCollecting(GIsGarbageCollecting, true);
-	// GObjFinishDestroyHasBeenRoutedToAllObjects 这个标识所有不可达Object是否都清理掉了。
+	// GObjFinishDestroyHasBeenRoutedToAllObjects 这个标识所有不可达Object是否都调用FinishDestroy了
 	if( !GObjFinishDestroyHasBeenRoutedToAllObjects && !bTimeLimitReached )
 	{
 		// 清除不可达Object的索引，是否需要重置
