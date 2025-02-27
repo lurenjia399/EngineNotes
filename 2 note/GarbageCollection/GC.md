@@ -752,7 +752,20 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 					GGCObjectsPendingDestructionCount++;
 				}
 			}
+			// 索引增加
 			++GObjCurrentPurgeObjectIndex;
+			// 到了时间限制，就退出循环，不继续处理了
+			const bool bPollTimeLimit = ((TimeLimitTimePollCounter++) % TimeLimitEnforcementGranularityForDestroy == 0);
+			if( bUseTimeLimit && bPollTimeLimit && ((FPlatformTime::Seconds() - GCStartTime) > TimeLimit) )
+			{
+				bTimeLimitReached = true;
+				break;
+			}
+		}
+		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理完了，也就是mei
+		if (GObjCurrentPurgeObjectIndex >= GUnreachableObjects.Num())
+		{
+			
 		}
 	}
 }
