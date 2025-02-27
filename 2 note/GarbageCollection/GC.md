@@ -704,7 +704,7 @@ void UObject::BeginDestroy()
 ```cpp
 void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 {
-	// 如果当前还在移除hash引用
+	// 如果移除hash引用，还没有处理完，就在处理一次
 	if (IsIncrementalUnhashPending())
 	{
 		bTimeLimitReached = UnhashUnreachableObjects(bUseTimeLimit, TimeLimit);
