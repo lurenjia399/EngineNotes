@@ -645,6 +645,7 @@ bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
 	}
 }
 ```
+1 遍历GUObjectArray数组，将其中不可达Object全部收集到GUnreachableObjects数组中。这里我们的TimeLimit时间限制是0，也就是说肯定会将不可达Object全部收集成功。但如果有时间限制，就有可能时间到了但还每收集完
 ## 1 在hash表中移除信息
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
