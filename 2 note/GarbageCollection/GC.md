@@ -790,7 +790,16 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 			GAsyncPurge->BeginPurge();
 			GObjCurrentPurgeObjectIndexNeedsReset = false;
 		}
+		GAsyncPurge->TickPurge(bUseTimeLimit, TimeLimit, GCStartTime);
+		if (GAsyncPurge->IsFinished())
+		{
+			bCompleted = true;
+			GObjFinishDestroyHasBeenRoutedToAllObjects		= false;
+			GObjPurgeIsRequired								= false;
+			GObjCurrentPurgeObjectIndexNeedsReset			= true;
+		}
 	}
+	return bCompleted;
 }
 ```
 
