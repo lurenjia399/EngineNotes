@@ -806,7 +806,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 	return bCompleted;
 }
 ```
-3 主要是对垃圾的处理，首先遍历所有Object，拿到所有不可达标记的Object，
+3 主要是对垃圾的处理，再对不可达Object的hash引用清除后，就需要销毁调Object了。依然是遍历不可达shu'zu
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
