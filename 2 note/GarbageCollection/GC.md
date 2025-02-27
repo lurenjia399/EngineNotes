@@ -734,25 +734,25 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 		// 遍历不可达数组
 		while (GObjCurrentPurgeObjectIndex < GUnreachableObjects.Num())
 		{
+			// 拿到不可达Object的ObjectItem
+			FUObjectItem* ObjectItem = GUnreachableObjects[GObjCurrentPurgeObjectIndex];
+			// 如果是不可达的
 			if (ObjectItem->IsUnreachable())
 			{
 				UObject* Object = static_cast<UObject*>(ObjectItem->Object);
-				// Object should always have had BeginDestroy called on it and never already be destroyed
-				check( Object->HasAnyFlags( RF_BeginDestroyed ) && !Object->HasAnyFlags( RF_FinishDestroyed ) );
-
-				// Only proceed with destroying the object if the asynchronous cleanup started by BeginDestroy has finished.
+				// 如果不可达Object已经准备好清除了，就直接清除（在内存中移除掉）
 				if(Object->IsReadyForFinishDestroy())
 				{
-					UE::GC::GDetailedStats.IncPurgeCount(Object);
-					// Send FinishDestroy message.
 					Object->ConditionalFinishDestroy();
 				}
+				// 如果不可达Object还没准备好清除，就放到PendingDestruction数组中，后面移除
 				else
 				{
 					GGCObjectsPendingDestruction.Add(Object);
 					GGCObjectsPendingDestructionCount++;
 				}
 			}
+			++GObjCurrentPurgeObjectIndex;
 		}
 	}
 }
