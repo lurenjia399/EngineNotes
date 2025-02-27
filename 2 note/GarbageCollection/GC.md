@@ -649,7 +649,7 @@ void UObject::BeginDestroy()
 	SetExternalPackage(nullptr);
 }
 ```
-1 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息
+1 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息。如果参数bUseTimeLimit是false，代表了没有时间限制，也就是肯定能将GUnreachableObjects数组中的不可达Object全部处理完，此时不可达索引GUnrechableObjectIndex就等于GUnreachableObjects数组的长度。但如果有了时间限制，就有可能时间到了导致没处理完，此时不可达索引GUnrechableObjectIndex就会小于GUnreachableObjects数组的长度
 ## 2 增量清除垃圾
 ```cpp
 void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
