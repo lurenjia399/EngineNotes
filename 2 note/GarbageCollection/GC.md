@@ -646,7 +646,7 @@ bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
 }
 ```
 1 遍历GUObjectArray数组，将其中不可达Object全部收集到GUnreachableObjects数组中。这里我们的TimeLimit时间限制是0，也就是说肯定会将不可达Object全部收集成功。但如果有时间限制，就有可能时间到了但还每收集完，如果是这样GUnreachableObjects数组还依然是空的，不会往里添加东西。
-## 1 在hash表中移除信息
+## 2 在hash表中移除信息
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 {
@@ -699,8 +699,8 @@ void UObject::BeginDestroy()
 	SetExternalPackage(nullptr);
 }
 ```
-1 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息。如果参数bUseTimeLimit是false，代表了没有时间限制，也就是肯定能将GUnreachableObjects数组中的不可达Object全部处理完，此时不可达索引GUnrechableObjectIndex就等于GUnreachableObjects数组的长度。但如果有了时间限制，就有可能时间到了导致没处理完，此时不可达索引GUnrechableObjectIndex就会小于GUnreachableObjects数组的长度，并且索引还标识了处理到哪个Object了。
-## 2 增量清除垃圾
+2 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息。如果参数bUseTimeLimit是false，代表了没有时间限制，也就是肯定能将GUnreachableObjects数组中的不可达Object全部处理完，此时不可达索引GUnrechableObjectIndex就等于GUnreachableObjects数组的长度。但如果有了时间限制，就有可能时间到了导致没处理完，此时不可达索引GUnrechableObjectIndex就会小于GUnreachableObjects数组的长度，并且索引还标识了处理到哪个Object了。
+## 3 增量清除垃圾
 ```cpp
 void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 {
@@ -806,7 +806,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 	return bCompleted;
 }
 ```
-
+3 主要是对垃圾的处理，首先遍历所有Object，拿到所有不可达标记的Object，
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
