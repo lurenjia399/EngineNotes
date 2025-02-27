@@ -821,5 +821,8 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
+- pendingkill标记在gc过程中什么时候会处理
+- 如何让一个UObject不被gc回收
+- 如何加速gc流程
 
 
