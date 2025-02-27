@@ -785,7 +785,11 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 	// 如果不可达Object都调用过FinishDestroy，并且 没有到达时间限制
 	if (GObjFinishDestroyHasBeenRoutedToAllObjects && !bTimeLimitReached)
 	{
-		
+		if (GObjCurrentPurgeObjectIndexNeedsReset)
+		{
+			GAsyncPurge->BeginPurge();
+			GObjCurrentPurgeObjectIndexNeedsReset = false;
+		}
 	}
 }
 ```
