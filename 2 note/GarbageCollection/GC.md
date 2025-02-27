@@ -790,12 +790,16 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 			GAsyncPurge->BeginPurge();
 			GObjCurrentPurgeObjectIndexNeedsReset = false;
 		}
+		// 这个里面就是真正的释放内存，在主线程释放
 		GAsyncPurge->TickPurge(bUseTimeLimit, TimeLimit, GCStartTime);
 		if (GAsyncPurge->IsFinished())
 		{
 			bCompleted = true;
+			// 清除完了
 			GObjFinishDestroyHasBeenRoutedToAllObjects		= false;
+			// 需要清除Object的标志位，自然为false
 			GObjPurgeIsRequired								= false;
+			// 清除完了Object，索引自然要重置
 			GObjCurrentPurgeObjectIndexNeedsReset			= true;
 		}
 	}
