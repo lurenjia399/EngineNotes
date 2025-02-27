@@ -650,6 +650,25 @@ bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 {
+	// 如果不可达Object还未收集完
+	if (GGatherUnreachableObjectsState.IsPending())
+	{
+		const EGatherOptions GatherOptions = GetObjectGatherOptions();
+		const double GatherTimeLimit = GIncrementalGatherTimeLimit > 0.0f ? GIncrementalGatherTimeLimit : TimeLimit;
+		bTimeLimitReached = GatherUnreachableObjects(GatherOptions, bUseTimeLimit ? GatherTimeLimit : 0.0);
+		if (!bTimeLimitReached)
+		{
+			if (bUseTimeLimit)
+			{
+				TimeLimit -= FMath::Min(TimeLimit, FPlatformTime::Seconds() - GCStartTime);
+			}
+		}
+		else
+		{
+			return bTimeLimitReached;
+		}
+	}
+	
 	// GUnrechableObjectIndex这个变量是在收集不可达Object方法中初始化为0的
 	const bool bFirstIteration = (GUnrechableObjectIndex == 0);
 	// 不可达数组中的索引
