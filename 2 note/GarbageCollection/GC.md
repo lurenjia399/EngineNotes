@@ -651,6 +651,13 @@ void UObject::BeginDestroy()
 }
 ```
 1 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息
+## 2 增量清除垃圾
+```cpp
+void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
+{
+	
+}
+```
 
 # 问题
 
