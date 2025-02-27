@@ -650,7 +650,7 @@ bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 {
-	// 如果不可达Object还未收集完，这里就在收集一次，如果还没又
+	// 如果不可达Object还未收集完，这里就在收集一次，如果依然还没收集完，就提前返回。
 	if (GGatherUnreachableObjectsState.IsPending())
 	{
 		bTimeLimitReached = GatherUnreachableObjects(GatherOptions, bUseTimeLimit ? GatherTimeLimit : 0.0);
