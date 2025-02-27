@@ -626,15 +626,22 @@ bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
 	// 下面是遍历主体，伪代码
 	{
 		FUObjectItem* ObjectItem = &GUObjectArray.GetObjectItemArrayUnsafe()[Iterator.Index++];
+		// 如果遍历到的Object不可达，就取出来
 		if (ObjectItem->IsUnreachable())
 		{
 			Iterator.Payload.Add(ObjectItem);
 		}
-		// 如果遍历超时了
+		// 如果遍历超时了，就退出遍历
 		if (Timer.IsTimeLimitExceeded())
 		{
 			return;
 		}
+	}
+	// 遍历结束后，如果没有超时，就将遍历到的不可达Object都放入GUnreachableObjects数组中
+	const bool bCompleted = !TimeLimitExceededFlag.load();
+	if (bCompleted)
+	{
+		GGatherUnreachableObjectsState.Finish(GUnreachableObjects);
 	}
 }
 ```
