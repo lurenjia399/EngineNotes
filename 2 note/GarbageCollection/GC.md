@@ -613,7 +613,13 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	IncrementalPurgeGarbage(false);
 }
 ```
-## 1 收集
+## 1 收集不可达Object
+```cpp
+bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
+{
+	
+}
+```
 ## 1 在hash表中移除信息
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
