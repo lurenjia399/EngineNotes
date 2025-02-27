@@ -740,7 +740,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 			if (ObjectItem->IsUnreachable())
 			{
 				UObject* Object = static_cast<UObject*>(ObjectItem->Object);
-				// 如果不可达Object已经准备好清除了，就直接清除（在内存中移除掉）
+				// 如果不可达Object已经准备好清除了，就直接调FinishDestroy
 				if(Object->IsReadyForFinishDestroy())
 				{
 					Object->ConditionalFinishDestroy();
@@ -773,7 +773,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 			// 没有需要延迟销毁的，都及时销毁了
 			if( GGCObjectsPendingDestructionCount == 0 )
 			{
-				// 标识不可达数组中元素是否都处理完了
+				// 标识不可达数组中元素是否都已经调用FinishDestroy了
 				GObjFinishDestroyHasBeenRoutedToAllObjects = true;
 				// 是否需要重置不可达清除索引
 				GObjCurrentPurgeObjectIndexNeedsReset = true;
@@ -781,6 +781,11 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 				GWarningTimeOutHasBeenDisplayedGC = false;
 			}
 		}
+	}
+	// 如果不可达Object都调用过FinishDestroy，并且 没有到达时间限制
+	if (GObjFinishDestroyHasBeenRoutedToAllObjects && !bTimeLimitReached)
+	{
+		
 	}
 }
 ```
