@@ -606,7 +606,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	}
 	// 解锁Object的HashTable
 	UnlockUObjectHashTables();
-	// 垃圾收集是否正在进行的标志位
+	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
 	GIsGarbageCollecting = false;
 	// 在全局hash表中移除不可达Object的信息
 	UnhashUnreachableObjects(false);
@@ -713,6 +713,18 @@ void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 	if (!bTimeLimitReached)
 	{
 		bCompleted = IncrementalDestroyGarbage(bUseTimeLimit, TimeLimit);
+	}
+}
+```
+
+```cpp
+bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
+{
+	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
+	TGuardValue<bool> GuardIsGarbageCollecting(GIsGarbageCollecting, true);
+	if( !GObjFinishDestroyHasBeenRoutedToAllObjects && !bTimeLimitReached )
+	{
+		
 	}
 }
 ```
