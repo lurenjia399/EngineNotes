@@ -725,7 +725,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 	// GObjFinishDestroyHasBeenRoutedToAllObjects 这个标识所有不可达Object是否都调用FinishDestroy了
 	if( !GObjFinishDestroyHasBeenRoutedToAllObjects && !bTimeLimitReached )
 	{
-		// 清除不可达Object的索引，是否需要重置
+		// 已经清除了的Object的索引，是否需要重置
 		if (GObjCurrentPurgeObjectIndexNeedsReset)
 		{
 			GObjCurrentPurgeObjectIndex = 0;
@@ -762,7 +762,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 				break;
 			}
 		}
-		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理完了，也就是没有到时间限制
+		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理了，没有到达时间限制
 		if (GObjCurrentPurgeObjectIndex >= GUnreachableObjects.Num())
 		{
 			// 如果又需要延迟销毁的，就遍历调用ConditionalFinishDestroy清除掉
