@@ -617,7 +617,25 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 ```cpp
 bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
 {
-	
+	// 和之前遍历根Object一样，都是用多线程优化遍历数组
+	if (!GGatherUnreachableObjectsState.IsSuspended())
+	{
+		const int32 FirstIndex = GExitPurge ? 0 : GUObjectArray.GetFirstGCIndex();
+		GGatherUnreachableObjectsState.Start(Options, GUObjectArray.GetObjectArrayNum(), FirstIndex);
+	}
+	// 下面是遍历主体，伪代码
+	{
+		FUObjectItem* ObjectItem = &GUObjectArray.GetObjectItemArrayUnsafe()[Iterator.Index++];
+		if (ObjectItem->IsUnreachable())
+		{
+			Iterator.Payload.Add(ObjectItem);
+		}
+		// 如果遍历超时了
+		if (Timer.IsTimeLimitExceeded())
+		{
+			return;
+		}
+	}
 }
 ```
 ## 1 在hash表中移除信息
