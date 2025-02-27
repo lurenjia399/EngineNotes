@@ -806,7 +806,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 	return bCompleted;
 }
 ```
-3 主要是对垃圾的处理，再对不可达Object的hash引用清除后，就需要销毁调Object了。依然是遍历不可达shu'zu
+3 主要是对垃圾的处理，再对不可达Object的hash引用清除后，就需要销毁调Object了。依然是遍历不可达数组，对其中Object执行FinishDestory方法，这个方法是清除Object中的属性，将属性的内存清掉，最后通过GAsyncPurge来清除调Object自己的内存。
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
