@@ -762,10 +762,17 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 				break;
 			}
 		}
-		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理完了，也就是mei
+		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理完了，也就是没有到时间限制
 		if (GObjCurrentPurgeObjectIndex >= GUnreachableObjects.Num())
 		{
-			
+			// 没有需要延迟销毁的，都及时销毁了
+			if( GGCObjectsPendingDestructionCount == 0 )
+			{
+				// 标识不可达数组中元素是否
+				GObjFinishDestroyHasBeenRoutedToAllObjects = true;
+				GObjCurrentPurgeObjectIndexNeedsReset = true;
+				GWarningTimeOutHasBeenDisplayedGC = false;
+			}
 		}
 	}
 }
