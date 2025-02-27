@@ -765,10 +765,10 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 		// 索引 >= 数组长度，标识了对不可达数组中的元素都处理完了，也就是没有到时间限制
 		if (GObjCurrentPurgeObjectIndex >= GUnreachableObjects.Num())
 		{
-			// 如果又需要延迟销毁的，就遍历，
+			// 如果又需要延迟销毁的，就遍历调用ConditionalFinishDestroy清除掉
 			while( GGCObjectsPendingDestructionCount > 0 )
 			{
-				
+				// 省略了代码
 			}
 			// 没有需要延迟销毁的，都及时销毁了
 			if( GGCObjectsPendingDestructionCount == 0 )
