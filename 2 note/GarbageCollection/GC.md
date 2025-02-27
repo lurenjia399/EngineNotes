@@ -613,6 +613,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	IncrementalPurgeGarbage(false);
 }
 ```
+## 1 收集
 ## 1 在hash表中移除信息
 ```cpp
 bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
