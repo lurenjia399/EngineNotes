@@ -610,6 +610,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	GIsGarbageCollecting = false;
 	// 在全局hash表中移除不可达Object的信息
 	UnhashUnreachableObjects(false);
+	// 清除垃圾，从内存中移除掉
 	IncrementalPurgeGarbage(false);
 }
 ```
