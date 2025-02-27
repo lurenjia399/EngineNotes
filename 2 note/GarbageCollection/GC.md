@@ -709,7 +709,7 @@ void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 	{
 		bTimeLimitReached = UnhashUnreachableObjects(bUseTimeLimit, TimeLimit);
 	}
-	// 时间限制没有达到，也就是hash引用处理完了
+	// 时间限制没有达到，也就是hash引用处理完了。所以需要销毁掉垃圾了
 	if (!bTimeLimitReached)
 	{
 		bCompleted = IncrementalDestroyGarbage(bUseTimeLimit, TimeLimit);
