@@ -626,7 +626,6 @@ bool UnhashUnreachableObjects(bool bUseTimeLimit, double TimeLimit)
 		FUObjectItem* ObjectItem = GUnreachableObjects[GUnrechableObjectIndex++];
 		{
 			UObject* Object = static_cast<UObject*>(ObjectItem->Object);
-			FScopedCBDProfile Profile(Object);
 			Object->ConditionalBeginDestroy();
 		}
 	}
