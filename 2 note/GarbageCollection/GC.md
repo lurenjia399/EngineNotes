@@ -722,9 +722,38 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 {
 	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
 	TGuardValue<bool> GuardIsGarbageCollecting(GIsGarbageCollecting, true);
+	// GObjFinishDestroyHasBeenRoutedToAllObjects 这个标识所有不可达Object是否都清理掉了。
 	if( !GObjFinishDestroyHasBeenRoutedToAllObjects && !bTimeLimitReached )
 	{
-		
+		// 清除不可达Object的索引，是否需要重置
+		if (GObjCurrentPurgeObjectIndexNeedsReset)
+		{
+			GObjCurrentPurgeObjectIndex = 0;
+			GObjCurrentPurgeObjectIndexNeedsReset = false;
+		}
+		// 遍历不可达数组
+		while (GObjCurrentPurgeObjectIndex < GUnreachableObjects.Num())
+		{
+			if (ObjectItem->IsUnreachable())
+			{
+				UObject* Object = static_cast<UObject*>(ObjectItem->Object);
+				// Object should always have had BeginDestroy called on it and never already be destroyed
+				check( Object->HasAnyFlags( RF_BeginDestroyed ) && !Object->HasAnyFlags( RF_FinishDestroyed ) );
+
+				// Only proceed with destroying the object if the asynchronous cleanup started by BeginDestroy has finished.
+				if(Object->IsReadyForFinishDestroy())
+				{
+					UE::GC::GDetailedStats.IncPurgeCount(Object);
+					// Send FinishDestroy message.
+					Object->ConditionalFinishDestroy();
+				}
+				else
+				{
+					GGCObjectsPendingDestruction.Add(Object);
+					GGCObjectsPendingDestructionCount++;
+				}
+			}
+		}
 	}
 }
 ```
