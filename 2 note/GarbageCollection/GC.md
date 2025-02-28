@@ -819,7 +819,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - 如何记录UObject之间的引用关系呢？
 在创建UClass的时候，就会创建Schama，其保存了UObject中被UPROPERTY标记的Object的偏移。我们只要手中又UObject，就能通过其UClass获取Schama，然后将自己在内存中的位置 + Schama中的偏移 = 引用Object在内存中的位置。
 - gc是如何清除的？
-在标记流程结束后，所有的Object就只有三种标记了，标记为可达的不会被gc掉，标记为可能不可达的是要被gc掉的，bi
+在标记流程结束后，所有的Object就只有三种标记了，标记为可达的不会被gc掉，标记为可能不可达的是要被gc掉的，标记为不可达的是以前帧就应该被gc的但还没来得及gc的。
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
