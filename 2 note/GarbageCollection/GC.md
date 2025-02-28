@@ -817,8 +817,9 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - gc的标记流程是什么样的呢？
 第一步就是标记所有的可达Object为可能不可达，通过swap可达和可能不可达标签。第二步是标记根Object为可达的，并放到数组中。第三步是死循环遍历数组，查看数组中元素的引用，将引用的Object标记为可达，然后将引用的Object添加到链表当中，完成数组的遍历后在从链表中取出进而继续遍历数组。
 - 如何记录UObject之间的引用关系呢？
-在创建UClass的时候，就会创建Schama，其保存了UObject中被UPROPERTY标记的Object的偏移。我们只要手中又UObject，就能通过其UClass获取Schama，然后将自己在内存zh
+在创建UClass的时候，就会创建Schama，其保存了UObject中被UPROPERTY标记的Object的偏移。我们只要手中又UObject，就能通过其UClass获取Schama，然后将自己在内存中的位置 + Schama中的偏移 = 引用Object在内存中的位置。
 - gc是如何清除的？
+在标记流程结束后，所有的Object就只有三种标记了，标记为可达的不会被gc掉，标记为可能不可达的是要被gc掉的，bi
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
