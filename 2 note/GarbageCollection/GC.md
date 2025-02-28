@@ -815,7 +815,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - GReachabilityState.GetNumIterations()这是什么含义？
 可达性分析的次数，看上去就是一个计数器，在每次可达性分析（FReachabilityAnalysisState::PerformReachabilityAnalysis）之后会++。
 - gc的标记流程是什么样的呢？
-第一步就是标记所有的可达Object为可能不可达，通过swap可达和可能不可达标签。第二步是标记根Object为可达的，并放到数组中。第三步是死循环遍历数组，查看数组中元素的引用，将引用的Object标记为可达，然后将引用的Object添加到链表当中，完成数组的遍历后在从lian'biao
+第一步就是标记所有的可达Object为可能不可达，通过swap可达和可能不可达标签。第二步是标记根Object为可达的，并放到数组中。第三步是死循环遍历数组，查看数组中元素的引用，将引用的Object标记为可达，然后将引用的Object添加到链表当中，完成数组的遍历后在从链表中取出进而继续遍历数组。
 - 如何记录UObject之间的引用关系呢？
 - gc是如何清除的？
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
