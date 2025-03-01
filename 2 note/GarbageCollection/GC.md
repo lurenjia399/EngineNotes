@@ -277,6 +277,19 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 	Context->SetInitialObjectsUnpadded(InitialObjects);
 	// 处理Object引用关系，最终会执行PerformReachabilityAnalysisOnObjectsInternal方法
 	PerformReachabilityAnalysisOnObjects(Context, Options);
+	
+	if (!GReachabilityState.CheckIfAnyContextIsSuspended())
+	{
+		GReachabilityState.ResetWorkers();
+		Stats.AddStats(Context->Stats);
+		GReachabilityState.UpdateStats(Context->Stats);
+		Pool.ReturnToPool(Context);
+	}
+	else if (bIsSingleThreaded)
+	{
+		Context->ResetInitialObjects();
+		Context->InitialNativeReferences = TConstArrayView<UObject**>();
+	}
 }
 ```
 
