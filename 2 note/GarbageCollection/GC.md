@@ -89,10 +89,20 @@ void UEngine::ConditionalCollectGarbage()
 		TimeSinceLastPendingKillPurge += FApp::GetDeltaTime();
 		// 两次清除pendingkill引用的间隔，如果上次清除pendingkill的时间距离当前时间超过间隔，就说明现在该清除pendingkill引用了
 		const float TimeBetweenPurgingPendingKillObjects = GetTimeBetweenGarbageCollectionPasses(bHasPlayersConnected);
-		// 延迟一帧
+		// 延迟一帧执行垃圾回收
 		if (bShouldDelayGarbageCollect)
 		{
 			bShouldDelayGarbageCollect = false;
+		}
+		// 如果当前正在执行增量可达性标记
+		else if (IsIncrementalReachabilityAnalysisPending())
+		{
+		PerformIncrementalReachabilityAnalysis(GetReachabilityAnalysisTimeLimit());
+		}
+		
+		else if (!IsIncrementalPurgePending()&& (TimeSinceLastPendingKillPurge > TimeBetweenPurgingPendingKillObjects) && TimeBetweenPurgingPendingKillObjects > 0.f)
+		{
+			
 		}
 	}
 }
