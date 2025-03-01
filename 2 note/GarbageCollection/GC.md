@@ -250,8 +250,18 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 	}
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
 	// 将根Object去掉可能不可达标记，并添加可达标记。
-	// 编辑器模式下，还把所有Object中带有RF_Standalone标志位的Object也去掉可能不可达标记并添加可达标记了
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
+}
+
+FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, const EObjectFlags KeepFlags, TArray<UObject*>& OutRootObjects)
+{
+	GRootsCritical.Lock();
+	TArray<int32> RootsArray(GRoots.Array());				
+	GRootsCritical.Unlock();
+	// 将整个根数组划分，每个工作线程负责几个根，记录在MarkRootsState结构中
+	MarkRootsState.Start(Options, RootsArray.Num());
+	// 
+	FMarkRootsState::FThreadIterators& ThreadIterators = MarkRootsState.GetThreadIterators();
 }
 
 FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options, TArray<UObject*>& OutRootObjects)
