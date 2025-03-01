@@ -69,7 +69,7 @@ void UWorld::Tick(...)
 }
 void UEngine::ConditionalCollectGarbage()
 {
-	// TryCollectGarbage 调用gc
+	// TryCollectGarbage 调用gc。在全量清除的时候才会走，也就是ForceGarbageCollection方法的参数是
 	if (bFullPurgeTriggered)
 	{
 		if (TryCollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS, true))
