@@ -207,7 +207,7 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 }
 
 ```
-2 最终走到GarbageCollection.cpp的PerformReachabilityAnalysis可达性分析方法里面。
+2 全量gc也需要经过标记清除的流程，所以首先就是标记的过程也叫可达性分析。下面看下可达性分析是怎么具体操作的
 ```cpp
 void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
@@ -220,6 +220,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
 }
 ```
+3 可达性分析主要就是两部分操作，第一部分是
 # 4 标记初始化 StartReachabilityAnalysis
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
