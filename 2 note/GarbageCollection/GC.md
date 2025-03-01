@@ -150,7 +150,7 @@ void FReachabilityAnalysisState::CollectGarbage(EObjectFlags KeepFlags, bool bFu
 {
 	ObjectKeepFlags = KeepFlags;
 	bPerformFullPurge = bFullPurge;
-	// 不是全部清除 && 允许增量可达性分析
+	// 不是全部清除 && 允许增量可达性分析。在全量gc里肯定为false啦
 	const bool bReachabilityUsingTimeLimit = !bFullPurge && GAllowIncrementalReachability;
 	PerformReachabilityAnalysisAndConditionallyPurgeGarbage(
 	bReachabilityUsingTimeLimit);
