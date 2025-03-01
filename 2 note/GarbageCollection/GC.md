@@ -83,6 +83,10 @@ void UEngine::ConditionalCollectGarbage()
 			TimeSinceLastPendingKillPurge = 0.0f;
 		}
 	}
+	else
+	{
+		
+	}
 }
 ```
 1 可以通过ForceGarbageCollection手动触发gc，在下一帧就会调用TryCollectGarbage方法来走gc流程。
