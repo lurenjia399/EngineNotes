@@ -258,10 +258,16 @@ FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, cons
 	GRootsCritical.Lock();
 	TArray<int32> RootsArray(GRoots.Array());				
 	GRootsCritical.Unlock();
-	// 将整个根数组划分，每个工作线程负责几个根，记录在MarkRootsState结构中
+	// 将整个根Object数组划分，每个工作线程负责几个根，记录在MarkRootsState结构中
 	MarkRootsState.Start(Options, RootsArray.Num());
+	// 通过工作线程来遍历根数组，有几个工作线程遍历几次，每个工作线程只处理自己负责的根
+	ParallelFor(...)
+	{
+		// 将根Object去掉可能不可达标记，添加可达标记
+		RootItem->FastMarkAsReachableInterlocked_ForGC();
+	}
 	// 
-	FMarkRootsState::FThreadIterators& ThreadIterators = MarkRootsState.GetThreadIterators();
+	MarkRootsState.Finish(OutRootObjects);
 }
 
 FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options, TArray<UObject*>& OutRootObjects)
