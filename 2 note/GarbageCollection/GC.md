@@ -248,7 +248,8 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 		// 交换可达和可能不可达的含义，将所有Object都标记为了可能不可达。
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
-	// 1 只要簇根Object不是垃圾，就将簇中所有的Object都标记成可达的
+	// 1 只要簇根Object不是垃圾，就将簇中所有的Object都标记成可达的。如果簇根Object是垃圾就解散簇并标记簇中所有Object都为可能不可达
+	// 2 如果簇根Object或者簇中Object是跳过gc的，
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
 	// 将根Object去掉可能不可达标记，并添加可达标记。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
