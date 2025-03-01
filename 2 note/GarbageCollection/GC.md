@@ -85,7 +85,8 @@ void UEngine::ConditionalCollectGarbage()
 	}
 	else
 	{
-		
+		// 两次垃圾清除的间隔时间
+		const float TimeBetweenPurgingPendingKillObjects = GetTimeBetweenGarbageCollectionPasses(bHasPlayersConnected);
 	}
 }
 ```
