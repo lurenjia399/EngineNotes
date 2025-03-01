@@ -102,8 +102,15 @@ void UEngine::ConditionalCollectGarbage()
 		// 如果当前不在增量清除，并且该清除pendingkill引用了
 		else if (!IsIncrementalPurgePending()&& (TimeSinceLastPendingKillPurge > TimeBetweenPurgingPendingKillObjects) && TimeBetweenPurgingPendingKillObjects > 0.f)
 		{
-			// 不会再有异步加在时执行，就是一个增量gc
+			// 不会再有异步加在时执行，就是一个增量gc，会从基本流程中走
 			PerformGarbageCollectionAndCleanupActors();
+		}
+		else
+		{
+			// 每帧允许的增量gc时间，可以设置，这里时0.002s
+			float IncGCTime = GIncrementalGCTimePerFrame;
+			// 增量gc
+			IncrementalPurgeGarbage(true, IncGCTime);
 		}
 	}
 }
