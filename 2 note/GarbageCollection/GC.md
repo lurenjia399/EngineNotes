@@ -234,13 +234,12 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 	{
 		InitialObjects.Add(FGCObject::GGCObjectReferencer);
 	}
-	// 初始化标记，将所有可达Object标记为可能不可达，然后将根Object标记为可达并放入。
+	// 初始化标记，将所有可达Object标记为可能不可达，然后将根Object标记为可达并放入InitialObjects数组中。
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
-1 StartReachabilityAnalysis 又分为了两部分，第一部分通过工作线程将我们GCObject放到InitialReferences数组中。第二部分将所有Object都标记为可能不可达，然后将根Object标记为可达。我们主要看下第二部分。
+1 StartReachabilityAnalysis 含以上应该是，将所有的可达Object都标记成可能不可达，然后填充初始遍历数组，里面有FGCObject::GGCObjectReferencer，和根Object对象
 ```cpp
-
 FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 {
 	// 如果没有引用垃圾
