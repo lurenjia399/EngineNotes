@@ -220,7 +220,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
 }
 ```
-3 可达性分析主要就是两部分操作，第一部分是
+3 可达性分析主要就是两部分操作，第一部分是开始可达性分析，将所有可达的Object标记成可能不可达的。第二部分就是遍历Object，来更改遍历到的Object的标记。
 # 4 标记初始化 StartReachabilityAnalysis
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
