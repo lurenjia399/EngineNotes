@@ -111,6 +111,14 @@ void FReachabilityAnalysisState::CollectGarbage(EObjectFlags KeepFlags, bool bFu
 void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurgeGarbage(bool bReachabilityUsingTimeLimit)
 {
 	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
+	const double ReferenceProcessingStartTime = FPlatformTime::Seconds();
+		// When performing the first iteration of reachability analysis start the timer when we actually start processing
+		// iteration as we don't have control over various callbacks being fired in PreCollectGarbageImpl and can't be responsible for any hitches in them
+		if (IterationStartTime == 0.0)
+		{
+			IterationStartTime = ReferenceProcessingStartTime;
+			IterationTimeLimit = bReachabilityUsingTimeLimit ? GIncrementalReachabilityTimeLimit : 0.0;
+		}
 	// 这个方法会转发到CollectGarbageImpl这个方法里
 	PerformReachabilityAnalysis();
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
