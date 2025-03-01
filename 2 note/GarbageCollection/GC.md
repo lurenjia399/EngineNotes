@@ -85,6 +85,8 @@ void UEngine::ConditionalCollectGarbage()
 	}
 	else
 	{
+		// 上一次清除pendingkill引用的时间
+		TimeSinceLastPendingKillPurge += FApp::GetDeltaTime();
 		// 两次垃圾清除的间隔时间
 		const float TimeBetweenPurgingPendingKillObjects = GetTimeBetweenGarbageCollectionPasses(bHasPlayersConnected);
 	}
