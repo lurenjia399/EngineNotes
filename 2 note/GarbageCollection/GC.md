@@ -136,7 +136,7 @@ void UEngine::ConditionalCollectGarbage()
 ```cpp
 // KeepFlags = GIsEditor ? RF_Standalone : RF_NoFlags
 // 这个KeepFlags只有再编辑器下才会有值，其余的全为RF_NoFlags
-// 这个bPerformFullPurge为true，可能是代表全量gc？
+// 这个bPerformFullPurge为true，代表的应该是全量gc
 bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
 	UE::GC::CollectGarbageInternal(KeepFlags, bPerformFullPurge);
