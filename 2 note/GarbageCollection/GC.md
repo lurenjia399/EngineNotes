@@ -340,7 +340,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 			{
 			Context.ObjectsToSerialize.FreeOwningBlock(CurrentObjects.GetData());
 			}
-			// 一次循环处理完就超时了，那就把积压的Object处理掉，直接返回不继续处理了，
+			// 一次循环处理完就超时了，那就把积压的Object处理掉，直接返回不继续处理了。能如果能够超时，就意味着不是全量gc，只有增量的时候才会超时，时间限制为0.005s。
 			if (Processor.IsTimeLimitExceeded())
 			{
 				FlushWork(Dispatcher);
