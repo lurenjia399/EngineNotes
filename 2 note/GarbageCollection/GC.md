@@ -164,7 +164,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	const bool bForceNonIncrementalReachability =
 		!GIsIncrementalReachabilityPending &&
 		(bPerformFullPurge || !GAllowIncrementalReachability);
-	// 记录可达性分析的开始时间和时间限制长度，时间限制长度竟然是0.005秒么？
+	// 记录可达性分析的开始时间和时间限制长度，这里全量gc没有时间限制
 	const double ReferenceProcessingStartTime = FPlatformTime::Seconds();
 	if (IterationStartTime == 0.0)
 	{
@@ -178,7 +178,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	// 在执行完一趟可达性分析后，重置时间
 	IterationTimeLimit = 0.0;
 	IterationStartTime = 0.0;
-	
+	// 在可达性分析过后，也就是标记ji
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
