@@ -124,7 +124,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 		(bPerformFullPurge || !GAllowIncrementalReachability);
 	// 这个方法会转发到CollectGarbageImpl这个方法里
 	PerformReachabilityAnalysis();
-	// 在
+	// 在标记流程走完，更新GIsIncrementalReachabilityPending状态，只有可达性分析超时了，这个才会为true。
 	GIsIncrementalReachabilityPending = GReachabilityState.IsSuspended();
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
