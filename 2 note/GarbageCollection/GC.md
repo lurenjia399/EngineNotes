@@ -126,11 +126,15 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	PerformReachabilityAnalysis();
 	// 在标记流程走完，更新GIsIncrementalReachabilityPending状态，只有可达性分析超时了，这个才会为true。
 	GIsIncrementalReachabilityPending = GReachabilityState.IsSuspended();
+	// 在执行完一趟可达性分析后，重置时间
+	IterationTimeLimit = 0.0;
+	IterationStartTime = 0.0;
+	
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 {
-	// 如果没有暂停，就把Iteration计数归0
+	// 如果没有暂停，就把Iteration计数归0，这个计数应该就代表可达性分析的次数，执行一趟可达性分析他就+1
 	if (!bIsSuspended)
 	{
 		NumIterations = 0;
