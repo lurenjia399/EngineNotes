@@ -54,7 +54,7 @@ enum class EInternalObjectFlags : int32
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
-# 2 触发GC
+# 2 gc的开始入口
 ```cpp
 // 手动通过这个方法来gc，设置bFullPurgeTriggered标志位，在下一帧调用gc
 void UEngine::ForceGarbageCollection(bool bForcePurge)
@@ -131,6 +131,7 @@ void UEngine::ConditionalCollectGarbage()
 }
 ```
 1 gc的开始方法ConditionalCollectGarbage是在world::tick中执行的，每帧都会执行。在方法中会根据标志位来决定是否全量gc，如果不需要就是增量gc。
+# 3 全量gc
 ```cpp
 // KeepFlags = GIsEditor ? RF_Standalone : RF_NoFlags
 // 这个KeepFlags只有再编辑器下才会有值，其余的全为RF_NoFlags
@@ -215,7 +216,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 	} while ((VerseGCActive() || !Private::GReachableObjects.IsEmpty() || !Private::GReachableClusters.IsEmpty()) && !GReachabilityState.IsSuspended());
 }
 ```
-# 3 标记初始化 StartReachabilityAnalysis
+# 4 标记初始化 StartReachabilityAnalysis
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
@@ -293,7 +294,7 @@ FORCENOINLINE void MarkClusteredObjectsAsReachable(const EGatherOptions Options,
 ```
 2 MarkObjectsAsUnreachable这个方法主要是标记根Object为可达的，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable在这个方法的开头就交换了可达和可能不可达标记，很巧妙的交换了可达和可能不可达。举个例子就是：A代表可达，B代表可能不可达，交换后A代表可能不可达，B代表可达。并没有根据含义去改变值，而是直接改变了值得含义，很巧妙。
 此时InitialObjects数组里就只有根Object吧，并且标记都为可达。
-# 4 通过引用关系修改标记 PerformReachabilityAnalysisPass
+# 5 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
@@ -567,7 +568,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 ```
 3 最终标记流程结束，从根Object开始，获取根Object得UClass，Outer，引用，将其添加到UnvalidatedReferences数组中，如果UnvalidatedReferences数组满了，会将数组中满足条件（不在永久对象池和在内存中）的Object添加到ValidatedReferences数组中，ValidatedReferences数组满了就遍历数组内容，将其可能不可达标记去掉，并添加可达标记，并添加到ObjectsToSerialize数组中。
 最终标记流程结束，遍历到得Object会被标记为可达的，没遍历到的Object是可能不可达的。
-# 5 引用关系的信息收集
+# 6 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
 void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
@@ -664,7 +665,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 }
 ```
 3 通过Build方法，首先将Schema中的数据（UObject中存在的UProperty修饰的属性）根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将这块内存的首地址返回，最后将首地址存到UClass中。
-# 6 清除阶段
+# 7 清除阶段
 
 ```cpp
 void PostCollectGarbageImpl(EObjectFlags KeepFlags)
