@@ -99,10 +99,11 @@ void UEngine::ConditionalCollectGarbage()
 		{
 		PerformIncrementalReachabilityAnalysis(GetReachabilityAnalysisTimeLimit());
 		}
-		
+		// 如果当前不在增量清除，并且该清除pendingkill引用了
 		else if (!IsIncrementalPurgePending()&& (TimeSinceLastPendingKillPurge > TimeBetweenPurgingPendingKillObjects) && TimeBetweenPurgingPendingKillObjects > 0.f)
 		{
-			
+			// 不会再有异步加在时执行，就是一个增量gc
+			PerformGarbageCollectionAndCleanupActors();
 		}
 	}
 }
