@@ -277,7 +277,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 	Context->SetInitialObjectsUnpadded(InitialObjects);
 	// 处理Object引用关系，最终会执行PerformReachabilityAnalysisOnObjectsInternal方法
 	PerformReachabilityAnalysisOnObjects(Context, Options);
-	
+	// 如果可达性分析没有暂停。就只有两种情况，一种是全量gc没有时间限制肯定不会暂停。另外一种就是增量的，没有超时也就不会暂停了。所以也就意味着这一次可达性分析完整的结束了，将所有的Object都分析完了。
 	if (!GReachabilityState.CheckIfAnyContextIsSuspended())
 	{
 		GReachabilityState.ResetWorkers();
