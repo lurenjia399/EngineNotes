@@ -130,7 +130,7 @@ void UEngine::ConditionalCollectGarbage()
 	LastGCFrame = GFrameCounter;
 }
 ```
-1 可以通过ForceGarbageCollection手动触发gc，在下一帧就会调用TryCollectGarbage方法来走gc流程。
+1 gc的开始方法ConditionalCollectGarbage是在world::tick中执行的，每帧都会执行。在方法中会根据标志位来决定是否全量gc，如果不需要就是增量gc。
 ```cpp
 // KeepFlags = GIsEditor ? RF_Standalone : RF_NoFlags
 // 这个KeepFlags只有再编辑器下才会有值，其余的全为RF_NoFlags
