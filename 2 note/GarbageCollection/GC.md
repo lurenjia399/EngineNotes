@@ -69,7 +69,7 @@ void UWorld::Tick(...)
 }
 void UEngine::ConditionalCollectGarbage()
 {
-	// TryCollectGarbage 调用gc。在全量清除的时候才会走，也就是ForceGarbageCollection方法的参数是true
+	// 全量gc的流程
 	if (bFullPurgeTriggered)
 	{
 		if (TryCollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS, true))
@@ -83,6 +83,7 @@ void UEngine::ConditionalCollectGarbage()
 			TimeSinceLastPendingKillPurge = 0.0f;
 		}
 	}
+	// 增量gc的流程
 	else
 	{
 		// 上一次清除pendingkill引用的时间
