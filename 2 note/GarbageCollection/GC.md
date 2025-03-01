@@ -266,7 +266,7 @@ FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, cons
 		// 将根Object去掉可能不可达标记，添加可达标记
 		RootItem->FastMarkAsReachableInterlocked_ForGC();
 	}
-	// 
+	// 最终将遍历到的根Object都添加到OutRootObjects数组中，也就是InitialObjects数组
 	MarkRootsState.Finish(OutRootObjects);
 }
 
