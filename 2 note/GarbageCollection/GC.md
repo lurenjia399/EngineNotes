@@ -285,7 +285,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		GReachabilityState.UpdateStats(Context->Stats);
 		Pool.ReturnToPool(Context);
 	}
-	// 如果可达性分析暂停了并且是单线程的。就意味着Object没有分析完，fen'xi'le
+	// 如果可达性分析暂停了并且是单线程的。就意味着Object没有分析完，分析了一部分所以先清掉初始化的一些数组
 	else if (bIsSingleThreaded)
 	{
 		Context->ResetInitialObjects();
