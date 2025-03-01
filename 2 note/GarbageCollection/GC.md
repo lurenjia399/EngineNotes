@@ -118,12 +118,14 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 		IterationStartTime = ReferenceProcessingStartTime;
 		IterationTimeLimit = bReachabilityUsingTimeLimit ? GIncrementalReachabilityTimeLimit : 0.0;
 	}
-	// 强制非增量可达性分析 = 不处在增量可达性分析中 && ()
+	//强制非增量可达性分析=不处在增量可达性分析中 && (全部清除 || 不允许增量可达性分析)
 	const bool bForceNonIncrementalReachability =
 		!GIsIncrementalReachabilityPending &&
 		(bPerformFullPurge || !GAllowIncrementalReachability);
 	// 这个方法会转发到CollectGarbageImpl这个方法里
 	PerformReachabilityAnalysis();
+	// 在
+	GIsIncrementalReachabilityPending = GReachabilityState.IsSuspended();
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
