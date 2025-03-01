@@ -283,10 +283,9 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
 		ConditionallyAddBarrierReferencesToHistory(*Context);
 	}
-	// 第一次进行可达性分析 || (引用垃圾 && 没有暂停可达性分析)
+	// 第一次进行可达性分析，这里需要处理FGCObject::GGCObjectReferencer中的对象，也就是继承自GCObject的Object。
 	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
 	{
-		//目的是将GGCObjectReferencer数组中的值添加到InitialReferences数组中,然后返回
 		Context->InitialNativeReferences = GetInitialReferences(Options);
 	}
 	if (!Private::GReachableClusters.IsEmpty())
