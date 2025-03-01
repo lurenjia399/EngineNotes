@@ -113,6 +113,13 @@ void UEngine::ConditionalCollectGarbage()
 			IncrementalPurgeGarbage(true, IncGCTime);
 		}
 	}
+	if (const int32 Interval = CVarCollectGarbageEveryFrame.GetValueOnGameThread())
+	{
+		if (0 == (GFrameCounter % Interval))
+		{
+			ForceGarbageCollection(true);
+		}
+	}
 }
 ```
 1 可以通过ForceGarbageCollection手动触发gc，在下一帧就会调用TryCollectGarbage方法来走gc流程。
