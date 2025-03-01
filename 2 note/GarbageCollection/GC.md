@@ -227,13 +227,14 @@ void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
 	// 用另一个线程将继承自GCObject的对象放到InitialReferences数组中
 	BeginInitialReferenceCollection(Options);
+	// 清掉InitialObject数组
 	InitialObjects.Reset();
-	// 如果需要cook也就是不是编辑器 && FGCObject::GGCObjectReferencer这个对象不需要考虑gc，也都放到InitialObjects数组中。含义应该是FGCObject::GGCObjectReferencer这个对象即使不会被gc，但也需要检测其引用的其他对象是否需要gc。
+	// 含义应该是FGCObject::GGCObjectReferencer这个对象即使不会被gc，但也需要检测其引用的其他对象是否需要gc，所以也放到InitialObjects数组中。
 	if (FPlatformProperties::RequiresCookedData() && GUObjectArray.IsDisregardForGC(FGCObject::GGCObjectReferencer))
 	{
 		InitialObjects.Add(FGCObject::GGCObjectReferencer);
 	}
-	// 初始化标记，将所有Object标记为可能不可达，然后将根Object标记为可达。
+	// 初始化标记，将所有可达Object标记为可能不可达，然后将根Object标记为可达并放入。
 	MarkObjectsAsUnreachable(KeepFlags);
 }
 ```
