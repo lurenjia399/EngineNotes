@@ -113,6 +113,7 @@ void UEngine::ConditionalCollectGarbage()
 			IncrementalPurgeGarbage(true, IncGCTime);
 		}
 	}
+	// 可以配置，是否需要每帧都全量gc
 	if (const int32 Interval = CVarCollectGarbageEveryFrame.GetValueOnGameThread())
 	{
 		if (0 == (GFrameCounter % Interval))
@@ -120,6 +121,13 @@ void UEngine::ConditionalCollectGarbage()
 			ForceGarbageCollection(true);
 		}
 	}
+	// 可以配置，是否需要持续增量gc
+	else if (CVarContinuousIncrementalGC.GetValueOnGameThread() > 0 && !IsIncrementalReachabilityAnalysisPending() && !IsIncrementalUnhashPending() && !IsIncrementalPurgePending())
+	{
+		ForceGarbageCollection(false);
+	}
+	// 记录gc的帧数
+	LastGCFrame = GFrameCounter;
 }
 ```
 1 可以通过ForceGarbageCollection手动触发gc，在下一帧就会调用TryCollectGarbage方法来走gc流程。
