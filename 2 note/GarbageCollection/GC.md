@@ -221,7 +221,7 @@ void PerformReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Option
 }
 ```
 3 可达性分析主要就是两部分操作，第一部分是开始可达性分析，将所有可达的Object标记成可能不可达的。第二部分就是遍历Object，来更改遍历到的Object的标记。
-# 4 标记初始化 StartReachabilityAnalysis
+# 4.1 开始标记 StartReachabilityAnalysis
 ```cpp
 void StartReachabilityAnalysis(EObjectFlags KeepFlags, const EGCOptions Options)
 {
@@ -249,7 +249,6 @@ FORCENOINLINE void MarkObjectsAsUnreachable(const EObjectFlags KeepFlags)
 		Swap(GReachableObjectFlag, GMaybeUnreachableObjectFlag);
 	}
 	// 1 只要簇根Object不是垃圾，就将簇中所有的Object都标记成可达的。如果簇根Object是垃圾就解散簇并标记簇中所有Object都为可能不可达
-	// 2 如果簇中有垃圾，就解散簇并将不是垃圾的Object放入到InitialObjects数组中
 	MarkClusteredObjectsAsReachable(GatherOptions, InitialObjects);
 	// 将根Object去掉可能不可达标记，并添加可达标记。
 	MarkRootObjectsAsReachable(GatherOptions, KeepFlags, InitialObjects);
@@ -273,8 +272,8 @@ FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, cons
 }
 ```
 2 MarkObjectsAsUnreachable这个方法主要是标记根Object为可达的，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable在这个方法的开头就交换了可达和可能不可达标记，很巧妙的交换了可达和可能不可达。举个例子就是：A代表可达，B代表可能不可达，交换后A代表可能不可达，B代表可达。并没有根据含义去改变值，而是直接改变了值得含义，很巧妙。
-此时InitialObjects数组里就只有根Object吧，并且标记都为可达。
-# 5 通过引用关系修改标记 PerformReachabilityAnalysisPass
+此时InitialObjects数组里应该有FGCObject::GGCObjectReferencer对象，根Object对象。
+# 4.2 通过引用关系修改标记 PerformReachabilityAnalysisPass
 
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
