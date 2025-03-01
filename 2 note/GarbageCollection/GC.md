@@ -308,7 +308,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 			{
 			Context.ObjectsToSerialize.FreeOwningBlock(CurrentObjects.GetData());
 			}
-			// 一次循环处理完就超时了，那就把积压的Object处理掉，直接返回不继续处理了
+			// 一次循环处理完就超时了，那就把积压的Object处理掉，直接返回不继续处理了，
 			if (Processor.IsTimeLimitExceeded())
 			{
 				FlushWork(Dispatcher);
