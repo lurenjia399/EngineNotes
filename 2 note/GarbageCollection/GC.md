@@ -178,7 +178,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	// 在执行完一趟可达性分析后，重置时间
 	IterationTimeLimit = 0.0;
 	IterationStartTime = 0.0;
-	// 在可达性分析过后，也就是标记ji
+	// 在可达性分析过后，也就是标记阶段完成后，这里是清除阶段
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
@@ -190,6 +190,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 	}
 	if (bPerformFullPurge)
 	{
+		// 可达性分析的入口，会执行到CollectGarbageImpl方法当中去。
 		UE::GC::CollectGarbageFull(ObjectKeepFlags);
 	}
 	// 执行完可达性分析后就增加计数
@@ -201,7 +202,7 @@ void CollectGarbageImpl(EObjectFlags KeepFlags)
 	// Options里应该就包括一个多线程gc的标志位EGCOptions::Parallel
 	const EGCOptions Options = GetReferenceCollectorOptions(bPerformFullPurge);
 	FRealtimeGC GC;
-	// 可达性分析
+	// 具体执行可达性分析
 	GC.PerformReachabilityAnalysis(KeepFlags, Options);
 }
 
