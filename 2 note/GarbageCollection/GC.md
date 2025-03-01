@@ -349,7 +349,7 @@ void ProcessObjectArray(FWorkerContext& Context)
 		// 这里是获取Dispatcher，GetDispatcher的定义有两个地方，一个是默认的，一个是TReachabilityCollector类里的，后者是全特化版本。实际执行会根据Collector类型的不同执行不同的版本，TReachabilityCollector类型执行后者，TDefaultCollector类型执行前者。这里Collector的类型是TReachabilityCollector，所以Dispatcher是TBatchDispatcher类型。
 		CollectorType Collector(Processor, Context);
 		decltype(GetDispatcher(Collector, Processor, Context)) Dispatcher = GetDispatcher(Collector, Processor, Context);
-		// 
+		// 这边就是优先处理继承自GCObject的Object对象，查看他们的引用关系
 		for (UObject** InitialReference : Context.InitialNativeReferences)
 		{
 			Dispatcher.HandleKillableReference(*InitialReference, EMemberlessId::InitialReference, EOrigin::Other);
