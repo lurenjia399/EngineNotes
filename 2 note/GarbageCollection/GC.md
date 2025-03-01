@@ -159,6 +159,11 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 {
 	// 全量gc这个模板走的时true，增量是false
 	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
+	
+	// 不进行增量可达性分析
+	const bool bForceNonIncrementalReachability =
+		!GIsIncrementalReachabilityPending &&
+		(bPerformFullPurge || !GAllowIncrementalReachability);
 	// 记录可达性分析的开始时间和时间限制长度，时间限制长度竟然是0.005秒么？
 	const double ReferenceProcessingStartTime = FPlatformTime::Seconds();
 	if (IterationStartTime == 0.0)
@@ -166,10 +171,6 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 		IterationStartTime = ReferenceProcessingStartTime;
 		IterationTimeLimit = bReachabilityUsingTimeLimit ? GIncrementalReachabilityTimeLimit : 0.0;
 	}
-	//强制非增量可达性分析=不处在增量可达性分析中 && (全部清除 || 不允许增量可达性分析)
-	const bool bForceNonIncrementalReachability =
-		!GIsIncrementalReachabilityPending &&
-		(bPerformFullPurge || !GAllowIncrementalReachability);
 	// 这个方法会转发到CollectGarbageImpl这个方法里
 	PerformReachabilityAnalysis();
 	// 在标记流程走完，更新GIsIncrementalReachabilityPending状态，只有可达性分析超时了，这个才会为true。超时就意味着是增量，因为全量没有时间限制。并且超时还证明了此次可达性分析没有分析完，还有一部分Object没有进行可达性分析。所以这里将增量可达性分析正在进行的标志位置成true。
