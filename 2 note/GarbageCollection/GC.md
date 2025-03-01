@@ -317,7 +317,7 @@ void PerformReachabilityAnalysisPass(const EGCOptions Options)
 	}
 }
 ```
-
+1 创建Context上下文，将数组都保存Context中，再用的时候好取，遍历的方法是PerformReachabilityAnalysisOnObjects最终经过转发会执行到PerformReachabilityAnalysisOnObjectsInternal方法中
 ```cpp
 void PerformReachabilityAnalysisOnObjectsInternal(FWorkerContext& Context)
 {
