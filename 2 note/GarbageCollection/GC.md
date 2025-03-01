@@ -157,6 +157,7 @@ void FReachabilityAnalysisState::CollectGarbage(EObjectFlags KeepFlags, bool bFu
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurgeGarbage(bool bReachabilityUsingTimeLimit)
 {
+	// 全量gc这个模板走的时true，增量是false
 	UE::GC::PreCollectGarbageImpl<true>(ObjectKeepFlags);
 	// 记录可达性分析的开始时间和时间限制长度，时间限制长度竟然是0.005秒么？
 	const double ReferenceProcessingStartTime = FPlatformTime::Seconds();
