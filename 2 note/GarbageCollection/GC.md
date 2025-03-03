@@ -194,6 +194,11 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 		// 可达性分析的入口，会执行到CollectGarbageImpl方法当中去。
 		UE::GC::CollectGarbageFull(ObjectKeepFlags);
 	}
+	// 这里是增量可达性分析走的，也会执行到CollectGarbageImpl方法当中去，就是模板不一样
+	elseif(...)
+	{
+		UE::GC::CollectGarbageIncremental(ObjectKeepFlags);
+	}
 	// 执行完可达性分析后就增加计数
 	NumIterations++;
 }
