@@ -164,7 +164,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	const bool bForceNonIncrementalReachability =
 		!GIsIncrementalReachabilityPending &&
 		(bPerformFullPurge || !GAllowIncrementalReachability);
-	// 记录可达性分析的开始时间和时间限制长度，这里全量gc没有时间限制
+	// 记录可达性分析的开始时间和时间限制长度，这里全量gc没有时间限制。如果是增量gc并且开启了增量可达性分析，这里的时间限制是0.002s。
 	const double ReferenceProcessingStartTime = FPlatformTime::Seconds();
 	if (IterationStartTime == 0.0)
 	{
