@@ -110,7 +110,7 @@ void UEngine::ConditionalCollectGarbage()
 		{
 			// 每帧允许的增量gc时间，可以设置，这里时0.002s
 			float IncGCTime = GIncrementalGCTimePerFrame;
-			// 增量gc
+			// 增量清除gc
 			IncrementalPurgeGarbage(true, IncGCTime);
 		}
 	}
