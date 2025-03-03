@@ -295,7 +295,7 @@ end
 ```
 
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202501241038250.png)
-1 肉鸽第一次进入的主关卡包含了三个AlwaysLoad的子关卡（光照地图，navmesh地图，主房间也就是中间房间）和两个手动加载的子关卡（开始房间，结束房间）。
+1 肉鸽第一次进入的主关卡包含了三个AlwaysLoad的子关卡（光照地图，navmesh地图，主房间也就是中间房间）和两个手动加载的子关卡（开始房间，结束房间，开始房间和结束房间应该完全一致）。
 2 我们在进入副本的时候会受到self_enter_scene消息，然后会LoadStreamingLevel来加载主地图，主地图加载完成后，通过Package来找到AlwaysLoad子关卡StreamingLevel，然后再通过子关卡的package来找到路径，进而再加载。
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202501241051721.png)
 3 下面就会加载rogue配置中的关卡，开始房间和结束房间等，这边开始房间和结束房间在第二步已经加载了，这里就会设置bVisible标志位让他显示出来。
