@@ -542,6 +542,35 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 最终标记流程结束，遍历到得Object会被标记为可达的，没遍历到的Object是可能不可达的。
 # 5 增量gc
 ```cpp
+void UEngine::PerformGarbageCollectionAndCleanupActors()
+{
+	// 不在异步加在中执行
+	if (GPerformGCWhileAsyncLoading || !IsAsyncLoading())
+	{
+		// world存在就bForcePurge为false
+		bool bForcePurge = true;
+		for (FWorldContext& Context : WorldList)
+		{
+			UWorld* World = Context.World();
+			if (World != nullptr && World->IsGameWorld())
+			{
+				bForcePurge = false;
+				break;
+			}
+		}
+		// gc的流程，第二个参数为false，代表增量gc
+		if (TryCollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS, bForcePurge))
+		{
+			ForEachObjectOfClass(UWorld::StaticClass(), [](UObject* World)
+			{
+				CastChecked<UWorld>(World)->CleanupActors();
+			});
+			TimeSinceLastPendingKillPurge = 0.0f;
+			bFullPurgeTriggered = false;
+			LastGCFrame = GFrameCounter;
+		}
+	}
+}
 // bUseTimeLimit是true，TimeLimit是0.002毫秒，毫秒级别的
 void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 {
