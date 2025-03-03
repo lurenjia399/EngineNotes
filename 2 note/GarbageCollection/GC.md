@@ -542,7 +542,11 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 最终标记流程结束，遍历到得Object会被标记为可达的，没遍历到的Object是可能不可达的。
 # 5 增量gc
 ```cpp
-
+// bUseTimeLimit是true，TimeLimit是0.002毫秒，毫秒级别的
+void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
+{
+	
+}
 ```
 # 6 引用关系的信息收集
 ```cpp
