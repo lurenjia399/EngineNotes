@@ -188,6 +188,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 	{
 		NumIterations = 0;
 	}
+	// 如果是全量可达性分析，这里走CollectGarbageFull这个接口
 	if (bPerformFullPurge)
 	{
 		// 可达性分析的入口，会执行到CollectGarbageImpl方法当中去。
