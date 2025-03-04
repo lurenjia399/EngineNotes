@@ -703,25 +703,28 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 		}
 	}
 	// 解锁Object的HashTable
+	GIsGarbageCollectingAndLockingUObjectHashTables = false;
 	UnlockUObjectHashTables();
+	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
+	GIsGarbageCollecting = false;
 	if (!GIsIncrementalReachabilityPending)
 	{
 		if (bPerformFullPurge || !GIncrementalBeginDestroyEnabled)
 		{
+			// 在全局hash表中移除不可达Object的信息
 			UnhashUnreachableObjects(false);
 		}
 		GObjPurgeIsRequired = true;
 		if (bPerformFullPurge)
 		{
+			// 清除垃圾，从内存中移除掉
 			IncrementalPurgeGarbage(false);
 		}
+		if (bPerformFullPurge)
+		{
+			ShrinkUObjectHashTables();
+		}
 	}
-	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
-	GIsGarbageCollecting = false;
-	// 在全局hash表中移除不可达Object的信息
-	UnhashUnreachableObjects(false);
-	// 清除垃圾，从内存中移除掉
-	IncrementalPurgeGarbage(false);
 }
 ```
 ## 1 收集不可达Object
