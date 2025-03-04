@@ -685,6 +685,11 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 ```cpp
 void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 {
+	// 如果可达性分析暂停了，就说命正在进行增量可达性分析
+	if (!GIsIncrementalReachabilityPending)
+	{
+		
+	}
 	// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object标记成不可达。
 	Swap(GUnreachableObjectFlag, GMaybeUnreachableObjectFlag);
 	// 解散掉不可达的簇，参数是否是多线程
