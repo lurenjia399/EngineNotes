@@ -729,7 +729,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	}
 }
 ```
-1 在清除阶段，如果但当前正在处于增量可达性分析（可达性分析没有完成，超时zan't）
+1 在清除阶段，如果但当前正在处于增量可达性分析（可达性分析没有完成，超时暂停了），就仅仅是释放hashtable和gc的锁，不进行清除操作。如果可达性分析完成了才会交换标记，收集不可达Object
 ## 1 收集不可达Object
 ```cpp
 bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
