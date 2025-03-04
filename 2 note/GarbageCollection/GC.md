@@ -148,6 +148,7 @@ void CollectGarbageInternal(EObjectFlags KeepFlags, bool bPerformFullPurge)
 }
 void FReachabilityAnalysisState::CollectGarbage(EObjectFlags KeepFlags, bool bFullPurge)
 {
+	// 如果正处于增量可达性分析阶段，就全量清除一次垃圾，在给gc上锁因为清除垃圾的时候会给gc解锁。
 	if (GIsIncrementalReachabilityPending)
 	{
 		bPerformFullPurge = true;
