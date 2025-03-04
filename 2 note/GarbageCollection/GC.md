@@ -915,7 +915,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - gc是如何清除的？
 在标记流程结束后，所有的Object就只有两种标记了，标记为可达的不会被gc掉，标记为可能不可达的是要被gc掉的。第一步是swap不可达和可能不可达标记，将所有可能不可达的Object标记为不可达。第二步是收集不可达Object，将不可达Object放到数组中。第三步是遍历不可达数组，将其中Object执行BeginDestroy，FinishDestroy，然后再内存中清除掉。
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
-增量
+增量分为两部分，一部分是增量可达性分析，一部分是增量清除。增量可达性分析首先需要开启，然后流程和全量的一样
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
