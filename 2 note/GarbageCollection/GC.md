@@ -707,6 +707,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	UnlockUObjectHashTables();
 	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
 	GIsGarbageCollecting = false;
+	ReleaseGCLock();
 	if (!GIsIncrementalReachabilityPending)
 	{
 		if (bPerformFullPurge || !GIncrementalBeginDestroyEnabled)
