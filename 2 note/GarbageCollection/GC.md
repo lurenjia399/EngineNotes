@@ -181,6 +181,18 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysisAndConditionallyPurg
 	// 在可达性分析过后，也就是标记阶段完成后，这里是清除阶段
 	UE::GC::PostCollectGarbageImpl<true>(ObjectKeepFlags);
 }
+void PreCollectGarbageImpl(EObjectFlags KeepFlags)
+{
+	// 记录gc的帧数
+	GLastGCFrame = GFrameCounter;
+	// 正在gc的标志位
+	GIsGarbageCollecting = true;
+	// 如果还在增量清除垃圾的阶段，就全量清除下垃圾
+	if (IsIncrementalPurgePending())
+	{
+		IncrementalPurgeGarbage(false);
+	}
+}
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 {
 	// 如果没有暂停，就把Iteration计数归0，这个计数应该就代表可达性分析的次数，执行一趟可达性分析他就+1
