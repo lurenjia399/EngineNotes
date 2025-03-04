@@ -139,6 +139,9 @@ void UEngine::ConditionalCollectGarbage()
 // 这个bPerformFullPurge为true，代表的应该是全量gc
 bool TryCollectGarbage(EObjectFlags KeepFlags, bool bPerformFullPurge)
 {
+	// 添加gc锁
+	AcquireGCLock();
+	
 	UE::GC::CollectGarbageInternal(KeepFlags, bPerformFullPurge);
 }
 
