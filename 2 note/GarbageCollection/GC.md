@@ -702,11 +702,12 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 			GatherUnreachableObjects(GatherOptions, 0.0);
 		}
 	}
-	// 解锁Object的HashTable
+	// 解锁hashTable锁
 	GIsGarbageCollectingAndLockingUObjectHashTables = false;
 	UnlockUObjectHashTables();
 	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
 	GIsGarbageCollecting = false;
+	// 解锁gc锁
 	ReleaseGCLock();
 	if (!GIsIncrementalReachabilityPending)
 	{
@@ -728,6 +729,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	}
 }
 ```
+1 在清除阶段，如果但当前正在处于增量可达性分析（可达性分析没有完成，超时zan't）
 ## 1 收集不可达Object
 ```cpp
 bool GatherUnreachableObjects(UE::GC::EGatherOptions Options, double TimeLimit)
