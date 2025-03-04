@@ -192,6 +192,9 @@ void PreCollectGarbageImpl(EObjectFlags KeepFlags)
 	{
 		IncrementalPurgeGarbage(false);
 	}
+	// 给hashTable上锁
+	GIsGarbageCollectingAndLockingUObjectHashTables = true;
+	LockUObjectHashTables();
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 {
