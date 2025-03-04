@@ -688,23 +688,34 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	// 如果可达性分析暂停了，就说命正在进行增量可达性分析
 	if (!GIsIncrementalReachabilityPending)
 	{
-		
-	}
-	// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object标记成不可达。
-	Swap(GUnreachableObjectFlag, GMaybeUnreachableObjectFlag);
-	// 解散掉不可达的簇，参数是否是多线程
-	const EGatherOptions GatherOptions = GetObjectGatherOptions();
-	DissolveUnreachableClusters(GatherOptions);
-	// 清掉弱引用，但是什么情况下会有弱引用呢？
-	ClearWeakReferences<true>(AllContexts);
-	// 收集不可达Object
-	GGatherUnreachableObjectsState.Init();
-	if (bPerformFullPurge || !GAllowIncrementalGather)
-	{
-		GatherUnreachableObjects(GatherOptions, 0.0);
+		// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object标记成不可达。
+		Swap(GUnreachableObjectFlag, GMaybeUnreachableObjectFlag);
+		// 解散掉不可达的簇，参数是否是多线程
+		const EGatherOptions GatherOptions = GetObjectGatherOptions();
+		DissolveUnreachableClusters(GatherOptions);
+		// 清掉弱引用，但是什么情况下会有弱引用呢？
+		ClearWeakReferences<true>(AllContexts);
+		// 收集不可达Object
+		GGatherUnreachableObjectsState.Init();
+		if (bPerformFullPurge || !GAllowIncrementalGather)
+		{
+			GatherUnreachableObjects(GatherOptions, 0.0);
+		}
 	}
 	// 解锁Object的HashTable
 	UnlockUObjectHashTables();
+	if (!GIsIncrementalReachabilityPending)
+	{
+		if (bPerformFullPurge || !GIncrementalBeginDestroyEnabled)
+		{
+			UnhashUnreachableObjects(false);
+		}
+		GObjPurgeIsRequired = true;
+		if (bPerformFullPurge)
+		{
+			IncrementalPurgeGarbage(false);
+		}
+	}
 	// 垃圾收集（在内存中清掉垃圾）是否正在进行的标志位
 	GIsGarbageCollecting = false;
 	// 在全局hash表中移除不可达Object的信息
