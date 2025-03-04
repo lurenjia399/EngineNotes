@@ -148,6 +148,12 @@ void CollectGarbageInternal(EObjectFlags KeepFlags, bool bPerformFullPurge)
 }
 void FReachabilityAnalysisState::CollectGarbage(EObjectFlags KeepFlags, bool bFullPurge)
 {
+	if (GIsIncrementalReachabilityPending)
+	{
+		bPerformFullPurge = true;
+		PerformReachabilityAnalysisAndConditionallyPurgeGarbage(false);
+		AcquireGCLock();
+	}
 	ObjectKeepFlags = KeepFlags;
 	bPerformFullPurge = bFullPurge;
 	// 不是全部清除 && 允许增量可达性分析（项目中是0）。在全量gc里肯定为false啦
