@@ -964,6 +964,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
 增量分为两部分，一部分是增量可达性分析，一部分是增量清除。增量可达性分析首先需要开启，然后一次增量的流程和全量的一样，区别是在于增量是有0.002s的时间限制，时间到了就不处理了而全量没有限制会处理完。
 在清除阶段，如果增量可达性分析没有完成，就不进行清除只释放hashtable锁和gc锁。如果增量可达性分析完成了，会进行交换标记，收集不可达Object，然后再全量清除的基础上才会清除垃圾，而增量清除也不会清除垃圾。
+在没有人为干预的情况下，每隔60s
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
