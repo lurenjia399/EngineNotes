@@ -962,12 +962,9 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - gc是如何清除的？
 在标记流程结束后，所有的Object就只有两种标记了，标记为可达的不会被gc掉，标记为可能不可达的是要被gc掉的。第一步是swap不可达和可能不可达标记，将所有可能不可达的Object标记为不可达。第二步是收集不可达Object，将不可达Object放到数组中。第三步是遍历不可达数组，将其中Object执行BeginDestroy，FinishDestroy，然后再内存中清除掉。
 - UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
-增量分为两部分，一部分是增量可达性分析，一部分是增量清除。增量可达性分析首先需要开启，然后一次增量的流程和全量的一样，区别是在于增量是有0.002s的时间限制，时间到了就不处理了而全量没有限制会处理完。
-在清除阶段，如果增量可达性分析没有完成，就不进行清除只释放hashtable锁和gc锁。如果增量可达性分析完成了，会进行交换标记，收集不可达Object，然后再全量清除的基础上才会清除垃圾，而增量清除也不会清除垃圾。
-
 在没有人为干预的情况下，每隔60s会进行一次gc流程。
 	1 如果开启了增量可达性分析，那么第一次tick的gc流程和全量一样但不是全量，只是会有0.002s的时间限制，如果超时了就暂停可达性分析。进入清除阶段后，因为可达性分析没有完成，就不进行清除只释放hashtable锁和gc锁。如果可达性分析完成了，因为不是全量清除，后续就会执行增量的垃圾清除PostCollectGarbageImpl<false>，这里就是收集不可达Object，释放hashtable锁和gc锁。下下一次的tick就会执行有时间限制的增量的垃圾清除，会将Object执行BeginDestroy，FinishDestroy，最后在内存中清掉。
-	2 每帧tick会执行的就是有时间限制的增量清除，会收集不可达Object，执行BeginDestory，执行FinishDestory，但不会在内存中清掉。
+	2 每帧tick会执行的就是有时间限制的增量清除，会收集不可达Object，执行BeginDestory，执行FinishDestory，然后再内存中清掉。
 
 
 - gc多线程是怎么使用的
