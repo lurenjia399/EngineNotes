@@ -586,6 +586,8 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 ## 2.2 标记Object，HandleKillableReference
 
 ```cpp
+// Dispatcher参数的类型就是TBatchDispatcher
+// Instance
 template<class DispatcherType>
 void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 {
