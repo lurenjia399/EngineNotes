@@ -35,8 +35,7 @@
               "title": "索引"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -93,7 +92,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -178,15 +178,15 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "0a96c0160179e65a",
+  "active": "3f043423e596d462",
   "lastOpenFiles": [
+    "1 索引/索引.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/Lua/lua.md",
     "2 note/UObject/UObject，UPackage.md",
     "2 note/UClass/UClass.md",
     "2 note/资源管理/未命名.md",
     "2 note/World和Level/World和Level.md",
-    "1 索引/索引.md",
     "2 note/动画/动画.md",
     "().md",
     "2 note/摄像机/Camera.md",
