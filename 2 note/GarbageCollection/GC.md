@@ -304,7 +304,7 @@ FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, cons
 ```
 2 MarkObjectsAsUnreachable这个方法主要是标记根Object为可达的，并将根Object添加到InitialObjects数组中。MarkObjectsAsUnreachable在这个方法的开头就交换了可达和可能不可达标记，很巧妙的交换了可达和可能不可达。举个例子就是：A代表可达，B代表可能不可达，交换后A代表可能不可达，B代表可达。并没有根据含义去改变值，而是直接改变了值得含义，很巧妙。
 此时InitialObjects数组里应该有FGCObject::GGCObjectReferencer对象，根Object对象。
-# 4.2 通过引用关系修改标记 PerformReachabilityAnalysisPass
+# 4.2 修改标记流程 PerformReachabilityAnalysisPass
 
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
@@ -926,7 +926,6 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 	return bCompleted;
 }
 ```
-3 主要是对垃圾的处理，再对不可达Object的hash引用清除后，就需要销毁调Object了。依然是遍历不可达数组，对其中Object执行FinishDestory方法，这个方法是清除Object中的属性，将属性的内存清掉，最后通过GAsyncPurge来清除调Object自己的内存。
 1 增量清除垃圾，主要就是将不可达Object收集起来，然后执行BeginDestory和FinishDestory方法，然后通过GAsyncPurge来清除调Object自己的内存
 # 问题
 
