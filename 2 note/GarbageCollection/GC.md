@@ -939,10 +939,11 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 在创建UClass的时候，就会创建Schama，其保存了UObject中被UPROPERTY标记的Object的偏移。我们只要手中又UObject，就能通过其UClass获取Schama，然后将自己在内存中的位置 + Schama中的偏移 = 引用Object在内存中的位置。
 - gc是如何清除的？
 在标记流程结束后，所有的Object就只有两种标记了，标记为可达的不会被gc掉，标记为不可达的是要被gc掉的。第一步是收集不可达Object，将不可达Object放到数组中。第三步是遍历不可达数组，将其中Object执行BeginDestroy，FinishDestroy，然后再内存中清除掉。
-- UE5的增量标记是怎么实现的，如何追踪指针引用关系改变的
+- UE5的增量垃圾回收是怎么实现的，
 在没有人为干预的情况下，每隔60s会进行一次增量的可达性分析流程。增量可达性分析，就是有时间限制的全量可达性分析。如果超时了就证明了没有分析完，就暂停分析等待下一帧继续分析，如果没有超时就证明分析完了，然后就会收集不可达Object，等待下一帧的增量清除。
 增量清除，就是有时间限制的清除。会收集不可达Object（收集这个阶段默认不能增量，但是可以通过配置改变），然后遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉。
 全量gc的含义，就是走可达性分析流程，没有时间限制的处理所有Object，然后收集不可达Object，进而遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉，这是一帧执行的步骤。
+
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
