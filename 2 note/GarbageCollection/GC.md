@@ -689,7 +689,7 @@ void FObjectProperty::EmitReferenceInfo(...)
 ```
 2 向Schema中添加DeclareMember结构，这个结构记录了DebugPath，当前属性在类中偏移量，属性标志位。这个偏移量的计算用到了GetOffset_ForGC方法，这个方法返回Offset_Internal成员变量，Offset_Internal的赋值是在创建属性FProperty的时候赋值的，也就是在UClass创建的时候。
 ```cpp
-// 构建FSchemaView。参数传进来的ARO如果不是是UObject的那个虚函数AddReferencedObjects，才会有值，否则参数就为nullptr。现在看上去蓝图的UClass是自己设置的ARO，是AddReferencedObjectsInUbergraphFrame这个，只有蓝图的ARO会有值。
+// 构建FSchemaView。参数传进来的ARO如果不是是UObject的那个静态AddReferencedObjects，才会有值，否则参数就为nullptr。只要对象写了AddReferencedObjects，就不是UObject的，所有都有值，现在看上去蓝图的UClass是自己设置的ARO，是AddReferencedObjectsInUbergraphFrame这个。
 FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 {
 	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的在后
