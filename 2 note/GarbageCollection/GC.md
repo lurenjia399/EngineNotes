@@ -132,7 +132,7 @@ void UEngine::ConditionalCollectGarbage()
 }
 ```
 1 gc的开始方法ConditionalCollectGarbage是在world::tick中执行的，每帧都会执行。在方法中会根据标志位来决定是否全量gc，如果不需要就是增量gc。
-# 3 全量gc
+# 3 可达性分析
 ```cpp
 // KeepFlags = GIsEditor ? RF_Standalone : RF_NoFlags
 // 这个KeepFlags只有再编辑器下才会有值，其余的全为RF_NoFlags
@@ -583,44 +583,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 ```
 3 最终标记流程结束，从根Object开始，获取根Object得UClass，Outer，引用，将其添加到UnvalidatedReferences数组中，如果UnvalidatedReferences数组满了，会将数组中满足条件（不在永久对象池和在内存中）的Object添加到ValidatedReferences数组中，ValidatedReferences数组满了就遍历数组内容，将其可能不可达标记去掉，并添加可达标记，并添加到ObjectsToSerialize数组中。
 最终标记流程结束，遍历到得Object会被标记为可达的，没遍历到的Object是可能不可达的。
-# 5 增量gc
-```cpp
-void UEngine::PerformGarbageCollectionAndCleanupActors()
-{
-	// 不在异步加在中执行
-	if (GPerformGCWhileAsyncLoading || !IsAsyncLoading())
-	{
-		// world存在就bForcePurge为false
-		bool bForcePurge = true;
-		for (FWorldContext& Context : WorldList)
-		{
-			UWorld* World = Context.World();
-			if (World != nullptr && World->IsGameWorld())
-			{
-				bForcePurge = false;
-				break;
-			}
-		}
-		// gc的流程，第二个参数为false，代表增量gc
-		if (TryCollectGarbage(GARBAGE_COLLECTION_KEEPFLAGS, bForcePurge))
-		{
-			ForEachObjectOfClass(UWorld::StaticClass(), [](UObject* World)
-			{
-				CastChecked<UWorld>(World)->CleanupActors();
-			});
-			TimeSinceLastPendingKillPurge = 0.0f;
-			bFullPurgeTriggered = false;
-			LastGCFrame = GFrameCounter;
-		}
-	}
-}
-// bUseTimeLimit是true，TimeLimit是0.002毫秒，毫秒级别的
-void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
-{
-	
-}
-```
-# 6 引用关系的信息收集
+# 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
 void ProcessNewlyLoadedUObjects(FName Package, bool bCanProcessNewlyLoadedObjects)
@@ -717,7 +680,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 }
 ```
 3 通过Build方法，首先将Schema中的数据（UObject中存在的UProperty修饰的属性）根据偏移大小排序，然后分配一块内存来存放这些数据，然后再将这块内存的首地址返回，最后将首地址存到UClass中。
-# 7 清除阶段
+# 6 标记完成后的清除阶段
 
 ```cpp
 void PostCollectGarbageImpl(EObjectFlags KeepFlags)
