@@ -723,6 +723,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 		{
 			IncrementalPurgeGarbage(false);
 		}
+		// 同样的全量的清除，才会执行缩小hashtable的部分
 		if (bPerformFullPurge)
 		{
 			ShrinkUObjectHashTables();
@@ -818,8 +819,9 @@ void UObject::BeginDestroy()
 }
 ```
 2 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息。如果参数bUseTimeLimit是false，代表了没有时间限制，也就是肯定能将GUnreachableObjects数组中的不可达Object全部处理完，此时不可达索引GUnrechableObjectIndex就等于GUnreachableObjects数组的长度。但如果有了时间限制，就有可能时间到了导致没处理完，此时不可达索引GUnrechableObjectIndex就会小于GUnreachableObjects数组的长度，并且索引还标识了处理到哪个Object了。
-## 3 增量清除垃圾
+## 7 增量清除垃圾
 ```cpp
+// 每帧有可能会走增量清除垃圾，全量的可达性分析流程也会走增量清除垃圾。清除垃圾清除
 void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 {
 	// 如果移除hash引用，还没有处理完，就接着上次的在处理一次
