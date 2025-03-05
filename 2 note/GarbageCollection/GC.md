@@ -461,6 +461,17 @@ FORCEINLINE_DEBUGGABLE void ProcessObjects(DispatcherType& Dispatcher, TConstArr
 		}
 	}
 }
+void VisitMembers(DispatcherType& Dispatcher, FSchemaView Schema, ObjectType* Instance)
+{
+	// 根据Schema的类型来执行不同的
+	switch (Member.Type)
+	{
+	case EMemberType::Reference:				Dispatcher.HandleKillableReference(*(UObject**)MemberPtr, FMemberId(DebugIdx), Origin);
+	break;
+	// 这个ARO
+	case EMemberType::MemberARO:				CallARO(Dispatcher, MemberPtr, *++WordIt);
+	break;
+}
 
 ```
 标记对象的流程走的TBatchDispatcher的HandleKillableReference方法，下面详细看下。
