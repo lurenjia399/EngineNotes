@@ -685,7 +685,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 ```cpp
 void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 {
-	// 如果可达性分析暂停了，就说命正在进行增量可达性分析
+	// 如果没有处于增量可达性分析中，意味着可达性分析完成了
 	if (!GIsIncrementalReachabilityPending)
 	{
 		// 交换不可达和可能不可达含义，将所有标记为可能不可达的Object标记成不可达。
@@ -709,6 +709,7 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 	GIsGarbageCollecting = false;
 	// 解锁gc锁
 	ReleaseGCLock();
+	// 如果没有处于增量可达性分析中
 	if (!GIsIncrementalReachabilityPending)
 	{
 		if (bPerformFullPurge || !GIncrementalBeginDestroyEnabled)
@@ -717,9 +718,9 @@ void PostCollectGarbageImpl(EObjectFlags KeepFlags)
 			UnhashUnreachableObjects(false);
 		}
 		GObjPurgeIsRequired = true;
+		// 全量的清除，才会执行清除垃圾，从内存中移除掉
 		if (bPerformFullPurge)
 		{
-			// 清除垃圾，从内存中移除掉
 			IncrementalPurgeGarbage(false);
 		}
 		if (bPerformFullPurge)
