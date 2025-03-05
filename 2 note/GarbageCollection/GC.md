@@ -468,7 +468,7 @@ void VisitMembers(DispatcherType& Dispatcher, FSchemaView Schema, ObjectType* In
 	{
 	case EMemberType::Reference:				Dispatcher.HandleKillableReference(*(UObject**)MemberPtr, FMemberId(DebugIdx), Origin);
 	break;
-	// 这个ARO
+	// 这个ARO，主要是对象重写了AddRenferenceObjects方法，就会走这个部分
 	case EMemberType::MemberARO:				CallARO(Dispatcher, MemberPtr, *++WordIt);
 	break;
 }
