@@ -592,6 +592,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 template<class DispatcherType>
 void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 {
+	// 这边就是执行ObjectARO函数指针
 	Word.ObjectARO(Instance, Dispatcher.Collector);
 }
 ```
