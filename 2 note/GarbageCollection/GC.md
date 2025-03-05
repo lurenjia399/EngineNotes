@@ -208,7 +208,7 @@ void PreCollectGarbageImpl(EObjectFlags KeepFlags)
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 {
-	// 如果没有暂停，就把Iteration计数归0，这个计数应该就代表一次完整的可达性分析执行了几趟。如果一趟可达性分析执行完了，那么下一趟他又会重置成0，如果没执行完下一趟就又会继续+1了。
+	// 如果没有暂停，就把Iteration计数归0，这个计数应该就代表一次完整的可达性分析执行了几趟收集垃圾的接口。如果一趟可达性分析执行完了，那么下一趟他又会重置成0，如果没执行完下一趟就又会继续+1了。
 	if (!bIsSuspended)
 	{
 		NumIterations = 0;
@@ -945,7 +945,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 全量gc的含义，就是走可达性分析流程，没有时间限制的处理所有Object，然后收集不可达Object，进而遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉，这是一帧执行的步骤。
 - 如何追踪指针引用关系改变的
 - ARO是什么，哪里会使用呢？
-ARO函数有两种，第一种是FGCObject的纯虚函数AddReferencedObjects，继承自GCObject的就必须要重写。第二种是继承UObject类型的静态AddReferencedObjects方法。第一种ARO是在可达性分析的开始会遍历继承自GCObject，然后执行器ARO方法，将引用的Object都纳入可达性分析的流程里。
+ARO函数有两种，第一种是FGCObject的纯虚函数AddReferencedObjects，继承自GCObject的就必须要重写。第二种是继承UObject类型的静态AddReferencedObjects方法。第一种ARO是在可达性分析的开始会遍历继承自GCObject，然后执行其ARO方法，将引用的Object都纳入可达性分析的流程里。第二种ARO是再创建Schema的时候，如果重写了静态ARO方法，就会将ARO函数指针填充到Schema中，再查看UObject的引用遍历schema的shi'ho
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
