@@ -944,8 +944,8 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 增量清除，就是有时间限制的清除。会收集不可达Object（收集这个阶段默认不能增量，但是可以通过配置改变），然后遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉。
 全量gc的含义，就是走可达性分析流程，没有时间限制的处理所有Object，然后收集不可达Object，进而遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉，这是一帧执行的步骤。
 - 如何追踪指针引用关系改变的
-- ARO类型的属性，是什么原理？
-再我们创建schema结构中，第一个member就是ARO函数指针。ARO函数有两种，第一种
+- ARO是什么，哪里会使用呢？
+ARO函数有两种，第一种是FGCObject的纯虚函数AddReferencedObjects，继承自GCObject的就必须要重写。第二种是继承UObject类型的静态AddReferencedObjects方法。
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
