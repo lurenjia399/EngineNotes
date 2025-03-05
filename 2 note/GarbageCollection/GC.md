@@ -592,7 +592,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 template<class DispatcherType>
 void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 {
-	// 这边就是执行ObjectARO函数指针，这个函数指针是将ARO添加到Schema中时赋值的，fu'dezhi
+	// 这边就是执行ObjectARO函数指针，这个函数指针是将ARO添加到Schema中时赋值的，赋的值就是UObject中的静态ARO函数的地址。
 	Word.ObjectARO(Instance, Dispatcher.Collector);
 }
 ```
