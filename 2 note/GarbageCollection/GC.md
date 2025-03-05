@@ -587,7 +587,8 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 
 ```cpp
 // Dispatcher参数的类型就是TBatchDispatcher
-// Instance
+// Instance 就是我们手中的Object
+// Word 就是遍历手中Object的schema中的member
 template<class DispatcherType>
 void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 {
