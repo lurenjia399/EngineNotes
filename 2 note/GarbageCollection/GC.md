@@ -669,7 +669,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 {
 	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的在后
 	Algo::SortBy(Members, &FMemberDeclaration::Offset);
-	// 然后还把ARO(AddReferenceObject函数指针)指向的添加刀members中，类型就是ARO
+	// 然后还把ARO(AddReferencedObject函数指针)指向的添加刀members中，类型就是ARO
 	Members.Add(GenerateTerminator(ARO));
 	// 分配内存，存放Members中的数据
 	FMemberWord* FirstWord = (FMemberWord*)(Header + 1);
@@ -945,7 +945,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 全量gc的含义，就是走可达性分析流程，没有时间限制的处理所有Object，然后收集不可达Object，进而遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉，这是一帧执行的步骤。
 - 如何追踪指针引用关系改变的
 - ARO类型的属性，是什么原理？
-
+再我们创建schema结构中，第一个member就是ARO函数指针，ARO函数就是我们UObject对象重写的静态AddRenferencedObjects方法
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
 - LinkerLoad是每个UObject都有啊
