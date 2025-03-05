@@ -208,7 +208,7 @@ void PreCollectGarbageImpl(EObjectFlags KeepFlags)
 }
 void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 {
-	// 如果没有暂停，就把Iteration计数归0，这个计数应该就代表可达性分析的次数，执行一趟可达性分析他就+1
+	// 如果没有暂停，就把Iteration计数归0，这个计数应该就代表一次完整的可达性分析执行了几趟。如果一趟可达性分析执行完了，那么下一趟他又会重置成0，如果没执行完下一趟就又会继续+1了。
 	if (!bIsSuspended)
 	{
 		NumIterations = 0;
