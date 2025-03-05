@@ -583,7 +583,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 ```
 3 最终标记流程结束，从根Object开始，获取根Object得UClass，Outer，引用，将其添加到UnvalidatedReferences数组中，如果UnvalidatedReferences数组满了，会将数组中满足条件（不在永久对象池和在内存中）的Object添加到ValidatedReferences数组中，ValidatedReferences数组满了就遍历数组内容，将其可能不可达标记去掉，并添加可达标记，并添加到ObjectsToSerialize数组中。
 最终标记流程结束，遍历到得Object会被标记为可达的，没遍历到的Object是可能不可达的。
-## 2.2 标记Object，HandleKillableReference
+## 2.2 标记Object，CallARO
 
 ```cpp
 // Dispatcher参数的类型就是TBatchDispatcher
@@ -594,6 +594,13 @@ void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 {
 	// 这边就是执行ObjectARO函数指针，这个函数指针是将ARO添加到Schema中时赋值的，赋的值就是UObject中的静态ARO函数的地址。
 	Word.ObjectARO(Instance, Dispatcher.Collector);
+}
+
+template <EGCOptions Options>
+void TReachabilityCollector<Options>::HandleObjectReference(UObject*& Object, const UObject* ReferencingObject, const FProperty* ReferencingProperty)
+{
+	CheckReference(Object, ReferencingObject, ReferencingProperty);
+	Dispatcher.HandleReferenceDirectly(ReferencingObject, Object, EMemberlessId::Collector, MayKill());
 }
 ```
 
