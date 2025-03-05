@@ -680,7 +680,7 @@ void UClass::AssembleReferenceTokenStreamInternal(bool bForce)
 ```cpp
 void FObjectProperty::EmitReferenceInfo(...)
 {
-	// ArrayDim看上去是原生数组的形式，可能是 UObject* Test[4]，这样的属性ArrayDim就为4？可能是这样吧
+	// ArrayDim看上去是原生数组的形式，可能是 UObject* Test[4]，这样的属性ArrayDim就为4？可能是这样吧。常规的UObject*类型就是Reference。
 	for (int32 Idx = 0, Num = ArrayDim; Idx < Num; ++Idx)
 	{
 		Schema.Add(UE::GC::DeclareMember(DebugPath, BaseOffset + GetOffset_ForGC() + Idx * sizeof(FObjectPtr), UE::GC::EMemberType::Reference));
@@ -694,7 +694,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 {
 	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的在后
 	Algo::SortBy(Members, &FMemberDeclaration::Offset);
-	// 然后还把ARO(AddReferenceObject函数指针)指向的添加进来
+	// 然后还把ARO(AddReferenceObject函数指针)指向的添加刀members中，类型就是ARO
 	Members.Add(GenerateTerminator(ARO));
 	// 分配内存，存放Members中的数据
 	FMemberWord* FirstWord = (FMemberWord*)(Header + 1);
