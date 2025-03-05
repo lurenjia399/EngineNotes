@@ -943,6 +943,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 在没有人为干预的情况下，每隔60s会进行一次增量的可达性分析流程。增量可达性分析，就是有时间限制的全量可达性分析。如果超时了就证明了没有分析完，就暂停分析等待下一帧继续分析，如果没有超时就证明分析完了，然后就会收集不可达Object，等待下一帧的增量清除。
 增量清除，就是有时间限制的清除。会收集不可达Object（收集这个阶段默认不能增量，但是可以通过配置改变），然后遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉。
 全量gc的含义，就是走可达性分析流程，没有时间限制的处理所有Object，然后收集不可达Object，进而遍历执行BeginDestory，执行FinishDestory，然后再内存中清掉，这是一帧执行的步骤。
+- 如何追踪指针引用关系改变的
 
 - gc多线程是怎么使用的
 - FUObjectHashTables这个hash桶是干嘛的
