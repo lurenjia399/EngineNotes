@@ -821,7 +821,7 @@ void UObject::BeginDestroy()
 2 最终调用了BeginDestroy的方法，目的就是再全局hash表中移除自己的信息。如果参数bUseTimeLimit是false，代表了没有时间限制，也就是肯定能将GUnreachableObjects数组中的不可达Object全部处理完，此时不可达索引GUnrechableObjectIndex就等于GUnreachableObjects数组的长度。但如果有了时间限制，就有可能时间到了导致没处理完，此时不可达索引GUnrechableObjectIndex就会小于GUnreachableObjects数组的长度，并且索引还标识了处理到哪个Object了。
 ## 7 增量清除垃圾
 ```cpp
-// 每帧有可能会走增量清除垃圾，全量的可达性分析流程也会走增量清除垃圾。清除垃圾清除
+// 每帧有可能会走增量清除垃圾，全量的可达性分析流程也会走增量清除垃圾。
 void IncrementalPurgeGarbage(bool bUseTimeLimit, double TimeLimit)
 {
 	// 如果移除hash引用，还没有处理完，就接着上次的在处理一次
@@ -927,6 +927,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 }
 ```
 3 主要是对垃圾的处理，再对不可达Object的hash引用清除后，就需要销毁调Object了。依然是遍历不可达数组，对其中Object执行FinishDestory方法，这个方法是清除Object中的属性，将属性的内存清掉，最后通过GAsyncPurge来清除调Object自己的内存。
+1 增量清除垃圾，主要就是将不可达Object收集起来，然后执行BeginDestory和FinishDestory方法，然后通过GAsyncPurge来清除调Object自己的内存
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
