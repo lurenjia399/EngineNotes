@@ -585,6 +585,14 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 最终标记流程结束，遍历到得Object会被标记为可达的，没遍历到的Object是可能不可达的。
 ## 2.2 标记Object，HandleKillableReference
 
+```cpp
+template<class DispatcherType>
+void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
+{
+	Word.ObjectARO(Instance, Dispatcher.Collector);
+}
+```
+
 # 5 引用关系的信息收集
 ```cpp
 // 这个方法是在UClass创建的过程中执行的
