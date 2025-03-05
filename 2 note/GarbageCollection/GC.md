@@ -592,7 +592,7 @@ FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutable
 template<class DispatcherType>
 void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 {
-	// 这边就是执行ObjectARO函数指针
+	// 这边就是执行ObjectARO函数指针，这个函数指针是将ARO添加到Schema中时赋值的，fu'dezhi
 	Word.ObjectARO(Instance, Dispatcher.Collector);
 }
 ```
@@ -683,7 +683,7 @@ FSchemaView FSchemaBuilder::Build(ObjectAROFn ARO)
 {
 	// 首先将Schema中的数据根据偏移的大小排序，小的在前，大的在后
 	Algo::SortBy(Members, &FMemberDeclaration::Offset);
-	// 然后还把ARO(AddReferencedObject函数指针)指向的添加刀members中，类型就是ARO
+	// 然后还把ARO这个函数指针指向的添加到members中
 	Members.Add(GenerateTerminator(ARO));
 	// 分配内存，存放Members中的数据
 	FMemberWord* FirstWord = (FMemberWord*)(Header + 1);
