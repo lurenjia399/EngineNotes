@@ -965,7 +965,8 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 在没有人为干预的情况下，每隔60s会进行一次gc流程。
 	1 如果开启了增量可达性分析，那么第一次tick的gc流程和全量一样但不是全量，只是会有0.002s的时间限制，如果超时了就暂停可达性分析。进入清除阶段后，因为可达性分析没有完成，就不进行清除只释放hashtable锁和gc锁。如果可达性分析完成了，因为不是全量清除，后续就会执行增量的垃圾清除PostCollectGarbageImpl<false>，这里就是收集不可达Object，释放hashtable锁和gc锁。下下一次的tick就会执行有时间限制的增量的垃圾清除，会将不可达Object执行BeginDestroy，FinishDestroy，最后在内存中清掉。
 	2 每帧tick会执行的就是有时间限制的增量清除，会收集不可达Object，执行BeginDestory，执行FinishDestory，然后再内存中清掉。
-增量可达性分析，就是有时间限制的全量可达性分析。如果超时了就证明l
+增量可达性分析，就是有时间限制的全量可达性分析。如果超时了就证明了没有分析完，就暂停分析等待下一帧继续分析，如果没有超时就证明分析完了，然后就会收集不可达Object，等待下一帧的增量清除。
+增量清除，就是有时间限制的清除。会收集不可达Object，然后
 
 
 - gc多线程是怎么使用的
