@@ -607,10 +607,32 @@ void TReachabilityCollector<Options>::HandleObjectReference(UObject*& Object, co
 	Dispatcher.HandleReferenceDirectly(ReferencingObject, Object, EMemberlessId::Collector, MayKill());
 }
 void HandleReferenceDirectly(const UObject* ReferencingObject, UObject*& Object, FMemberId MemberId, EKillable Killable)
+{
+	ProcessorType::ProcessReferenceDirectly(Context, PermanentPool, ReferencingObject, Object, MemberId, Killable);
+	Context.Stats.AddReferences(1);
+}
+
+static void ProcessReferenceDirectly(FWorkerContext& Context, FPermanentObjectPoolExtents PermanentPool, const UObject* ReferencingObject, UObject*& Object, FMemberId MemberId)
+{
+	UE::GC::GDetailedStats.IncreaseObjectRefStats(Object);
+	if (ValidateReference(Object, PermanentPool, FReferenceToken(ReferencingObject), MemberId))
 	{
-		ProcessorType::ProcessReferenceDirectly(Context, PermanentPool, ReferencingObject, Object, MemberId, Killable);
-		Context.Stats.AddReferences(1);
+		const int32 ObjectIndex = GUObjectArray.ObjectToIndex(Object);
+		FImmutableReference Reference = {Object};	
+		FReferenceMetadata Metadata(ObjectIndex);
+		bool bKillable = Killable == EKillable::Yes;
+		if (Metadata.Has(KillFlag) & bKillable) //-V792
+		{
+			check(ReferencingObject || IsEliminatingGarbage());
+			checkSlow(Metadata.ObjectItem->GetOwnerIndex() <= 0);
+			KillReference(Object);
+			return;
+		}
+		
+		DetectGarbageReference(Context, Metadata);
+		HandleValidReference(Context, Reference, Metadata);
 	}
+}
 ```
 
 # 5 引用关系的信息收集
