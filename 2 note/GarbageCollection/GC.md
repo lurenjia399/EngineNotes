@@ -614,7 +614,6 @@ void HandleReferenceDirectly(const UObject* ReferencingObject, UObject*& Object,
 
 static void ProcessReferenceDirectly(FWorkerContext& Context, FPermanentObjectPoolExtents PermanentPool, const UObject* ReferencingObject, UObject*& Object, FMemberId MemberId)
 {
-	UE::GC::GDetailedStats.IncreaseObjectRefStats(Object);
 	if (ValidateReference(Object, PermanentPool, FReferenceToken(ReferencingObject), MemberId))
 	{
 		const int32 ObjectIndex = GUObjectArray.ObjectToIndex(Object);
@@ -630,10 +629,12 @@ static void ProcessReferenceDirectly(FWorkerContext& Context, FPermanentObjectPo
 		}
 		
 		DetectGarbageReference(Context, Metadata);
+		// 最终依然是执行HandleValidReference这个方法来标记其可达
 		HandleValidReference(Context, Reference, Metadata);
 	}
 }
 ```
+这个部分就是Schema中的AROmember，就是标记ARO函数中的引用对象，如果不在永久内存池并且已经解析完成了就标记为可达。
 
 # 5 引用关系的信息收集
 ```cpp
