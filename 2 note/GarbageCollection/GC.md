@@ -595,6 +595,12 @@ void CallARO(DispatcherType& Dispatcher, UObject* Instance, FMemberWord Word)
 	// 这边就是执行ObjectARO函数指针，这个函数指针是将ARO添加到Schema中时赋值的，赋的值就是UObject中的静态ARO函数的地址。
 	Word.ObjectARO(Instance, Dispatcher.Collector);
 }
+// 这里我们就拿World的ARO举例
+void UWorld::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	Collector.AddReferencedObject( This->CurrentLevel, This );
+	Collector.AddReferencedObject( This->NetDriver, This );
+}
 
 template <EGCOptions Options>
 void TReachabilityCollector<Options>::HandleObjectReference(UObject*& Object, const UObject* ReferencingObject, const FProperty* ReferencingProperty)
