@@ -602,12 +602,15 @@ void UWorld::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collecto
 	Collector.AddReferencedObject( This->NetDriver, This );
 }
 
-template <EGCOptions Options>
 void TReachabilityCollector<Options>::HandleObjectReference(UObject*& Object, const UObject* ReferencingObject, const FProperty* ReferencingProperty)
 {
-	CheckReference(Object, ReferencingObject, ReferencingProperty);
 	Dispatcher.HandleReferenceDirectly(ReferencingObject, Object, EMemberlessId::Collector, MayKill());
 }
+void HandleReferenceDirectly(const UObject* ReferencingObject, UObject*& Object, FMemberId MemberId, EKillable Killable)
+	{
+		ProcessorType::ProcessReferenceDirectly(Context, PermanentPool, ReferencingObject, Object, MemberId, Killable);
+		Context.Stats.AddReferences(1);
+	}
 ```
 
 # 5 引用关系的信息收集
