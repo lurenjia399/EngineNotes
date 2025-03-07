@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/GarbageCollection/GC.md",
+                "file": "2 note/Lua/lua.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GC"
+              "title": "lua"
             }
           },
           {
@@ -180,8 +180,8 @@
   },
   "active": "3f043423e596d462",
   "lastOpenFiles": [
-    "1 索引/索引.md",
     "2 note/GarbageCollection/GC.md",
+    "1 索引/索引.md",
     "2 note/Lua/lua.md",
     "2 note/UObject/UObject，UPackage.md",
     "2 note/UClass/UClass.md",
