@@ -620,10 +620,9 @@ static void ProcessReferenceDirectly(FWorkerContext& Context, FPermanentObjectPo
 		FImmutableReference Reference = {Object};	
 		FReferenceMetadata Metadata(ObjectIndex);
 		bool bKillable = Killable == EKillable::Yes;
+		// 这里如果是垃圾，就直接置空了
 		if (Metadata.Has(KillFlag) & bKillable) //-V792
 		{
-			check(ReferencingObject || IsEliminatingGarbage());
-			checkSlow(Metadata.ObjectItem->GetOwnerIndex() <= 0);
 			KillReference(Object);
 			return;
 		}
