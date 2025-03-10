@@ -997,7 +997,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - 增量标记可以分帧来做么？
 ue5提供了标志位，可以增量可达性分析。增连可达性分析就是有时间限制的可达性分析，如果超时了就暂停，等待下一帧在进行可达性分析，下一帧进行的不会执行Start可达性分析，也就是不会swap和构建开始的遍历数组，而是从上一帧未遍历完的数组继续遍历。
 
-- 如果是增量标记，第一帧jia，第二帧改变了
+- 如果是增量标记，第一帧将ObjectA标记成了可能不可达，第二帧ObjectA改变成可达的了，这是ObjectA的标记还会改变么？那如果第一帧是可达的，第二帧变成可能不可达了，标记会改变么？
 - 如何追踪指针引用关系改变的
 - ARO是什么，哪里会使用呢？
 ARO函数有两种，第一种是FGCObject的纯虚函数AddReferencedObjects，继承自GCObject的就必须要重写。第二种是继承UObject类型的静态AddReferencedObjects方法。第一种ARO是在可达性分析的开始会遍历继承自GCObject，然后执行其ARO方法，将引用的Object都纳入可达性分析的流程里。第二种ARO是再创建Schema的时候，如果重写了静态ARO方法，就会将ARO函数指针填充到Schema的Member中，再查看UObject的引用遍历schema的Member时候，会首先执行ARO方法，将ARO方法中引用的Object标记为可达。
