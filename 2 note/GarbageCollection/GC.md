@@ -1030,5 +1030,6 @@ bool IsPendingKillPending() const
 - 如何让一个UObject不被gc回收
 - 如何加速gc流程
 - 标记阶段完成后，游戏中所有的Object有几种标记状态？
+- Stats.bFoundGarbageRef这个标志位作用
 
 
