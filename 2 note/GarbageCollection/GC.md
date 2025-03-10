@@ -309,6 +309,7 @@ FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, cons
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
 {
+	// Private::GReachableObjects 这个数组只有在增量可达性分析中才会用到。在增量可达行分析过程中，如果通过SetRootFlags标记未可达，就会添加到这个数组里。
 	if (!Private::GReachableObjects.IsEmpty())
 	{
 		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
