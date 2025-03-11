@@ -1011,7 +1011,7 @@ ARO函数有两种，第一种是FGCObject的纯虚函数AddReferencedObjects，
 - FUObjectHashTables这个hash桶是干嘛的
 看上去就是把Object的名称hash了一下，为了寻找Object的时候更快速吧，是在UObjectBase的构造函数中hash的。
 - LinkerLoad是每个UObject都有啊
-
+LinkerLoad是在UPackage中，UPackage试继承自UObject的。应该是那种资源才会有LinkerLoad，我们用代码NewObject创建出的Object不会有LinkerLoad。LinkerLoad的作用就是将
 - pendingkill标记在gc过程中什么时候会处理，DestroyActor会执行啥呢？
 ``` cpp
 // 拿World举例，标记为PendingKill就是将Object标记成垃圾RF_MirroredGarbage
