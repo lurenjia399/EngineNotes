@@ -17,11 +17,15 @@ UObjectBase::UObjectBase(...)
 }
 void UObjectBase::AddObject(...)
 {
+	// Objet的名称
+	NamePrivate = InName;
 	// 将Object放到了GUObject数组里面
 	GUObjectArray.AllocateUObjectIndex(this, InternalFlagsToSet, InInternalIndex, InSerialNumber);
+	// 将名称hash一下存起来，后边找的时候就通过hash来找
+	HashObject(this);
 }
 ```
-最终会将我们的Object组装成FUObjectItem结构，放入到GUObjectArray数组中。
+我们在创建UObject的时候，会走到UObjectBase的构造函数中，里面最终会将我们的Object组装成FUObjectItem结构，放入到GUObjectArray数组中。
 ```cpp
 struct FUObjectItem
 {
