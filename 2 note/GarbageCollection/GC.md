@@ -313,11 +313,10 @@ FORCENOINLINE void MarkRootObjectsAsReachable(const EGatherOptions Options, cons
 ```cpp
 void PerformReachabilityAnalysisPass(const EGCOptions Options)
 {
-	// Private::GReachableObjects 这个数组只有在增量可达性分析中才会用到。在增量可达行分析过程中，如果通过SetRootFlags标记未可达，就会添加到这个数组里。
+	// Private::GReachableObjects 这个数组只有在增量可达性分析中才会用到。在增量可达行分析过程中，如果通过SetRootFlags标记可达，就会添加到这个数组里。
 	if (!Private::GReachableObjects.IsEmpty())
 	{
 		Private::GReachableObjects.PopAllAndEmpty(InitialObjects);
-		ConditionallyAddBarrierReferencesToHistory(*Context);
 	}
 	// 第一次进行可达性分析，这里需要处理FGCObject::GGCObjectReferencer中的对象，也就是继承自GCObject的Object。
 	else if (GReachabilityState.GetNumIterations() == 0 || (Stats.bFoundGarbageRef && !GReachabilityState.IsSuspended()))
@@ -1017,7 +1016,7 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 - 增量标记可以分帧来做么？
 ue5提供了标志位，可以增量可达性分析。增连可达性分析就是有时间限制的可达性分析，如果超时了就暂停，等待下一帧在进行可达性分析，下一帧进行的不会执行Start可达性分析，也就是不会swap和构建开始的遍历数组，而是从上一帧未遍历完的数组继续遍历。
 - 如果是增量标记，第一帧将ObjectA是可能不可达，第二帧ObjectA改变成可达的了，这是ObjectA的标记还会改变么？
-第一帧ObjectA是可能不可达的，说明第一帧没有遍历到ObjectA，第二帧变成可达了，说明第二帧遍历到了，这非常正确，因为遍历到了所以标为可达。还有一种情况是第二帧变成可达，是因为AddToRoot方法，添加到根Object数组中了，
+第一帧ObjectA是可能不可达的，说明第一帧没有遍历到ObjectA，第二帧变成可达了，说明第二帧遍历到了，这非常正确，因为遍历到了所以标为可达。还有一种情况是第二帧变成可达，是因为AddToRoot方法，添加到根Object数组中了，这会在每次可达性分析的开始就将其添加到考虑数组中。
 - 如果是增量标记，第一帧将ObjectA标记成可达的，第二帧变成可能不可达了，标记会改变么？
 第一帧是可达的，那说明第一帧遍历到了ObjectA。第二帧变成不可达了，说明是用户标记成pendingkill了。增量可达性是在遍历的过程中来判断pendingkill，那就说明在这次增量可达性没结束之前，ObjectA都是可达的。
 - 如何追踪指针引用关系改变的
