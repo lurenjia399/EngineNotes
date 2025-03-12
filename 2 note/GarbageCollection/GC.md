@@ -568,12 +568,13 @@ void DrainValidated(const uint32 Num)
 FORCEINLINE static void HandleBatchedReference(FWorkerContext& Context, FResolvedMutableReference Reference, FReferenceMetadata Metadata)
 {
 	UE::GC::GDetailedStats.IncreaseObjectRefStats(GetObject(Reference));
-	// 如果遍历到的Object是垃圾，也就是pending'kill
+	// 如果遍历到的Object是垃圾，也就是pendingkill。
 	if (Metadata.Has(KillFlag))
 	{
-		checkSlow(Metadata.ObjectItem->GetOwnerIndex() <= 0);
+		// 清掉引用，也就是将指针置空
 		KillReference(*Reference.Mutable);
 	}
+	// 如果遍历到的Object没有标记为pendingkill，继续往下处理。
 	else
 	{
 		HandleValidReference(Context, Reference, Metadata);
