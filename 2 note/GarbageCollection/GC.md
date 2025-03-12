@@ -495,7 +495,7 @@ constexpr FORCEINLINE EKillable MayKill(EOrigin Origin, bool bAllowKill)
 
 void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMemberId MemberId, EKillable Killable)
 {
-	// 这里走的Yes分支，可以
+	// 这里走的Yes分支
 	if (Killable == EKillable::Yes)
 	{
 		FPlatformMisc::Prefetch(&Object);
@@ -565,11 +565,19 @@ void DrainValidated(const uint32 Num)
 	ValidatedReferences.Num = 0;
 }
 
-static void HandleBatchedReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
+FORCEINLINE static void HandleBatchedReference(FWorkerContext& Context, FResolvedMutableReference Reference, FReferenceMetadata Metadata)
 {
-	// 记录是否引用垃圾了，如果不是清除垃圾阶段 && Object是垃圾 就说明引用垃圾了
-	DetectGarbageReference(Context, Metadata);
-	HandleValidReference(Context, Reference, Metadata);
+	UE::GC::GDetailedStats.IncreaseObjectRefStats(GetObject(Reference));
+	// 如果遍历到的Object是垃圾，也就是pending'kill
+	if (Metadata.Has(KillFlag))
+	{
+		checkSlow(Metadata.ObjectItem->GetOwnerIndex() <= 0);
+		KillReference(*Reference.Mutable);
+	}
+	else
+	{
+		HandleValidReference(Context, Reference, Metadata);
+	}
 }
 
 FORCEINLINE static bool HandleValidReference(FWorkerContext& Context, FImmutableReference Reference, FReferenceMetadata Metadata)
