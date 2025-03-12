@@ -1047,6 +1047,5 @@ bool IsPendingKillPending() const
 - 如何加速gc流程
 
 - Stats.bFoundGarbageRef这个标志位作用
-- gc加了哪些锁呢
 
 
