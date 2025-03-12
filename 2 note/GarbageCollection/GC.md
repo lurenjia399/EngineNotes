@@ -234,7 +234,7 @@ void FReachabilityAnalysisState::PerformReachabilityAnalysis()
 
 void CollectGarbageImpl(EObjectFlags KeepFlags)
 {
-	// Options里应该就包括一个多线程gc的标志位EGCOptions::Parallel
+	// Options里多线成的标志位EGCOptions::Parallel和EGCOptions::EliminateGarbage标志位
 	const EGCOptions Options = GetReferenceCollectorOptions(bPerformFullPurge);
 	FRealtimeGC GC;
 	// 具体执行可达性分析
