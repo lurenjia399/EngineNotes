@@ -1053,7 +1053,7 @@ bool IsPendingKillPending() const
 	return bActorIsBeingDestroyed || !IsValidChecked(this);
 }
 ```
-看上去pendingkill就是一个标志，直接可以给Object添加RF_MirroredGarbage标志，然后再可达性分析里面，就可以直接知道引用垃圾了，直接可能不可达？
+看上去pendingkill就是一个标志，直接可以给Object添加RF_MirroredGarbage标志，然后在可达性分析中遍历到的话，就直接将Object指针置空，不会对Object标记为可达。因为没有在可达性分析中标记为可达，就会在清除阶段标记成不可达的，然后就会自动清除啦。
 - 如何让一个裸UObject不被gc回收
 1 通过UObject的AddToRoot这个方法，添加到根Object数组中。
 2 继承FGCObject，重写ARO方法（AddReferenceObject）
