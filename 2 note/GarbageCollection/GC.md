@@ -485,9 +485,9 @@ void VisitMembers(DispatcherType& Dispatcher, FSchemaView Schema, ObjectType* In
 // TBatchDispatcher 类中的方法
 void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origin)
 {
-	QueueReference(Context.GetReferencingObject(), Object, MemberId, ProcessorType::MayKill(Origin, true));
+	QueueReference(Context.GetReferencingObject(), Object, MemberId, 	ProcessorType::MayKill(Origin, true));
 }
-// 注意这个MayKill的判断，第二个参数是true，第一个参数是5（1 + 4）是
+// 注意这个MayKill的判断，第二个参数是true，第一个参数是5（1 + 4）是EGCOptions::Parallel和EGCOptions::EliminateGarbage。所以这里返回的是Yes。
 constexpr FORCEINLINE EKillable MayKill(EOrigin Origin, bool bAllowKill)
 {
 	return (bAllowKill & (IsEliminatingGarbage(Options) || Origin == EOrigin::Blueprint)) ? EKillable::Yes : EKillable::No;
@@ -495,7 +495,7 @@ constexpr FORCEINLINE EKillable MayKill(EOrigin Origin, bool bAllowKill)
 
 void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMemberId MemberId, EKillable Killable)
 {
-	// 蓝图类型为EKillable::Yes，其他类型为EKillable::No
+	// 这里走的Yes分支，可以
 	if (Killable == EKillable::Yes)
 	{
 		FPlatformMisc::Prefetch(&Object);
