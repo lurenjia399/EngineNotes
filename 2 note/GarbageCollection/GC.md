@@ -1043,7 +1043,7 @@ bool IsPendingKillPending() const
 1 通过UObject的AddToRoot这个方法，添加到根Object数组中。
 2 继承FGCObject，重写ARO方法（AddReferenceObject）
 3 UPROPERTY标记的成员变量Object
-4 TStrongObjectPtr 强引用，也不会回收掉
+4 TStrongObjectPtr 强引用，也不会回收掉。这个强引用内部也是继承GCObject，重写ARO方法。
 - 如何加速gc流程
 - 标记阶段完成后，游戏中所有的Object有几种标记状态？
 - Stats.bFoundGarbageRef这个标志位作用
