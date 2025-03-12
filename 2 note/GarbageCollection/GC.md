@@ -1040,7 +1040,9 @@ bool IsPendingKillPending() const
 ```
 看上去pendingkill就是一个标志，直接可以给Object添加RF_MirroredGarbage标志，然后再可达性分析里面，就可以直接知道引用垃圾了，直接可能不可达？
 - 如何让一个UObject不被gc回收
-1 通过UObject的AddToRoot这个方法，添加到根Object数组中
+1 通过UObject的AddToRoot这个方法，添加到根Object数组中。
+2 继承FGCObject，重写ARO方法（AddReferenceObject）
+3 
 - 如何加速gc流程
 - 标记阶段完成后，游戏中所有的Object有几种标记状态？
 - Stats.bFoundGarbageRef这个标志位作用
