@@ -1046,7 +1046,6 @@ bool IsPendingKillPending() const
 4 TStrongObjectPtr 强引用，也不会回收掉。这个强引用内部也是继承GCObject，重写ARO方法。
 - 如何加速gc流程
 
-- 标记阶段完成后，游戏中所有的Object有几种标记状态？
 - Stats.bFoundGarbageRef这个标志位作用
 - gc加了哪些锁呢
 
