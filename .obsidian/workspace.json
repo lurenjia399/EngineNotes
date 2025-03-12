@@ -49,7 +49,8 @@
               "title": "UObject，UPackage"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -192,10 +193,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "3f043423e596d462",
+  "active": "adc95cc80c88db6d",
   "lastOpenFiles": [
-    "2 note/UObject/UObject，UPackage.md",
     "2 note/GarbageCollection/GC.md",
+    "2 note/UObject/UObject，UPackage.md",
     "1 索引/索引.md",
     "2 note/Lua/lua.md",
     "2 note/UClass/UClass.md",
