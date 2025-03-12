@@ -487,6 +487,12 @@ void HandleKillableReference(UObject*& Object, FMemberId MemberId, EOrigin Origi
 {
 	QueueReference(Context.GetReferencingObject(), Object, MemberId, ProcessorType::MayKill(Origin, true));
 }
+// 注意这个MayKill的判断，第二个参数是true，第一个参数是5（1 + 4）是
+constexpr FORCEINLINE EKillable MayKill(EOrigin Origin, bool bAllowKill)
+{
+	return (bAllowKill & (IsEliminatingGarbage(Options) || Origin == EOrigin::Blueprint)) ? EKillable::Yes : EKillable::No;
+}
+
 void QueueReference(const UObject* ReferencingObject,  UObject*& Object, FMemberId MemberId, EKillable Killable)
 {
 	// 蓝图类型为EKillable::Yes，其他类型为EKillable::No
