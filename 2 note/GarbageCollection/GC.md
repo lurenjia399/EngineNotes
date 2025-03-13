@@ -1061,6 +1061,8 @@ bool IsPendingKillPending() const
 3 UPROPERTY标记的成员变量Object
 4 TStrongObjectPtr 强引用，也不会回收掉。这个强引用内部也是继承GCObject，重写ARO方法。
 - 如何加速gc流程
+1 减少Object的数量，标记流程总归是要遍历所有的Object的，Object数量少自然速度快
+2 
 
 
 
