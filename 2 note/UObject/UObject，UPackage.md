@@ -231,6 +231,7 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 	{
 		// 通过package获取hash
 		int32 Hash = GetObjectOuterHash(ObjectName, (PTRINT)ObjectPackage);
+		// 这里给HashTable上锁了，所以是线程安全的
 		FHashTableLock HashLock(ThreadHash);
 		// 遍历
 		for (TMultiMap<int32, uint32>::TConstKeyIterator HashIt(ThreadHash.HashOuter, Hash); HashIt; ++HashIt)
@@ -267,7 +268,7 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 	}
 }
 ```
-
+这个几个接口最终执行都是这个StaticFindObjectFastInternalThreadSafe方法，只是有些条件判断吧，分成了这些接口
 # 3 TStrongObjectPtr，TWeakObjectPtr，TSoftClassPtr
 
 
