@@ -226,45 +226,37 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 ``` cpp
 UObject* StaticFindObjectFastInternalThreadSafe(...)
 {
-	// 有package就在package里找
+	// 一般都是由packet的，如果调用时没提供package，就会自己找package
 	if (ObjectPackage != nullptr)
 	{
-		
+		// 通过
+		int32 Hash = GetObjectOuterHash(ObjectName, (PTRINT)ObjectPackage);
+		FHashTableLock HashLock(ThreadHash);
+		for (TMultiMap<int32, uint32>::TConstKeyIterator HashIt(ThreadHash.HashOuter, Hash); HashIt; ++HashIt)
+		{
+			uint32 InternalIndex = HashIt.Value();
+			UObject* Object = static_cast<UObject*>(GUObjectArray.IndexToObject(InternalIndex)->Object);
+			if
+				((Object->GetFName() == ObjectName)
+				&& !Object->HasAnyFlags(ExcludeFlags)
+				&& Object->GetOuter() == ObjectPackage
+				&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
+				&& !Object->HasAnyInternalFlags(ExclusiveInternalFlags))
+			{
+				checkf(!Object->IsUnreachable(), TEXT("%s"), *Object->GetFullName());
+				if (Result)
+				{
+				}
+				else
+				{
+					Result = Object;
+				}
+			}
+		}
 	}
 	// 没有package的情况下
 	else
 	{
-		// 首先在HashTable中根据ObjectName找到HashBucket
-		FObjectSearchPath SearchPath(ObjectName);
-		const int32 Hash = GetObjectHash(SearchPath.Inner);
-		FHashTableLock HashLock(ThreadHash);
-		FHashBucket* Bucket = ThreadHash.Hash.Find(Hash);
-		// 遍历HashBucket
-		if (Bucket)
-		{
-			for (FHashBucketIterator It(*Bucket); It; ++It)
-			{
-				UObject* Object = (UObject*)*It;
-				if
-					// 桶内的Object名称得和ObjectName一致
-					((Object->GetFName() == SearchPath.Inner)
-					// 过滤条件，需要不带有ExcludeFlags标志位的Object
-					&& !Object->HasAnyFlags(ExcludeFlags)
-					&& (bAnyPackage || !Object->GetOuter())
-					&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
-					&& !Object->HasAnyInternalFlags(ExclusiveInternalFlags)
-					&& SearchPath.MatchOuterNames(Object->GetOuter()))
-				{
-					if (Result)
-					{
-					}
-					else
-					{
-						Result = Object;
-					}
-				}
-			}
-		}
 	}
 }
 ```
