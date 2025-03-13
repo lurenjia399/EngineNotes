@@ -223,6 +223,14 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 4.2 第二部分，加载ExportMap中的Object，根据outer，ucalss, name来创建出来。
 # 2 FindObject，FindObjectFast，FindObjectChecked，FindObjectSafe
 
+``` cpp
+template< class T > 
+inline T* FindObject( UObject* Outer, const TCHAR* Name, bool ExactClass=false )
+{
+	return (T*)StaticFindObject( T::StaticClass(), Outer, Name, ExactClass );
+}
+```
+
 # 3 TStrongObjectPtr，TWeakObjectPtr，TSoftClassPtr
 
 
