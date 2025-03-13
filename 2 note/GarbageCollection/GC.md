@@ -1062,6 +1062,5 @@ bool IsPendingKillPending() const
 4 TStrongObjectPtr 强引用，也不会回收掉。这个强引用内部也是继承GCObject，重写ARO方法。
 - 如何加速gc流程
 
-- Stats.bFoundGarbageRef这个标志位作用
 
 
