@@ -248,7 +248,7 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 				if
 					// 桶内的Object名称得和ObjectName一致
 					((Object->GetFName() == SearchPath.Inner)
-					// 
+					// 过滤条件，需要不带有ExcludeFlags标志位的Object
 					&& !Object->HasAnyFlags(ExcludeFlags)
 					&& (bAnyPackage || !Object->GetOuter())
 					&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
