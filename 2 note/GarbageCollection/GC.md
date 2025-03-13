@@ -1062,7 +1062,8 @@ bool IsPendingKillPending() const
 4 TStrongObjectPtr 强引用，也不会回收掉。这个强引用内部也是继承GCObject，重写ARO方法。
 - 如何加速gc流程
 1 减少Object的数量，标记流程总归是要遍历所有的Object的，Object数量少自然速度快
-2 
+2 用簇，将多个Object绑定到一起，标记流程就会减少遍历的数量
+3 增量标记，增量清除，减少全量
 
 
 
