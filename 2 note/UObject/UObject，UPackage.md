@@ -229,16 +229,21 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 	// 一般都是由packet的，如果调用时没提供package，就会自己找package
 	if (ObjectPackage != nullptr)
 	{
-		// 通过
+		// 通过package获取hash
 		int32 Hash = GetObjectOuterHash(ObjectName, (PTRINT)ObjectPackage);
 		FHashTableLock HashLock(ThreadHash);
+		// 遍历
 		for (TMultiMap<int32, uint32>::TConstKeyIterator HashIt(ThreadHash.HashOuter, Hash); HashIt; ++HashIt)
 		{
+			// 拿到正在遍历的Object
 			uint32 InternalIndex = HashIt.Value();
 			UObject* Object = static_cast<UObject*>(GUObjectArray.IndexToObject(InternalIndex)->Object);
 			if
+				// 遍历Object名称得和ObjectName一致
 				((Object->GetFName() == ObjectName)
+				// 遍历Object不能带有ExcludeFlags这个表示的标志位
 				&& !Object->HasAnyFlags(ExcludeFlags)
+				// 遍历Object的outer得是
 				&& Object->GetOuter() == ObjectPackage
 				&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
 				&& !Object->HasAnyInternalFlags(ExclusiveInternalFlags))
