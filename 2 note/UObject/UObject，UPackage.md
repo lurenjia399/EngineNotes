@@ -226,6 +226,7 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 ``` cpp
 UObject* StaticFindObjectFastInternalThreadSafe(...)
 {
+	// 有package就在package里找
 	if (ObjectPackage != nullptr)
 	{
 		
@@ -233,7 +234,35 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 	// 没有package的情况下
 	else
 	{
-		
+		// 首先在HashTable中根据ObjectName找到HashBucket
+		FObjectSearchPath SearchPath(ObjectName);
+		const int32 Hash = GetObjectHash(SearchPath.Inner);
+		FHashTableLock HashLock(ThreadHash);
+		FHashBucket* Bucket = ThreadHash.Hash.Find(Hash);
+		// 遍历HashBucket
+		if (Bucket)
+		{
+			for (FHashBucketIterator It(*Bucket); It; ++It)
+			{
+				UObject* Object = (UObject*)*It;
+				if
+					((Object->GetFName() == SearchPath.Inner)
+					&& !Object->HasAnyFlags(ExcludeFlags)
+					&& (bAnyPackage || !Object->GetOuter())
+					&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
+					&& !Object->HasAnyInternalFlags(ExclusiveInternalFlags)
+					&& SearchPath.MatchOuterNames(Object->GetOuter()))
+				{
+					if (Result)
+					{
+					}
+					else
+					{
+						Result = Object;
+					}
+				}
+			}
+		}
 	}
 }
 ```
