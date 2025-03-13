@@ -246,7 +246,9 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 			{
 				UObject* Object = (UObject*)*It;
 				if
+					// 桶内的Object名称得和ObjectName一致
 					((Object->GetFName() == SearchPath.Inner)
+					// 
 					&& !Object->HasAnyFlags(ExcludeFlags)
 					&& (bAnyPackage || !Object->GetOuter())
 					&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
