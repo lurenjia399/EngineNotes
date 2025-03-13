@@ -268,8 +268,7 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 	}
 }
 ```
-这个几个接口最终执行都是这个StaticFindObjectFastInternalThreadSafe方法，只是有些条件判断吧，分成了这些接口
-# 3 TStrongObjectPtr，TWeakObjectPtr，TSoftClassPtr
+这个几个接口最终执行都是这个StaticFindObjectFastInternalThreadSafe方法，只是有些条件判断吧，分成了这些接口。
 
 
 # 问题
