@@ -243,17 +243,19 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 				((Object->GetFName() == ObjectName)
 				// 遍历Object不能带有ExcludeFlags这个表示的标志位
 				&& !Object->HasAnyFlags(ExcludeFlags)
-				// 遍历Object的outer得是
+				// 遍历Object的outer得是我们的Package
 				&& Object->GetOuter() == ObjectPackage
+				// 遍历Object的UClass得和所需的一致
 				&& (ObjectClass == nullptr || (bExactClass ? Object->GetClass() == ObjectClass : Object->IsA(ObjectClass)))
+				// 遍历Object不能带有某个标志位
 				&& !Object->HasAnyInternalFlags(ExclusiveInternalFlags))
 			{
-				checkf(!Object->IsUnreachable(), TEXT("%s"), *Object->GetFullName());
 				if (Result)
 				{
 				}
 				else
 				{
+					// if条件都满足，就算是找到了
 					Result = Object;
 				}
 			}
