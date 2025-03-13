@@ -224,10 +224,17 @@ UObject* FLinkerLoad::CreateExport( int32 Index )
 # 2 FindObject，FindObjectFast，FindObjectChecked，FindObjectSafe
 
 ``` cpp
-template< class T > 
-inline T* FindObject( UObject* Outer, const TCHAR* Name, bool ExactClass=false )
+UObject* StaticFindObjectFastInternalThreadSafe(...)
 {
-	return (T*)StaticFindObject( T::StaticClass(), Outer, Name, ExactClass );
+	if (ObjectPackage != nullptr)
+	{
+		
+	}
+	// 没有package的情况下
+	else
+	{
+		
+	}
 }
 ```
 
