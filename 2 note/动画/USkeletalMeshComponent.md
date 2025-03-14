@@ -197,6 +197,25 @@ void USkeletalMeshComponent::PerformAnimationProcessing(...)
 }
 ```
 ### FParallelAnimationCompletionTask
-```
+```cpp
+class FParallelAnimationCompletionTask
+{
+	void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
+	{
+		if (USkeletalMeshComponent* Comp = SkeletalMeshComponent.Get())
+		{
+			const bool bPerformPostAnimEvaluation = true;
+			Comp->CompleteParallelAnimationEvaluation(bPerformPostAnimEvaluation);
+		}
+	}
+}
 
+void USkeletalMeshComponent::CompleteParallelAnimationEvaluation(bool bDoPostAnimEvaluation)
+{
+	SwapEvaluationContextBuffers();
+
+	PostAnimEvaluation(AnimEvaluationContext);
+	
+	AnimEvaluationContext.Clear();
+}
 ```
