@@ -11,6 +11,31 @@ void USkeletalMeshComponent::InitAnim(bool bForceReinit)
 }
 ```
 
+```cpp
+bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, bool bInDeferRootNodeInitialization)
+{
+	if (IsRegistered())
+	{
+		USkeletalMesh* SkelMesh = GetSkeletalMeshAsset();
+		if (NeedToSpawnAnimScriptInstance())
+		{
+			// 创建出我们的动画蓝图
+			AnimScriptInstance = NewObject<UAnimInstance>(this, AnimClass);
+			if (AnimScriptInstance)
+			{
+				ResetLinkedAnimInstances();
+				AnimScriptInstance->InitializeAnimation(bInDeferRootNodeInitialization);
+				if (HasBegunPlay())
+				{
+					AnimScriptInstance->NativeBeginPlay();
+					AnimScriptInstance->BlueprintBeginPlay();
+				}
+				bInitializedMainInstance = true;
+			}
+		}
+	}
+}
+```
 # TickComponent
 
 ``` cpp
