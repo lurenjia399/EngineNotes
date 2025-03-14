@@ -4,6 +4,8 @@ https://www.cnblogs.com/zsb517/p/6418929.html
 
 ## 初始化
 
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503141701774.png)
+
 ```cpp
 void UAzureGameInstance::Init()
 {
@@ -23,14 +25,13 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 
 ```
 
-![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503141701774.png)
-
 ```cpp
 bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 {
 	// 创建lua_state
 	lua_State * tempL = luaL_newstate();
 	mainL = tempL;
+
 	//
 	for (int i = 1; i <= RegistryIndex::REGINDEX_MAX; ++i)
 	{
@@ -39,23 +40,23 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 		// REGINDEX_WEAKUOBJECT_TO_USERDATA索引就代表一个key是弱引用的表。
 		switch (i)
 		{
-		case REGINDEX_UOBJECT_TO_USERDATA:
-			lua_newtable(mainL);//ref
-			lua_newtable(mainL); //ref,mt
-			lua_pushstring(mainL, "kv"); //ref,mt,"v"
-			lua_setfield(mainL, -2, "__mode"); //ref,mt
-			lua_setmetatable(mainL, -2); //ref
-			break;
-		case REGINDEX_WEAKUOBJECT_TO_USERDATA:
-		case REGINDEX_WEAKUOBJECT_TO_USERDATA_FOR_WIDGET:
-			lua_newtable(mainL);//ref
-			lua_newtable(mainL); //ref,mt
-			lua_pushstring(mainL, "k"); //ref,mt,"v"
-			lua_setfield(mainL, -2, "__mode"); //ref,mt
-			lua_setmetatable(mainL, -2); //ref
-			break;
-		default:
-			lua_newtable(mainL);
+			case REGINDEX_UOBJECT_TO_USERDATA:
+				lua_newtable(mainL);//ref
+				lua_newtable(mainL); //ref,mt
+				lua_pushstring(mainL, "kv"); //ref,mt,"v"
+				lua_setfield(mainL, -2, "__mode"); //ref,mt
+				lua_setmetatable(mainL, -2); //ref
+				break;
+			case REGINDEX_WEAKUOBJECT_TO_USERDATA:
+			case REGINDEX_WEAKUOBJECT_TO_USERDATA_FOR_WIDGET:
+				lua_newtable(mainL);//ref
+				lua_newtable(mainL); //ref,mt
+				lua_pushstring(mainL, "k"); //ref,mt,"v"
+				lua_setfield(mainL, -2, "__mode"); //ref,mt
+				lua_setmetatable(mainL, -2); //ref
+				break;
+			default:
+				lua_newtable(mainL);
 		}
 		// 第一个参数是luaState的指针，第二个参数是LUA_REGISTRYINDEX。这个函数的作用是弹出栈顶的值，并且用一个新分配的整数key把这个值注册到注册表里，然后返回这个整数key。
 		// 简单理解就是将我们在switch分支中创建的弱表添加到了注册表中。
@@ -69,17 +70,6 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 	OnPreInit(L);
 	// _AzureWLuaImpl::OnPostInit这个方法里面会执行每个类的SetMtLink方法。每个类的SetMtLink方法，就是通过类的UClass找到父类，然后通过类的元表__index和__newIndex来决定父类，建立继承关系
 	OnPostInit(L);
-}
-
-void _AzureWLuaImpl::OnPreInit(lua_State *L)
-{
-	wLua::wLua_Azure::Register(L);
-	AzureLuaRegistry::Register(L);
-}
-void _AzureWLuaImpl::OnPostInit(lua_State* L)
-{
-	wLua::wLua_Azure::SetMtLink(L);
-	AzureLuaRegistry::SetMtLink(L);
 }
 ```
 ## 蓝图中绑定lua文件
