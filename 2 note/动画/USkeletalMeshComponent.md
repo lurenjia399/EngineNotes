@@ -40,7 +40,7 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 	}
 }
 ```
-1 在InitializeAnimScriptInstance这个方法中，会执行动画蓝图的BeginPlay
+1 在InitializeAnimScriptInstance这个方法中，会执行动画蓝图的BlueprintBeginPlay
 ```cpp
 void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 {
@@ -56,7 +56,7 @@ void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 	GetProxyOnGameThread<FAnimInstanceProxy>().BindNativeDelegates();
 }
 ```
-2 在InitializeAnimation方法中，会执行动画蓝图的intInitializeAnimation方法
+2 在InitializeAnimation方法中，会执行动画蓝图的BlueprintInitializeAnimation方法
 # TickComponent
 
 ``` cpp
@@ -98,10 +98,16 @@ void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentT
 	AnimEvaluationContext.Teleport = Teleport; // Azure
 
 	TickAnimation(0.f, false);
-	
+	// 主线程创建Task，派发给工作线程
 	DispatchParallelEvaluationTasks(TickFunction);
 }
-void USkeletalMeshComponent::DispatchParallelEvaluationTasks(FActorComponentTickFunction* TickFunction)
+
+```
+
+
+## DispatchParallelEvaluationTasks
+```cpp
+void USkeletalMeshComponent::DispatchParallelEvaluationTasks(...)
 {
 	// Evaluate的Task，由工作线程执行的Task。这个Task就是UpdateAnimation和EvaluateAnimation
 	ParallelAnimationEvaluationTask = TGraphTask<FParallelAnimationEvaluationTask>::CreateTask().ConstructAndDispatchWhenReady(this);
@@ -118,7 +124,7 @@ void USkeletalMeshComponent::DispatchParallelEvaluationTasks(FActorComponentTick
 }
 ```
 2 创建Task，派发给工作线程执行。FParallelAnimationEvaluationTask这个Task是执行动画状态机的，也就是执行UpdateAnimation和EvaluateAnimation。FParallelAnimationCompletionTask这个Task是上边Task执行完了，才会执行。
-## FParallelAnimationEvaluationTask
+### FParallelAnimationEvaluationTask
 ```cpp
 class FParallelAnimationEvaluationTask
 {
