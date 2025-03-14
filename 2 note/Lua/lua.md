@@ -106,9 +106,9 @@ LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
 */
 LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefType luaRefType)
 {
-	// 首先会尝试从Lua的全局弱表（g_udref）中获取到UObject对应的LightUserData对象
+	// 首先会尝试从Lua的注册表中的全局弱表（g_udref）中获取到UObject对应的LightUserData对象
 	AzureHelpFuncs::tryGetUserdataFromWeakTable(L, Obj, regIndex);
-	//如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中
+	//如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer中，也就是纳入gc系统
 	if (lua_isnil(L, -1) || !valid)
 	{
 		lua_pop(L, 1); //ref
