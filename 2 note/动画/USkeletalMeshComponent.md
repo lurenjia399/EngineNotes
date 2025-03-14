@@ -24,7 +24,9 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 			if (AnimScriptInstance)
 			{
 				ResetLinkedAnimInstances();
+				// 初始化动画蓝图
 				AnimScriptInstance->InitializeAnimation(bInDeferRootNodeInitialization);
+				// 如果SkeletalMeshComponent已经BegunPlay了，这里也开始下动画蓝图
 				if (HasBegunPlay())
 				{
 					AnimScriptInstance->NativeBeginPlay();
@@ -34,6 +36,13 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 			}
 		}
 	}
+}
+```
+
+```cpp
+void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
+{
+	
 }
 ```
 # TickComponent
