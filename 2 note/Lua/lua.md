@@ -92,7 +92,7 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 	// 后面还有一系列的方法，看上去是将UFunction宏标记的函数导出到lua的表中？
 }
 ```
-## 通过UObject返回LuaObject
+## 通过UObject返回userdata
 FLuaUtils::ReturnUObject
 ```cpp
 LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
@@ -179,7 +179,7 @@ void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
 3 如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中,也就是纳入到gc系统中。
 4 通过UObject的UClass获取到ClassName，然后再注册表中找ClassName对应的元表。如果找不到就创建一个。
 5 如果找到了，就将其设置为lightuserdata的元表。然后在将lightuserdata添加到注册表中的全局弱表里，key为UObject*。
-## 通过LuaObject返回UObject
+## 通过userdata返回UObject
 FLuaUtils::GetUObject
 ```cpp
 /*
@@ -228,7 +228,7 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 }
 
 ```
-
+1 首先我们手中有userdata，
 ## 关键点
 
 - lua是怎么拿到UObject对象的？
