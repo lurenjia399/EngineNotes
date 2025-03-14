@@ -69,10 +69,17 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 			lua_newtable(mainL);
 		}
 		// 第一个参数是luaState的指针，第二个参数是LUA_REGISTRYINDEX。这个函数的作用是弹出栈顶的值，并且用一个新分配的整数key把这个值注册到注册表里，然后返回这个整数key。
-		// 简单理解就是将我们在switch中创建的弱表添加到了
+		// 简单理解就是将我们在switch分支中创建的弱表添加到了注册表中。
 		int ref = luaL_ref(mainL, LUA_REGISTRYINDEX);
-		check(ref == i);
 	}
+	// 接入gc系统，创建出uobjectReferencer，uobjectReferencer是继承自FGCObject的
+	uobjectReferencer = new FLuaObjectReferencer();
+	uobjectReferencer->Init(mainL);
+
+	// 在_AzureWLuaImpl::OnPreInit这个方法里面就会执行每个类的Register。每个类的Register方法，就是命名为类名称的元表，在元表里添加导出的静态函数，然后将元表注册到全局表LUA_REGISTRYINDEX中
+	OnPreInit(L);
+	// _AzureWLuaImpl::OnPostInit这个方法里面会执行每个类的SetMtLink方法
+	OnPostInit(L);
 }
 ```
 ## 蓝图中绑定lua文件
