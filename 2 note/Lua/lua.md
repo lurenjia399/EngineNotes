@@ -20,18 +20,7 @@ bool UAzureGame::Init(UAzureRuntimeGameInstance* pGameInst)
 	// 每个类的SetMtLink方法，就是通过类的UClass找到父类，然后通过类的元表__index和__newIndex来决定父类，建立继承关系
 	InitLuaModule();
 }
-void Lua::OnPreInit(lua_State *L)
-{
-	wLua::initDynamic(L);
-	wLua_wLuaCore::Register(L);
-	wLua::LuaBaseStruct::Register(L);
-}
 
-void Lua::OnPostInit(lua_State* L)
-{
-	wLua_wLuaCore::SetMtLink(L);
-	wLua::LuaBaseStruct::SetMtLink(L);
-}
 ```
 
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503141701774.png)
@@ -78,8 +67,21 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 
 	// 在_AzureWLuaImpl::OnPreInit这个方法里面就会执行每个类的Register。每个类的Register方法，就是命名为类名称的元表，在元表里添加导出的静态函数，然后将元表注册到全局表LUA_REGISTRYINDEX中
 	OnPreInit(L);
-	// _AzureWLuaImpl::OnPostInit这个方法里面会执行每个类的SetMtLink方法
+	// _AzureWLuaImpl::OnPostInit这个方法里面会执行每个类的SetMtLink方法。每个类的SetMtLink方法，就是通过类的UClass找到父类，然后通过类的元表__index和__newIndex来决定父类，建立继承关系
 	OnPostInit(L);
+}
+
+void Lua::OnPreInit(lua_State *L)
+{
+	wLua::initDynamic(L);
+	wLua_wLuaCore::Register(L);
+	wLua::LuaBaseStruct::Register(L);
+}
+
+void Lua::OnPostInit(lua_State* L)
+{
+	wLua_wLuaCore::SetMtLink(L);
+	wLua::LuaBaseStruct::SetMtLink(L);
 }
 ```
 ## 蓝图中绑定lua文件
