@@ -10,3 +10,12 @@ void USkeletalMeshComponent::InitAnim(bool bForceReinit)
 	}
 }
 ```
+
+# TickComponent
+
+``` cpp
+void USkeletalMeshComponent::TickComponent(...)
+{
+	
+}
+```
