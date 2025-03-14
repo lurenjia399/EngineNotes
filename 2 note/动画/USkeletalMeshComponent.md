@@ -89,6 +89,13 @@ void USkinnedMeshComponent::TickComponent(...)
 ```cpp
 void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentTickFunction* TickFunction, ETeleportType Teleport)
 {
+	// 这边对上下文里的一系列东西都初始化了，省略了好多
+	AnimEvaluationContext.SkeletalMesh = GetSkeletalMeshAsset();
+	AnimEvaluationContext.AnimInstance = AnimScriptInstance;
+	AnimEvaluationContext.bDoEvaluation = bShouldDoEvaluation;
+	AnimEvaluationContext.bDoInterpolation = bShouldDoInterpolation;
+	AnimEvaluationContext.Teleport = Teleport; // Azure
+	
 	DispatchParallelEvaluationTasks(TickFunction);
 }
 void USkeletalMeshComponent::DispatchParallelEvaluationTasks(FActorComponentTickFunction* TickFunction)
