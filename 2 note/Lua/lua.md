@@ -101,7 +101,7 @@ LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
 
 LuaUObjectUserData* ReturnUObjectPrivate(lua_State * L, UObject * Obj, LuaRefType luaRefType)
 {
-	// 首先会尝试从Lua的注册表中的全局弱表（g_udref）中获取到UObject对应的LightUserData对象
+	// 首先会尝试从Lua注册表中的全局弱表（g_udref）中获取到UObject的LightUserData对应的LuaUObjectUserdata
 	AzureHelpFuncs::tryGetUserdataFromWeakTable(L, Obj, regIndex);
 	//如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer中，也就是纳入gc系统
 	if (lua_isnil(L, -1) || !valid)
@@ -174,10 +174,10 @@ void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
 }
 ```
 
-1 首先会尝试从Lua注册表中的全局弱表（g_udref）中获取到UObject的LightUserData对应的LuaUObjectUserdata, 把这个lightuserdata尝试转换为LuaUObjectUserData对象。如果找到了就直接返回了。
-3 如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），然后赋值对象中的stamp，uobj以及flag，并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中,也就是纳入到gc系统中。
-4 通过UObject的UClass获取到ClassName，然后再注册表中找ClassName对应的元表。如果找不到就创建一个。
-5 如果找到了，就将其设置为lightuserdata的元表。然后在将lightuserdata添加到注册表中的全局弱表里，key为UObject的lightuserdata。
+1 首先会尝试从Lua注册表中的全局弱表（g_udref）中获取到UObject的LightUserData对应的LuaUObjectUserdata。如果找到了就直接返回了。
+3 如果LuaUObjectUserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），然后赋值对象中的stamp，uobj以及flag，并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中,也就是纳入到gc系统中。
+4 通过UObject的UClass获取到ClassName，然后在注册表中找ClassName对应的元表。如果找不到就创建一个。
+5 如果找到了，就将其设置为LuaUObjectUserdata的元表。然后在将LuaUObjectUserdata添加到注册表中的全局弱表里，key为UObject的lightuserdata。
 ## 通过userdata返回UObject
 ```cpp
 /*
