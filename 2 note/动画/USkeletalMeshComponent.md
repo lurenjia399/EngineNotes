@@ -133,3 +133,10 @@ void USkeletalMeshComponent::ParallelAnimationEvaluation()
 		AnimEvaluationContext.CustomAttributes);
 }
 ```
+
+```cpp
+void USkeletalMeshComponent::PerformAnimationProcessing(...)
+{
+	
+}
+```
