@@ -96,14 +96,36 @@ void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentT
 	AnimEvaluationContext.bDoEvaluation = bShouldDoEvaluation;
 	AnimEvaluationContext.bDoInterpolation = bShouldDoInterpolation;
 	AnimEvaluationContext.Teleport = Teleport; // Azure
-
+	// 主线程首先tick一下
 	TickAnimation(0.f, false);
-	// 主线程创建Task，派发给工作线程
+	// 主线程创建Task，派发给工作线程执行
 	DispatchParallelEvaluationTasks(TickFunction);
 }
 
 ```
+## TickAnimation
+```cpp
+void USkeletalMeshComponent::TickAnimation(float DeltaTime, bool bNeedsValidRootMotion)
+{
+	if (GetSkeletalMeshAsset() != nullptr && !bIsCompiling)
+	{
+		// Tick动画蓝图
+		TickAnimInstances(DeltaTime, bNeedsValidRootMotion);
+	}
+}
 
+void USkeletalMeshComponent::TickAnimInstances(float DeltaTime, bool bNeedsValidRootMotion)
+{
+	if (AnimScriptInstance != nullptr)
+	{
+		AnimScriptInstance->UpdateAnimation(DeltaTime * GlobalAnimRateScale, bNeedsValidRootMotion);
+	}
+}
+void UAnimInstance::UpdateAnimation(float DeltaSeconds, bool bNeedsValidRootMotion, EUpdateAnimationFlag UpdateFlag)
+{
+	
+}
+```
 
 ## DispatchParallelEvaluationTasks
 ```cpp
