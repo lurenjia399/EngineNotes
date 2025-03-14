@@ -40,7 +40,7 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 	}
 }
 ```
-
+1 在InitializeAnimScriptInstance这个方法中，会执行动画蓝图的BeginPlay
 ```cpp
 void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 {
@@ -56,6 +56,7 @@ void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 	GetProxyOnGameThread<FAnimInstanceProxy>().BindNativeDelegates();
 }
 ```
+2 在InitializeAnimation方法中，会执行动画蓝图的intInitializeAnimation方法
 # TickComponent
 
 ``` cpp
