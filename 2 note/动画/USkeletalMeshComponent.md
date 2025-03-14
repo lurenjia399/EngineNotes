@@ -29,7 +29,9 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 				// 如果SkeletalMeshComponent已经BegunPlay了，这里也开始下动画蓝图
 				if (HasBegunPlay())
 				{
+					// c++执行动画蓝图BeginPlay节点
 					AnimScriptInstance->NativeBeginPlay();
+					// 蓝图执行动画蓝图BeginPlay节点
 					AnimScriptInstance->BlueprintBeginPlay();
 				}
 				bInitializedMainInstance = true;
@@ -43,8 +45,11 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 {
 	GetProxyOnGameThread<FAnimInstanceProxy>().Initialize(this);
+	// C++执行
 	NativeInitializeAnimation();
 	BlueprintInitializeAnimation();
+	GetProxyOnGameThread<FAnimInstanceProxy>().InitializeRootNode(bInDeferRootNodeInitialization);
+	GetProxyOnGameThread<FAnimInstanceProxy>().BindNativeDelegates();
 }
 ```
 # TickComponent
