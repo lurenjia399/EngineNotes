@@ -124,6 +124,12 @@ class FParallelAnimationEvaluationTask
 
 void USkeletalMeshComponent::ParallelAnimationEvaluation() 
 {
-	
+	PerformAnimationProcessing(
+		AnimEvaluationContext.SkeletalMesh, AnimEvaluationContext.AnimInstance, 
+		AnimEvaluationContext.bDoEvaluation, 
+		AnimEvaluationContext.ComponentSpaceTransforms, 
+		AnimEvaluationContext.BoneSpaceTransforms, 
+		AnimEvaluationContext.RootBoneTranslation, AnimEvaluationContext.Curve, 
+		AnimEvaluationContext.CustomAttributes);
 }
 ```
