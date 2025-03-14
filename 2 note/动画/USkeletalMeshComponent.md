@@ -93,6 +93,16 @@ void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentT
 }
 void USkeletalMeshComponent::DispatchParallelEvaluationTasks(FActorComponentTickFunction* TickFunction)
 {
-	
+	// Evaluate的Task，由工作线程执行的Task
+	ParallelAnimationEvaluationTask = TGraphTask<FParallelAnimationEvaluationTask>::CreateTask().ConstructAndDispatchWhenReady(this);
+	// 依赖数组
+	FGraphEventArray Prerequistes;
+	Prerequistes.Add(ParallelAnimationEvaluationTask);
+	// 看上去是EvalauateTask完成后执行的Task，也是由工作线程执行的Task
+	FGraphEventRef TickCompletionEvent = TGraphTask<FParallelAnimationCompletionTask>::CreateTask(&Prerequistes).ConstructAndDispatchWhenReady(this);
+	if ( TickFunction )
+	{
+		TickFunction->GetCompletionHandle()->DontCompleteUntil(TickCompletionEvent);
+	}
 }
 ```
