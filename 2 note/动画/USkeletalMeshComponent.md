@@ -95,6 +95,8 @@ void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentT
 	AnimEvaluationContext.bDoEvaluation = bShouldDoEvaluation;
 	AnimEvaluationContext.bDoInterpolation = bShouldDoInterpolation;
 	AnimEvaluationContext.Teleport = Teleport; // Azure
+
+	TickAnimation(0.f, false);
 	
 	DispatchParallelEvaluationTasks(TickFunction);
 }
