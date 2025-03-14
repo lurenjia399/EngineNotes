@@ -42,7 +42,36 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 	// 创建lua_state
 	lua_State * tempL = luaL_newstate();
 	mainL = tempL;
-	
+	//
+	for (int i = 1; i <= RegistryIndex::REGINDEX_MAX; ++i)
+	{
+		// 通过switch创建相应的弱表。
+		// 比如REGINDEX_UOBJECT_TO_USERDATA索引就代表一个key和value都是弱引用的表。
+		// REGINDEX_WEAKUOBJECT_TO_USERDATA索引就代表一个key是弱引用的表。
+		switch (i)
+		{
+		case REGINDEX_UOBJECT_TO_USERDATA:
+			lua_newtable(mainL);//ref
+			lua_newtable(mainL); //ref,mt
+			lua_pushstring(mainL, "kv"); //ref,mt,"v"
+			lua_setfield(mainL, -2, "__mode"); //ref,mt
+			lua_setmetatable(mainL, -2); //ref
+			break;
+		case REGINDEX_WEAKUOBJECT_TO_USERDATA:
+		case REGINDEX_WEAKUOBJECT_TO_USERDATA_FOR_WIDGET:
+			lua_newtable(mainL);//ref
+			lua_newtable(mainL); //ref,mt
+			lua_pushstring(mainL, "k"); //ref,mt,"v"
+			lua_setfield(mainL, -2, "__mode"); //ref,mt
+			lua_setmetatable(mainL, -2); //ref
+			break;
+		default:
+			lua_newtable(mainL);
+		}
+
+		int ref = luaL_ref(mainL, LUA_REGISTRYINDEX);
+		check(ref == i);
+	}
 }
 ```
 ## 蓝图中绑定lua文件
