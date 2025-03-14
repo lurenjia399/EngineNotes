@@ -233,7 +233,7 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 > 1 我们自己定义的全局弱表是在注册表中，key是REGINDEX_UOBJECT_TO_USERDATA 这些索引，value是全局弱表，弱表中元素key是UObject*，value是LuaUObjectUserData。
 > 2 类的元表也都在注册表中，key是类名，value是元表，元表中是类导出的各种函数以及变量。
 - lua是怎么表示UObject对象的？
-> 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中。首先我们手中有一个UObject对象，然后创建一个LuaObjectUserdata，LuaObjectUserdata就只有三个成员变量，userdata，uobj，flag。
+> 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中。首先我们手中有一个UObject对象，然后创建一个LuaObjectUserdata，LuaObjectUserdata就只有三个成员变量，userdata，uobj，flag。所以就将userdata和UObject绑定起来了。
 - lua是怎么模拟UObject对象的继承关系的？
 > 在GameInstance::Init的时候会先进行导出方法和类元表的注册，并将元表注册到lua全局表LUA_REGISTRYINDEX中，然后就会执行SetMtLink方法，通过UClass获取父类，然后通过元表中的__index和__newindex来完成继承关系。
 - lua是怎么调用到UObject的方法的呢？
