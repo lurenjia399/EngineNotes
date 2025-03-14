@@ -184,10 +184,19 @@ void USkeletalMeshComponent::ParallelAnimationEvaluation()
 ```cpp
 void USkeletalMeshComponent::PerformAnimationProcessing(...)
 {
-	// 如果需要Update，就执行UpdateAnimation。这个就是从动画状态机的Output节点开始，一直递归执行，对每个节点都执行UpdateAnimation
+	// 如果需要Update，就执行UpdateAnimation。这个就是从动画状态机的Output节点开始，一直递归执行，对每个节点都执行UpdateAnimation。
 	if(InAnimInstance && InAnimInstance->NeedsUpdate())
 	{
 		InAnimInstance->ParallelUpdateAnimation();
 	}
+	// 这个就是执行EvaluateAnimation。这个就是从动画状态机的Output节点开始，一直递归执行，对每个节点都执行EvaluateAnimation。
+	if(bInDoEvaluation && OutSpaceBases.Num() > 0)
+	{
+		EvaluateAnimation(InSkeletalMesh, InAnimInstance, OutRootBoneTranslation, OutCurve, EvaluatedPose, Attributes);
+	}
 }
+```
+### FParallelAnimationCompletionTask
+```
+
 ```
