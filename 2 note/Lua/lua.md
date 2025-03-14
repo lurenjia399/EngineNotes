@@ -183,7 +183,9 @@ void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
 1.1 如果这个对象的flag是GC状态，那么就调用接口RemoveObjectReference把它从FLuaObjectReferencer中和LuaLua注册表中的全局弱表（g_udref）中移出并置空该对象。
 1.2 如果lightuserdata对象为空，则调用lua_newuserdata新生成一个LuaUObjectUserData对象（标记为Born），并加入到FLuaObjectReferencer的ScriptCreatedObjects映射表中,也就是纳入到gc系统中。
 2.)接着通过UE4的反射机制查找这个UObject本身的元表是否设置成功，如果没有的话重新设置元表（其中包括字段i-d，gc, name),并注册到全局表_G中,然后设置该userdata的元表为以该UObject类名称（GetClass）为表名，并再Lua全局弱表中g_udref写入weakT[lud]= userdata(UELuaObject)
-通过UObject的UClass获取到
+通过UObject的UClass获取到ClassName，然后再注册表中找ClassName对应的元表。
+2.1 如果找不到就创建
+2.3 如果找到了，就将其设置为userdata的元表。然后在将
 ## 通过LuaObject返回UObject
 FLuaUtils::GetUObject
 ```cpp
