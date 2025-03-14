@@ -42,7 +42,9 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 ```cpp
 void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 {
-	
+	GetProxyOnGameThread<FAnimInstanceProxy>().Initialize(this);
+	NativeInitializeAnimation();
+	BlueprintInitializeAnimation();
 }
 ```
 # TickComponent
