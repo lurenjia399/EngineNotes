@@ -123,10 +123,19 @@ void USkeletalMeshComponent::TickAnimInstances(float DeltaTime, bool bNeedsValid
 }
 void UAnimInstance::UpdateAnimation(float DeltaSeconds, bool bNeedsValidRootMotion, EUpdateAnimationFlag UpdateFlag)
 {
-	
+	PreUpdateAnimation(DeltaSeconds);
+	// 更新montage
+	{
+		UpdateMontage(DeltaSeconds);
+		UpdateMontageSyncGroup();
+		UpdateMontageEvaluationData();
+	}
+	// 执行BlueprintUpdateAnimation方法
+	NativeUpdateAnimation(DeltaSeconds);
+	BlueprintUpdateAnimation(DeltaSeconds);
 }
 ```
-
+2 在UpdateAnimation方法中，会执行动画蓝图的BlueprintUpdateAnimation方法
 ## DispatchParallelEvaluationTasks
 ```cpp
 void USkeletalMeshComponent::DispatchParallelEvaluationTasks(...)
