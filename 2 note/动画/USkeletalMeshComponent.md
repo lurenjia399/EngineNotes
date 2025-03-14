@@ -114,6 +114,16 @@ class FParallelAnimationEvaluationTask
 {
 	void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
 	{
+		if (USkeletalMeshComponent* Comp = SkeletalMeshComponent.Get())
+		{
+			// 工作线程执行的方法
+			Comp->ParallelAnimationEvaluation();
+		}
 	}
+}
+
+void USkeletalMeshComponent::ParallelAnimationEvaluation() 
+{
+	
 }
 ```
