@@ -25,5 +25,16 @@ void USkinnedMeshComponent::TickComponent(...)
 	{
 		TickPose(DeltaTime, false);
 	}
+	if( ShouldUpdateTransform(bLODHasChanged) )
+	{
+		if( LeaderPoseComponent.IsValid() )
+		{
+			UpdateFollowerComponent();
+		}
+		else 
+		{
+			RefreshBoneTransforms(ThisTickFunction);
+		}
+	}
 }
 ```
