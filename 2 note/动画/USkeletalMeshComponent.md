@@ -85,3 +85,10 @@ void USkinnedMeshComponent::TickComponent(...)
 	}
 }
 ```
+1 USkinnedMeshComponent的RefreshBoneTransforms方法会进行一次转发，会执行RefreshBoneTransforms_WithTeleport方法里面
+```cpp
+void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentTickFunction* TickFunction, ETeleportType Teleport)
+{
+	
+}
+```
