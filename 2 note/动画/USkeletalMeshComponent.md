@@ -144,6 +144,10 @@ void USkeletalMeshComponent::ParallelAnimationEvaluation()
 ```cpp
 void USkeletalMeshComponent::PerformAnimationProcessing(...)
 {
-	
+	// 如果需要Update，就执行UpdateAnimation，这个就是从动画状态机的Output节点开始，一直递归执行，
+	if(InAnimInstance && InAnimInstance->NeedsUpdate())
+	{
+		InAnimInstance->ParallelUpdateAnimation();
+	}
 }
 ```
