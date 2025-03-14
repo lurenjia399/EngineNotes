@@ -71,17 +71,15 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 	OnPostInit(L);
 }
 
-void Lua::OnPreInit(lua_State *L)
+void _AzureWLuaImpl::OnPreInit(lua_State *L)
 {
-	wLua::initDynamic(L);
-	wLua_wLuaCore::Register(L);
-	wLua::LuaBaseStruct::Register(L);
+	wLua::wLua_Azure::Register(L);
+	AzureLuaRegistry::Register(L);
 }
-
-void Lua::OnPostInit(lua_State* L)
+void _AzureWLuaImpl::OnPostInit(lua_State* L)
 {
-	wLua_wLuaCore::SetMtLink(L);
-	wLua::LuaBaseStruct::SetMtLink(L);
+	wLua::wLua_Azure::SetMtLink(L);
+	AzureLuaRegistry::SetMtLink(L);
 }
 ```
 ## 蓝图中绑定lua文件
