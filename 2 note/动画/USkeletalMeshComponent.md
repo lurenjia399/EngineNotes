@@ -145,7 +145,7 @@ void USkeletalMeshComponent::DispatchParallelEvaluationTasks(...)
 	// 依赖数组
 	FGraphEventArray Prerequistes;
 	Prerequistes.Add(ParallelAnimationEvaluationTask);
-	// 看上去是EvalauateTask完成后执行的Task，也是由工作线程执行的Task
+	// 看上去是EvalauateTask完成后执行的Task，是由主线程执行的Task
 	FGraphEventRef TickCompletionEvent = TGraphTask<FParallelAnimationCompletionTask>::CreateTask(&Prerequistes).ConstructAndDispatchWhenReady(this);
 	
 	if ( TickFunction )
@@ -198,6 +198,7 @@ void USkeletalMeshComponent::PerformAnimationProcessing(...)
 ```
 ### FParallelAnimationCompletionTask
 ```cpp
+// 注意这个Task是由主线程执行的
 class FParallelAnimationCompletionTask
 {
 	void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
@@ -212,6 +213,7 @@ class FParallelAnimationCompletionTask
 
 void USkeletalMeshComponent::CompleteParallelAnimationEvaluation(bool bDoPostAnimEvaluation)
 {
+	// 交换上下文的值，将工作线程算出的数据，写回Component中，在主线程中执行。
 	SwapEvaluationContextBuffers();
 
 	PostAnimEvaluation(AnimEvaluationContext);
