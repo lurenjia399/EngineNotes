@@ -89,6 +89,10 @@ void USkinnedMeshComponent::TickComponent(...)
 ```cpp
 void USkeletalMeshComponent::RefreshBoneTransforms_WithTeleport(FActorComponentTickFunction* TickFunction, ETeleportType Teleport)
 {
+	DispatchParallelEvaluationTasks(TickFunction);
+}
+void USkeletalMeshComponent::DispatchParallelEvaluationTasks(FActorComponentTickFunction* TickFunction)
+{
 	
 }
 ```
