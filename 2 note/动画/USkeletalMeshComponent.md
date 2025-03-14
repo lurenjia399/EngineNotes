@@ -72,12 +72,14 @@ void USkinnedMeshComponent::TickComponent(...)
 	}
 	if( ShouldUpdateTransform(bLODHasChanged) )
 	{
+		// LeaderPoseComponent一般在换装系统中用，不同的SkelComp有相同的谷歌位置。
 		if( LeaderPoseComponent.IsValid() )
 		{
 			UpdateFollowerComponent();
 		}
 		else 
 		{
+			// 主要是这里刷新Bone的Transform
 			RefreshBoneTransforms(ThisTickFunction);
 		}
 	}
