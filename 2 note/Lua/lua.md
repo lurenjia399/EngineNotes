@@ -231,8 +231,9 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 1 首先我们手中有userdata，就把userdata转换成LuaUObjectUserData，然后返回其中的uobj成员变量（是一个指针指向了UObject）就行。
 ## 关键点
 
-- lua的注册表里都有sh
-> 
+- lua的注册表里都有什么？
+> 1 REGINDEX_UOBJECT_TO_USERDATA 这些索引代表的全局表。
+> 2 类的元表ye'dou'z
 - lua是怎么拿到UObject对象的？
 > 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中，将这个userdata返回到lua侧。这个方法首先就是从全局表中获取UObject对应的lightuserdata，如果获取不到就创建一个新的lightuserdata，然后就是设置lightuserdata的元表（元表的表名是GetClass的名称），如果元表不存在就创建一个并注册到全局表中。
 - lua是怎么模拟UObject对象的继承关系的？
