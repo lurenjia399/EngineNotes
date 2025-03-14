@@ -68,7 +68,8 @@ bool Lua::Init(UGameInstance* InGI, bool bPrintDisplay /* = false */)
 		default:
 			lua_newtable(mainL);
 		}
-
+		// 第一个参数是luaState的指针，第二个参数是LUA_REGISTRYINDEX。这个函数的作用是弹出栈顶的值，并且用一个新分配的整数key把这个值注册到注册表里，然后返回这个整数key。
+		// 简单理解就是将我们在switch中创建的弱表添加到了
 		int ref = luaL_ref(mainL, LUA_REGISTRYINDEX);
 		check(ref == i);
 	}
