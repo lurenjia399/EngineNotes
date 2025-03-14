@@ -107,4 +107,13 @@ void USkeletalMeshComponent::DispatchParallelEvaluationTasks(FActorComponentTick
 	}
 }
 ```
-2 创建Task，派发给工作线程执行。FParallelAnimationEvaluationTaskzhe'ge
+2 创建Task，派发给工作线程执行。FParallelAnimationEvaluationTask这个Task是执行动画状态机的，也就是执行UpdateAnimation和EvaluateAnimation。FParallelAnimationCompletionTask这个Task是上边Task执行完了，才会执行。
+## FParallelAnimationEvaluationTask
+```cpp
+class FParallelAnimationEvaluationTask
+{
+	void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
+	{
+	}
+}
+```
