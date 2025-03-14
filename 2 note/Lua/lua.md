@@ -232,8 +232,8 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 ## 关键点
 
 - lua的注册表里都有什么？
-> 1 我们自己定义的全局弱表是在注册表中，key是REGINDEX_UOBJECT_TO_USERDATA 这些索引，value是表
-> 2 类的元表也都在注册表中，key是类名，value是元表，元表中是类导出的各种函数以及变量
+> 1 我们自己定义的全局弱表是在注册表中，key是REGINDEX_UOBJECT_TO_USERDATA 这些索引，value是全局弱表，弱表中元素key是UObject*，value是LuaUObjectUserData。
+> 2 类的元表也都在注册表中，key是类名，value是元表，元表中是类导出的各种函数以及变量。
 - lua是怎么拿到UObject对象的？
 > 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中，将这个userdata返回到lua侧。这个方法首先就是从全局表中获取UObject对应的lightuserdata，如果获取不到就创建一个新的lightuserdata，然后就是设置lightuserdata的元表（元表的表名是GetClass的名称），如果元表不存在就创建一个并注册到全局表中。
 - lua是怎么模拟UObject对象的继承关系的？
