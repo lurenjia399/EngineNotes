@@ -45,8 +45,9 @@ bool USkeletalMeshComponent::InitializeAnimScriptInstance(bool bForceReinit, boo
 void UAnimInstance::InitializeAnimation(bool bInDeferRootNodeInitialization)
 {
 	GetProxyOnGameThread<FAnimInstanceProxy>().Initialize(this);
-	// C++执行
+	// C++执行节点
 	NativeInitializeAnimation();
+	// 蓝图执行节点
 	BlueprintInitializeAnimation();
 	GetProxyOnGameThread<FAnimInstanceProxy>().InitializeRootNode(bInDeferRootNodeInitialization);
 	GetProxyOnGameThread<FAnimInstanceProxy>().BindNativeDelegates();
