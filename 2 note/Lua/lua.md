@@ -93,7 +93,6 @@ bool LuaActorBase::InitLuaActor(UObject * This, const FString& inLuaModule,lua_S
 }
 ```
 ## 通过UObject返回userdata
-FLuaUtils::ReturnUObject
 ```cpp
 LuaUObjectUserData* FLuaUtils::ReturnUObject(lua_State* L, UObject* Obj)
 {
@@ -180,7 +179,6 @@ void tryGetUserdataFromWeakTable(lua_State * L, void * Obj, uint8 regIndex)
 4 通过UObject的UClass获取到ClassName，然后再注册表中找ClassName对应的元表。如果找不到就创建一个。
 5 如果找到了，就将其设置为lightuserdata的元表。然后在将lightuserdata添加到注册表中的全局弱表里，key为UObject*。
 ## 通过userdata返回UObject
-FLuaUtils::GetUObject
 ```cpp
 /*
 GetUObject函数用来从Lua对象返回对应的UObject对象。首先获取Lua对象对应的FLuaObjectReferencer对象 但是如果满足以下条件就需要从ScriptCreatedObjects表以及Lua弱表g_udref里移除对应的映射关系，并返回nullptr
