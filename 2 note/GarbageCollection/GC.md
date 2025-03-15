@@ -1065,7 +1065,7 @@ bool IsPendingKillPending() const
 2 用簇，将多个Object绑定到一起，标记流程就会减少遍历的数量
 3 增量标记，增量清除，减少全量的调用次数
 - TSharedPtr能够修饰非Object类型，被TSharedPtr指针修饰的对象，不会被gc么？
-这个
+这个就类似于c++的智能指针，通过引用计数来自动控制释放，和gc系统整个没关系吧
 
 
 
