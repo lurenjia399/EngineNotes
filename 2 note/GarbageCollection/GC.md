@@ -1064,8 +1064,8 @@ bool IsPendingKillPending() const
 1 减少Object的数量，标记流程总归是要遍历所有的Object的，Object数量少自然速度快
 2 用簇，将多个Object绑定到一起，标记流程就会减少遍历的数量
 3 增量标记，增量清除，减少全量的调用次数
-- TSharedPtr修饰非Object类型，TSharedPtr指针修饰的c++类型Object，不会被gc么？
-
+- TSharedPtr能够修饰非Object类型，被TSharedPtr指针修饰的对象，不会被gc么？
+这个
 
 
 
