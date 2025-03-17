@@ -356,4 +356,7 @@ link_config_id就是节点的连接结构，表示每个节点的下一个节点
 node_rand_config_id是节点随机结构，表示每个节点能够随机出的节点类型是哪个，node_rand_config的索引是随机结构id，里边的索引代表节点类型，也就是节点类型1的节点只会出现在1号节点上，节点类型2的节点会出现2，3，4，6，7，8，10，12，13中。
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503171517333.png)
 node_count是节点数量，表示每种类型的节点有多少个。
-3 在
+3 在node_rand_config中还可以配置每个节点的房间是什么。
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503171529704.png)
+4 相应的每个scene_id就是对应每个房间的场景了，也就是ue中level是哪个。
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503171530975.png)
