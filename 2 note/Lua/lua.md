@@ -350,4 +350,6 @@ rogue_map这个表里的id就是服务器发过来的具体哪一套配置，里
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503171512638.png)
 map_UI就是umg里控件的名称，表示应用哪个蓝图。
 layer_config_id就是节点的分层结构，表示哪几个节点是一层，一层上的怪物buff和玩家buff都在同一个随机池中。
-link_config_
+link_config_id就是节点的连接结构，表示每个节点的下一个节点是哪个。
+node_rand_config_id是节点随机结构，表示每个节点能够随机出的节点类型是哪个。
+node_count是节点数量，表示mei
