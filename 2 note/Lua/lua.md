@@ -346,4 +346,4 @@ end
 1 首先在初始化NT_ROGUE_INIT的时候，服务器会发过来选择的哪一套rogue配置，以及从中随机出的哪一张地图。
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202503171451308.png)
 rogue_map这个表里的id就是服务器发过来的具体哪一套配置，里面map_list就是地图的随机池，服务器也会发过来随机的地图id是多少。
-7 地图id确定了，就会在node_map_config这个中找到相应的配置，里面可以配UI的路径（需要知道ui怎么显示rogue路径），节点分层结构（配置每层都有哪些节点，以及节点的场地buff），
+7 地图id确定了，就会在node_map_config这个中找到相应的配置，里面可以配UI的路径（需要知道ui怎么显示rogue整体地图），节点分层结构（配置每层都有哪些节点，以及节点的场地buff），节点连接结构（配置每个节点的下一个节点是哪个节点）
