@@ -92,7 +92,7 @@
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -235,8 +235,9 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "4f727e04e61b69f3",
+  "active": "0a96c0160179e65a",
   "lastOpenFiles": [
+    "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/Lua/lua.md",
     "2 note/UClass/UClass.md",
     "2 note/GarbageCollection/GC.md",
@@ -249,7 +250,6 @@
     "2 note/网络/网络.md",
     "2 note/资源管理/未命名.md",
     "().md",
-    "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/特效系统/特效系统Cascade.md",
     "2 note/摄像机/Untitled.mdj",
