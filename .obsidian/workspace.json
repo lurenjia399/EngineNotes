@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "1 索引/索引.md",
+                "file": "2 note/动画/动画.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "索引"
+              "title": "动画"
             }
           },
           {
@@ -236,9 +236,9 @@
   },
   "active": "c8b986caeef71beb",
   "lastOpenFiles": [
+    "1 索引/索引.md",
     "2 note/动画/动画.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
-    "1 索引/索引.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/UObject/UObject，UPackage.md",
     "2 note/Lua/lua.md",
