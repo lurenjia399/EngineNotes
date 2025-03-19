@@ -2000,7 +2000,7 @@ EBrowseReturnVal::Type UEngine::Browse( FWorldContext& WorldContext, FURL URL, F
 	}
 }
 ```
-这一次tick就是根据url的不同，决定是服务器切换地图同步给客户端还是客户端自己切换。无论走服务器还是客户端都会走到Browse方法，这个方法里会清空PendingNetGame和NetDriver然后再创建，也就是断开客户端服务器链接，然后设置新的PendingNetGame。
+这一次tick就是根据url的不同，决定是服务器切换地图同步给客户端还是客户端自己切换。无论走服务器还是客户端都会走到Browse方法，这个方法里客户端执行时会清空PendingNetGame和NetDriver然后再创建，也就是客户端断开与服务器链接，然后设置新的PendingNetGame和NetDriver。
 ### 5 第四部分 处理PendingNetGame
 ```cpp
 // Update the pending level.
