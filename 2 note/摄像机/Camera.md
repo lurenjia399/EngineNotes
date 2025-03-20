@@ -776,3 +776,6 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraFOV(float DeltaTime)
 
 
 #### 总结
+
+1 摄像机的创建是在playercontroller里，会创建出playercameramanager
+2 我们重写了这个cameraManageer，在其初始化的时候会给他挂一些vi
