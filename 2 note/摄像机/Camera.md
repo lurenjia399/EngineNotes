@@ -695,7 +695,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdatePivotOffset_Implementation(f
 
 ```cpp
 /*
-	总的来说：
+	总的来说：Cache都是通过lua接口设置进来的
 	摄像机位置 = 看向目标点的位置(CurTargetLocation + TargetLocation_Cache) 
 				+ 目标点位置偏移(CurPivotOffset + PivotOffset_Cache)
 				+ 摄像机偏移(CurCameraOffset + CameraOffset_Cache)
