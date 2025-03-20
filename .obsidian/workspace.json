@@ -92,7 +92,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -234,10 +234,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "c8b986caeef71beb",
+  "active": "42b006487821f25b",
   "lastOpenFiles": [
-    "1 索引/索引.md",
     "2 note/World和Level/World和Level.md",
+    "1 索引/索引.md",
     "2 note/动画/动画.md",
     "2 note/Lua/lua.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
