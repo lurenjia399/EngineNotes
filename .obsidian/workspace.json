@@ -92,7 +92,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -235,10 +235,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "42b006487821f25b",
+  "active": "c8b986caeef71beb",
   "lastOpenFiles": [
-    "2 note/动画/动画.md",
     "2 note/摄像机/Camera.md",
+    "2 note/动画/动画.md",
     "1 索引/索引.md",
     "2 note/World和Level/World和Level.md",
     "2 note/Lua/lua.md",
