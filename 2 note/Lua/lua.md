@@ -247,6 +247,9 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 
 lightuserdata和userdata
 > Lightuserdata相当于是c语言指针，而userdata是对象。lightuserdata由c++管理生命周期，而userdata由lua管理。
+
+userdata被luagc之后，c++是如何知道的呢？
+走的是userdata的元表的__gc，c++这边就能知道了，把userdata从gc系统中移除掉，等待真正gc。
 # lua中按步骤执行
 
 ## 1 Coroutine
