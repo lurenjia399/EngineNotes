@@ -253,7 +253,8 @@ userdata被luagc之后，c++是如何知道的呢？
 
 c++如何获取到userdadta的呢？
 我们在通过Uobject创建userdata的时候，就会将UObject的lightuserdata存入注册表中，key是lightuserdata，value就是userdata。所以我们通过UObject，再从注册表中找就能找到userdata了。
-luazhe'bian
+lua这边是如何获取到UObject的呢？
+通过lua栈，c++这边通过lua_newuserdata创建出userdata， userdata就已经在栈中了，返回就可以了。
 # lua中按步骤执行
 
 ## 1 Coroutine
