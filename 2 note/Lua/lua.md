@@ -246,7 +246,7 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 > 第三部分就是UObject和lua文件相关联使lua能够重写蓝图方法，需要在UObject蓝图中填上lua文件路径。然后会在SpawnActor的流程里面调用关联的方法InitLuaActor，在方法中首先通过require加载lua文件并将返回值保存到registry中，然后是遍历UClass中的UFunction，在lua文件中找同名的函数，清空原来UFunction上的字节码，然后替换成lua函数的。
 
 lightuserdata和userdata
-> Lightuserdata相当于是c语言指针，而userdata是对象
+> Lightuserdata相当于是c语言指针，而userdata是对象。lightuserdata由c++管理生命周期，而userdata由lua管理。
 # lua中按步骤执行
 
 ## 1 Coroutine
