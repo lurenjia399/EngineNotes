@@ -252,7 +252,8 @@ userdata被luagc之后，c++是如何知道的呢？
 > 需要保证被userdata引用的UObject不会被gc掉，这里是将UObject纳入到gcObject的ARO方法中了。如果lua的gc把userdata删掉了，就会走到userdata的__gc方法中，进而c++这边也能知道，然后把他从ARO方法中移除掉。
 
 c++如何获取到userdadta的呢？
-
+我们在通过Uobject创建userdata的时候，就会将UObject的lightuserdata存入注册表中，key是lightuserdata，value就是userdata。所以我们通过UObject，再从注册表中找就能找到userdata了。
+luazhe'bian
 # lua中按步骤执行
 
 ## 1 Coroutine
