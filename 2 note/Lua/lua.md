@@ -250,6 +250,7 @@ lightuserdata和userdata
 
 userdata被luagc之后，c++是如何知道的呢？
 走的是userdata的元表的__gc，c++这边就能知道了，把userdata从gc系统中移除掉，等待真正gc。
+1 首先需要保证被userdata引用的UObject不会被gc掉，这里是将UObject纳入到gcObject的ARO方法中了。
 # lua中按步骤执行
 
 ## 1 Coroutine
