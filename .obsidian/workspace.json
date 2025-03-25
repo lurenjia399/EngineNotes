@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/Lua/lua.md",
+                "file": "2 note/World和Level/World和Level.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lua"
+              "title": "World和Level"
             }
           },
           {
@@ -236,8 +236,8 @@
   },
   "active": "0a96c0160179e65a",
   "lastOpenFiles": [
-    "2 note/动画/动画.md",
     "2 note/Lua/lua.md",
+    "2 note/动画/动画.md",
     "2 note/World和Level/World和Level.md",
     "2 note/网络/网络.md",
     "2 note/摄像机/Camera.md",
