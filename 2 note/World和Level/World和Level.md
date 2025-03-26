@@ -2572,7 +2572,8 @@ end
 > 3 蓝图有个接口，能直接显示streaminglevel，内部也是改变三个标志位。
 - 一个关卡，从unload到loadedVisible是怎么走的？
 1 第一次执行UpdateStreamingState，当前state是Unloaded，目标状态是LoadedNotVisible，然后会执行同步加载关卡的的流程，然后当前state变为了LoadedNotVisible
-2 第二次执行UpdateStreamingState，当前state是LoadedNotVisible，目标状态是LoadedVisible，会设置当前状态为MakingVisible，
+2 第二次执行UpdateStreamingState，当前state是LoadedNotVisible，目标状态是LoadedVisible，会设置当前状态为MakingVisible，会做这个BeginClientNetVisibilityRequest操作，不知道干啥的
+3 第三次执行UpdateStreamingState，当前state是MakingVisible，目标状态是LoadedVisible，
 
 - 应用
 > uiscene：首先根据配置知道需要加载的关卡是哪个，然后将其加载成streamingLevel的形式，将streaminglevel添加到world的consider数组中，然后就是设置streamingLevel的三个标志位，ShouldBeVisiable,ShouldBeLoaded,ShouldBeBlockOnLoad。然后会在world::tick里面根据我们配置的标志位来进行状态切换，将level加载到内存当中并显示出来，最后显示完成还会发送广播。
