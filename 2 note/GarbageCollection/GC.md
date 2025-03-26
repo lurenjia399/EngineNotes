@@ -1069,6 +1069,6 @@ bool IsPendingKillPending() const
 - gc哪些阶段可以使用多线程呢？
 1 遍历根数组
 2 标记阶段，通过ProcessAsync方法来启动多线程，每个线程都执行ProcessObjectArray方法，虽然开启了多线程，但主线程会等待所有的其他线程结束。
-3 
+3 收集阶段，
 
 
