@@ -2572,7 +2572,7 @@ end
 > 3 蓝图有个接口，能直接显示streaminglevel，内部也是改变三个标志位。
 - 一个关卡，从unload到loadedVisible是怎么走的？
 1 第一次执行UpdateStreamingState，当前state是Unloaded，目标状态是LoadedNotVisible，然后会执行同步加载关卡的的流程，然后当前state变为了LoadedNotVisible
-2 第二次执行UpdateStreamingState，当前state是LoadedNotVisible，目标状态是LoadedVisible，会设置当前状态为MakingVisible，会做这个BeginClientNetVisibilityRequest操作(APlayerController::ClientAckUpdateLevelVisibility)，
+2 第二次执行UpdateStreamingState，当前state是LoadedNotVisible，目标状态是LoadedVisible，会设置当前状态为MakingVisible，会做这个BeginClientNetVisibilityRequest操作，客户端会询问服务器当前
 3 第三次执行UpdateStreamingState，当前state是MakingVisible，目标状态是LoadedVisible，会执行AddToWorld操作，将当前level加到world中
 
 - 应用
