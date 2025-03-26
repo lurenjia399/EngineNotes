@@ -1067,9 +1067,11 @@ bool IsPendingKillPending() const
 - TSharedPtr能够修饰非Object类型，被TSharedPtr指针修饰的对象，不会被gc么？
 这个就类似于c++的智能指针，通过引用计数来自动控制释放，和gc系统整个没关系吧
 - gc哪些阶段可以使用多线程呢？
-1 遍历根数组
+1 遍历根数组，遍历全局的GRoots数组，通过ParallelFor遍历，主线程会等待。
 2 标记阶段，通过ProcessAsync方法来启动多线程，每个线程都执行ProcessObjectArray方法，虽然开启了多线程，但主线程会等待所有的其他线程结束。
 3 收集阶段，遍历全局的GUObjectArray数组，通过ParallelFor遍历，主线程依然会等待遍历完。
 4 清除阶段，在主线程调用begindestory，然后finishdestory。然后就是在内存中清除掉，会有一个工作线程帮助我们清楚，然后还会有一些只能在主线程清除。清除就是调用析构函数，然后释放掉内存，是在全局GUObjectArray数组中操作的，所以还需要上锁。
+- beginDestory做了什么操作？finishDestory做了什么操作？
+1 beginDestory，
 
 
