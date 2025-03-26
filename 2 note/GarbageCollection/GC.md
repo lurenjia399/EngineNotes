@@ -1073,6 +1073,6 @@ bool IsPendingKillPending() const
 4 清除阶段，在主线程调用begindestory，然后finishdestory。然后就是在内存中清除掉，会有一个工作线程帮助我们清楚，然后还会有一些只能在主线程清除。清除就是调用析构函数，然后释放掉内存，是在全局GUObjectArray数组中操作的，所以还需要上锁。
 - beginDestory做了什么操作？finishDestory做了什么操作？
 1 beginDestory，清空linkerload，也就是把里面的ExportMap清掉，说明别人无法在引用我们这个Object了。然后还会将我们Object的名称从全局hashtable中移除掉，hashtable的作用应该是快速查找，清掉就找不到了。
-2 finishDestory，把Object中的属性清掉，也就是执行完FinishDestory后就无法
+2 finishDestory，把Object中的属性清掉，也就是执行完FinishDestory后Object的内存就无法访问了。
 
 
