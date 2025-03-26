@@ -1070,6 +1070,6 @@ bool IsPendingKillPending() const
 1 遍历根数组
 2 标记阶段，通过ProcessAsync方法来启动多线程，每个线程都执行ProcessObjectArray方法，虽然开启了多线程，但主线程会等待所有的其他线程结束。
 3 收集阶段，遍历全局的GUObjectArray数组，通过ParallelFor遍历，主线程依然会等待遍历完。
-4 清除阶段，在主线程调用begindestory，然后finishdestory。然后
+4 清除阶段，在主线程调用begindestory，然后finishdestory。然后就是在内存中清除掉，会有一个工作线程帮助我们清楚，然后还会有一些只能在主线程清除。
 
 
