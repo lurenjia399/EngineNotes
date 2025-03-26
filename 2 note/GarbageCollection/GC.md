@@ -1072,6 +1072,6 @@ bool IsPendingKillPending() const
 3 收集阶段，遍历全局的GUObjectArray数组，通过ParallelFor遍历，主线程依然会等待遍历完。
 4 清除阶段，在主线程调用begindestory，然后finishdestory。然后就是在内存中清除掉，会有一个工作线程帮助我们清楚，然后还会有一些只能在主线程清除。清除就是调用析构函数，然后释放掉内存，是在全局GUObjectArray数组中操作的，所以还需要上锁。
 - beginDestory做了什么操作？finishDestory做了什么操作？
-1 beginDestory，
+1 beginDestory，清空linkerload将我们Object的名称从全局hashtable中移除掉，
 
 
