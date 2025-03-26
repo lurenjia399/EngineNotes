@@ -1068,6 +1068,7 @@ bool IsPendingKillPending() const
 这个就类似于c++的智能指针，通过引用计数来自动控制释放，和gc系统整个没关系吧
 - gc哪些阶段可以使用多线程呢？
 1 遍历根数组
-2 标记阶段，通过ProcessAsync方法来启动多线程，每个xian'cheng
+2 标记阶段，通过ProcessAsync方法来启动多线程，每个线程都执行ProcessObjectArray方法，虽然开启了多线程，但主线程会等待所有的其他线程结束。
+3 
 
 
