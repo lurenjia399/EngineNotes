@@ -120,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -262,7 +262,7 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "26b6fe496a4c5a03",
+  "active": "70bdac4abb793724",
   "lastOpenFiles": [
     "2 note/网络/网络.md",
     "2 note/Lua/lua.md",
