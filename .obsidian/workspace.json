@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/Lua/lua.md",
+                "file": "2 note/GarbageCollection/GC.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lua"
+              "title": "GC"
             }
           },
           {
@@ -264,6 +264,7 @@
   },
   "active": "26b6fe496a4c5a03",
   "lastOpenFiles": [
+    "2 note/Lua/lua.md",
     "2 note/Module/未命名.md",
     "2 note/SCS 和 CDO/未命名.md",
     "2 note/Tick逻辑/Tick逻辑.md",
@@ -274,7 +275,6 @@
     "2 note/网络/网络.md",
     "2 note/摄像机/Camera.md",
     "2 note/动画/动画.md",
-    "2 note/Lua/lua.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/动画/USkeletalMeshComponent.md",
     "1 索引/索引.md",
