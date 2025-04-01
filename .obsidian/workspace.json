@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/UClass/UClass.md",
+                "file": "2 note/Lua/lua.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "UClass"
+              "title": "lua"
             }
           },
           {
@@ -264,6 +264,10 @@
   },
   "active": "26b6fe496a4c5a03",
   "lastOpenFiles": [
+    "2 note/Module/未命名.md",
+    "2 note/SCS 和 CDO/未命名.md",
+    "2 note/Tick逻辑/Tick逻辑.md",
+    "2 note/UClass/UClass.md",
     "2 note/UObject/UObject，UPackage.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/World和Level/World和Level.md",
@@ -274,21 +278,17 @@
     "2 note/GarbageCollection/GC.md",
     "2 note/动画/USkeletalMeshComponent.md",
     "1 索引/索引.md",
-    "2 note/UClass/UClass.md",
     "2 note/资源管理/未命名.md",
     "().md",
-    "2 note/Tick逻辑/Tick逻辑.md",
     "2 note/特效系统/特效系统Cascade.md",
     "2 note/摄像机/Untitled.mdj",
     "2 note/摄像机",
     "2 note/动画",
     "conflict-files-obsidian-git.md",
     "2 note/FLatentActionManager/FLatentActionManager.md",
-    "2 note/SCS 和 CDO/未命名.md",
     "2 note/Actor逻辑/Actor.md",
     "2 note/未命名.md",
     "2 note/Lua",
-    "2 note/Module/未命名.md",
     "2 note/UClass",
     "2 note/Module",
     "UPlayer.md",
