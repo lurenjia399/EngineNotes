@@ -236,8 +236,7 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 - lua的注册表里都有什么？
 > 1 我们自己定义的全局弱表是在注册表中，key是REGINDEX_UOBJECT_TO_USERDATA 这些索引，value是全局弱表，弱表中元素key是UObject的lightuserdata，value是LuaUObjectUserData。
 > 2 类的元表也都在注册表中，key是类名，value是元表，元表中是类导出的各种函数以及变量。
-- lua如何调用UObject方法，变量？
-1 
+
 - lua是怎么表示UObject对象的？
 > 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中。首先我们手中有一个UObject对象，然后创建一个LuaObjectUserdata，LuaObjectUserdata就只有三个成员变量，userdata，uobj，flag。所以就将userdata和UObject绑定起来了。
 - lua是怎么模拟UObject对象的继承关系的？
@@ -256,9 +255,9 @@ userdata被luagc之后，c++是如何知道的呢？
 > 需要保证被userdata引用的UObject不会被gc掉，这里是将UObject纳入到gcObject的ARO方法中了。如果lua的gc把userdata删掉了，就会走到userdata的__gc方法中，进而c++这边也能知道，然后把他从ARO方法中移除掉。
 
 c++如何获取到userdadta的呢？
-我们在通过Uobject创建userdata的时候，就会将UObject的lightuserdata存入注册表中，key是lightuserdata，value就是userdata。所以我们通过UObject，再从注册表中找就能找到userdata了。
-lua这边是如何获取到UObject的呢？
-通过lua栈，c++这边通过lua_newuserdata创建出userdata， userdata就已经在栈中了，返回就可以了。
+> 我们在通过Uobject创建userdata的时候，就会将UObject的lightuserdata存入注册表中，key是lightuserdata，value就是userdata。所以我们通过UObject，再从注册表中找就能找到userdata了。
+> lua这边是如何获取到UObject的呢？
+> 通过lua栈，c++这边通过lua_newuserdata创建出userdata， userdata就已经在栈中了，返回就可以了。
 # lua中按步骤执行
 
 ## 1 Coroutine
