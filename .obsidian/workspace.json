@@ -83,12 +83,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/Lua/lua.md",
+                "file": "2 note/摄像机/Camera.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "lua"
+              "title": "Camera"
             }
           },
           {
@@ -250,6 +250,7 @@
   },
   "active": "6b7ce9ff3536bcb3",
   "lastOpenFiles": [
+    "2 note/Lua/lua.md",
     "2 note/UClass/UClass.md",
     "2 note/World和Level/World和Level.md",
     "2 note/UObject/UObject，UPackage.md",
@@ -260,7 +261,6 @@
     "2 note/Actor逻辑/Actor.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/摄像机/Camera.md",
-    "2 note/Lua/lua.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/资源管理/未命名.md",
     "().md",
