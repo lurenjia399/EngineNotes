@@ -111,12 +111,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/GarbageCollection/GC.md",
+                "file": "2 note/Lua/lua.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GC"
+              "title": "lua"
             }
           }
         ],
@@ -264,6 +264,7 @@
   },
   "active": "2601a3dcedbe31a6",
   "lastOpenFiles": [
+    "2 note/GarbageCollection/GC.md",
     "2 note/动画/动画.md",
     "2 note/动画/USkeletalMeshComponent.md",
     "2 note/摄像机/Camera.md",
@@ -274,7 +275,6 @@
     "2 note/UObject/UObject，UPackage.md",
     "1 索引/索引.md",
     "2 note/Actor逻辑/Actor.md",
-    "2 note/GarbageCollection/GC.md",
     "2 note/UPlayer,PlayerController/UPlayer.md",
     "2 note/资源管理/未命名.md",
     "().md",
