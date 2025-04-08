@@ -75,8 +75,41 @@ void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFla
 	}
 	// 创建一个空的ObjectItem
 	FUObjectItem* ObjectItem = IndexToObject(Index);
-	// f
+	// 赋值ObjectItem
 	ObjectItem->Object = Object;
+	ObjectItem->Flags = (int32)EInternalObjectFlags::PendingConstruction;
+	ObjectItem->ClusterRootIndex = 0;
+	ObjectItem->SerialNumber = SerialNumber;
+	Object->InternalIndex = Index;
+	
+	// 释放锁
+	UnlockInternalArray();
+	// 是一个广播UObject创建
+	for (int32 ListenerIndex = 0; ListenerIndex < UObjectCreateListeners.Num(); ListenerIndex++)
+	{
+		UObjectCreateListeners[ListenerIndex]->NotifyUObjectCreated(Object,Index);
+	}
+}
+```
+
+```cpp
+UObjectBase::~UObjectBase()
+{
+	// If not initialized, skip out.
+	if( UObjectInitialized() && ClassPrivate && !GIsCriticalError )
+	{
+		// Validate it.
+		check(IsValidLowLevel());
+		check(GetFName() == NAME_None);
+#if UE_WITH_OBJECT_HANDLE_LATE_RESOLVE
+		UE::CoreUObject::Private::FreeObjectHandle(this);
+#endif 
+		GUObjectArray.FreeUObjectIndex(this);
+	}
+
+#if CSV_PROFILER && CSV_TRACK_UOBJECT_COUNT
+	UObjectStats::DecrementUObjectCount();
+#endif
 }
 ```
 # 2 gc的开始入口
