@@ -120,7 +120,7 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -262,10 +262,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "26b6fe496a4c5a03",
+  "active": "6b7ce9ff3536bcb3",
   "lastOpenFiles": [
-    "2 note/GarbageCollection/GC.md",
     "2 note/指针/指针.md",
+    "2 note/GarbageCollection/GC.md",
     "2 note/指针",
     "2 note/Lua/lua.md",
     "2 note/Module/未命名.md",
