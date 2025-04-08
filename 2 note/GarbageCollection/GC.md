@@ -58,6 +58,71 @@ enum class EInternalObjectFlags : int32
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
+## 添加到GUObjectArray数组中
+```cpp
+void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFlags InitialFlags, int32 AlreadyAllocatedIndex, int32 SerialNumber)
+{
+	// 互斥锁，先上锁
+	LockInternalArray();
+	// 如果ObjAvailableList这个里有空闲的，索引就是他。如果没有就扩容下，向后增加一个索引
+	if (ObjAvailableList.Num() > 0)
+	{
+		Index = ObjAvailableList.Pop();
+	}
+	else
+	{
+		Index = ObjObjects.AddSingle();			
+	}
+	// 创建一个空的ObjectItem
+	FUObjectItem* ObjectItem = IndexToObject(Index);
+	// 赋值ObjectItem
+	ObjectItem->Object = Object;
+	ObjectItem->Flags = (int32)EInternalObjectFlags::PendingConstruction;
+	ObjectItem->ClusterRootIndex = 0;
+	ObjectItem->SerialNumber = SerialNumber;
+	Object->InternalIndex = Index;
+	
+	// 释放锁
+	UnlockInternalArray();
+	// 是一个广播UObject创建
+	for (int32 ListenerIndex = 0; ListenerIndex < UObjectCreateListeners.Num(); ListenerIndex++)
+	{
+		UObjectCreateListeners[ListenerIndex]->NotifyUObjectCreated(Object,Index);
+	}
+}
+```
+## 从GUObjectArray数组中移除掉
+```cpp
+// UObjectBase的析构函数中，调用FreeUObjectIndex这个方法
+UObjectBase::~UObjectBase()
+{
+	// If not initialized, skip out.
+	if( UObjectInitialized() && ClassPrivate && !GIsCriticalError )
+	{
+		GUObjectArray.FreeUObjectIndex(this);
+	}
+}
+
+void FUObjectArray::FreeUObjectIndex(UObjectBase* Object)
+{
+	// 只能在游戏线程中清除
+	check(IsInGameThread() || IsInGarbageCollectorThread());
+	// 通过索引拿到ObjectItem
+	int32 Index = Object->InternalIndex;
+	FUObjectItem* ObjectItem = IndexToObject(Index);
+	// 清除其中数据
+	ObjectItem->Object = nullptr;
+	ObjectItem->Flags = 0;
+	ObjectItem->ClusterRootIndex = 0;
+	ObjectItem->SerialNumber = 0;
+	// 把索引添加到空闲索引中
+	if (Index > ObjLastNonGCIndex && !GExitPurge && bShouldRecycleObjectIndices)
+	{
+		ObjAvailableList.Add(Index);
+	}
+}
+```
+在添加AllocateUObjectIndex方法中会首先找空闲索引然后使用，如果没有空闲索引就会递增一个新的。在移除FreeUObjectIndex方法中会将移除的索引添加到空闲索引中。也就是说在同一时间下，每个UObjectItem的索引都是不同的，在不同时间情况下同一个索引可能指向不同的UObjectItem。
 # 2 gc的开始入口
 ```cpp
 // 手动通过这个方法来gc，设置bFullPurgeTriggered标志位，在下一帧调用gc

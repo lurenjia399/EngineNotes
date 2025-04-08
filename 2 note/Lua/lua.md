@@ -236,8 +236,7 @@ UObject * FLuaUtils::GetUObject(lua_State * L, int ParamIndex,wLua::LuaUObjectUs
 - lua的注册表里都有什么？
 > 1 我们自己定义的全局弱表是在注册表中，key是REGINDEX_UOBJECT_TO_USERDATA 这些索引，value是全局弱表，弱表中元素key是UObject的lightuserdata，value是LuaUObjectUserData。
 > 2 类的元表也都在注册表中，key是类名，value是元表，元表中是类导出的各种函数以及变量。
-- lua如何调用UObject方法，变量？
-1 
+
 - lua是怎么表示UObject对象的？
 > 主要就是通过FLuaUtils::ReturnUObject这个接口将表示UObject的userdata放到栈中。首先我们手中有一个UObject对象，然后创建一个LuaObjectUserdata，LuaObjectUserdata就只有三个成员变量，userdata，uobj，flag。所以就将userdata和UObject绑定起来了。
 - lua是怎么模拟UObject对象的继承关系的？
@@ -256,9 +255,9 @@ userdata被luagc之后，c++是如何知道的呢？
 > 需要保证被userdata引用的UObject不会被gc掉，这里是将UObject纳入到gcObject的ARO方法中了。如果lua的gc把userdata删掉了，就会走到userdata的__gc方法中，进而c++这边也能知道，然后把他从ARO方法中移除掉。
 
 c++如何获取到userdadta的呢？
-我们在通过Uobject创建userdata的时候，就会将UObject的lightuserdata存入注册表中，key是lightuserdata，value就是userdata。所以我们通过UObject，再从注册表中找就能找到userdata了。
-lua这边是如何获取到UObject的呢？
-通过lua栈，c++这边通过lua_newuserdata创建出userdata， userdata就已经在栈中了，返回就可以了。
+> 我们在通过Uobject创建userdata的时候，就会将UObject的lightuserdata存入注册表中，key是lightuserdata，value就是userdata。所以我们通过UObject，再从注册表中找就能找到userdata了。
+> lua这边是如何获取到UObject的呢？
+> 通过lua栈，c++这边通过lua_newuserdata创建出userdata， userdata就已经在栈中了，返回就可以了。
 # lua中按步骤执行
 
 ## 1 Coroutine
@@ -310,6 +309,69 @@ end)
 task()
 task()
 task()
+```
+
+## 3 只读表
+
+```lua
+local function read_only(inputTable)  
+    -- 避免table 互相引用，加入tempTable建立索引，存储已经处理过的table  
+    local tempTable = {}  
+  
+    local function __read_only(tbl)  
+        -- 正常如果没有互相引用，都会走处理逻辑  
+        if not tempTable[tbl] then  
+            -- 取到table的元表，如果没有则创建一个空table，并设置成元表，目的：下次直接可以从table的元表里取处理过的只读table  
+            local mt = getmetatable(tbl)  
+            if not mt then  
+                mt = {}  
+                setmetatable(tbl, mt)  
+            end  
+  
+            -- 取到元表里的__read_only_proxy字段（处理过的只读table），没有则创建  
+            local proxy = mt.__read_only_proxy  
+            if not proxy then  
+                proxy = {}  
+                -- 再设置回去  
+                mt.__read_only_proxy = proxy  
+                -- 重要的处理逻辑，设置空table的元表数据  
+                local tbl_mt = {  
+                    __index = tbl,  -- 取数据  
+                    __newindex = function(t,k,v) print("can not write!") end,  -- 写数据会报错  
+                    __pairs = function(t) return pairs(tbl) end, -- 重写遍历  
+                    __len = function(t) return #tbl end,  -- 重写获取长度  
+                    __read_only_proxy = proxy,  -- 这里也设置一下，方便获取  
+                }  
+  
+                setmetatable(proxy, tbl_mt)  
+            end  
+  
+            -- 保存  
+            tempTable[tbl] = proxy  
+  
+            -- 递归处理table里面的table  
+            for k, v in pairs(tbl) do  
+                if type(v) == "table" then  
+                    tempTable[k] = __read_only(v)  
+                end  
+            end        end  
+        -- 返回保存的数据  
+        return tempTable[tbl]  
+    end  
+  
+    return __read_only(inputTable)  
+end
+
+local test = {a = 20}  
+local test_only_read = read_only(test)  
+  
+test_only_read["a"] = 10
+
+--[[
+基本思路：
+1 我们手中有一个表a，表a中有本身存在的元素，我们想把这个表a改成只读表。
+2 我们就在创建一个表b，把表b的__index设置成表a，把表b的__newindex设置成提前返回的
+]]--
 ```
 
 # 肉鸽
