@@ -58,7 +58,7 @@ enum class EInternalObjectFlags : int32
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
-下面看下AllocateUObjectIndex具体的放入方法：
+## 添加到GUObjectArray数组中
 ```cpp
 void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFlags InitialFlags, int32 AlreadyAllocatedIndex, int32 SerialNumber)
 {
@@ -91,25 +91,16 @@ void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFla
 	}
 }
 ```
-
+## 从GUObjectArray数组中移除掉
 ```cpp
+// UObjectBase的析构函数zhong
 UObjectBase::~UObjectBase()
 {
 	// If not initialized, skip out.
 	if( UObjectInitialized() && ClassPrivate && !GIsCriticalError )
 	{
-		// Validate it.
-		check(IsValidLowLevel());
-		check(GetFName() == NAME_None);
-#if UE_WITH_OBJECT_HANDLE_LATE_RESOLVE
-		UE::CoreUObject::Private::FreeObjectHandle(this);
-#endif 
 		GUObjectArray.FreeUObjectIndex(this);
 	}
-
-#if CSV_PROFILER && CSV_TRACK_UOBJECT_COUNT
-	UObjectStats::DecrementUObjectCount();
-#endif
 }
 ```
 # 2 gc的开始入口
