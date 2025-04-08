@@ -64,19 +64,19 @@ void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFla
 {
 	// 互斥锁，先上锁
 	LockInternalArray();
-	// 
+	// 如果ObjAvailableList这个里有空闲的，索引就是他。如果没有就扩容下，向后增加一个索引
 	if (ObjAvailableList.Num() > 0)
 	{
 		Index = ObjAvailableList.Pop();
-		const int32 AvailableCount = ObjAvailableList.Num();
-		checkSlow(AvailableCount >= 0);
 	}
 	else
 	{
-		// Make sure ObjFirstGCIndex is valid, otherwise we didn't close the disregard for GC set
-		check(ObjFirstGCIndex >= 0);
 		Index = ObjObjects.AddSingle();			
 	}
+	// 创建一个空的ObjectItem
+	FUObjectItem* ObjectItem = IndexToObject(Index);
+	// f
+	ObjectItem->Object = Object;
 }
 ```
 # 2 gc的开始入口
