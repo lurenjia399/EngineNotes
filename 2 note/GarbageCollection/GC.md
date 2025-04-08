@@ -58,6 +58,13 @@ enum class EInternalObjectFlags : int32
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
+下面
+```cpp
+void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFlags InitialFlags, int32 AlreadyAllocatedIndex, int32 SerialNumber)
+{
+	
+}
+```
 # 2 gc的开始入口
 ```cpp
 // 手动通过这个方法来gc，设置bFullPurgeTriggered标志位，在下一帧调用gc
