@@ -58,11 +58,25 @@ enum class EInternalObjectFlags : int32
 	GarbageCollectionKeepFlags = Native | Async | AsyncLoading | LoaderImport,
 };
 ```
-下面
+下面看下AllocateUObjectIndex具体的放入方法：
 ```cpp
 void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFlags InitialFlags, int32 AlreadyAllocatedIndex, int32 SerialNumber)
 {
-	
+	// 互斥锁，先上锁
+	LockInternalArray();
+	// 
+	if (ObjAvailableList.Num() > 0)
+	{
+		Index = ObjAvailableList.Pop();
+		const int32 AvailableCount = ObjAvailableList.Num();
+		checkSlow(AvailableCount >= 0);
+	}
+	else
+	{
+		// Make sure ObjFirstGCIndex is valid, otherwise we didn't close the disregard for GC set
+		check(ObjFirstGCIndex >= 0);
+		Index = ObjObjects.AddSingle();			
+	}
 }
 ```
 # 2 gc的开始入口
