@@ -115,8 +115,14 @@ void FUObjectArray::FreeUObjectIndex(UObjectBase* Object)
 	ObjectItem->Flags = 0;
 	ObjectItem->ClusterRootIndex = 0;
 	ObjectItem->SerialNumber = 0;
+	// 把索引添加到空闲索引中
+	if (Index > ObjLastNonGCIndex && !GExitPurge && bShouldRecycleObjectIndices)
+	{
+		ObjAvailableList.Add(Index);
+	}
 }
 ```
+在添加AllocateUObjectIndex方法中会首先找空闲索引然后使用，如果没有空闲索引就会递增一个新的。在移除FreeUObjectIndex方法中会将移除的索引添加到空闲索引中。也就是说在不同时间情况下同一个索引可能指向不同的UObjectItem
 # 2 gc的开始入口
 ```cpp
 // 手动通过这个方法来gc，设置bFullPurgeTriggered标志位，在下一帧调用gc
