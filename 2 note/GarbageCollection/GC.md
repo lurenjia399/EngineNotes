@@ -93,7 +93,7 @@ void FUObjectArray::AllocateUObjectIndex(UObjectBase* Object, EInternalObjectFla
 ```
 ## 从GUObjectArray数组中移除掉
 ```cpp
-// UObjectBase的析构函数zhong
+// UObjectBase的析构函数中，调用FreeUObjectIndex这个方法
 UObjectBase::~UObjectBase()
 {
 	// If not initialized, skip out.
@@ -101,6 +101,20 @@ UObjectBase::~UObjectBase()
 	{
 		GUObjectArray.FreeUObjectIndex(this);
 	}
+}
+
+void FUObjectArray::FreeUObjectIndex(UObjectBase* Object)
+{
+	// 只能在游戏线程中清除
+	check(IsInGameThread() || IsInGarbageCollectorThread());
+	// 通过索引拿到ObjectItem
+	int32 Index = Object->InternalIndex;
+	FUObjectItem* ObjectItem = IndexToObject(Index);
+	// 清除其中数据
+	ObjectItem->Object = nullptr;
+	ObjectItem->Flags = 0;
+	ObjectItem->ClusterRootIndex = 0;
+	ObjectItem->SerialNumber = 0;
 }
 ```
 # 2 gc的开始入口
