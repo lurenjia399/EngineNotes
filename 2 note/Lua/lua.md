@@ -311,6 +311,63 @@ task()
 task()
 ```
 
+## 3 只读表
+
+```lua
+local function read_only(inputTable)  
+    -- 避免table 互相引用，加入tempTable建立索引，存储已经处理过的table  
+    local tempTable = {}  
+  
+    local function __read_only(tbl)  
+        -- 正常如果没有互相引用，都会走处理逻辑  
+        if not tempTable[tbl] then  
+            -- 取到table的元表，如果没有则创建一个空table，并设置成元表，目的：下次直接可以从table的元表里取处理过的只读table  
+            local mt = getmetatable(tbl)  
+            if not mt then  
+                mt = {}  
+                setmetatable(tbl, mt)  
+            end  
+  
+            -- 取到元表里的__read_only_proxy字段（处理过的只读table），没有则创建  
+            local proxy = mt.__read_only_proxy  
+            if not proxy then  
+                proxy = {}  
+                -- 再设置回去  
+                mt.__read_only_proxy = proxy  
+                -- 重要的处理逻辑，设置空table的元表数据  
+                local tbl_mt = {  
+                    __index = tbl,  -- 取数据  
+                    __newindex = function(t,k,v) print("can not write!") end,  -- 写数据会报错  
+                    __pairs = function(t) return pairs(tbl) end, -- 重写遍历  
+                    __len = function(t) return #tbl end,  -- 重写获取长度  
+                    __read_only_proxy = proxy,  -- 这里也设置一下，方便获取  
+                }  
+  
+                setmetatable(proxy, tbl_mt)  
+            end  
+  
+            -- 保存  
+            tempTable[tbl] = proxy  
+  
+            -- 递归处理table里面的table  
+            for k, v in pairs(tbl) do  
+                if type(v) == "table" then  
+                    tempTable[k] = __read_only(v)  
+                end  
+            end        end  
+        -- 返回保存的数据  
+        return tempTable[tbl]  
+    end  
+  
+    return __read_only(inputTable)  
+end
+
+local test = {a = 20}  
+local test_only_read = read_only(test)  
+  
+test_only_read["a"] = 10
+```
+
 # 肉鸽
 ## 弱引用的使用
 https://www.cnblogs.com/sifenkesi/p/3850760.html
