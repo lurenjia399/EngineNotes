@@ -366,6 +366,12 @@ local test = {a = 20}
 local test_only_read = read_only(test)  
   
 test_only_read["a"] = 10
+
+--[[
+基本思路：
+1 我们手中有一个表a，表a中有本身存在的元素，我们想把这个表a改成只读表。
+2 我们就在创建一个表b，把表b的__index设置成表a，把表b的__newindex设置成提前返回的
+]]--
 ```
 
 # 肉鸽
