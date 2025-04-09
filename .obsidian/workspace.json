@@ -134,7 +134,7 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -276,16 +276,16 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "2601a3dcedbe31a6",
+  "active": "42b006487821f25b",
   "lastOpenFiles": [
-    "2 note/GarbageCollection/GC.md",
-    "2 note/动画/USkeletalMeshComponent.md",
-    "2 note/Lua/lua.md",
     "2 note/动画/动画.md",
+    "2 note/GarbageCollection/GC.md",
+    "2 note/UClass/UClass.md",
+    "2 note/Lua/lua.md",
+    "2 note/动画/USkeletalMeshComponent.md",
     "2 note/射击校验/射击校验.md",
     "2 note/World和Level/World和Level.md",
     "2 note/UObject/UObject，UPackage.md",
-    "2 note/UClass/UClass.md",
     "2 note/网络/网络.md",
     "2 note/摄像机/Camera.md",
     "1 索引/索引.md",
