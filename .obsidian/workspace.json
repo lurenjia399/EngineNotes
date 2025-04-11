@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/网络/网络.md",
+                "file": "2 note/摄像机/Camera.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "网络"
+              "title": "Camera"
             }
           },
           {
@@ -278,8 +278,8 @@
   },
   "active": "26b6fe496a4c5a03",
   "lastOpenFiles": [
-    "2 note/射击校验/射击校验.md",
     "2 note/网络/网络.md",
+    "2 note/射击校验/射击校验.md",
     "2 note/Lua/lua.md",
     "2 note/动画/USkeletalMeshComponent.md",
     "2 note/动画/动画.md",

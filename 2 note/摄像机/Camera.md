@@ -783,3 +783,7 @@ void UAzurePlayerCameraViewModeComponentBase::UpdateCameraFOV(float DeltaTime)
 4 Location的计算就是通过两个向量来的，首先确定一个Target，在Target的基础上加Pivot，在加Offset就表示摄像机位置了。举个例子就是tps模式下，我们的Target一般就是玩家头，给Target添加一个向后的向量也就是Pivot，然后再加一个向右的Offset向量，最终摄像机的位置就在玩家头的右后方。
 5 Rotation的计算就是算出当前帧的Rotation值 + offset偏移值
 6 Fov的计算也是一样，算出当前帧的Fov + offset偏移值
+
+# 
+https://zhuanlan.zhihu.com/p/433178412
+
