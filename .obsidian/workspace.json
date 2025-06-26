@@ -4,137 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "ce5bad4f6f0bd9af",
+        "id": "584de23606b11d1d",
         "type": "tabs",
         "children": [
           {
-            "id": "64ff324f2f51e298",
+            "id": "c5b7fa8f6915103a",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/动画/动画.md",
+                "file": "3 diary/2025-06-25.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "动画"
-            }
-          },
-          {
-            "id": "42b006487821f25b",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/World和Level/World和Level.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "World和Level"
-            }
-          },
-          {
-            "id": "0a96c0160179e65a",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/动画/动画.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "动画"
-            }
-          },
-          {
-            "id": "2e51021b0fd60122",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/UObject/UObject，UPackage.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "UObject，UPackage"
-            }
-          },
-          {
-            "id": "c8b986caeef71beb",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/UClass/UClass.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "UClass"
-            }
-          },
-          {
-            "id": "6b7ce9ff3536bcb3",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/GarbageCollection/GC.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "GC"
-            }
-          },
-          {
-            "id": "26b6fe496a4c5a03",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/动画/USkeletalMeshComponent.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "USkeletalMeshComponent"
-            }
-          },
-          {
-            "id": "2601a3dcedbe31a6",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/Lua/lua.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "lua"
-            }
-          },
-          {
-            "id": "4028a6373a3f2051",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "2 note/射击校验/射击校验.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "射击校验"
+              "title": "2025-06-25"
             }
           }
-        ],
-        "currentTab": 7
+        ]
       }
     ],
     "direction": "vertical"
@@ -191,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 237.5
   },
   "right": {
     "id": "001f2b6ca6570c6a",
@@ -207,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "2 note/摄像机/Camera.md",
+                "file": "3 diary/2025-06-25.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -217,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Camera 的反向链接列表"
+              "title": "2025-06-25 的反向链接列表"
             }
           },
           {
@@ -276,16 +163,29 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "2601a3dcedbe31a6",
+  "active": "c5b7fa8f6915103a",
   "lastOpenFiles": [
-    "2 note/动画/动画.md",
+    "3 diary/2025-06-24.md",
+    "3 diary/2025-06-25.md",
+    "3 diary/2025-06-23.md",
+    "未命名.md",
+    "未命名 1.md",
+    "3 diary/2025-06-21.md",
     "2 note/World和Level/World和Level.md",
+    "3 diary/2025-06-20.md",
+    "2 note/材质/未命名.md",
+    "2 note/材质",
+    "2 note/UObject/UObject，UPackage.md",
+    "2025-06-20.md",
+    "3 diary",
+    "新建文件夹",
+    "未命名.canvas",
+    "2 note/射击校验/射击校验.md",
+    "2 note/Lua/lua.md",
+    "2 note/动画/动画.md",
     "2 note/GarbageCollection/GC.md",
     "2 note/UClass/UClass.md",
-    "2 note/Lua/lua.md",
     "2 note/动画/USkeletalMeshComponent.md",
-    "2 note/射击校验/射击校验.md",
-    "2 note/UObject/UObject，UPackage.md",
     "2 note/网络/网络.md",
     "2 note/摄像机/Camera.md",
     "1 索引/索引.md",
@@ -298,19 +198,9 @@
     "2 note/摄像机/Untitled.mdj",
     "2 note/摄像机",
     "2 note/动画",
-    "conflict-files-obsidian-git.md",
-    "2 note/FLatentActionManager/FLatentActionManager.md",
-    "2 note/SCS 和 CDO/未命名.md",
-    "2 note/未命名.md",
     "2 note/Lua",
-    "2 note/Module/未命名.md",
     "2 note/UClass",
     "2 note/Module",
-    "UPlayer.md",
-    "2 note/UObject",
-    "2 note/资源管理",
-    "2 note/interface",
-    "2 note/网络/未命名.md",
-    "2 note/网络/网络.mdj"
+    "2 note/UObject"
   ]
 }
