@@ -655,6 +655,7 @@ bool UEngine::LoadMap( FWorldContext& WorldContext, FURL URL, class UPendingNetG
 11 还有个问题，他为什么要先创建个空的（过渡地图），然后再加载默认的地图呢？
 至于为什么需要设置过渡地图？试想如果没有过渡地图，那么在当前地图中加载（异步加载的，后面会详细介绍）的新地图之后，此时World同时存在新旧两个地图，如果都比较大的话，内存告急！
 # 2 流式关卡切换
+https://zhuanlan.zhihu.com/p/22367923168
 一种将大世界地图分成小level的方式，然后通过关卡之间的加载卸载来模拟大世界的逻辑
 ## 2.1 添加子关卡的两种方式
 ### 1 手动添加
@@ -975,6 +976,7 @@ void UWorldComposition::PostLoad()
 ```
 这个方法就是添加到StreamingLevelsToConsider这个数组里面
 ## 2.2 流式关卡加载流程
+
 ### 1 又是在Engine::Tick方法里面，我们就看GameEngine吧
 ```cpp
 if( GIsServer == true )
@@ -1037,162 +1039,150 @@ void UWorld::UpdateLevelStreaming()
 ```
 主要就是对World中StreamingLevelsToConsider这个数组每个元素的处理。所以我们想要加载关卡首先就需要存到StreamingLevelsToConsider这个数组里面，然后world在tick的时候会进行加载。
 ### 3 ULevelStreaming::UpdateStreamingState
-这个方法分成了两部分，一部分是匿名方法异步加载关卡，一部分是对StreamingLevel的state进行处理。这里我们就看下第一部分
+我们拿一个unload的streaminglevel，需要加载成loadedvisible来举例。
 ```cpp
-void ULevelStreaming::UpdateStreamingState(bool& bOutUpdateAgain, bool& bOutRedetermineTarget)
-{
-	auto UpdateStreamingState_RequestLevel = [&]()
-	{
-		// 很长的方法，主要就这个，其他的都先省略掉
-		RequestLevel(World, bAllowLevelLoadRequests, (bBlockOnLoad ? ULevelStreaming::AlwaysBlock : ULevelStreaming::BlockAlwaysLoadedLevelsOnly));
-		
-	};
-}
-
 bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoadRequests, EReqLevelBlock BlockPolicy)
 {
-	// Quit early in case load request already issued
-	// 当前关卡正在加载，直接返回
-	if (CurrentState == ECurrentState::Loading)
-	{
-		return true;
-	}
-
-	// Previous attempts have failed, no reason to try again
-	// 当前关卡加载失败了，不在进行重新加载
-	if (CurrentState == ECurrentState::FailedToLoad)
-	{
-		return false;
-	}
-
-	// Package name we want to load
-	const bool bIsGameWorld = PersistentWorld->IsGameWorld();
-	const FName DesiredPackageName = bIsGameWorld ? GetLODPackageName() : GetWorldAssetPackageFName();
-	const FName LoadedLevelPackageName = GetLoadedLevelPackageName();
-
-	// Check if currently loaded level is what we want right now
-	// 当前关卡已经加载了，并且DesiredLevel也是当前关卡，直接返回
-	if (LoadedLevel && LoadedLevelPackageName == DesiredPackageName)
-	{
-		return true;
-	}
-
-	// Can not load new level now, there is still level pending unload
-	// 已经标记卸载当前关卡了，直接返回
-	if (PendingUnloadLevel)
-	{
-		return false;
-	}
-
-	// Can not load new level now either, we're still processing visibility for this one
-	// 现在正在处理当前关卡的可见性，也就是再可见和不可见的状态切换中，直接返回
-	ULevel* PendingLevelVisOrInvis = (PersistentWorld->GetCurrentLevelPendingVisibility() ? PersistentWorld->GetCurrentLevelPendingVisibility() : PersistentWorld->GetCurrentLevelPendingInvisibility());
-    if (PendingLevelVisOrInvis && PendingLevelVisOrInvis == LoadedLevel)
-    {
-		
-		return false;
-	}
-
-	// Validate that our new streaming level is unique, check for clash with currently loaded streaming levels
-	// 这个循环是检测要创建的当前关卡是不是独一无二的，检测关卡中的World是不是被其他卸载的关卡引用
-	// 如果是的话，就直接返回
-	for (ULevelStreaming* OtherLevel : PersistentWorld->GetStreamingLevels())
-	{
-		if (OtherLevel == nullptr || OtherLevel == this)
-		{
-			continue;
-		}
-
-		const ECurrentState OtherState = OtherLevel->GetCurrentState();
-		if (OtherState == ECurrentState::FailedToLoad || OtherState == ECurrentState::Removed || (OtherState == ECurrentState::Unloaded && (OtherLevel->TargetState == ETargetState::Unloaded || OtherLevel->TargetState == ETargetState::UnloadedAndRemoved)))
-		{
-			// If the other level isn't loaded or in the process of being loaded we don't need to consider it
-			continue;
-		}
-
-		if (OtherLevel->WorldAsset == WorldAsset)
-		{ 
-			if (OtherLevel->GetIsRequestingUnloadAndRemoval())
-			{
-				return false; // Cannot load new level now, retry until the OtherLevel is done unloading
-			}
-			else
-			{
-				
-				CurrentState = ECurrentState::FailedToLoad;
-				return false;
-			}
-		}
-	}
-	
-	EPackageFlags PackageFlags = PKG_ContainsMap;
-	int32 PIEInstanceID = INDEX_NONE;
-
-	// Try to find the [to be] loaded package.
 	// 找一下当前关卡的UPackage
 	UPackage* LevelPackage = (UPackage*)StaticFindObjectFast(UPackage::StaticClass(), nullptr, DesiredPackageName, 0, 0, RF_NoFlags, EInternalObjectFlags::PendingKill);
-
-	// copy streaming level on demand if we are in PIE
-	// (the world is already loaded for the editor, just find it and copy it)
-	if ( LevelPackage == nullptr && PersistentWorld->IsPlayInEditor() )
-	{
-		// 当前关卡的UPackage没加载，并且是编辑器模式下有段逻辑
-		// 不看了，直接省略掉
-	}
-
-	// Package is already or still loaded.
 	if (LevelPackage)
 	{
 		// 这边是当前关卡的UPackage已经加载好了，不需要再启动线程去加载了，直接走加载完成后的逻辑
-		// 代码省略掉
 		return true;
 	}
-
-	// Async load package if world object couldn't be found and we are allowed to request a load.
 	if (bAllowLevelLoadRequests)
 	{
-		const FName DesiredPackageNameToLoad = bIsGameWorld ? GetLODPackageNameToLoad() : PackageNameToLoad;
-		const FString PackageNameToLoadFrom = DesiredPackageNameToLoad != NAME_None ? DesiredPackageNameToLoad.ToString() : DesiredPackageName.ToString();
-
 		// 当前关卡UPackage存在
 		if (FPackageName::DoesPackageExist(PackageNameToLoadFrom))
 		{
 			// 切换当前关卡的State为Loading
 			CurrentState = ECurrentState::Loading;
-			// 增加处在Loading中的关卡计数器
-			FWorldNotifyStreamingLevelLoading::Started(PersistentWorld);
-			// 一个静态数组，保存下当前关卡UPackage和World
-			ULevel::StreamedLevelsOwningWorld.Add(DesiredPackageName, PersistentWorld);
-			// 保存数组
-			UWorld::WorldTypePreLoadMap.FindOrAdd(DesiredPackageName) = PersistentWorld->WorldType;
-
 			// 开启线程，加载当前关卡资源
 			// 加载完成后调用ULevelStreaming::AsyncLevelLoadComplete方法
 			LoadPackageAsync(DesiredPackageName.ToString(), nullptr, *PackageNameToLoadFrom, FLoadPackageAsyncDelegate::CreateUObject(this, &ULevelStreaming::AsyncLevelLoadComplete), PackageFlags, PIEInstanceID, GetPriority());
-
-			// streamingServer: server loads everything?
-			// Editor immediately blocks on load and we also block if background level streaming is disabled.
-			if (BlockPolicy == AlwaysBlock || (ShouldBeAlwaysLoaded() && BlockPolicy != NeverBlock))
-			{
-				if (IsAsyncLoading())
-				{
-				}
-
-				// Finish all async loading.
-				FlushAsyncLoading();
-			}
-		}
-		else
-		{
-			CurrentState = ECurrentState::FailedToLoad;
-			return false;
 		}
 	}
-
 	return true;
 }
 ```
-异步加载关卡之前的一些条件处理，判断是否能够加载当前关卡。在LoadPackageAsync这个方法之前会设置关卡的CurrentState为Loading状态，此时当前关卡的CurrenState是Loading，TargetState是LoadedNotVisibe。
+2 第一步就是unload状态到loadednotvisible。这个状态切换主要是调用了RequestLevel方法，将我们的关卡资源加载到内存当中。
+3 第二步是loadednotvisible状态到MakingVisible状态。这个状态切换主要是BeginClientNetVisibilityRequest方法，记录了客户端的关卡id，用于通知服务器。
+```cpp
+void UWorld::AddToWorld(
+	ULevel* Level, //需要Add的Level
+	const FTransform& LevelTransform, //关卡偏移
+	bool bConsiderTimeLimit, //!bShouldBlockOnLoad，这里为true，在add的时候不Block
+	FNetLevelVisibilityTransactionId TransactionId,//客户端的关卡状态id
+	ULevelStreaming* InOwningLevelStreaming)//streaminglevel
+{
+	// 表示当前level正在加载到world中，所以这时此level中的Actor不会同步给客户端
+	Level->bIsAssociatingLevel = true;
+	// 根据某种算法，算出TimeLimit
+	double TimeLimit = 0.0;
+	TimeLimit = FMath::Max<double>(0.0, TimeLimit - GAddToWorldTimeCumul);
+	// 标记当前关卡为pendingvisibility
+	if( bExecuteNextStep 
+		&& CurrentLevelPendingVisibility == NULL 
+		&& CurrentLevelPendingInvisibility != Level )
+	{
+		// 赋值基本属性
+		Level->OwningWorld = this;
+		CurrentLevelPendingVisibility = Level;
+		Levels.AddUnique( Level );
+		// 判断是否超时，如果超时了bExecuteNextStep为false了，后续步骤就在下一帧执行了
+		bExecuteNextStep = (!bConsiderTimeLimit || !IsTimeLimitExceeded(TEXT("begin making visible"), StartTime, Level, TimeLimit));
+	}
+	// 当前关卡中的Actor全部应用transform
+	if( bExecuteNextStep && !Level->bAlreadyMovedActors )
+	{
+		FLevelUtils::FApplyLevelTransformParams TransformParams(Level, LevelTransform);
+		FLevelUtils::ApplyLevelTransform(TransformParams);
+		Level->bAlreadyMovedActors = true;
+		// 判断是否超时，如果超时了bExecuteNextStep为false了，后续步骤就在下一帧执行了
+		bExecuteNextStep = (!bConsiderTimeLimit || !IsTimeLimitExceeded( TEXT("moving actors"), StartTime, Level, TimeLimit));
+	}
+	// 如果使用了WorldComposition的话，在将actor应用偏移
+	if( bExecuteNextStep && !Level->bAlreadyShiftedActors )
+	{
+		if (WorldComposition)
+		{
+			WorldComposition->OnLevelAddedToWorld(Level);
+		}
+		Level->bAlreadyShiftedActors = true;
+		bExecuteNextStep = (!bConsiderTimeLimit || !IsTimeLimitExceeded( TEXT("shifting actors"), StartTime, Level, TimeLimit ));
+	}
+	if( bExecuteNextStep && !Level->bAlreadyUpdatedComponents )
+	{
+		Level->bAreComponentsCurrentlyRegistered = false;
+		// 一直循环，直到超时或者循环完
+		do
+		{
+			// 注册场景中的modelComponent，和排序关卡中的Actor，让依赖的actor排在后面
+			Level->IncrementalUpdateComponents( NumComponentsToUpdate, bRerunConstructionScript, ContextPtr);
+		}
+		// 判断是否超时，如果超时了bExecuteNextStep为false了，后续步骤就在下一帧执行了
+		while (!Level->bAreComponentsCurrentlyRegistered && !IsTimeLimitExceeded(TEXT("updating components"), StartTime, Level, TimeLimit));
+	}
+	if( bIsGameWorld && AreActorsInitialized() )
+	{
+		// 客户端切换地图时加载的Actor，也就是不需要同步的
+		if (bExecuteNextStep)
+		{
+			if (!Level->bAlreadyInitializedNetworkActors)
+			{
+				Level->InitializeNetworkActors();
+			}
+			// 判断是否超时，如果超时了bExecuteNextStep为false了，后续步骤就在下一帧执行了
+			bExecuteNextStep = (!bConsiderTimeLimit || !IsTimeLimitExceeded( TEXT("initializing network actors"), StartTime, Level, PreventNextStepTimeLimit ));
+		}
+		// 初始化关卡中的Actor，以及他们的Component
+		if (bExecuteNextStep && !Level->IsFinishedRouteActorInitialization())
+		{
+			do 
+			{
+				Level->RouteActorInitialize(NumActorsToProcess);
+			} while (!Level->IsFinishedRouteActorInitialization() && !IsTimeLimitExceeded(TEXT("routing Initialize on actors"), StartTime, Level, TimeLimit));
+			// 判断是否超时，如果超时了bExecuteNextStep为false了，后续步骤就在下一帧执行了
+			bExecuteNextStep = !IsTimeLimitExceeded( TEXT("routing Initialize on actors"), StartTime, Level, TimeLimit );
+		}
+		// 最后整理下Actor，其实就是将所有的网络同步相关的Actor全部放在最前面，但是WorldSetting始终是第一个的
+		if( bExecuteNextStep && !Level->bAlreadySortedActorList )
+		{
+			Level->SortActorList();
+			Level->bAlreadySortedActorList = true;
+			// 判断是否超时，如果超时了bExecuteNextStep为false了，后续步骤就在下一帧执行了
+			bExecuteNextStep = (!bConsiderTimeLimit || !IsTimeLimitExceeded( TEXT("sorting actor list"), StartTime, Level, TimeLimit ));
+			bPerformedLastStep = true;
+		}
+	}
+	else
+	{
+		bPerformedLastStep = true;
+	}
+	// 表示当前level已经在world中了，所以这时此level中的Actor会同步给客户端
+	Level->bIsAssociatingLevel = false;
+	// 以上的这些操作都完成了
+	if( bPerformedLastStep )
+	{
+		// 重置上面我们用到的标志位
+		ResetLevelFlagsOnLevelAddedToWorld(Level);
+		CurrentLevelPendingVisibility = nullptr;
+		// 客户端服务器都加载的level
+		if (bIsGameWorld && !Level->bClientOnlyVisible)
+		{
+			LocalPlayerController->ServerUpdateLevelVisibility(LevelVisibility);
+			ServerStreamingLevelsVisibility->SetIsVisible(OwningLevelStreaming, true);
+		}
+		// 设置level的可见性
+		Level->bIsVisible = true;
+		// 初始化渲染资源
+		Level->InitializeRenderingResources();
+		// 广播事件更新
+		FWorldDelegates::LevelAddedToWorld.Broadcast(Level, this);
+	}
+}
+```
+4 第三步是MakingVisible状态到LoadedVisible状态。这个状态就是调用AddtoWorld方法，将关卡中的Actor加载到world中。
 ### 4 ULevelStreaming::AsyncLevelLoadComplete
 ```cpp
 void ULevelStreaming::AsyncLevelLoadComplete(const FName& InPackageName, UPackage* InLoadedPackage, EAsyncLoadingResult::Type Result)
@@ -1338,44 +1328,59 @@ case ECurrentState::LoadedNotVisible:
 ```
 ### 2 RemoveFromWorld
 ```cpp
-// 1 停掉Level里Actor
-for (int32 ActorIdx = 0; ActorIdx < Level->Actors.Num(); ActorIdx++)
+void UWorld::RemoveFromWorld( ULevel* Level, bool bAllowIncrementalRemoval, FNetLevelVisibilityTransactionId TransactionId, ULevelStreaming* InOwningLevelStreaming)
 {
-	if (AActor* Actor = Level->Actors[ActorIdx])
+	// 这在移除，和AddToWorld中标志位作用类似
+	Level->bIsDisassociatingLevel = true;
+	// 先移除关卡中的注册的Component，分帧处理的
+	do
 	{
-		Actor->RouteEndPlay(EEndPlayReason::RemovedFromWorld);
-	}
-}
-// 2 移除Level里的Pawn
-// Remove any pawns from the pawn list that are about to be streamed out
-for (APawn* Pawn : TActorRange<APawn>(this))
-{
-	if (Pawn->IsInLevel(Level))
-	{
-		AController* Controller = Pawn->GetController();
-		// This should have happened as part of the RouteEndPlay above, but ensuring to validate this assumption and maintain behavior
-		// with RemovePawn having been deprecated
-		if (!ensure(Controller == nullptr || (Controller->GetPawn() == Pawn)))
+		if (Level->IncrementalUnregisterComponents(NumComponentsToUnregister))
 		{
-			Controller->UnPossess();
+			CurrentLevelPendingInvisibility = nullptr;
+			bFinishRemovingLevel = true;
+			break;
 		}
-	}
-	else if (UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(Pawn->GetMovementComponent()))
+	} while (!IsTimeLimitExceeded(TEXT("unregistering components"), StartTime, Level, TimeLimit));
+	// 如果UnregisterComponents完关卡中所有的Actor
+	if ( bFinishRemovingLevel )
 	{
-		// otherwise force floor check in case the floor was streamed out from under it
-		CharacterMovement->bForceNextFloorCheck = true;
+		// 1 停掉Level里Actor
+		for (int32 ActorIdx = 0; ActorIdx < Level->Actors.Num(); ActorIdx++)
+		{
+			if (AActor* Actor = Level->Actors[ActorIdx])
+			{
+				Actor->RouteEndPlay(EEndPlayReason::RemovedFromWorld);
+			}
+		}
+		// 2 移除Level里的Pawn
+		for (APawn* Pawn : TActorRange<APawn>(this))
+		{
+			if (Pawn->IsInLevel(Level))
+			{
+				AController* Controller = Pawn->GetController();
+				if (!ensure(Controller == nullptr || (Controller->GetPawn() == Pawn)))
+				{
+					Controller->UnPossess();
+				}
+			}
+			else if (UCharacterMovementComponent* CharacterMovement = Cast<UCharacterMovementComponent>(Pawn->GetMovementComponent()))
+			{
+				CharacterMovement->bForceNextFloorCheck = true;
+			}
+		}
+		// 3 移除渲染资源？
+		Level->ReleaseRenderingResources();
+		// 4 StreamingManager里面移除Level
+		IStreamingManager::Get().RemoveLevel( Level );
+		// 5 Unregister Level中的Component,也就是Level自带的ModelComponent
+		Level->ClearLevelComponents();
+		// 6 通知服务器改变Level状态，通过PlayerController
+		LocalPlayerController->ServerUpdateLevelVisibility(LevelVisibility);
+		// 7 设置bIsVisible为false
+		Level->bIsVisible = false;
 	}
 }
-// 3 移除渲染资源？
-Level->ReleaseRenderingResources();
-// 4 StreamingManager里面移除Level，这个StreamingManager是干嘛的呢？
-// Remove from the world's level array and destroy actor components.
-IStreamingManager::Get().RemoveLevel( Level );
-// 5 Unregister Level中的Component,也就是Level自带的ModelComponent和其中Actor的Component
-Level->ClearLevelComponents();
-// 6 通知服务器改变Level状态，通过PlayerController
-// 7 设置bIsVisible为false
-Level->bIsVisible = false;
 ```
 从world中移除掉LoadedLevel中的东西，改变LoadedLevel的bIsVisible状态
 ### 3 ClearLoadedLevel
@@ -2562,6 +2567,8 @@ end
 > 第一步清理当前world：1 ShutdownWorldNetDriver, 2 FlushLevelStreaming, 3 销毁掉localplayer的playercontroller和其控制的pawn, 4 endplay world中的actor并从网络数组中移除, 5 删掉旧world,
 > 第二步加载新的world：1 通过URL先创建出world, 2 初始化world上数据, 3 如果是服务器会执行InitListen方法监听客户端链接, 4 初始化各种系统, 5 地图切换完成
 
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250428190223.png)
+
 - 流式关卡是怎么切换的？
 > 整体上分成两部分，一部分是创建StreamingLevel，一部分是StreamingLevel的状态切换
 > 1 第一部分，将Level创建成StreamingLevel的形式，然后将其添加到World的consider数组中
@@ -2571,7 +2578,7 @@ end
 > 2 使用WoldComposition的方式，在worldComposition初始化的时候，他会遍历主关卡所在的文件夹，把其余关卡全加载成tilestreaminglevel的形式然后保存到数组中并把这些streaminglevel也添加到world的streaminglevel数组中。他会在world::tick中判断玩家和level之间的距离，然后将满足距离的level显示，不满足距离的level隐藏。
 > 3 蓝图有个接口，能直接显示streaminglevel，内部也是改变三个标志位。
 - 一个关卡，从unload到loadedVisible是怎么走的？
-> 1 第一次执行UpdateStreamingState，当前state是Unloaded，目标状态是LoadedNotVisible，然后会执行同步加载关卡的的流程，然后当前state变为了LoadedNotVisible
+> 1 第一次执行UpdateStreamingState，当前state是Unloaded，目标状态是LoadedNotVisible，然后会执行异步加载关卡的的流程，然后当前state变为了LoadedNotVisible
 > 2 第二次执行UpdateStreamingState，当前state是LoadedNotVisible，目标状态是LoadedVisible，会设置当前状态为MakingVisible，会做这个BeginClientNetVisibilityRequest操作，客户端会告诉服务器，当前关卡需要显示，
 > 3 第三次执行UpdateStreamingState，当前state是MakingVisible，目标状态是LoadedVisible，首先会向服务器发一个rpc请求当前关卡能否显示，如果能显示说明已经在服务器上加载了，然后就会执行AddToWorld操作，将当前level加到world中。
 

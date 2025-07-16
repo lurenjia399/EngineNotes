@@ -8,6 +8,8 @@ UE4资源加载
 https://blog.csdn.net/qq_43034470/article/details/120888095
 UE4的资源管理
 https://zhuanlan.zhihu.com/p/357904199
+资源加载
+https://zhuanlan.zhihu.com/p/616109129
 
 
 查看蓝图资源格式：
@@ -279,6 +281,7 @@ UObject* StaticFindObjectFastInternalThreadSafe(...)
 - UPackage是什么？
 UPackage是硬盘上的蓝图资源在内存上的对应。举个例子，我们手上有一个名称为TestA的空蓝图继承自Actor。我们通过StaticLoadObject方法来加载TestA蓝图，首先就会创建一个空的Package，然后为这个package创建LinkerLoad，然后通过LinkerLoad来序列化蓝图资源，进而加载importMap和exportMap。除此之外我们通过SpawnActor来创建TestA的对象，对象的outer是level，level的outer是world，world的outer是UPackage，这也说明了每个UObject的最上层都是一个UPackage，决定了UObject会序列化到内存的哪个地方。
 - UArchetype到底是啥？
+- loadpackage加载到内存中的是啥，是对象么，还是数据流之类的
 
 
 

@@ -1136,8 +1136,12 @@ bool IsPendingKillPending() const
 2 标记阶段，通过ProcessAsync方法来启动多线程，每个线程都执行ProcessObjectArray方法，虽然开启了多线程，但主线程会等待所有的其他线程结束。
 3 收集阶段，遍历全局的GUObjectArray数组，通过ParallelFor遍历，主线程依然会等待遍历完。
 4 清除阶段，在主线程调用begindestory，然后finishdestory。然后就是在内存中清除掉，会有一个工作线程帮助我们清楚，然后还会有一些只能在主线程清除。清除就是调用析构函数，然后释放掉内存，是在全局GUObjectArray数组中操作的，所以还需要上锁。
+5 gc是在游戏线程执行的，其中有些操作可以多线程加速，但都需要游戏线程等待操作完成。
 - beginDestory做了什么操作？finishDestory做了什么操作？
 1 beginDestory，清空linkerload，也就是把里面的ExportMap清掉，说明别人无法在引用我们这个Object了。然后还会将我们Object的名称从全局hashtable中移除掉，hashtable的作用应该是快速查找，清掉就找不到了。
 2 finishDestory，把Object中的属性清掉，也就是执行完FinishDestory后Object的内存就无法访问了。
+- uobject多级uproperty他会纳入到gc系统中么？就是Actor中有个Actor的属性，属性中又有个Actor，最里面的Actor会被纳入到gc系统中么
+肯定会的呀，可达性分析遍历的时候是深度优先呀，每个Object会从schema中遍历到引用，然后就会从引用继续遍历呀。
+
 
 

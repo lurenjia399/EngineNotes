@@ -1279,3 +1279,12 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 4 在FTickableGameObject的Tick中通过id获取CoolDownItem这个类，然后通过CoolDownItem里面的数据更新UImage
 5 CoolDownItem这个里面的数据是通过监听OnWorldTickStart这个代理来更新的，也就是World开始Tick的时候就会更新cd的时间数据，然后再通过TickableGameObject的Tick来更新cd的图标
 6 总的来说就是，我们会把技能cd数据和技能cd图标分开表示，数据的更新再Worl::Tick的开始的时候，图标的更新再数据更新之后的FTickableGameObject::Tick中。
+
+# 问题
+- tick依赖用多了会怎么样？会出现循环依赖的问题么？
+	a.循环依赖的这样，a依赖b，b又依赖a
+	b.性能问题，本身tick没有时序，可以多线程加速并行，但是依赖的多了就变成同步的了
+
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250505221418.png)
+1 应该是不会循环依赖的，我们是在QueueTickFunction方法中递归的执行Prerequisites依赖数组的，这里每个tickFunction会记录执行的帧号，如果帧号不同才会递归执行，所以应该是不会循环依赖的。但如果依赖的话就会导致一方的tick逻辑不会执行。
+2 依赖用多了就会有性能问题，本身tick是通过多线程这边创建task执行的，但是依赖多了很自然就变成同步的了，性能肯定不好吧。
