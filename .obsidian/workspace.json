@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "2 note/Mass/Mass.md",
+                "file": "2 note/World和Level/WorldPartition.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Mass"
+              "title": "WorldPartition"
             }
           }
         ]
@@ -163,10 +163,10 @@
       "command-palette:打开命令面板": false
     }
   },
-  "active": "1cf5f34f52e001e8",
+  "active": "87d4a4ddb3c55608",
   "lastOpenFiles": [
-    "3 diary/2025-07-03.md",
     "2 note/Mass/Mass.md",
+    "3 diary/2025-07-03.md",
     "2 note/World和Level/WorldPartition.md",
     "2 note/Mass",
     "2 note/动画/动画.md",
