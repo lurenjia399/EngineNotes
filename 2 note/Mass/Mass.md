@@ -32,10 +32,10 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 	//2 构建出BuildContext，帮助我们创建EntityTemplate的上下文
 	FMassEntityTemplateData TemplateData;
 	FMassEntityTemplateBuildContext BuildContext(TemplateData, TemplateID);
-	//3 遍历pe
+	//3 遍历配置文件中的Trait，包括自己的和自己Parent的，递归遍历
 	TArray<UMassEntityTraitBase*> CombinedTraits;
 	GetCombinedTraits(CombinedTraits);
-
+	//4 通过BuildContext来Build我们的Trait,也就是执行Tr
 	BuildContext.BuildFromTraits(CombinedTraits, World);
 	BuildContext.SetTemplateName(GetNameSafe(ConfigOwner));
 
