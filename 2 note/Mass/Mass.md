@@ -24,15 +24,15 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 {
 	
 	
-
+	// 1 拿到EntityTemplateRegistry，一个注册器
 	UMassSpawnerSubsystem* SpawnerSystem = UWorld::GetSubsystem<UMassSpawnerSubsystem>(&World);
 	check(SpawnerSystem);
 	FMassEntityTemplateRegistry& TemplateRegistry = SpawnerSystem->GetMutableTemplateRegistryInstance();
 
-
+	//2 构建出BuildContext，帮助我们创建EntityTemplate的上下文
 	FMassEntityTemplateData TemplateData;
 	FMassEntityTemplateBuildContext BuildContext(TemplateData, TemplateID);
-
+	//3 遍历pe
 	TArray<UMassEntityTraitBase*> CombinedTraits;
 	GetCombinedTraits(CombinedTraits);
 
