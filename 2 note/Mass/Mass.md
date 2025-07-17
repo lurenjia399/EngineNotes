@@ -37,6 +37,7 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 	GetCombinedTraits(CombinedTraits);
 	//4 通过BuildContext来Build我们的Trait,也就是执行Trait的BuildTemplate纯虚函数。
 	BuildContext.BuildFromTraits(CombinedTraits, World);
+	//5 设置EntityTemplate的名称为配置文件的名称
 	BuildContext.SetTemplateName(GetNameSafe(ConfigOwner));
 
 	return TemplateRegistry.FindOrAddTemplate(TemplateID, MoveTemp(TemplateData)).Get();
