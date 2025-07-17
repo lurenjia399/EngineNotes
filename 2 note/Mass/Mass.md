@@ -41,7 +41,7 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 	return TemplateRegistry.FindOrAddTemplate(TemplateID, MoveTemp(TemplateData)).Get();
 }
 ```
-EntityTemplate怎么创建的呢？我们从FMassEntityTemplate类中能看到里面只有三个成员变量，其中TemplateData和TemplateID我们来看他的构造函数：
+EntityTemplate怎么创建的呢？我们从FMassEntityTemplate类中能看到里面只有三个成员变量，其中TemplateData和TemplateID我们都已经创建出来了，只剩下Archetype了，而Archetype的创建是在构造函数中。那我们来看他的构造函数：
 ```cpp
 FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, FMassEntityManager& EntityManager, FMassEntityTemplateID InTemplateID)
 	: TemplateData(InData)
@@ -55,6 +55,7 @@ FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, 
 	//3 将Archetype赋值到EntityTemplate里面
 	SetArchetype(ArchetypeHandle);
 }
+
 ```
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
