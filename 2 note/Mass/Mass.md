@@ -18,8 +18,30 @@ const FMassEntityTemplate& EntityTemplate =
 ```
 这种配置文件的整体结构如下：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250717234028.png)
-GetOrCreateEntityTemplate这个方法总体分成两部分：第一部分是构建出FMassEntityTemplateBuildContext 来帮助我们遍历配置中的Trait创建出 FMassEntityTemplateData这个。
+GetOrCreateEntityTemplate这个方法我们来看下：
+```cpp
+const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UWorld& World) const
+{
+	
+	
 
+	UMassSpawnerSubsystem* SpawnerSystem = UWorld::GetSubsystem<UMassSpawnerSubsystem>(&World);
+	check(SpawnerSystem);
+	FMassEntityTemplateRegistry& TemplateRegistry = SpawnerSystem->GetMutableTemplateRegistryInstance();
+
+
+	FMassEntityTemplateData TemplateData;
+	FMassEntityTemplateBuildContext BuildContext(TemplateData, TemplateID);
+
+	TArray<UMassEntityTraitBase*> CombinedTraits;
+	GetCombinedTraits(CombinedTraits);
+
+	BuildContext.BuildFromTraits(CombinedTraits, World);
+	BuildContext.SetTemplateName(GetNameSafe(ConfigOwner));
+
+	return TemplateRegistry.FindOrAddTemplate(TemplateID, MoveTemp(TemplateData)).Get();
+}
+```
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
 
