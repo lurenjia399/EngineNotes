@@ -55,12 +55,14 @@ FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, 
 	//3 将Archetype赋值到EntityTemplate里面
 	SetArchetype(ArchetypeHandle);
 }
-
+// Archetype的创建方法
 FMassArchetypeHandle FMassEntityManager::CreateArchetype(
 	const FMassArchetypeCompositionDescriptor& Composition, 
 	const FMassArchetypeCreationParams& CreationParams)
 {
-	TArray<TSharedPtr<FMassArchetypeData>>& HashRow = FragmentHashToArchetypeMap.FindOrAdd(TypeHash);
+	// 具体的创建只有这两行，一个是new一个是Init
+	FMassArchetypeData* NewArchetype = new FMassArchetypeData(CreationParams);
+	NewArchetype->Initialize(*this, Composition, ArchetypeDataVersion);
 }
 ```
 # 1 MassSample学习
