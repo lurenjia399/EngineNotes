@@ -22,8 +22,6 @@ GetOrCreateEntityTemplate这个方法我们来看下：
 ```cpp
 const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UWorld& World) const
 {
-	
-	
 	// 1 拿到EntityTemplateRegistry，一个注册器
 	UMassSpawnerSubsystem* SpawnerSystem = UWorld::GetSubsystem<UMassSpawnerSubsystem>(&World);
 	check(SpawnerSystem);
@@ -39,11 +37,11 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 	BuildContext.BuildFromTraits(CombinedTraits, World);
 	//5 设置EntityTemplate的名称为配置文件的名称
 	BuildContext.SetTemplateName(GetNameSafe(ConfigOwner));
-	//6 执行完2345后TemplateData中的数据就填充完毕了，最后一步是创建EntityTemplate并将其添加到注册器里
+	//6 执行完2345后TemplateData中的数据就填充完毕了，最后一步是通过FMassEntityTemplategou'zao'ha创建EntityTemplate并将其添加到注册器里
 	return TemplateRegistry.FindOrAddTemplate(TemplateID, MoveTemp(TemplateData)).Get();
 }
 ```
-
+EntityTemplate怎么创建的呢？我们来看他的构造函数
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
 
