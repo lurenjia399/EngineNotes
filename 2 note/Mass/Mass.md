@@ -17,7 +17,8 @@ const FMassEntityTemplate& EntityTemplate =
 				.GetOrCreateEntityTemplate(*WorldContextObject->GetWorld());
 ```
 这种配置文件的整体结构如下：
-
+![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250717234028.png)
+GetOrCreateEntityTemplate这个fan
 
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
