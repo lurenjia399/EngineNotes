@@ -49,9 +49,8 @@ FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, 
 {
 	//1 改变下TemplateData这个里面的数据
 	TemplateData.Sort();
-
 	TemplateData.GetArchetypeCreationParams().DebugName = FName(GetTemplateName());
-	
+	//2 通过
 	const FMassArchetypeHandle ArchetypeHandle = EntityManager.CreateArchetype(GetCompositionDescriptor(), TemplateData.GetArchetypeCreationParams());
 	
 	SetArchetype(ArchetypeHandle);
