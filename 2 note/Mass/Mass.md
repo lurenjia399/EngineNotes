@@ -42,7 +42,19 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 }
 ```
 EntityTemplate怎么创建的呢？我们来看他的构造函数：
+```cpp
+FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, FMassEntityManager& EntityManager, FMassEntityTemplateID InTemplateID)
+	: TemplateData(InData)
+	, TemplateID(InTemplateID)
+{
+	// Sort anything there is to sort for later comparison purposes
+	TemplateData.Sort();
 
+	TemplateData.GetArchetypeCreationParams().DebugName = FName(GetTemplateName());
+	const FMassArchetypeHandle ArchetypeHandle = EntityManager.CreateArchetype(GetCompositionDescriptor(), TemplateData.GetArchetypeCreationParams());
+	SetArchetype(ArchetypeHandle);
+}
+```
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
 
