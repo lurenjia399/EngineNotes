@@ -39,10 +39,11 @@ const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UW
 	BuildContext.BuildFromTraits(CombinedTraits, World);
 	//5 设置EntityTemplate的名称为配置文件的名称
 	BuildContext.SetTemplateName(GetNameSafe(ConfigOwner));
-	//6 执行完2345后TemplateData中的数据就填充完毕了，最后一步是创建
+	//6 执行完2345后TemplateData中的数据就填充完毕了，最后一步是创建EntityTemplate并将其添加到注册器里
 	return TemplateRegistry.FindOrAddTemplate(TemplateID, MoveTemp(TemplateData)).Get();
 }
 ```
+
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
 
