@@ -18,7 +18,7 @@ const FMassEntityTemplate& EntityTemplate =
 ```
 这种配置文件的整体结构如下：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250717234028.png)
-GetOrCreateEntityTemplate这个fan
+GetOrCreateEntityTemplate这个方法的流程
 
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
