@@ -47,11 +47,13 @@ FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, 
 	: TemplateData(InData)
 	, TemplateID(InTemplateID)
 {
-	// Sort anything there is to sort for later comparison purposes
+	//1 改变下TemplateData这个里面的数据
 	TemplateData.Sort();
 
 	TemplateData.GetArchetypeCreationParams().DebugName = FName(GetTemplateName());
+	
 	const FMassArchetypeHandle ArchetypeHandle = EntityManager.CreateArchetype(GetCompositionDescriptor(), TemplateData.GetArchetypeCreationParams());
+	
 	SetArchetype(ArchetypeHandle);
 }
 ```
