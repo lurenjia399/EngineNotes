@@ -56,6 +56,12 @@ FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, 
 	SetArchetype(ArchetypeHandle);
 }
 
+FMassArchetypeHandle FMassEntityManager::CreateArchetype(
+	const FMassArchetypeCompositionDescriptor& Composition, 
+	const FMassArchetypeCreationParams& CreationParams)
+{
+	TArray<TSharedPtr<FMassArchetypeData>>& HashRow = FragmentHashToArchetypeMap.FindOrAdd(TypeHash);
+}
 ```
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
