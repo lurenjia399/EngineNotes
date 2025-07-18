@@ -61,7 +61,7 @@ FMassArchetypeHandle FMassEntityManager::CreateArchetype(
 	const FMassArchetypeCompositionDescriptor& Composition, 
 	const FMassArchetypeCreationParams& CreationParams)
 {
-		// 具体的创建只有这两行，一个是new一个是Initialize。其他我省略的内容都是填充缓存数组的，比如：FragmentHashToArchetypeMap（通过hash值索引到Archetype）,AllArchetypes（记录游戏中所有创建出的Archetype）,FragmentTypeToArchetypeMap（通过FragmentType索引到Archetype）
+		// 具体的创建只有这两行，一个是new一个是Initialize，这两部分就是初始化Archetype了，我们在介绍Archetype时候再看。其他我省略的内容都是填充缓存数组的，比如：FragmentHashToArchetypeMap（通过hash值索引到Archetype）,AllArchetypes（记录游戏中所有创建出的Archetype）,FragmentTypeToArchetypeMap（通过FragmentType索引到Archetype）
 	FMassArchetypeData* NewArchetype = new FMassArchetypeData(CreationParams);
 	NewArchetype->Initialize(*this, Composition, ArchetypeDataVersion);
 }
