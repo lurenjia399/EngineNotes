@@ -10,7 +10,7 @@ Entity就相当于是 FMassEntityHandle，其中FMassEntityHandle的结构如下
 
 # 2 FMassEntityTemplate
 
-FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢？类是对象的原型，UObject的原型是CDO，那么Entity的原型就是Archetype，可以这么理解吧。回过头来，FMassEntityTemplate的创建是由UMassEntityConfigAsset这种配置文件创建出来的，如：
+FMassEntityTemplate的创建是由UMassEntityConfigAsset这种配置文件创建出来的，如：
 ```cpp
 const FMassEntityTemplate& EntityTemplate = 
 			MassEntityConfig->GetConfig()
@@ -66,7 +66,8 @@ FMassArchetypeHandle FMassEntityManager::CreateArchetype(
 	NewArchetype->Initialize(*this, Composition, ArchetypeDataVersion);
 }
 ```
-
+# Archetype
+FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢？类是对象的原型，UObject的原型是CDO，那么Entity的原型就是Archetype，可以这么理解吧。回过头来，
 
 
 # 1 MassSample学习
