@@ -67,7 +67,7 @@ FMassArchetypeHandle FMassEntityManager::CreateArchetype(
 }
 ```
 # Archetype
-FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢？类是对象的原型，UObject的原型是CDO，那么Entity的原型就是Archetype，可以这么理解吧。回过头来，
+FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢？类是对象的原型，UObject的原型是CDO，那么Entity的原型就是Archetype，可以这么理解吧。回过头来，现在我们看看Archetype的组成部分：
 
 
 # 1 MassSample学习
