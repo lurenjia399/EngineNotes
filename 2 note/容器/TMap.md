@@ -32,3 +32,7 @@ class TSparseArray//稀疏数组和数组的区别就是元素可以不连续
 ```
 1 tmap内部只有一个成员变量tset，tset的实现是通过hash表的形式现实的，有一个hash存储区和数据存储区，两者内存都是连续的，hash存储区存储hash值对应的数据存储区索引，而数据存储区是稀疏数组。
 2 稀疏数组是内存连续的，但是不是每个元素都是有值的，这也是和tarray的区别。稀疏数组中的数据也是tarray存放的，还需要有一个数组来标记元素是否有值。
+
+# TArray
+
+https://www.unrealengine.com/zh-CN/blog/optimizing-tarray-usage-for-performance
