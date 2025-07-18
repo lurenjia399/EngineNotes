@@ -65,6 +65,9 @@ FMassArchetypeHandle FMassEntityManager::CreateArchetype(
 	NewArchetype->Initialize(*this, Composition, ArchetypeDataVersion);
 }
 ```
+
+
+
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
 
