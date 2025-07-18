@@ -55,6 +55,7 @@ FMassEntityTemplate::FMassEntityTemplate(const FMassEntityTemplateData& InData, 
 	//3 将Archetype赋值到EntityTemplate里面
 	SetArchetype(ArchetypeHandle);
 }
+
 // Archetype的创建方法
 FMassArchetypeHandle FMassEntityManager::CreateArchetype(
 	const FMassArchetypeCompositionDescriptor& Composition, 
