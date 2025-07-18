@@ -34,5 +34,5 @@ class TSparseArray//稀疏数组和数组的区别就是元素可以不连续
 2 稀疏数组是内存连续的，但是不是每个元素都是有值的，这也是和tarray的区别。稀疏数组中的数据也是tarray存放的，还需要有一个数组来标记元素是否有值。
 
 # TArray
-
+为性能表现最优化TArray的使用，TInlineAllocator和TFixedAllocator作用
 https://www.unrealengine.com/zh-CN/blog/optimizing-tarray-usage-for-performance
