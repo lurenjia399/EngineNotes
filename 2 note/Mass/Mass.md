@@ -6,7 +6,7 @@ Entity就相当于是 FMassEntityHandle，其中FMassEntityHandle的结构如下
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250716234618.png)
 其中只有两个成员变量，显而易见的就是在一个大数组里存储的索引和一个唯一标识，和FWeakObjectPtr原理是一样的。那么这个大数组存储在哪呢？下面这张图就是创建 FMassEntityHandle 的方法。
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250716235838.png)
-图中可以看到大数组索引就是 EntityIndex。我们第一次走到这个Acquire方法会执行AddPage来添加页，也就是分配一大块内存（内存的大小 = sizeof(FEntityData) * countprepage）,这个页中会有count数量的FEntityData，所有页中的FEntityData索引都是递增的。所以呢 EntityIndex 代表的就是页中FEntityData的索引。而我们的大数组呢，就是所有页的集合。页的集合会保存到FConcurrentEntityStorage这个结构中，而FConcurrentEntityStorage这个结构是MassEntityManager里面的 EntityStorage 这个成员变量。综上所述，大数组是在 MassEntityManager
+图中可以看到大数组索引就是 EntityIndex。我们第一次走到这个Acquire方法会执行AddPage来添加页，也就是分配一大块内存（内存的大小 = sizeof(FEntityData) * countprepage）,这个页中会有count数量的FEntityData，所有页中的FEntityData索引都是递增的。所以呢 EntityIndex 代表的就是页中FEntityData的索引。而我们的大数组呢，就是所有页的集合。页的集合会保存到FConcurrentEntityStorage这个结构中，而FConcurrentEntityStorage这个结构是MassEntityManager里面的 EntityStorage 这个成员变量。综上所述，大数组是在 MassEntityManager 的 EntityStorage 成员变量中，
 
 # 2 FMassEntityTemplate
 
