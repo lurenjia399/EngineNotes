@@ -9,5 +9,10 @@ https://zhuanlan.zhihu.com/p/102890728
 */
 ```
 2 git插件配置
-
+```cpp
+/*
+ "autoCommitMessage": "{{hostname}} backup: {{date}}"
+ 
+*/
+```
 3 图层配置
