@@ -1,5 +1,7 @@
 UE5的ECS：MASS框架(一)
 https://zhuanlan.zhihu.com/p/441773595
+mass框架
+https://www.xianlongok.site/post/ea92a01c/#UE5-Mass-%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D
 
 # 1 FMassEntityHandle
 Entity就相当于是 FMassEntityHandle，其中FMassEntityHandle的结构如下：
