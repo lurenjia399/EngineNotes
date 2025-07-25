@@ -135,6 +135,16 @@ struct FMassEditorPhaseTickTask
 	}
 }
 
+const FGraphEventRef& 
+	FMassProcessingPhaseManager::TriggerPhase(...)
+{
+	if (bIsAllowedToTick)
+	{
+		ProcessingPhases[(int)Phase].ExecuteTick(DeltaTime, LEVELTICK_All, CurrentThread, MyCompletionGraphEvent);
+	}
+
+	return MyCompletionGraphEvent;
+}
 ```
 
 
