@@ -122,6 +122,10 @@ PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
 }
 ```
 看了上边的部分，就是给每个 ProcessingPhase 都创建 FMassEditorPhaseTickTask 这个Task并Dispatch，并互相依赖，然后Wait一直等待所有的Task执行完。
+所以呢咱们来看下每个Phase的 FMassEditorPhaseTickTask ：
+```cpp
+
+```
 
 
 问题：
@@ -133,5 +137,6 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 目前来看应该是可能有重复的，没找到去重的逻辑，而且TArray的add也支持添加重复元素。
 */
 ```
+2 TaskGraph 系统里边的 Wait 方法，等待的是哪个线程呢？怎么理解这个wait
 # 1 MassSample学习
 ## 1 # CrowdGym 场景
