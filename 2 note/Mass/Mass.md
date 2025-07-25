@@ -160,8 +160,10 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 	if (bRunInParallelMode && PhaseManager->IsPaused() == false)
 	{
 		// 多线程部分，下面看
-	}else
+	}
+	else
 	{
+		// 单线程部分，很简单就是直接直接我们写的Processor的tick了
 		if (PhaseManager->IsPaused() == false)
 		{
 			UE::Mass::Executor::Run(*PhaseProcessor, Context);
