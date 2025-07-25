@@ -154,6 +154,19 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 	{
 		OnPhaseStart.Broadcast(DeltaTime);
 	}
+	// 先创建出 FMassProcessingContext
+	FMassProcessingContext Context(EntityManager, DeltaTime);
+	//
+	if (bRunInParallelMode && PhaseManager->IsPaused() == false)
+	{
+		// 多线程部分，下面看
+	}else
+	{
+		if (PhaseManager->IsPaused() == false)
+		{
+			UE::Mass::Executor::Run(*PhaseProcessor, Context);
+		}
+	}
 }
 ```
 
