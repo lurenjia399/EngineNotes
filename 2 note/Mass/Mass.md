@@ -177,6 +177,20 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 ```
 ### 4.1.1 OnPhaseStart 开始部分
 ### 4.1.2 执行部分
+UE::Mass::Tweakables::bFullyParallel 这个变量控制执行时是单线程还是多线程：
+```cpp
+namespace UE::Mass::Tweakables
+{
+	bool bFullyParallel = MASS_DO_PARALLEL;
+	bool bMakePrePhysicsTickFunctionHighPriority = true;
+
+	// 这个是命令行吧
+	FAutoConsoleVariableRef CVars[] = {
+		{TEXT("mass.FullyParallel"), bFullyParallel, TEXT("Enables mass processing distribution to all available thread (via the task graph)")},
+		{TEXT("mass.MakePrePhysicsTickFunctionHighPriority"), bMakePrePhysicsTickFunctionHighPriority, TEXT("Whether to make the PrePhysics tick function high priority - can minimise GameThread waits by starting parallel work as soon as possible")},
+	};
+}
+```
 1 单线程的情况下，就在
 ### 4.1.3 OnPhaseEnd 结束部分
 
