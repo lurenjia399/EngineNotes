@@ -176,8 +176,8 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 	}
 }
 ```
-### 4.1.1 OnPhaseStart 开始部分
-### 4.1.2 执行部分
+### 5.1.1 OnPhaseStart 开始部分
+### 5.1.2 执行部分
 UE::Mass::Tweakables::bFullyParallel 这个变量控制执行时是单线程还是多线程：
 ```cpp
 namespace UE::Mass::Tweakables
@@ -197,7 +197,7 @@ namespace UE::Mass::Tweakables
 UE::Mass::Executor::Run(*PhaseProcessor, Context);
 // 就直接执行了这个方法，这个方法里面会遍历我们写的Processor，然后执行里面的Execute方法。
 ```
-### 4.1.3 OnPhaseEnd 结束部分
+### 5.1.3 OnPhaseEnd 结束部分
 
 问题：
 ```cpp
