@@ -121,7 +121,7 @@ PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
 	}
 }
 ```
-看了上边的部分，就是给每个 ProcessingPhase 都创建 FMassEditorPhaseTickTask 这个Task并Dispatch，并互相依赖，一
+看了上边的部分，就是给每个 ProcessingPhase 都创建 FMassEditorPhaseTickTask 这个Task并Dispatch，并互相依赖，然后Wait一直等待所有的Task执行完。
 
 
 问题：
