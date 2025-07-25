@@ -191,7 +191,11 @@ namespace UE::Mass::Tweakables
 	};
 }
 ```
-1 单线程的情况下，就在
+1 单线程的情况下：
+```cpp
+UE::Mass::Executor::Run(*PhaseProcessor, Context);
+// 就直接执行了这个方法，这个方法里面会遍历我们写的Processor，然后执行里面的Ex
+```
 ### 4.1.3 OnPhaseEnd 结束部分
 
 问题：
