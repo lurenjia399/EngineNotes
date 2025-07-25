@@ -142,10 +142,10 @@ const FGraphEventRef&
 	{
 		ProcessingPhases[(int)Phase].ExecuteTick(DeltaTime, LEVELTICK_All, CurrentThread, MyCompletionGraphEvent);
 	}
-
 	return MyCompletionGraphEvent;
 }
 ```
+看TriggerPhasse方法就能知道，FMassEditorPhaseTickTask 这个Task的目的就是让Process
 
 
 问题：
