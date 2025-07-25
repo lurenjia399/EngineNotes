@@ -146,7 +146,12 @@ const FGraphEventRef&
 }
 ```
 看TriggerPhasse方法就能知道，FMassEditorPhaseTickTask 这个Task的目的就是让 ProcessingPhase 执行Tick方法，下面我们看下这个最关键的Tick:
-
+```cpp
+void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
+{
+	
+}
+```
 
 
 问题：
