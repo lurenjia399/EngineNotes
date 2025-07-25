@@ -103,10 +103,8 @@ FMassExecutorDoneTask 这个是启动的task吧。
 ```cpp
 void UMassEntityEditorSubsystem::Tick(float DeltaTime)
 {
-
-	//1 创建一个Task
 	FGraphEventRef CompletionEvent;
-	//2 for循环，遍历的是 EMassProcessingPhase,这就是个分组，我们的Processor可以在不同的Tick分组里执行。遍历的内容就是会每个分组都创建一个  FMassEditorPhaseTickTask，后边的依赖前边的，最后一个 FMassEditorPhaseTickTask赋值给 CompletionEvent。
+	//1 for循环，遍历的是 EMassProcessingPhase,这就是个分组，我们的Processor可以在不同的Tick分组里执行。遍历的内容就是会每个分组都创建一个  FMassEditorPhaseTickTask，后边的依赖前边的，最后一个 FMassEditorPhaseTickTask赋值给 CompletionEvent。
 	for (int PhaseIndex = 0; 
 		PhaseIndex < (int)EMassProcessingPhase::MAX;
 							++PhaseIndex)
@@ -116,13 +114,14 @@ void UMassEntityEditorSubsystem::Tick(float DeltaTime)
 			&Prerequisites).ConstructAndDispatchWhenReady(
 PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
 	}
-	// 
+	//2 CompletionEvent 这个Task有效，我们就等待，一直等到Task执行完
 	if (CompletionEvent.IsValid())
 	{
 		CompletionEvent->Wait();
 	}
 }
 ```
+看了上边的部分，就是给每个 ProcessingPhase 都创建 FMassEditorPhaseTickTask 这个Task并Dispatch，并互相依赖，一
 
 
 问题：
