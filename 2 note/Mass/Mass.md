@@ -106,7 +106,7 @@ void UMassEntityEditorSubsystem::Tick(float DeltaTime)
 
 	//1 创建一个Task
 	FGraphEventRef CompletionEvent;
-	//2 for循环，遍历的是 EMassProcessingPhase,这就是个分组，我们的Processor可以在不同的Tick分组里执行。
+	//2 for循环，遍历的是 EMassProcessingPhase,这就是个分组，我们的Processor可以在不同的Tick分组里执行。遍历的内容就是会每个分组都创建一个  FMassEditorPhaseTickTask，后边的依赖前边的，最后一个 FMassEditorPhaseTickTask赋值给 CompletionEvent。
 	for (int PhaseIndex = 0; 
 		PhaseIndex < (int)EMassProcessingPhase::MAX;
 							++PhaseIndex)
