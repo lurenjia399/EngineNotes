@@ -128,10 +128,9 @@ PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
 ```cpp
 struct FMassEditorPhaseTickTask  
 {
+	// DoTask中就执行了PhaseManager::TriggerPhase方法
 	void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
 	{
-		TRACE_CPUPROFILER_EVENT_SCOPE(FMassEditorPhaseTickTask);
-
 		PhaseManager->TriggerPhase(Phase, DeltaTime, MyCompletionGraphEvent);
 	}
 }
