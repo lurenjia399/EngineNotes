@@ -149,12 +149,12 @@ const FGraphEventRef&
 ```cpp
 void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
 {
-	// PhaseStart 这部分还没看懂
+	//1 PhaseStart 这部分还没看懂
 	PhaseManager->OnPhaseStart(*this);
 	{
 		OnPhaseStart.Broadcast(DeltaTime);
 	}
-	// 先创建出 FMassProcessingContext
+	//2 执行部分 先创建出 FMassProcessingContext
 	FMassProcessingContext Context(EntityManager, DeltaTime);
 	//
 	if (bRunInParallelMode && PhaseManager->IsPaused() == false)
@@ -168,10 +168,15 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 		{
 			UE::Mass::Executor::Run(*PhaseProcessor, Context);
 		}
+		// 
+		{
+			OnPhaseEnd.Broadcast(DeltaTime);
+		}
+		PhaseManager->OnPhaseEnd(*this);
 	}
 }
 ```
-
+### 4.1.1 
 
 问题：
 ```cpp
