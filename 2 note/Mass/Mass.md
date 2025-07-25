@@ -103,29 +103,27 @@ FMassExecutorDoneTask 这个是启动的task吧。
 ```cpp
 void UMassEntityEditorSubsystem::Tick(float DeltaTime)
 {
-	TRACE_CPUPROFILER_EVENT_SCOPE(UMassEntityEditorSubsystem::Tick)
-	IsProcessing = true;
 
-	OnPreTickDelegate.Broadcast(DeltaTime);
-
+	//1 创建一个Task
 	FGraphEventRef CompletionEvent;
-	for (int PhaseIndex = 0; PhaseIndex < (int)EMassProcessingPhase::MAX; ++PhaseIndex)
+	//2 for循环，遍历的是 EMassProcessingPhase,这就是个分组，我们的Processor可以在不同的Tick分组里执行。
+	for (int PhaseIndex = 0; 
+		PhaseIndex < (int)EMassProcessingPhase::MAX;
+							++PhaseIndex)
 	{
 		const FGraphEventArray Prerequisites = { CompletionEvent };
-		CompletionEvent = TGraphTask<UE::Mass::FMassEditorPhaseTickTask>::CreateTask(&Prerequisites)
-			.ConstructAndDispatchWhenReady(PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
+		CompletionEvent = TGraphTask<UE::Mass::FMassEditorPhaseTickTask>::CreateTask(
+			&Prerequisites).ConstructAndDispatchWhenReady(
+PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
 	}
-
+	// 
 	if (CompletionEvent.IsValid())
 	{
 		CompletionEvent->Wait();
 	}
-
-	OnPostTickDelegate.Broadcast(DeltaTime);
-
-	IsProcessing = false;
 }
 ```
+
 
 问题：
 ```cpp
