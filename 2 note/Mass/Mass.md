@@ -149,7 +149,11 @@ const FGraphEventRef&
 ```cpp
 void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
 {
-	
+	// PhaseStart 这部分还没看懂
+	PhaseManager->OnPhaseStart(*this);
+	{
+		OnPhaseStart.Broadcast(DeltaTime);
+	}
 }
 ```
 
