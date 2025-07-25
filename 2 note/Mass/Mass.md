@@ -156,7 +156,6 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 	}
 	//2 执行部分 先创建出 FMassProcessingContext
 	FMassProcessingContext Context(EntityManager, DeltaTime);
-	//
 	if (bRunInParallelMode && PhaseManager->IsPaused() == false)
 	{
 		// 多线程部分，下面看
@@ -168,7 +167,7 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 		{
 			UE::Mass::Executor::Run(*PhaseProcessor, Context);
 		}
-		// 
+		// 3 OnPhaseEnd 这部分
 		{
 			OnPhaseEnd.Broadcast(DeltaTime);
 		}
@@ -176,7 +175,10 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 	}
 }
 ```
-### 4.1.1 
+### 4.1.1 OnPhaseStart 开始部分
+### 4.1.2 执行部分
+1 单线程的情况下，就在
+### 4.1.3 OnPhaseEnd 结束部分
 
 问题：
 ```cpp
