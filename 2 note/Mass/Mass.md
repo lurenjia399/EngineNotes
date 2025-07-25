@@ -126,6 +126,15 @@ PhaseManager, EMassProcessingPhase(PhaseIndex), DeltaTime);
 看了上边的部分，就是给每个 ProcessingPhase 都创建 FMassEditorPhaseTickTask 这个Task并Dispatch，并互相依赖，然后Wait一直等待所有的Task执行完。
 所以呢咱们来看下每个Phase的 FMassEditorPhaseTickTask ：
 ```cpp
+struct FMassEditorPhaseTickTask  
+{
+	void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(FMassEditorPhaseTickTask);
+
+		PhaseManager->TriggerPhase(Phase, DeltaTime, MyCompletionGraphEvent);
+	}
+}
 
 ```
 
