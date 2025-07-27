@@ -182,7 +182,8 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 ```
  **这个FMassProcessingPhase::ExecuteTick方法的目的就是执行所有的Processor的tick。而这个ExecuteTick这个方法的调用在编辑器下是通过FMassEditorPhaseTickTask这个Task，非编辑器下是将FMassProcessingPhase（这个类继承自TickFunction）注册到EntityManager所在的World中(编辑器下EntityManager不属于World属于EditorSubSystem)，跟随World的tick执行。**
 #### 1.1.1 OnPhaseStart 开始部分
-这个开始部分的目的是将属于这个Phase的Processor拓扑排序，
+这个开始部分的目的是将属于这个Phase的Processor拓扑排序，排除执行的先后，将排序结果赋值到UMassCompositeProcessor这个里面。会根据如下图：
+
 #### 1.1.2 执行部分
 UE::Mass::Tweakables::bFullyParallel 这个变量控制执行时是单线程还是多线程：
 ```cpp
