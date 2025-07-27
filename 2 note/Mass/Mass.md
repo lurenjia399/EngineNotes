@@ -115,12 +115,14 @@ void UMassEntitySettings::BuildProcessorListAndPhases()
 	}
 	//1 构建ProcessorList
 	BuildProcessorList();
+	//2 编辑器模式下，会根据List创建出Processor
 	BuildPhases();
 	bInitialized = true;
 
 	OnInitializedEvent.Broadcast();
 }
 ```
+
 
 ## 5 UMassCompositeProcessor
 
