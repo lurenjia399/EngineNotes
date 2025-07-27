@@ -113,7 +113,7 @@ void UMassEntitySettings::BuildProcessorListAndPhases()
 	{
 		return;
 	}
-	//1 构建ProcessorList，会赋值 ProcessorCDOs 这个成员变量，这个变量里就是所有的Processor。其中如果是 bAutoRegisterWithProcessingPhases 自动注册的Processor，那么也会添加到 ProcessingPhasesConfig 这个
+	//1 构建ProcessorList，会赋值 ProcessorCDOs 这个成员变量，这个变量里就是所有的Processor。其中如果是 bAutoRegisterWithProcessingPhases 自动注册的Processor，那么也会添加到 ProcessingPhasesConfig 这个里面，这些都是配置文件能从项目配置中看到。
 	BuildProcessorList();
 	//2 编辑器模式下，会根据List创建出Processor
 	BuildPhases();
