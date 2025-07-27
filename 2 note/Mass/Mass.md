@@ -184,7 +184,7 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 #### 1.1.1 OnPhaseStart 开始部分
 这个开始部分的目的是将属于这个Phase的Processor拓扑排序，排除执行的先后，将排序结果赋值到UMassCompositeProcessor这个里面。会根据如下图：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250727195920.png)
-会根据这个图的配置，构建图然后拓扑排序，其中Group可以配成A.B.C，这会被分成三个图的节点，A，A.B，A.B.C
+会根据这个图的配置，构建图然后拓扑排序，其中Group可以配成A.B.C，这会被分成三个图的节点，A，A.B，A.B.C。
 #### 1.1.2 执行部分
 UE::Mass::Tweakables::bFullyParallel 这个变量控制执行时是单线程还是多线程：
 ```cpp
