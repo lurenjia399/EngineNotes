@@ -205,6 +205,8 @@ namespace UE::Mass::Tweakables
 UE::Mass::Executor::Run(*PhaseProcessor, Context);
 // 就直接执行了这个方法，这个方法里面会遍历我们写的Processor，然后执行里面的Execute方法。
 ```
+2 多线程的情况下：
+
 #### 5.1.3 OnPhaseEnd 结束部分
 
 问题：
