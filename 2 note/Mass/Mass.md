@@ -180,7 +180,7 @@ void FMassProcessingPhase::ExecuteTick(float DeltaTime, ELevelTick TickType, ENa
 	}
 }
 ```
-这个FMassProcessingPhase::ExecuteTick方法的目的就是执行所有的Processor的tick
+这个FMassProcessingPhase::ExecuteTick方法的目的就是执行所有的Processor的tick，而这个ExecuteTick这个方法的调用在编辑器下是通过FMassEditorPhaseTickTask这个Task，非编辑器下是将FMassProcessingPhase这个lei
 #### 1.1.1 OnPhaseStart 开始部分
 #### 1.1.2 执行部分
 UE::Mass::Tweakables::bFullyParallel 这个变量控制执行时是单线程还是多线程：
