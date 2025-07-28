@@ -1062,6 +1062,59 @@ bool IncrementalDestroyGarbage(bool bUseTimeLimit, double TimeLimit)
 }
 ```
 1 增量清除垃圾，主要就是将不可达Object收集起来，然后执行BeginDestory和FinishDestory方法，然后通过GAsyncPurge来清除调Object自己的内存
+
+# GC相关命令
+```cpp
+/*
+;Placeholder console variable, currently not used in runtime.
+gc.MaxObjectsInGame ; int   Maximum number of UObjects in cooked game
+
+; Maximum number of UObjects for programs can be low
+gc.MaxObjectsInProgram ; int   Default to 100K for programs
+
+;If true, the UObjectArray will pre-allocate all entries for UObject pointers
+gc.PreAllocateUObjectArray  ; bool  是否预分配ObjectArray，不配置缺省为false。若配置为true，会耗费更多内存，但可避免动态分配内存出现的卡顿
+ 
+;If true, the engine will free objects' memory from a worker thread
+gc.MultithreadedDestructionEnabled  // 多线程析构UObject和释放其内存
+
+; If set to 1, the engine will attempt to trigger GC each frame while async loading.
+gc.StressTestGC    // 非test包非shipping包才可用
+
+; If set to 1, the engine will force GC each frame.
+gc.ForceCollectGarbageEveryFrame   // 设置为1时，每帧都会进行GC  非test包非shipping包才可用
+
+; Used to debug garbage collection...Collects garbage every frame if the value is > 0.
+gc.CollectGarbageEveryFrame  // 设置为1时每帧都会进行GC，非常卡
+
+; Multiplier to apply to time between purging pending kill objects when on an idle server.
+gc.TimeBetweenPurgingPendingKillObjectsOnIdleServerMultiplier
+
+; Time in seconds (game time) we should wait between purging object references to objects that are pending kill when we're low on memory
+gc.LowMemory.TimeBetweenPurgingPendingKillObjects
+
+; Time in seconds (game time) we should wait between GC when we're low on memory and there are levels pending unload
+gc.LowMemory.TimeBetweenPurgingPendingLevels
+
+; Memory threshold for low memory GC mode, in MB
+gc.LowMemory.MemoryThresholdMB
+
+;Minimum number of objects to spawn a GC sub-task for.
+gc.MinDesiredObjectsPerSubTask 
+
+; Dumps count and size of GC Pools
+gc.DumpPoolStats
+
+; Dumps all clusters do output log. When 'Hiearchy' argument is specified lists all objects inside clusters.
+gc.ListClusters
+
+; Dumps all clusters do output log that are not referenced by anything.
+gc.FindStaleClusters
+
+; Dumps references to all objects within a cluster. Specify the cluster name with Root=Name.
+gc.DumpRefsToCluster
+*/
+```
 # 问题
 
 - FProperty类的ArrayDim属性是什么含义？
