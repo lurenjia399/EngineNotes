@@ -247,7 +247,7 @@ FGraphEventRef TriggerParallelTasks(...)
 {
 	//1 在 ProcessingContext 局部变量的内存中new了一个ExecutionContext，并通过右移传出来，传出来这个等号会执行 FMassExecutionContext 的移动构造函数
 	FMassExecutionContext ExecutionContext = MoveTemp(ProcessingContext).GetExecutionContext();
-//2 第一个Task，内部会创建 FMassProcessorTask 这个Task,这个Task就会执行我们自己定义 UMassProcessor 的 Execute 方法。并且我们把ExecutionContext 的引用传入到Execute中，在Executezh
+//2 第一个Task，内部会创建 FMassProcessorTask 这个Task,这个Task就会执行我们自己定义 UMassProcessor 的 Execute 方法。并且我们把ExecutionContext 的引用传入到Execute中，在Execute中可能通过PushBuffer将命令添加到了ExecutionContext的CommandBuffer中。
 	FGraphEventRef CompletionEvent;
 	{
 		CompletionEvent = Processor.DispatchProcessorTasks(
@@ -255,12 +255,14 @@ FGraphEventRef TriggerParallelTasks(...)
 		ExecutionContext, 
 		{});
 	}
-
+//3 第二个Task，
 	if (CompletionEvent.IsValid())
 	{
-		const FGraphEventArray Prerequisites = { CompletionEvent };
-		CompletionEvent = TGraphTask<FMassExecutorDoneTask>::CreateTask(&Prerequisites)
-			.ConstructAndDispatchWhenReady(MoveTemp(ExecutionContext), OnDoneNotification, Processor.GetName(), CurrentThread);
+		const FGraphEventArray Prerequisites = 
+		{ CompletionEvent };
+		CompletionEvent =TGraphTask<FMassExecutorDoneTask>::CreateTask(
+		&Prerequisites).ConstructAndDispatchWhenReady(
+MoveTemp(ExecutionContext), OnDoneNotification, Processor.GetName(), CurrentThread);
 	}
 
 	return CompletionEvent;
