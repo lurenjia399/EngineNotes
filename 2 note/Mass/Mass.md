@@ -247,7 +247,7 @@ FGraphEventRef TriggerParallelTasks(...)
 {
 	//1 在 ProcessingContext 局部变量的内存中new了一个ExecutionContext，并通过右移传出来，传出来这个等号会执行 FMassExecutionContext 的移动构造函数
 	FMassExecutionContext ExecutionContext = MoveTemp(ProcessingContext).GetExecutionContext();
-//2 第一个Task，内部会创建 FMassProcessorTask 这个Task,这个Task就会执行我们自己定义的 Processing
+//2 第一个Task，内部会创建 FMassProcessorTask 这个Task,这个Task就会执行我们自己定义 UMassProcessor 的 Execute 方法。并且我们把ExecutionContext 的引用传入到Execute中，在Executezh
 	FGraphEventRef CompletionEvent;
 	{
 		CompletionEvent = Processor.DispatchProcessorTasks(
