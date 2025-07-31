@@ -255,7 +255,7 @@ FGraphEventRef TriggerParallelTasks(...)
 		ExecutionContext, 
 		{});
 	}
-//3 第二个Task，在第一个Task执行完之后，ExecutionContext里面可能有CommandBuffer了，这里用右移延长局部变量的生命周期。然后呢这个Task里就是执行CommandBuffer里各种命令
+//3 第二个Task，在第一个Task执行完之后，ExecutionContext里面可能有CommandBuffer了，这里用右移延长局部变量的生命周期。然后呢这个Task里就是执行CommandBuffer里各种命令。
 	if (CompletionEvent.IsValid())
 	{
 		const FGraphEventArray Prerequisites = 
@@ -268,10 +268,10 @@ FGraphEventRef TriggerParallelTasks(...)
 							Processor.GetName(), //
 							CurrentThread);
 	}
-
 	return CompletionEvent;
 }
 ```
+多线程的情况下需要注意的就是：1 创建了ProcessingContext局部变量，并把局部变量
 #### 5.1.3 OnPhaseEnd 结束部分
 
 问题：
