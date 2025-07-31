@@ -233,9 +233,37 @@ UE::Mass::Executor::Run(*PhaseProcessor, Context);
 ```
 2 多线程的情况下：
 ```cpp
-
+const FGraphEventRef PipelineCompletionEvent = UE::Mass::Executor::TriggerParallelTasks(
+				*PhaseProcessor, // 此次Tick的UMassCompositeProcessor
+				MoveTemp(Context),// 移动局部变量ProcessingContext
+				[this, DeltaTime](){
+					OnParallelExecutionDone(DeltaTime);
+				} ,// Task执行完的回调
+				CurrentThread);// 当前线程
 ```
+首先就是调用了 TriggerParallelTasks 这个方法，这个方法里面就是执行了两个Task。这个方法最终要的可能就是第二个参数了，把局部变量移动到了方法中，目的就是在不拷贝的情况下延长局部变量的生命周期。下面我们 来看这个方法里的两个Task：
+```cpp
+FGraphEventRef TriggerParallelTasks(...)
+{
+	//1 在 ProcessingContext 局部变量的内存中
+	FMassExecutionContext ExecutionContext = MoveTemp(ProcessingContext).GetExecutionContext();
 
+	FGraphEventRef CompletionEvent;
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE_STR("Dispatch Processors")
+		CompletionEvent = Processor.DispatchProcessorTasks(ProcessingContext.GetEntityManager(), ExecutionContext, {});
+	}
+
+	if (CompletionEvent.IsValid())
+	{
+		const FGraphEventArray Prerequisites = { CompletionEvent };
+		CompletionEvent = TGraphTask<FMassExecutorDoneTask>::CreateTask(&Prerequisites)
+			.ConstructAndDispatchWhenReady(MoveTemp(ExecutionContext), OnDoneNotification, Processor.GetName(), CurrentThread);
+	}
+
+	return CompletionEvent;
+}
+```
 #### 5.1.3 OnPhaseEnd 结束部分
 
 问题：
