@@ -255,7 +255,7 @@ FGraphEventRef TriggerParallelTasks(...)
 		ExecutionContext, 
 		{});
 	}
-//3 第二个Task，
+//3 第二个Task，在第一个Task执行完之后，ExecutionContext里面可能有CommandBuffer了，这里
 	if (CompletionEvent.IsValid())
 	{
 		const FGraphEventArray Prerequisites = 
@@ -263,9 +263,9 @@ FGraphEventRef TriggerParallelTasks(...)
 		CompletionEvent=TGraphTask<FMassExecutorDoneTask>::
 					CreateTask(&Prerequisites)
 						.ConstructAndDispatchWhenReady(
-							MoveTemp(ExecutionContext), //右移Executio
-							OnDoneNotification, 
-							Processor.GetName(), 
+							MoveTemp(ExecutionContext), //右移
+							OnDoneNotification, //回调函数
+							Processor.GetName(), //
 							CurrentThread);
 	}
 
