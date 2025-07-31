@@ -260,9 +260,13 @@ FGraphEventRef TriggerParallelTasks(...)
 	{
 		const FGraphEventArray Prerequisites = 
 		{ CompletionEvent };
-		CompletionEvent =TGraphTask<FMassExecutorDoneTask>::CreateTask(
-		&Prerequisites).ConstructAndDispatchWhenReady(
-MoveTemp(ExecutionContext), OnDoneNotification, Processor.GetName(), CurrentThread);
+		CompletionEvent=TGraphTask<FMassExecutorDoneTask>::
+					CreateTask(&Prerequisites)
+						.ConstructAndDispatchWhenReady(
+							MoveTemp(ExecutionContext), //右移Executio
+							OnDoneNotification, 
+							Processor.GetName(), 
+							CurrentThread);
 	}
 
 	return CompletionEvent;
