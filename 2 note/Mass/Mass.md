@@ -245,7 +245,7 @@ const FGraphEventRef PipelineCompletionEvent = UE::Mass::Executor::TriggerParall
 ```cpp
 FGraphEventRef TriggerParallelTasks(...)
 {
-	//1 在 ProcessingContext 局部变量的内存中
+	//1 在 ProcessingContext 局部变量的内存中new了一个ExecutionContext，并通过右移传出来，传出来这个等号会执行 FMassExecutionContext 的移动构造函数
 	FMassExecutionContext ExecutionContext = MoveTemp(ProcessingContext).GetExecutionContext();
 
 	FGraphEventRef CompletionEvent;
