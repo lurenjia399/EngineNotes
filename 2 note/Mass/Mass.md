@@ -233,8 +233,6 @@ UE::Mass::Executor::Run(*PhaseProcessor, Context);
 ```
 2 多线程的情况下：
 ```cpp
-//1 首先我们创建了
-FMassProcessingContext Context(EntityManager, DeltaTime);
 
 ```
 
