@@ -125,7 +125,7 @@ void UMassEntitySettings::BuildProcessorListAndPhases()
 
 ## 5 UMassCompositeProcessor
 ## 6 FMassEntityQuery
-
+这是个加速结构，我们通过不同的Fragment组成Chunk之后，我们需要操作
 
 # 2 执行
 ## 1 MassProcessor
