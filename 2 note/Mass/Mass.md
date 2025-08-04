@@ -126,7 +126,7 @@ void UMassEntitySettings::BuildProcessorListAndPhases()
 ## 5 UMassCompositeProcessor
 ## 6 FMassEntityQuery
 这是个加速结构，我们通过不同的Fragment组成Chunk之后，我们需要操作
-
+给这个Fragment赋值来实现具体的逻辑，这肯定不能遍历吧，所以就有了
 # 2 执行
 ## 1 MassProcessor
 EProcessorExecutionFlags::Editor 这个枚举标志了此个Processor在哪个端执行的?
