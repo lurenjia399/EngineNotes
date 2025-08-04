@@ -124,6 +124,8 @@ void UMassEntitySettings::BuildProcessorListAndPhases()
 ```
 
 ## 5 UMassCompositeProcessor
+## 6 FMassEntityQuery
+
 
 # 2 执行
 ## 1 MassProcessor
@@ -279,12 +281,14 @@ FGraphEventRef TriggerParallelTasks(...)
 ```cpp
 void FMassProcessingPhaseManager::OnPhaseEnd(FMassProcessingPhase& Phase)
 {
+	CurrentPhase = EMassProcessingPhase::MAX;
 	if (GetEntityManagerRef().Defer().HasPendingCommands())
 	{
 		GetEntityManagerRef().FlushCommands();
 	}
 }
 ```
+这个结束部分就比较简单了，就是执行CommandBuffer里面的命令。
 
 问题：
 ```cpp
