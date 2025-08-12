@@ -262,7 +262,7 @@ FGraphEventRef TriggerParallelTasks(...)
 {
 	//1 在 ProcessingContext 局部变量的内存中new了一个ExecutionContext，并通过右移传出来，传出来这个等号会执行 FMassExecutionContext 的移动构造函数
 	FMassExecutionContext ExecutionContext = MoveTemp(ProcessingContext).GetExecutionContext();
-//2 第一个Task，内部会创建 FMassProcessorTask 这个Task,这个Task就会执行我们自己定义 UMassProcessor 的 Execute 方法。并且我们把ExecutionContext 的引用传入到Execute中，在Execute中可能通过PushBuffer将命令添加到了ExecutionContext的CommandBuffer中。
+//2 第一个Task，内部会创建 FMassProcessorTask 这个Task,这个Task就会执行我们自己定义 UMassProcessor 的 Execute 方法。并且我们把ExecutionContext 的引用传入到Execute中，在Execute中可能通过PushBuffer将命令添加到了ExecutionContext的CommandBuffer中。这个是在任意的工作线程中执行的。
 	FGraphEventRef CompletionEvent;
 	{
 		CompletionEvent = Processor.DispatchProcessorTasks(
@@ -270,7 +270,7 @@ FGraphEventRef TriggerParallelTasks(...)
 		ExecutionContext, 
 		{});
 	}
-//3 第二个Task，在第一个Task执行完之后，ExecutionContext里面可能有CommandBuffer了，这里用右移延长局部变量的生命周期。然后呢这个Task里就是执行CommandBuffer里各种命令。
+//3 第二个Task，在第一个Task执行完之后，ExecutionContext里面可能有CommandBuffer了，这里用右移延长局部变量的生命周期。然后呢这个Task里就是执行CommandBuffer里各种命令。这个是在主线程执行的，因为需要执行CommandBuffer里的命令。
 	if (CompletionEvent.IsValid())
 	{
 		const FGraphEventArray Prerequisites = 
