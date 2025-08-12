@@ -302,7 +302,7 @@ void FMassProcessingPhaseManager::OnPhaseEnd(FMassProcessingPhase& Phase)
 	}
 }
 ```
-这个结束部分就比较简单了，就是执行CommandBuffer里面的命令。
+这个结束部分就比较简单了，就是执行CommandBuffer里面的命令。在单线程情况下会执行 FlushCommands ，在多线程情况下 FMassExecutorDoneTask 这个Task里面会执行一次 FlushCommands，不管Task是否执行完CommandBuffer里的命令，都会在OnPhaseEnd里在执行一次。
 
 问题：
 ```cpp
