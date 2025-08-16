@@ -25,6 +25,6 @@ https://www.jetbrains.com/help/clion/core-dump-debug.html#process
 
 1 Select Run | Debug Core Dump from the main menu
 2 选择Dump文件
-3 
+3 选择项目生成的exe文件
 */
 ```
