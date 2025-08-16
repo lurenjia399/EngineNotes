@@ -20,6 +20,11 @@ UE4用这个 {,,UE4Editor-Engine.dll}::GPlayInEditorContextString
 3 
 ```cpp
 /*
+调试Dump
 https://www.jetbrains.com/help/clion/core-dump-debug.html#process
+
+1 Select Run | Debug Core Dump from the main menu
+2 选择Dump文件
+3 
 */
 ```
