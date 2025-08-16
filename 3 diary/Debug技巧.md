@@ -17,3 +17,9 @@ if (!ensureMsgf(IsInGameThread(), TEXT("Calling %hs is supported only on the Gam
 UE4用这个 {,,UE4Editor-Engine.dll}::GPlayInEditorContextString
 */
 ```
+3 
+```cpp
+/*
+https://www.jetbrains.com/help/clion/core-dump-debug.html#process
+*/
+```
