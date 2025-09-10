@@ -1288,3 +1288,12 @@ void FTickableGameObject::TickObjects(UWorld* World, const int32 InTickType, con
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250505221418.png)
 1 应该是不会循环依赖的，我们是在QueueTickFunction方法中递归的执行Prerequisites依赖数组的，这里每个tickFunction会记录执行的帧号，如果帧号不同才会递归执行，所以应该是不会循环依赖的。但如果依赖的话就会导致一方的tick逻辑不会执行。
 2 依赖用多了就会有性能问题，本身tick是通过多线程这边创建task执行的，但是依赖多了很自然就变成同步的了，性能肯定不好吧。
+
+
+# 额外
+```cpp
+// 还有这种添加tick的方式
+TickHandle = FTSTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UHTCityEventSubsystem::Tick), 0.0f);
+
+FTSTicker::GetCoreTicker().RemoveTicker(TickHandle);
+```
