@@ -510,3 +510,28 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 12 HLOD是怎么运作的？
 - 构建部分：首先是setup的过程，先将场景划分成cell，遍历cell里的Actor，如果配置了HLodLayer就会创建出对应的WorldPartitionHLodActor。同一个Cell里相同的HLodLayer只会有一个HlodActor，不同的Cell里相同的HLodLayer会有不同的HlodActor。接下来就是Build部分，拿到WorldPartition里所有的HlodActor，然后遍历，根据不同HloadLayer配置，来执行不同的build方法创建出Comp，然后将Comp，Attach到HlodActor身上。
 - 运行切换部分：我们在运行是会有一个persistentGrid来划分不会空间加载的actor（包括普通actor和HlodActor），然后还会有个MainGrid来划分空间加载的普通Actor，而那些HLodActor会通过HlodGrid来划分，我们在RunitmePartitions里配置的HlodLayer都会有对应的HlodGrid，通过HlodGrid划分HlodActor，生成对应的Cell，然后通过StreamingSource的距离加载出对应的Cell。
+13 命令行
+- wp.Runtime.ToggleDrawRuntimeHash2D 开关世界分区运行时哈希的2D调试显示。
+- wp.Runtime.ToggleDrawRuntimeHash3D 开关世界分区运行时哈希的3D调试显示。
+- wp.Runtime.ShowRuntimeSpatialHashGridLevel 选择在显示世界分区运行时哈希时显示的网格级别。
+- wp.Runtime.ShowRuntimeSpatialHashGridLevelCount 选择在显示世界分区运行时哈希时要显示多少个网格级别。
+- wp.Runtime.ShowRuntimeSpatialHashGridIndex 显示世界分区运行时哈希时，显示指定的网格。 无效的索引将导致显示所有网格。
+- wp.Runtime.RuntimeSpatialHashCellToSourceAngleContributionToCellImportance 取0到1之间的值，用于调节"流送源-单元网格"向量和"流送源-单元网格"向量之间的角度对单元网格重要性的贡献。 该值越接近于0，角度对单元重要性的贡献就越小。
+- 
+wp.Runtime.OverrideRuntimeSpatialHashLoadingRange
+
+
+
+设置运行时加载范围。 接受以下参数：
+
+-grid=[index]：设置你想影响的运行时网格。
+
+-range=[override_loading_range]：设置新的运行时加载范围
+
+wp.Runtime.MaxLoadingLevelStreamingCells
+
+限制并发加载的世界分区流送单元的数量。
+
+wp.Runtime.HLOD 0
+
+使用wp.Runtime.HLOD显示无HLOD的世界。
