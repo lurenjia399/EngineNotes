@@ -28,4 +28,4 @@ https://www.jetbrains.com/help/clion/core-dump-debug.html#process
 3 选择项目生成的exe文件
 */
 ```
-4 蓝图的csc面板显示不了。点Window选loadLayout，选jing'di'a
+4 蓝图的csc面板显示不了。点Window选loadLayout，选ue4经典布局，就能显示出来了
