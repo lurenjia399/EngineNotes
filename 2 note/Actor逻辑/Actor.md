@@ -5,7 +5,7 @@ struct FActorSpawnParameters
 {  
 	// actor的名称，就是那个....._01
     FName Name;  
-	// 
+	// actor的模板
     AActor* Template;  
 
     AActor* Owner;  
