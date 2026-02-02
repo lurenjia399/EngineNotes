@@ -19,6 +19,8 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 	// 1 满足某种条件，创建路网警察。就是通过FMassEntityQuery来查询玩家周围是否有警察，然后把警察添加到ChaseCrowdMap缓存中。
 	DoPoliceCrowdChase();
 	// 2 根据鼠鼠创建的数量，将需要补充的鼠鼠，添加到PoliceShuShuManagerCache缓存中
-	DoPoliceShuShuChase();
+	DoPoliceShuShuChase(HTPlayerState->GetSinLevel());
+	// 3 警车的数量，添加到
+	DoPoliceCharacterChase(HTPlayerState->GetSinLevel());
 }
 ```
