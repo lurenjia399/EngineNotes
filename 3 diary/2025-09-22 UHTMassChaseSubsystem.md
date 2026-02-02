@@ -6,8 +6,9 @@
 /*
 void UHTMassChaseSubsystem::Tick(float DeltaTime)
 {
-	// 更新玩家罪恶值相关的，hai
+	// 更新玩家罪恶值相关的，还有生成各种警察的操作
 	UpdatePlayerCrime(DeltaTime);
+	// 更新路网上的警察行为
 	UpdateCrowdChase(DeltaTime);
 }
 */
@@ -30,4 +31,9 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 	DoPoliceObstacle(HTPlayerState->GetSinLevel());
 	
 }
+```
+# UpdateCrowdChase
+```cpp
+/*
+*/
 ```
