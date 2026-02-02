@@ -20,7 +20,7 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 	DoPoliceCrowdChase();
 	// 2 根据鼠鼠创建的数量，将需要补充的鼠鼠，添加到PoliceShuShuManagerCache缓存中
 	DoPoliceShuShuChase(HTPlayerState->GetSinLevel());
-	// 3 
+	// 3 警员的数量，添加到PoliceCharacterManagerCache缓存中
 	DoPoliceCharacterChase(HTPlayerState->GetSinLevel());
 	// 4 警车的数量，添加到PoliceCharacterManagerCache缓存中
 	DoPoliceCarChase(HTPlayerState->GetSinLevel());
