@@ -40,7 +40,8 @@ void UHTMassChaseSubsystem::UpdateCrowdChase(float DeltaTime)
 {
 		for (TMap<FMassEntityHandle, FHTMassCrowdChaseCache>::TIterator It(ChaseCrowdMap); It; ++It)  
 	{
-		// 1 通过获取lu'wang
+		// 1 通过获取路网警察的位置，用SpawnAndControlCrowdActor方法在位置出创建警察Character，然后将路网警察隐藏掉。
+		
 	}
 }
 
