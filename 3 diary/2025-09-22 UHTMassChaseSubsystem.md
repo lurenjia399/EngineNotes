@@ -40,7 +40,7 @@ void UHTMassChaseSubsystem::UpdateCrowdChase(float DeltaTime)
 {
 		for (TMap<FMassEntityHandle, FHTMassCrowdChaseCache>::TIterator It(ChaseCrowdMap); It; ++It)  
 	{
-		
+		// 1 通过获取lu'wang
 	}
 }
 
