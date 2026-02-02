@@ -40,7 +40,7 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 // 1 通过获取路网警察的位置，用SpawnAndControlCrowdActor方法在位置出创建警察Character，然后将路网警察隐藏掉。
 // 2 SpawnAndControlCrowdActor 这个方法就是通过SpawnActor创建
 // 3
-// 4 FHTCrowdHideTag 通过这个Tag来将路网警察隐藏，这个FHTCrowdHideTag是在UHTMassCrowdForceLODProcessor这个里使用的，
+// 4 FHTCrowdHideTag 通过这个Tag来将路网警察隐藏，这个FHTCrowdHideTag是在UHTMassCrowdForceLODProcessor这个里使用的，把路网警察的Lod切换成off，就是会隐藏掉了
 
 */
 ```
