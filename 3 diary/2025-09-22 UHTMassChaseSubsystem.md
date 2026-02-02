@@ -6,7 +6,9 @@
 /*
 void UHTMassChaseSubsystem::Tick(float DeltaTime)
 {
+	// 更新玩家罪恶值相关的，hai
 	UpdatePlayerCrime(DeltaTime);
+	UpdateCrowdChase(DeltaTime);
 }
 */
 ```
