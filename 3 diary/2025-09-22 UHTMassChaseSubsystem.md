@@ -36,14 +36,11 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 ```cpp
 /*
 // 遍历缓存的路网警察，是有一个枚举标记，每做完一步操作就会进入下一个枚举
-void UHTMassChaseSubsystem::UpdateCrowdChase(float DeltaTime)  
-{
-		for (TMap<FMassEntityHandle, FHTMassCrowdChaseCache>::TIterator It(ChaseCrowdMap); It; ++It)  
-	{
-		// 1 通过获取路网警察的位置，用SpawnAndControlCrowdActor方法在位置出创建警察Character，然后将路网警察隐藏掉。
-		
-	}
-}
+
+// 1 通过获取路网警察的位置，用SpawnAndControlCrowdActor方法在位置出创建警察Character，然后将路网警察隐藏掉。
+// 2 SpawnAndControlCrowdActor 这个方法就是通过SpawnActor创建
+// 3
+// 4 FHTCrowdHideTag 通过这个Tag来将路网警察隐藏，这个FHTCrowdHideTag是在UHTMassCrowdForceLODProcessor这个里使用的，
 
 */
 ```
