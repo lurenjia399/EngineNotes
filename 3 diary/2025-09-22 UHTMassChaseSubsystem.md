@@ -16,7 +16,7 @@ void UHTMassChaseSubsystem::Tick(float DeltaTime)
 ```cpp
 void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)  
 {
-	// 1 满足某种条件，创建路网警察
+	// 1 满足某种条件，创建路网警察。就是通过FMassEntityQuery来cha'x
 	DoPoliceCrowdChase();
 }
 ```
