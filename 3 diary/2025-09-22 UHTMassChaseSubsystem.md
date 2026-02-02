@@ -35,5 +35,14 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 # UpdateCrowdChase
 ```cpp
 /*
+// 遍历缓存的路网警察，是有一个枚举标记，每做完一步操作jiu'hui
+void UHTMassChaseSubsystem::UpdateCrowdChase(float DeltaTime)  
+{
+		for (TMap<FMassEntityHandle, FHTMassCrowdChaseCache>::TIterator It(ChaseCrowdMap); It; ++It)  
+	{
+		
+	}
+}
+
 */
 ```
