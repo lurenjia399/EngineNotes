@@ -24,5 +24,8 @@ void UHTMassChaseSubsystem::UpdatePlayerCrime(float DeltaTime)
 	DoPoliceCharacterChase(HTPlayerState->GetSinLevel());
 	// 4 警车的数量，添加到PoliceCharacterManagerCache缓存中
 	DoPoliceCarChase(HTPlayerState->GetSinLevel());
+	// 5 警员障碍物，添加到PoliceObstacleManagerCache缓存中
+	DoPoliceObstacle(HTPlayerState->GetSinLevel());
+	
 }
 ```
