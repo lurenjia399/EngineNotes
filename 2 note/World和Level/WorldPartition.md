@@ -519,4 +519,5 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 - wp.Runtime.RuntimeSpatialHashCellToSourceAngleContributionToCellImportance 取0到1之间的值，用于调节"流送源-单元网格"向量和"流送源-单元网格"向量之间的角度对单元网格重要性的贡献。 该值越接近于0，角度对单元重要性的贡献就越小。
 - wp.Editor.DumpStreamingGenerationLog 查看wp中所有actor的信息
 14 DataLayerType中Editor和RuntimeTime有什么区别？
-- Editor是编辑器下使用的，
+- Editor是编辑器下使用的，用作分类管理，打包后是不生效的，也就是打包后这个数据层就相当于没有
+- 
