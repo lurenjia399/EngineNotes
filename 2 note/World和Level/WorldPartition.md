@@ -520,4 +520,4 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 - wp.Editor.DumpStreamingGenerationLog 查看wp中所有actor的信息
 14 DataLayerType中Editor和RuntimeTime有什么区别？
 - Editor是编辑器下使用的，用作分类管理，打包后是不生效的，也就是打包后这个数据层就相当于没有。
-- Runtime是运行时使用的，就是可以动态控制的，我们通过加载数据层在控制actor的显示与否。具体打包后生效是在 [UWorldPartition::GatherPackagesToCook](FDataLayerUtils::ResolveRuntimeDataLayerInstanceNames) 方法中吧，
+- Runtime是运行时使用的，就是可以动态控制的，我们通过加载数据层在控制actor的显示与否。具体打包后生效是在 FDataLayerUtils::ResolveRuntimeDataLayerInstanceNames 方法中吧。
