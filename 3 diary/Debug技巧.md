@@ -29,3 +29,24 @@ https://www.jetbrains.com/help/clion/core-dump-debug.html#process
 */
 ```
 4 蓝图的csc面板显示不了。点Window选loadLayout，选ue4经典布局，就能显示出来了
+
+5
+```cpp
+/*
+//Debug Log输出：  
+FString StackInfo = FString::Printf(TEXT("Stack：[%u]"),GFrameNumber);  
+TArray<FProgramCounterSymbolInfo> stacks = FPlatformStackWalk::GetStack(1,10);  
+for (int i = 0;i < stacks.Num();++i)  
+{  
+    StackInfo += FString("\r\n\t")+FString::Printf(TEXT("%s:%d"),ANSI_TO_TCHAR(stacks[i].FunctionName), stacks[i].LineNumber);  
+}  
+if (DrivableVehicle)  
+{  
+    UE_LOG(LogHTVehicle, Warning, TEXT("Authority Start Get Off Vehicle! Player:[%s],VehicleID:[%s],\r\n\t %s"), *GetName(), *(DrivableVehicle->VehicleID.ToString()),*StackInfo);  
+}  
+else  
+{  
+    UE_LOG(LogHTVehicle, Warning, TEXT("Authority Start Get Off Vehicle! Player:[%s],VehicleID:NULL,\r\n\t %s"), *GetName(),*StackInfo);  
+}
+*/
+```
