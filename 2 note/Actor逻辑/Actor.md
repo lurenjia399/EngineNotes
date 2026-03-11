@@ -13,6 +13,8 @@ struct FActorSpawnParameters
     APawn* Instigator;  
   
     class  ULevel* OverrideLevel;
+    // 可以重写Actor的ParentCo
+		class   UChildActorComponent* OverrideParentComponent;
 }*/
 
 ```
