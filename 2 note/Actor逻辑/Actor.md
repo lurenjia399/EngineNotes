@@ -152,8 +152,21 @@ void AActor::PostSpawnInitialize(
 			ETeleportType::ResetPhysics);
 	}
 /*
-4 执行ActorComponent的OnComponentCreated方法,注意是执行C++构造函数中CreateDefaultSubobject创建出的Component的。
+5 执行ActorComponent的OnComponentCreated方法,注意是执行C++构造函数中CreateDefaultSubobject创建出的Component的。
 */
 	DispatchOnComponentsCreated(this);
+/*
+6 bHasDeferredComponentRegistration 设置这个标志位，这个标志位表明是我们创建的这个Actor他的UClass是蓝图类并且这个Actor没有创建任何的C++组件。
+*/
+	bHasDeferredComponentRegistration = 
+		(SceneRootComponent == nullptr 
+		&& Cast<UBlueprintGeneratedClass>(GetClass()) != nullptr);
+/*
+7 
+*/
+	if (!bHasDeferredComponentRegistration && GetWorld())
+	{
+		RegisterAllComponents();
+	}
 }
 ```
