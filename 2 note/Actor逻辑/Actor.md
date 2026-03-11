@@ -94,16 +94,16 @@ AActor* UWorld::SpawnActor(
 */
 	OnActorPreSpawnInitialization.Broadcast(Actor);
 /*
-9 广播 OnActorPreSpawnInitialization 代理
+9 执行PostSpawnInitialize方法
 */
 	Actor->PostSpawnInitialize(
-	UserTransform, 
-	SpawnParameters.Owner, 
-	SpawnParameters.Instigator, 
-	SpawnParameters.IsRemoteOwned(), 
-	SpawnParameters.bNoFail, 
-	SpawnParameters.bDeferConstruction, 
-	SpawnParameters.TransformScaleMethod);
+		UserTransform, 
+		SpawnParameters.Owner, 
+		SpawnParameters.Instigator, d
+		SpawnParameters.IsRemoteOwned(), 
+		SpawnParameters.bNoFail, 
+		SpawnParameters.bDeferConstruction, 
+		SpawnParameters.TransformScaleMethod);
 
 }
 
