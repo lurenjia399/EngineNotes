@@ -13,7 +13,7 @@ struct FActorSpawnParameters
     APawn* Instigator;  
   
     class  ULevel* OverrideLevel;
-    // 可以重写Actor的ParentCo
+    // 可以重写Actor的ParentComponent
 		class   UChildActorComponent* OverrideParentComponent;
 }*/
 
@@ -48,17 +48,32 @@ AActor* UWorld::SpawnActor(
 #endif
 
 /*
-3 通过NewObject创建了
+3 通过NewObject创建出了Actor
 */
-AActor* const Actor = NewObject<AActor>(
-	LevelToSpawnIn, 
-	Class, 
-	NewActorName, 
-	ActorFlags, 
-	Template, 
-	false/*bCopyTransientsFromClassDefaults*/,
-	nullptr/*InInstanceGraph*/, 
-	ExternalPackage);
+	AActor* const Actor = NewObject<AActor>(
+		LevelToSpawnIn, 
+		Class, 
+		NewActorName, 
+		ActorFlags, 
+		Template, 
+		false/*bCopyTransientsFromClassDefaults*/,
+		nullptr/*InInstanceGraph*/, 
+		ExternalPackage);
+	
+/*
+4 判断生成参数中是否
+*/
+	if (SpawnParameters.OverrideParentComponent)  
+	{  
+	    FActorParentComponentSetter::Set(
+		    Actor, 
+		    SpawnParameters.OverrideParentComponent);  
+	}  
+  
+if (SpawnParameters.CustomPreSpawnInitalization)  
+{  
+    SpawnParameters.CustomPreSpawnInitalization(Actor);  
+}
 }
 
 ```
