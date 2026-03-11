@@ -61,7 +61,7 @@ AActor* UWorld::SpawnActor(
 		ExternalPackage);
 	
 /*
-4 判断生成参数中是否
+4 判断生成参数中是否有重写的OverrideParentComponent,如果有就重写Actor的ParentComponent
 */
 	if (SpawnParameters.OverrideParentComponent)  
 	{  
@@ -69,11 +69,15 @@ AActor* UWorld::SpawnActor(
 		    Actor, 
 		    SpawnParameters.OverrideParentComponent);  
 	}  
-  
-if (SpawnParameters.CustomPreSpawnInitalization)  
-{  
-    SpawnParameters.CustomPreSpawnInitalization(Actor);  
-}
+/*
+5 这里会执行自定义的一个初始化方法
+*/
+	if (SpawnParameters.CustomPreSpawnInitalization)  
+	{  
+	    SpawnParameters.CustomPreSpawnInitalization(Actor);  
+	}
+	
+	
 }
 
 ```
