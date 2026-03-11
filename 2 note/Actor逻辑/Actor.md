@@ -135,8 +135,9 @@ void AActor::PostSpawnInitialize(
 */
 	ExchangeNetRoles(bRemoteOwned);
 /*
-2 
+3 设置生成参数上的各种属性
 */
 	SetOwner(InOwner);
+	SetInstigator(InInstigator);
 }
 ```
