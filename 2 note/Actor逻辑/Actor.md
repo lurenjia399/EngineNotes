@@ -82,6 +82,20 @@ AActor* UWorld::SpawnActor(
 	LevelToSpawnIn->TryAddActorToList( 
 		Actor,
 		/*bAddUnique*/false);
+		
+/*
+7 赋值Actor的碰撞规则，创建Actor的时候是否创建在可以创建的地方
+*/
+	Actor->SpawnCollisionHandlingMethod = 
+		CollisionHandlingMethod;
+		
+/*
+8 广播 OnActorPreSpawnInitialization 代理
+*/
+	OnActorPreSpawnInitialization.Broadcast(Actor);
+	
+		Actor->PostSpawnInitialize(UserTransform, SpawnParameters.Owner, SpawnParameters.Instigator, SpawnParameters.IsRemoteOwned(), SpawnParameters.bNoFail, SpawnParameters.bDeferConstruction, SpawnParameters.TransformScaleMethod);
+
 }
 
 ```
