@@ -162,7 +162,9 @@ void AActor::PostSpawnInitialize(
 		(SceneRootComponent == nullptr 
 		&& Cast<UBlueprintGeneratedClass>(GetClass()) != nullptr);
 /*
-7 如果不需要延迟注册，就直接注册
+7 如果不需要延迟注册，就直接注册。
+注册里面首先执行PreRegisterAllComponents方法，
+然后是
 */
 	if (!bHasDeferredComponentRegistration && GetWorld())
 	{
