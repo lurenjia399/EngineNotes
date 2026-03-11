@@ -151,6 +151,9 @@ void AActor::PostSpawnInitialize(
 			false, nullptr, 
 			ETeleportType::ResetPhysics);
 	}
-	
+/*
+4 执行ActorComponent的OnComponentCreated方法,zhu
+*/
+	DispatchOnComponentsCreated(this);
 }
 ```
