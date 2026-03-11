@@ -15,6 +15,8 @@ struct FActorSpawnParameters
     class  ULevel* OverrideLevel;
     // 可以重写Actor的ParentComponent
 		class   UChildActorComponent* OverrideParentComponent;
+		// actor的所有权在服务器。此时正在同步创建客户端的，这时为true
+		uint8   bRemoteOwned:1;
 }*/
 
 ```
@@ -104,9 +106,22 @@ AActor* UWorld::SpawnActor(
 		SpawnParameters.bNoFail, 
 		SpawnParameters.bDeferConstruction, 
 		SpawnParameters.TransformScaleMethod);
-
+		
+	return Actor;
 }
 
 ```
-![[#3 AActor PostSpawnInitialize]]
 # 3 AActor::PostSpawnInitialize
+```cpp
+void AActor::PostSpawnInitialize(
+	FTransform const& UserSpawnTransform, 
+	AActor* InOwner, 
+	APawn* InInstigator, 
+	bool bRemoteOwned, 
+	bool bNoFail, 
+	bool bDeferConstruction, 
+	ESpawnActorScaleMethod TransformScaleMethod)
+{
+	
+}
+```
