@@ -26,13 +26,18 @@ AActor* UWorld::SpawnActor(
 	const FActorSpawnParameters& SpawnParameters )
 {
 /*
-1 在创建的开始，如果是编辑器就检测CurrentLevel，如果不是编辑器就把PersistentLevel赋值给CurrentLevel。
+1 在创建的开始，如果是编辑器就检测CurrentLevel，如果不是编辑器就把PersistentLevel赋值给CurrentLevel。注意非编辑器下是没有CurrentLevel。
 */
 #if WITH_EDITORONLY_DATA
 	check( CurrentLevel ); 	
 	check(GIsEditor || (CurrentLevel == PersistentLevel));
 #else
 	ULevel* CurrentLevel = PersistentLevel;
+#endif
+
+#if ENABLE_SPAWNACTORTIMER
+	FScopedSpawnActorTimer SpawnTimer(
+	Class->GetFName(),SpawnParameters.bDeferConstruction ? ESpawnActorTimingType::SpawnActorDeferred : ESpawnActorTimingType::SpawnActorNonDeferred);
 #endif
 }
 
