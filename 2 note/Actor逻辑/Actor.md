@@ -17,9 +17,12 @@ struct FActorSpawnParameters
 
 ```
 
-# 2 GetWorld()->SpawnActor
+# 2 UWorld::SpawnActor
 ```cpp
 /*
-
+AActor* UWorld::SpawnActor( UClass* Class, FTransform const* UserTransformPtr, const FActorSpawnParameters& SpawnParameters )
+{
+	
+}
 */
 ```
