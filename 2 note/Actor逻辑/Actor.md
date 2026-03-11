@@ -19,10 +19,21 @@ struct FActorSpawnParameters
 
 # 2 UWorld::SpawnActor
 ```cpp
-/*
-AActor* UWorld::SpawnActor( UClass* Class, FTransform const* UserTransformPtr, const FActorSpawnParameters& SpawnParameters )
+
+AActor* UWorld::SpawnActor( 
+	UClass* Class, 
+	FTransform const* UserTransformPtr, 
+	const FActorSpawnParameters& SpawnParameters )
 {
-	
-}
+/*
+
 */
+#if WITH_EDITORONLY_DATA
+	check( CurrentLevel ); 	
+	check(GIsEditor || (CurrentLevel == PersistentLevel));
+#else
+	ULevel* CurrentLevel = PersistentLevel;
+#endif
+}
+
 ```
