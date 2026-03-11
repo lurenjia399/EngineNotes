@@ -36,7 +36,7 @@ AActor* UWorld::SpawnActor(
 #endif
 
 /*
-2 一个Scoped结构体，用来检测
+2 一个Scoped结构体，用来检测生成Actor所需的时间的，通过spawnactortimer start这个命令行来记录,spawnactortimer end来关掉
 */
 #if ENABLE_SPAWNACTORTIMER
 	FScopedSpawnActorTimer SpawnTimer(
@@ -44,6 +44,7 @@ AActor* UWorld::SpawnActor(
 		ESpawnActorTimingType::SpawnActorDeferred : 
 		ESpawnActorTimingType::SpawnActorNonDeferred);
 #endif
+
 }
 
 ```
