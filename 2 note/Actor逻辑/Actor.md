@@ -76,8 +76,12 @@ AActor* UWorld::SpawnActor(
 	{  
 	    SpawnParameters.CustomPreSpawnInitalization(Actor);  
 	}
-	
-	
+/*
+6 将创建出的Actor添加到所属的Level中
+*/
+	LevelToSpawnIn->TryAddActorToList( 
+		Actor,
+		/*bAddUnique*/false);
 }
 
 ```
