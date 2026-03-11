@@ -152,7 +152,7 @@ void AActor::PostSpawnInitialize(
 			ETeleportType::ResetPhysics);
 	}
 /*
-4 执行ActorComponent的OnComponentCreated方法,zhu
+4 执行ActorComponent的OnComponentCreated方法,注意是执行C++构造函数中CreateDefaultSubobject创建出的Component的。
 */
 	DispatchOnComponentsCreated(this);
 }
