@@ -16,3 +16,10 @@ struct FActorSpawnParameters
 }*/
 
 ```
+
+# 2 GetWorld()->SpawnActor
+```cpp
+/*
+
+*/
+```
