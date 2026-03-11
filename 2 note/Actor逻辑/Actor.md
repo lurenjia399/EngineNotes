@@ -35,9 +35,14 @@ AActor* UWorld::SpawnActor(
 	ULevel* CurrentLevel = PersistentLevel;
 #endif
 
+/*
+2 一个Scoped结构体，用来检测
+*/
 #if ENABLE_SPAWNACTORTIMER
 	FScopedSpawnActorTimer SpawnTimer(
-	Class->GetFName(),SpawnParameters.bDeferConstruction ? ESpawnActorTimingType::SpawnActorDeferred : ESpawnActorTimingType::SpawnActorNonDeferred);
+		Class->GetFName(),SpawnParameters.bDeferConstruction ? 
+		ESpawnActorTimingType::SpawnActorDeferred : 
+		ESpawnActorTimingType::SpawnActorNonDeferred);
 #endif
 }
 
