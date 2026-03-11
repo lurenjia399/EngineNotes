@@ -94,7 +94,7 @@ AActor* UWorld::SpawnActor(
 */
 	OnActorPreSpawnInitialization.Broadcast(Actor);
 /*
-9 执行PostSpawnInitialize方法
+9 执行PostSpawnInitialize方法[[#3 AActor PostSpawnInitialize]]
 */
 	Actor->PostSpawnInitialize(
 		UserTransform, 
@@ -108,3 +108,5 @@ AActor* UWorld::SpawnActor(
 }
 
 ```
+![[#3 AActor PostSpawnInitialize]]
+# 3 AActor::PostSpawnInitialize
