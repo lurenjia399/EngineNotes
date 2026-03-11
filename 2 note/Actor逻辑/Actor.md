@@ -45,6 +45,18 @@ AActor* UWorld::SpawnActor(
 		ESpawnActorTimingType::SpawnActorNonDeferred);
 #endif
 
+/*
+3 通过NewObject创建了
+*/
+AActor* const Actor = NewObject<AActor>(
+	LevelToSpawnIn, 
+	Class, 
+	NewActorName, 
+	ActorFlags, 
+	Template, 
+	false/*bCopyTransientsFromClassDefaults*/,
+	nullptr/*InInstanceGraph*/, 
+	ExternalPackage);
 }
 
 ```
