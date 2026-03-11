@@ -131,8 +131,12 @@ void AActor::PostSpawnInitialize(
 	CreationTime = (World ? World->GetTimeSeconds() : 0.f);
 
 /*
-1 交换Role和RemoteRole，一般是创建
+2 交换Role和RemoteRole，一般是在客户端创建服务器同步下来的actor需要交换
 */
 	ExchangeNetRoles(bRemoteOwned);
+/*
+2 
+*/
+	SetOwner(InOwner);
 }
 ```
