@@ -170,5 +170,23 @@ void AActor::PostSpawnInitialize(
 	{
 		RegisterAllComponents();
 	}
+	
+	// See if anything has deleted us
+	if( !IsValidChecked(this) && !bNoFail )
+	{
+		return;
+	}
+
+	PostActorCreated();
+
+	if (!bDeferConstruction)
+	{
+		FinishSpawning(UserSpawnTransform, true);
+	}
+	else if (SceneRootComponent != nullptr)
+	{
+	
+		GSpawnActorDeferredTransformCache.Emplace(this, UserSpawnTransform);
+	}
 }
 ```
