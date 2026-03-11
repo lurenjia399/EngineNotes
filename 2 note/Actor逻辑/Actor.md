@@ -139,5 +139,17 @@ void AActor::PostSpawnInitialize(
 */
 	SetOwner(InOwner);
 	SetInstigator(InInstigator);
+/*
+4 修改根组件，根组件得是c++chuang'jian
+*/
+	USceneComponent* const SceneRootComponent = 
+		FixupNativeActorComponents(this);
+	if (SceneRootComponent != nullptr)
+	{
+		SceneRootComponent->SetWorldTransform(
+		FinalRootComponentTransform, 
+		false, nullptr, 
+		ETeleportType::ResetPhysics);
+	}
 }
 ```
