@@ -122,6 +122,17 @@ void AActor::PostSpawnInitialize(
 	bool bDeferConstruction, 
 	ESpawnActorScaleMethod TransformScaleMethod)
 {
-	
+/*
+1 记录创建的时间
+*/
+	UWorld* const World = GetWorld();
+	bool const bActorsInitialized = 
+		World && World->AreActorsInitialized();
+	CreationTime = (World ? World->GetTimeSeconds() : 0.f);
+
+/*
+1 交换Role和RemoteRole，一般是创建
+*/
+	ExchangeNetRoles(bRemoteOwned);
 }
 ```
