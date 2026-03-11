@@ -26,7 +26,7 @@ AActor* UWorld::SpawnActor(
 	const FActorSpawnParameters& SpawnParameters )
 {
 /*
-
+1 在创建的开始，如果是编辑器就检测CurrentLevel，如果不是编辑器就把PersistentLevel赋值给CurrentLevel。
 */
 #if WITH_EDITORONLY_DATA
 	check( CurrentLevel ); 	
