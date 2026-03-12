@@ -30,7 +30,7 @@ https://www.jetbrains.com/help/clion/core-dump-debug.html#process
 ```
 4 蓝图的csc面板显示不了。点Window选loadLayout，选ue4经典布局，就能显示出来了
 
-5
+5 C++打印堆栈
 ```cpp
 /*
 //Debug Log输出：  
@@ -48,5 +48,29 @@ else
 {  
     UE_LOG(LogHTVehicle, Warning, TEXT("Authority Start Get Off Vehicle! Player:[%s],VehicleID:NULL,\r\n\t %s"), *GetName(),*StackInfo);  
 }
+*/
+```
+
+6
+```cpp
+/*
+static FAutoConsoleCommandWithOutputDevice GDumpCachedObjectsCmd(
+	TEXT("HTObjectPool.DumpCachedObjects"),
+	TEXT("Dumps object pool info to the log"),
+		FConsoleCommandWithOutputDeviceDelegate::CreateStatic([](FOutputDevice& OutputDevice)
+		{
+			for (const FWorldContext& Context : GEngine->GetWorldContexts())
+			{
+				UWorld* World = Context.World();
+				if (World && World->IsGameWorld())
+				{
+					if (const UHTObjectPoolSubsystem* ObjectPoolSubsystem = World->GetSubsystem<UHTObjectPoolSubsystem>())
+					{				
+						ObjectPoolSubsystem->DumpCachedObjects(OutputDevice);
+					}
+				}
+			}
+		})
+	);
 */
 ```
