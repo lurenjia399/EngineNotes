@@ -49,6 +49,8 @@ else
     UE_LOG(LogHTVehicle, Warning, TEXT("Authority Start Get Off Vehicle! Player:[%s],VehicleID:NULL,\r\n\t %s"), *GetName(),*StackInfo);  
 }
 */
+// 这个也可以
+FDebug::DumpStackTraceToLog
 ```
 
 6
