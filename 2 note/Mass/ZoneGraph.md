@@ -16,6 +16,7 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		.AddUObject(this, &UZoneGraphSubsystem::OnRequestRebuild);
 #endif
 
+	// 
 	UE::Mass::Subsystems::RegisterSubsystemType(
 	Collection, 
 	GetClass(), 
