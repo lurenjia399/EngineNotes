@@ -8,7 +8,7 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	// 编辑器下zhu'c
+	// 编辑器下注册监听，每次点击Build之后会执行OnRequestRebuild这个方法重新构建
 #if WITH_EDITOR
 	OnActorMovedHandle = GEngine->OnActorMoved()
 		.AddUObject(this, &UZoneGraphSubsystem::OnActorMoved);
