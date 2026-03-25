@@ -11,4 +11,4 @@ if (CVar)
 */
 ```
 2 剩下就是通过位操作，记录暂停类型，然后广播出去
-3 不同的actor监听，然后修改自己的CustomTimeDilation属性，把tick间隔变得很小
+3 不同的actor监听，然后修改自己的CustomTimeDilation属性，把tick间隔变成0.000001
