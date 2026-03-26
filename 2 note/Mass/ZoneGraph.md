@@ -30,7 +30,7 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 # 2 RegisterZoneGraphData
 ```cpp
 /*
-0 在编辑器下重新BuildZoneGraph会遍历地图中所有的AZoneGraphData，先后响应注册进去。在运行时每个AZoneGraph
+0 在编辑器下重新BuildZoneGraph会遍历地图中所有的AZoneGraphData，先后响应注册进去。在运行时每个AZoneGraphData的PostLoad里也会注册（PostLoad会在）。
 1 UZoneGraphSubsystem里的RegisteredZoneGraphData数组是存储场景中所有的ZoneGraphData
 2 将地图中的ZoneGraphData和UZoneGraphSubsystem里的RegisteredZoneGraphData数组相关联，双方都存下互相的引用，通过FZoneGraphDataHandle来实现
 
