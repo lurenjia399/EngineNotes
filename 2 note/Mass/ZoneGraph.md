@@ -30,6 +30,7 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 # 2 RegisterZoneGraphData
 ```cpp
 /*
+// 往地图里的ZoneGraphData的Actor里注册数据，
 FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 	AZoneGraphData& InZoneGraphData)
 {
