@@ -30,10 +30,10 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 # 2 RegisterZoneGraphData
 ```cpp
 /*
-// 往地图里的ZoneGraphData的Actor里注册数据，
-// 
+
 1 UZoneGraphSubsystem里的RegisteredZoneGraphData数组是存储场景中所有的ZoneGraphData
-2 将地图中的ZoneGraph
+2 将地图中的ZoneGraphData和UZoneGraphSubsystem里的RegisteredZoneGraphData数组相关联，双方都存下互相的引用，通过FZoneGraphDataHandle来实现
+3 
 FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 	AZoneGraphData& InZoneGraphData)
 {
