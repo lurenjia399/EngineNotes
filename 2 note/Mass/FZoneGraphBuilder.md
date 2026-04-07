@@ -16,9 +16,9 @@ void FZoneGraphBuilder::RegisterZoneShapeComponent(UZoneShapeComponent& ShapeCom
 		ShapeComp.CalcBounds(ShapeComp.GetComponentTransform());
 	// 将Bounds放到2D的Grid平面上，计算出位于哪个格子中，将结果记录到BuilderComp对象里
 	Registered.CellLoc = HashGrid.Add(uint32(Index), Bounds.GetBox());
-	// 缓存Comp
+	// 缓存Comp到数组索引的map，加速查询
 	ShapeComponentToIndex.Add(&ShapeComp, Index);
-	// Compute shape hash, used to detect if the shape has changed.
+	// 创建一个唯一的hash值
 	Registered.ShapeHash = ShapeComp.GetShapeHash();
 
 	bIsDirty = true;
