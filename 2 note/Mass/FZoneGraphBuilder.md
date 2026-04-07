@@ -59,12 +59,17 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 	// 重置Storage中的所有数据
 	FZoneGraphStorage& ZoneStorage = ZoneGraphData.GetStorageMutable();
 	ZoneStorage.Reset();
-	//
+	// 将注册的BuilderComp对象
 	for (FZoneGraphBuilderRegisteredComponent& Registered : ShapeComponents)
 	{
 		if (Registered.Component && Registered.Component->GetComponentLevel() == CurrentLevel)
 		{
-			AppendShapeToZoneStorage(*Registered.Component, Registered.Component->GetComponentTransform().ToMatrixWithScale(), ZoneStorage, InternalLinks, &BuildData);
+			AppendShapeToZoneStorage(
+				*Registered.Component, 
+				Registered.Component->GetComponentTransform().ToMatrixWithScale(),
+				ZoneStorage, 
+				InternalLinks, 
+				&BuildData);
 		}
 	}
 }
