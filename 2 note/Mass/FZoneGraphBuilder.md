@@ -18,11 +18,29 @@ void FZoneGraphBuilder::RegisterZoneShapeComponent(UZoneShapeComponent& ShapeCom
 	Registered.CellLoc = HashGrid.Add(uint32(Index), Bounds.GetBox());
 	// 缓存Comp到数组索引的map，加速查询
 	ShapeComponentToIndex.Add(&ShapeComp, Index);
-	// 创建一个唯一的hash值
+	// 创建一个唯一的hash值，也能通过这个值来检测到BuilderComp对象是否改变
 	Registered.ShapeHash = ShapeComp.GetShapeHash();
+	// 标记为脏的
+	bIsDirty = true;
+}
+
+void FZoneGraphBuilder::UnregisterZoneShapeComponent(UZoneShapeComponent& ShapeComp)
+{
+	if (int32* Index = ShapeComponentToIndex.Find(&ShapeComp))
+	{
+		check(ShapeComponents.IsValidIndex(*Index));
+		FZoneGraphBuilderRegisteredComponent& Registered = ShapeComponents[*Index];
+		// Remove from grid
+		HashGrid.Remove(uint32(*Index), Registered.CellLoc);
+		// Remove from index lookup
+		ShapeComponentToIndex.Remove(Registered.Component);
+		// Remove from list
+		Registered.Component = nullptr;
+		ShapeComponentsFreeList.Add(*Index);
+	}
 
 	bIsDirty = true;
-
+#endif
 }
 */
 ```
