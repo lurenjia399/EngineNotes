@@ -1,7 +1,8 @@
 # 1 RegisterZoneShapeComponent
 ```c++
 /*
-void FZoneGraphBuilder::RegisterZoneShapeComponent(UZoneShapeComponent& ShapeComp)
+void FZoneGraphBuilder::RegisterZoneShapeComponent(
+	UZoneShapeComponent& ShapeComp)
 {
 	// 道理一样，获取数组中空闲的索引
 	int32 Index = 
@@ -24,8 +25,10 @@ void FZoneGraphBuilder::RegisterZoneShapeComponent(UZoneShapeComponent& ShapeCom
 	bIsDirty = true;
 }
 
-void FZoneGraphBuilder::UnregisterZoneShapeComponent(UZoneShapeComponent& ShapeComp)
+void FZoneGraphBuilder::UnregisterZoneShapeComponent(
+	UZoneShapeComponent& ShapeComp)
 {
+	// 从数组中找Comp
 	if (int32* Index = ShapeComponentToIndex.Find(&ShapeComp))
 	{
 		check(ShapeComponents.IsValidIndex(*Index));
@@ -40,7 +43,6 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(UZoneShapeComponent& ShapeC
 	}
 
 	bIsDirty = true;
-#endif
 }
 */
 ```
