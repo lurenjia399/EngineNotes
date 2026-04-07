@@ -31,11 +31,11 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 	// 从数组中找Comp
 	if (int32* Index = ShapeComponentToIndex.Find(&ShapeComp))
 	{
-		check(ShapeComponents.IsValidIndex(*Index));
+		// 拿到BuilderComp对象
 		FZoneGraphBuilderRegisteredComponent& Registered = ShapeComponents[*Index];
-		// Remove from grid
+		// 从HashGrid中移除掉
 		HashGrid.Remove(uint32(*Index), Registered.CellLoc);
-		// Remove from index lookup
+		// 从加速结构中移除掉
 		ShapeComponentToIndex.Remove(Registered.Component);
 		// Remove from list
 		Registered.Component = nullptr;
