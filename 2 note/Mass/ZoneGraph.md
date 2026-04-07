@@ -52,9 +52,9 @@ FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 	// 组装handle，FZoneGraphDataHandle(索引，索引出的使用次数来标识唯一)
 	const FZoneGraphDataHandle ResultHandle = 
 	FZoneGraphDataHandle(uint16(Index), uint16(RegisteredData.Generation));
-	// 注册，将handle设置到AZoneGraphData
+	// 注册，将handle设置到AZoneGraphData中
 	InZoneGraphData.OnRegistered(ResultHandle);
-
+	// 广播通知
 	UE::ZoneGraphDelegates::OnPostZoneGraphDataAdded.Broadcast(
 		RegisteredData.ZoneGraphData);
 
