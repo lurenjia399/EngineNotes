@@ -59,7 +59,7 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 	// 重置Storage中的所有数据
 	FZoneGraphStorage& ZoneStorage = ZoneGraphData.GetStorageMutable();
 	ZoneStorage.Reset();
-	// 将注册的BuilderComp对象
+	// 将注册的BuilderComp对象里数据，整理到Builder中,AppendShapeToZoneStorage主要是这个方法
 	for (FZoneGraphBuilderRegisteredComponent& Registered : ShapeComponents)
 	{
 		if (Registered.Component && Registered.Component->GetComponentLevel() == CurrentLevel)
@@ -72,6 +72,25 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 				&BuildData);
 		}
 	}
+	// Connect Lanes
+	ConnectLanes(InternalLinks, ZoneStorage);
+
+	// Update bounds for the whole data
+	ZoneStorage.Bounds = FBox(ForceInit);
+	for (FZoneData& Zone : ZoneStorage.Zones)
+	{
+		ZoneStorage.Bounds += Zone.Bounds;
+	}
+
+	// Build BV-tree for faster zone lookup.
+	ZoneStorage.ZoneBVTree.Build(
+		MakeStridedView(ZoneStorage.Zones, &FZoneData::Bounds));
+
+	// Update combined hash
+	const uint32 NewHash = CalculateCombinedShapeHash(ZoneGraphData);
+	ZoneGraphData.SetCombinedShapeHash(NewHash);
+
+	ZoneGraphData.UpdateDrawing();
 }
 */
 ```
