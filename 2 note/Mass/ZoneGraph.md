@@ -38,16 +38,15 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 	AZoneGraphData& InZoneGraphData)
 {
+	// 空闲l
 	const int32 Index = 
-	(ZoneGraphDataFreeList.Num() > 0) ? 
+		(ZoneGraphDataFreeList.Num() > 0) ? 
 		ZoneGraphDataFreeList.Pop(EAllowShrinking::No) : 
 		RegisteredZoneGraphData.AddDefaulted();
 	FRegisteredZoneGraphData& RegisteredData = RegisteredZoneGraphData[Index];
 	RegisteredData.Reset(RegisteredData.Generation); // Do not change generation.
 	RegisteredData.ZoneGraphData = &InZoneGraphData;
 	RegisteredData.bInUse = true;
-	check(Index < int32(MAX_uint16));
-	const FZoneGraphDataHandle ResultHandle = FZoneGraphDataHandle(uint16(Index), uint16(RegisteredData.Generation));
 
 	// 
 	InZoneGraphData.OnRegistered(ResultHandle);
