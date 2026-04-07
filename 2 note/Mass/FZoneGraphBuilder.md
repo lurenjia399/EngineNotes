@@ -37,7 +37,7 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 		HashGrid.Remove(uint32(*Index), Registered.CellLoc);
 		// 从加速结构中移除掉
 		ShapeComponentToIndex.Remove(Registered.Component);
-		// Remove from list
+		// 置空
 		Registered.Component = nullptr;
 		ShapeComponentsFreeList.Add(*Index);
 	}
@@ -46,4 +46,4 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 }
 */
 ```
-注册，每个UZoneShapeComponent的onRegister方法中就会执行
+注册，每个UZoneShapeComponent的onRegister方法或者是onUnRegister就会执行
