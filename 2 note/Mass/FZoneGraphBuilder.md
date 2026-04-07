@@ -47,3 +47,12 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 */
 ```
 注册，每个UZoneShapeComponent的onRegister方法或者是onUnRegister就会执行
+# 2 Build
+```cpp
+/*
+void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
+{
+	
+}
+*/
+```
