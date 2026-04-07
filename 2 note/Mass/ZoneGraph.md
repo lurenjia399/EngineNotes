@@ -38,12 +38,14 @@ void UZoneGraphSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 	AZoneGraphData& InZoneGraphData)
 {
-	// 空闲l
+	// 空闲队列有就取，没有就在添加一个，返回他的索引
 	const int32 Index = 
 		(ZoneGraphDataFreeList.Num() > 0) ? 
 		ZoneGraphDataFreeList.Pop(EAllowShrinking::No) : 
 		RegisteredZoneGraphData.AddDefaulted();
+	// 从索引中拿出一个
 	FRegisteredZoneGraphData& RegisteredData = RegisteredZoneGraphData[Index];
+	// 重置数据
 	RegisteredData.Reset(RegisteredData.Generation); // Do not change generation.
 	RegisteredData.ZoneGraphData = &InZoneGraphData;
 	RegisteredData.bInUse = true;
