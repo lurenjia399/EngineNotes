@@ -52,7 +52,9 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 /*
 void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 {
-	
+	// 重置Storage中的所有数据
+	FZoneGraphStorage& ZoneStorage = ZoneGraphData.GetStorageMutable();
+	ZoneStorage.Reset();
 }
 */
 ```
