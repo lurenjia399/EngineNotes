@@ -45,12 +45,14 @@ FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 		RegisteredZoneGraphData.AddDefaulted();
 	// 从索引中拿出一个
 	FRegisteredZoneGraphData& RegisteredData = RegisteredZoneGraphData[Index];
-	// 重置数据
+	// 重置数据，Generation这个是使用次数
 	RegisteredData.Reset(RegisteredData.Generation); // Do not change generation.
 	RegisteredData.ZoneGraphData = &InZoneGraphData;
 	RegisteredData.bInUse = true;
-
-	// 
+	// 组装handle，索
+	const FZoneGraphDataHandle ResultHandle = 
+	FZoneGraphDataHandle(uint16(Index), uint16(RegisteredData.Generation));
+	// 注册
 	InZoneGraphData.OnRegistered(ResultHandle);
 
 	UE::ZoneGraphDelegates::OnPostZoneGraphDataAdded.Broadcast(
