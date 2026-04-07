@@ -49,10 +49,10 @@ FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 	RegisteredData.Reset(RegisteredData.Generation); // Do not change generation.
 	RegisteredData.ZoneGraphData = &InZoneGraphData;
 	RegisteredData.bInUse = true;
-	// 组装handle，索
+	// 组装handle，FZoneGraphDataHandle(索引，索引出的使用次数来标识唯一)
 	const FZoneGraphDataHandle ResultHandle = 
 	FZoneGraphDataHandle(uint16(Index), uint16(RegisteredData.Generation));
-	// 注册
+	// 注册，将handle设置到AZoneGraphData
 	InZoneGraphData.OnRegistered(ResultHandle);
 
 	UE::ZoneGraphDelegates::OnPostZoneGraphDataAdded.Broadcast(
