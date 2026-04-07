@@ -3,15 +3,18 @@
 /*
 void FZoneGraphBuilder::RegisterZoneShapeComponent(UZoneShapeComponent& ShapeComp)
 {
-	// TODO: Move the builder into editor. This call is guarded editor only at call site already.
-#if WITH_EDITOR
-	// TODO: we could potentially separate out automatic building logic, and use object iterator to get all relevant data instead.
-	// Add to list
-	int32 Index = ShapeComponentsFreeList.IsEmpty() ? ShapeComponents.AddDefaulted() : ShapeComponentsFreeList.Pop();
+	// 道理一样，获取数组中空闲的索引
+	int32 Index = 
+		ShapeComponentsFreeList.IsEmpty() ? 
+		ShapeComponents.AddDefaulted() : ShapeComponentsFreeList.Pop();
+	// 拿到索引中的BuilderComp对象
 	FZoneGraphBuilderRegisteredComponent& Registered = ShapeComponents[Index];
+	// 组装BuilderComp对象，缓存Comp指针
 	Registered.Component = &ShapeComp;
-	// Add to grid
-	const FBoxSphereBounds Bounds = ShapeComp.CalcBounds(ShapeComp.GetComponentTransform());
+	// 组装BuilderComp对象，计算Comp的Bounds
+	const FBoxSphereBounds Bounds = 
+		ShapeComp.CalcBounds(ShapeComp.GetComponentTransform());
+	// 将Bounds放到2D的Grid平面上，计算出
 	Registered.CellLoc = HashGrid.Add(uint32(Index), Bounds.GetBox());
 	// Add to index lookup
 	ShapeComponentToIndex.Add(&ShapeComp, Index);
@@ -19,7 +22,7 @@ void FZoneGraphBuilder::RegisterZoneShapeComponent(UZoneShapeComponent& ShapeCom
 	Registered.ShapeHash = ShapeComp.GetShapeHash();
 
 	bIsDirty = true;
-#endif
+
 }
 */
 ```
