@@ -52,9 +52,20 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 /*
 void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 {
+	
+	ULevel* CurrentLevel = ZoneGraphData.GetLevel();
+	ZoneGraphData.Modify();
+	
 	// 重置Storage中的所有数据
 	FZoneGraphStorage& ZoneStorage = ZoneGraphData.GetStorageMutable();
 	ZoneStorage.Reset();
+	//
+	for (FZoneGraphBuilderRegisteredComponent& Registered : ShapeComponents)
+	{
+		if (Registered.Component && Registered.Component->GetComponentLevel() == CurrentLevel)
+		{
+			
+		}
 }
 */
 ```
