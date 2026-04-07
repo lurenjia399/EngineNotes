@@ -64,8 +64,9 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 	{
 		if (Registered.Component && Registered.Component->GetComponentLevel() == CurrentLevel)
 		{
-			
+			AppendShapeToZoneStorage(*Registered.Component, Registered.Component->GetComponentTransform().ToMatrixWithScale(), ZoneStorage, InternalLinks, &BuildData);
 		}
+	}
 }
 */
 ```
