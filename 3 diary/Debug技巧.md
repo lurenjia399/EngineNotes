@@ -76,4 +76,12 @@ static FAutoConsoleCommandWithOutputDevice GDumpCachedObjectsCmd(
 	);
 */
 ```
-7 直接打印玩家
+7 直接打印玩家位置
+```cpp
+// cheat PrintObjectProperty Player.RootComponent.RelativeRotation
+// PrintObjectProperty Player.RootComponent.RelativeRotation
+```
+8 改变log级别
+```cpp
+// cheat Log LogHTAI Log
+```
