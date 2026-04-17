@@ -76,3 +76,4 @@ static FAutoConsoleCommandWithOutputDevice GDumpCachedObjectsCmd(
 	);
 */
 ```
+7 直接打印玩家
