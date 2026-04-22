@@ -1,3 +1,4 @@
 1 管理员运行 Windows PowerShell
-1 命令行输入 npm install -g @anthropic-ai/claude-code 安装claude
-2 在输入 c
+2 命令行输入 npm install -g @anthropic-ai/claude-code 安装claude
+3 在输入 claude 验证是否安装好
+4 从系统的user
