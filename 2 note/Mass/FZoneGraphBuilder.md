@@ -94,3 +94,4 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 }
 */
 ```
+## 2.1 AppendShapeToZoneStorage
