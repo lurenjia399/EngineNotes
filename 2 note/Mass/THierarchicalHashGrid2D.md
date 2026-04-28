@@ -20,9 +20,10 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 	// 找到能容纳Bounds最长边的Cell
 	for (Location.Level = 0; Location.Level < NumLevels; Location.Level++)
 	{
-		// 
+		// Bounds最长边 / 每个Level下的CellSize，然后向上取整
 		const int32 DiameterCells = 
 			ClampInt32(FMath::CeilToInt(Diameter * InvCellSize[Location.Level]));
+		// 如果向上取整结果 <= 1，说明当前level的
 		if (DiameterCells <= 1)
 		{
 			Location.X = ClampInt32(FMath::FloorToInt(Center.X * InvCellSize[Location.Level]));
