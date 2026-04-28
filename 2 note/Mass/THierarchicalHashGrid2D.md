@@ -26,7 +26,7 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 		// 如果向上取整结果 <= 1，说明当前level的Cell能容纳此Bounds
 		if (DiameterCells <= 1)
 		{
-			// 设置Location，当前Bounds的中心点位于哪个grid里就赋值哪个，就是用中心点的位置 / 每个Level下的Cell
+			// 设置Location，当前Bounds的中心点位于哪个grid里就赋值哪个，就是用中心点的位置 / 每个Level下的CellSize，然后向下取整
 			Location.X = ClampInt32(
 				FMath::FloorToInt(Center.X * InvCellSize[Location.Level]));
 			Location.Y = ClampInt32(
@@ -35,6 +35,7 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 		}
 	}
 
+	// 如果所有的grid都没有找到，就设成初始值
 	if (Location.Level == NumLevels)
 	{
 		// Could not fit into any of the levels.
