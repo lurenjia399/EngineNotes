@@ -43,7 +43,7 @@
 
 	/*
 	1 如果spline的，就是第一个point和最后一个point组成一个ShapeConnector
-	2 如果Polygon的，
+	2 如果Polygon的，就是所有的point组成一个ShapeConnector
 	*/
 	/** Connectors for other shapes (not stored, these are refreshed from points). */
 	UPROPERTY(Transient)
