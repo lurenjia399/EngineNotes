@@ -26,6 +26,7 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 		// 如果向上取整结果 <= 1，说明当前level的Cell能容纳此Bounds
 		if (DiameterCells <= 1)
 		{
+			// 设置Location，当前
 			Location.X = ClampInt32(
 				FMath::FloorToInt(Center.X * InvCellSize[Location.Level]));
 			Location.Y = ClampInt32(
