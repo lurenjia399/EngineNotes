@@ -95,3 +95,15 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 */
 ```
 ## 2.1 AppendShapeToZoneStorage
+
+```cpp
+void FZoneGraphBuilder::AppendShapeToZoneStorage(
+	const UZoneShapeComponent& ShapeComp, 
+	const FMatrix& LocalToWorld,
+	FZoneGraphStorage& OutZoneStorage,
+	TArray<FZoneShapeLaneInternalLink>& OutInternalLinks,
+	FZoneGraphBuildData* InBuildData)
+ {
+	 
+ }
+```
