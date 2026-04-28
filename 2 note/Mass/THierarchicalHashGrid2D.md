@@ -5,7 +5,7 @@
 	typedef THierarchicalHashGrid2D<5, 4> FZoneGraphBuilderHashGrid2D;
 */
 ```
-2 根据Bounds找cell
+2 CalcCellLocation 根据Bounds找cell
 ```cpp
 /*
 FCellLocation CalcCellLocation(const FBox& Bounds) const
@@ -48,8 +48,42 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 }
 */
 ```
-3 添加使用
+3 Add 添加使用
 ```cpp
-/
+/*
+void Add(const ItemIDType ID, const FCellLocation& Location)
+{
+	const int32 Idx = Items.AddUninitialized().Index;
+	FItem& Item = Items[Idx];
+	Item.ID = ID;
 
+	if (Location.Level == INDEX_NONE)
+	{
+		// Could not fit into any of the grids, add to spill list.
+		Item.Next = SpillList;
+		SpillList = Idx;
+	}
+	else
+	{
+		// Add to cell at specific level
+		FCell& Cell = FindOrAddCell(Location.X, Location.Y, Location.Level);
+		Item.Next = Cell.First;
+		Cell.First = Idx;
+
+		// Update per level counts
+		LevelItemCount[Location.Level]++;
+
+		// Update child counts
+		FCellLocation ParentLocation = Location;
+		while (ParentLocation.Level < NumLevels - 1)
+		{
+			ParentLocation.X = LevelDown(ParentLocation.X);
+			ParentLocation.Y = LevelDown(ParentLocation.Y);
+			ParentLocation.Level++;
+			FCell& ParentCell = FindOrAddCell(ParentLocation.X, ParentLocation.Y, ParentLocation.Level);
+			ParentCell.ChildItemCount++;
+		}
+	}
+}
+*/
 ```
