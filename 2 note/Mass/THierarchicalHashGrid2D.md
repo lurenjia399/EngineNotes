@@ -69,8 +69,9 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 	{
 		// 根据CellLocation找到Cell
 		FCell& Cell = FindOrAddCell(Location.X, Location.Y, Location.Level);
-		// 赋值新添加这一项的Next，指向Cell的First，如果是新添加的Cell就是INDEX_NONE，不是心
+		// 赋值新添加这一项的Next，指向Cell的First，如果是新添加的Cell就是INDEX_NONE，不是新添加的Cell就是Items的索引
 		Item.Next = Cell.First;
+		// 把Items的索引保存到Cell中
 		Cell.First = Idx;
 
 		// Update per level counts
