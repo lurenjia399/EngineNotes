@@ -12,6 +12,7 @@
 	UPROPERTY(Category = Zone, VisibleAnywhere, meta = (IncludeInHash, EditCondition = "false", EditConditionHides))
 	TArray<FZoneLaneProfileRef> PerPointLaneProfiles;
 
+	// 这个Component里面的点的数组
 	/** Shape points */
 	UPROPERTY(Category = Zone, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true", IncludeInHash))
 	TArray<FZoneShapePoint> Points;
