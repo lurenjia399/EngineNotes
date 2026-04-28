@@ -53,9 +53,10 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 /*
 void Add(const ItemIDType ID, const FCellLocation& Location)
 {
-	// 在稀疏数组中tian
+	// 在稀疏数组中添加一项
 	const int32 Idx = Items.AddUninitialized().Index;
 	FItem& Item = Items[Idx];
+	// 赋值新添加这一项的ID
 	Item.ID = ID;
 
 	if (Location.Level == INDEX_NONE)
