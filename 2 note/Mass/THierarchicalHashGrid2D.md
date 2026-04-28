@@ -12,15 +12,17 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 {
 	FCellLocation Location(0, 0, 0);
 	
-	// Bounds的zho
+	// Bounds的中心点
 	const FVector Center = Bounds.GetCenter();
-	
+	// Bounds的最长边
 	const FVector::FReal Diameter = 
 		FMath::Max(Bounds.Max.X - Bounds.Min.X, Bounds.Max.Y - Bounds.Min.Y);
+	// 找到能容纳Bounds最长边的Cell
 	for (Location.Level = 0; Location.Level < NumLevels; Location.Level++)
 	{
-		const int32 DiameterCells = ClampInt32(FMath::CeilToInt(Diameter * InvCellSize[Location.Level]));
-		// note that it's fine for DiameterCells to equal 0 - that would happen for 0-sized items (valid location, no extent).
+		// 
+		const int32 DiameterCells = 
+			ClampInt32(FMath::CeilToInt(Diameter * InvCellSize[Location.Level]));
 		if (DiameterCells <= 1)
 		{
 			Location.X = ClampInt32(FMath::FloorToInt(Center.X * InvCellSize[Location.Level]));
