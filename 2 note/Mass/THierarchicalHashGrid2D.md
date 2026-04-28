@@ -67,8 +67,9 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 	}
 	else
 	{
-		// 找
+		// 根据CellLocation找到Cell
 		FCell& Cell = FindOrAddCell(Location.X, Location.Y, Location.Level);
+		// 赋值新添加这一项的Next，指向Cell的First，如果是新添加的Cell就是INDEX_NONE，不是心
 		Item.Next = Cell.First;
 		Cell.First = Idx;
 
