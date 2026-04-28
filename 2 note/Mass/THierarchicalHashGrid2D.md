@@ -74,7 +74,7 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 		// 把Items的索引保存到Cell中
 		Cell.First = Idx;
 
-		// Update per level counts
+		// 静态数组的用法，固定大小的数组，增加Level上的Item数量
 		LevelItemCount[Location.Level]++;
 
 		// Update child counts
