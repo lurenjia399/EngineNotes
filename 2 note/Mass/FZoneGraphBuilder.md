@@ -112,4 +112,7 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 		ShapeComp.GetConnectedShapes();
  }
 ```
-# 3 HashGrid 属性
+# 3 FZoneGraphBuilderHashGrid2D 用法
+```
+
+```
