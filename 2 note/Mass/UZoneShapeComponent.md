@@ -41,7 +41,7 @@
 	float OffsetAlongNormal = 0.0f;
 //#endif
 
-	// 连接，一个compone
+	// 连接，一个component中的第一个point和最后一个point组成一个ShapeConnector
 	/** Connectors for other shapes (not stored, these are refreshed from points). */
 	UPROPERTY(Transient)
 	TArray<FZoneShapeConnector> ShapeConnectors;
