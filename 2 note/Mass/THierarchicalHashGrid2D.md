@@ -81,7 +81,7 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 		FCellLocation ParentLocation = Location;
 		while (ParentLocation.Level < NumLevels - 1)
 		{
-			// LevelDown是计算，
+			// LevelDown是用当前坐标，转换成上层Level的坐标
 			ParentLocation.X = LevelDown(ParentLocation.X);
 			ParentLocation.Y = LevelDown(ParentLocation.Y);
 			ParentLocation.Level++;
