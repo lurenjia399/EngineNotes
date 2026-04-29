@@ -48,7 +48,7 @@ FCellLocation CalcCellLocation(const FBox& Bounds) const
 }
 */
 ```
-3 Add 添加使用
+3 Add 添加
 ```cpp
 /*
 void Add(const ItemIDType ID, const FCellLocation& Location)
@@ -90,5 +90,11 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 		}
 	}
 }
+*/
+```
+4 Query 查询
+```cpp
+/*
+
 */
 ```
