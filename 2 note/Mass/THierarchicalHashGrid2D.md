@@ -77,10 +77,11 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 		// 静态数组的用法，固定大小的数组，增加Level上的Item数量
 		LevelItemCount[Location.Level]++;
 
-		// 记录ChildItemCount，根据当前的CellLocation，找上一层Level的Cell，
+		// 记录ChildItemCount，根据当前的CellLocation，找上一层Level的Cell，然后记录上一层Cell中的ChildItemCount++
 		FCellLocation ParentLocation = Location;
 		while (ParentLocation.Level < NumLevels - 1)
 		{
+			// LevelDown是计算，
 			ParentLocation.X = LevelDown(ParentLocation.X);
 			ParentLocation.Y = LevelDown(ParentLocation.Y);
 			ParentLocation.Level++;
