@@ -102,7 +102,7 @@ void Query(const FBox& Bounds, OutT& OutResults) const
 	FCellRectIterator Iters[NumLevels];
 	int32 IterIdx = 0;
 
-	// Calculate cell bounds for each level, keep track of the coarsest level that has any items, we'll start from that.
+	// 
 	for (int32 Level = 0; Level < NumLevels; Level++)
 	{
 		Rects[Level] = CalcQueryBounds(Bounds, Level);
