@@ -49,6 +49,9 @@
 	UPROPERTY(Transient)
 	TArray<FZoneShapeConnector> ShapeConnectors;
 
+	/*
+	和ShapeConnectors搭配使用的，
+	*/
 	/** Array of connections matching ShapeConnectors (not stored, these are refreshed from connectors). */
 	UPROPERTY(Transient)
 	TArray<FZoneShapeConnection> ConnectedShapes;
