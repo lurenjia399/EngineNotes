@@ -95,6 +95,17 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 4 Query 查询
 ```cpp
 /*
+void Query(const FBox& Bounds, OutT& OutResults) const
+{
+	// 用来存储Bounds最小值在哪个格子里，最大值在哪个格子里
+	FCellRect Rects[NumLevels];
+	FCellRectIterator Iters[NumLevels];
+	int32 IterIdx = 0;
 
+	// Calculate cell bounds for each level, keep track of the coarsest level that has any items, we'll start from that.
+	for (int32 Level = 0; Level < NumLevels; Level++)
+	{
+		Rects[Level] = CalcQueryBounds(Bounds, Level);
+	}
 */
 ```
