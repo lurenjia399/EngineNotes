@@ -95,6 +95,7 @@ void Add(const ItemIDType ID, const FCellLocation& Location)
 4 Query 查询
 ```cpp
 /*
+// 层级网格的深度优先遍历查询
 void Query(const FBox& Bounds, OutT& OutResults) const
 {
 	// 用来存储Bounds最小值在哪个格子里，最大值在哪个格子里
