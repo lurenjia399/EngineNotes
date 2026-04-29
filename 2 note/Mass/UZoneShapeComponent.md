@@ -50,7 +50,7 @@
 	TArray<FZoneShapeConnector> ShapeConnectors;
 
 	/*
-	和ShapeConnectors搭配使用的，记录每一个ShapeConnector的连接的ShapeComponent和连接的ShapeComponent中
+	和ShapeConnectors搭配使用的，记录每一个ShapeConnector的连接的ShapeComponent和连接的ShapeComponent中ShapeConnectors数组的索引
 	*/
 	/** Array of connections matching ShapeConnectors (not stored, these are refreshed from connectors). */
 	UPROPERTY(Transient)
