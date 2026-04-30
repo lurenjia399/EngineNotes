@@ -20,7 +20,7 @@ void TessellateSplineShape(
 	FZoneData& Zone = OutZoneStorage.Zones.AddDefaulted_GetRef();
 	Zone.Tags = ZoneTags;
 
-	// 将spline离散成点的误差，是直接读的ZoneGraphSetting里面的che
+	// 将spline离散成点的误差，是直接读的ZoneGraphSetting里面的配置
 	const float TessTolerance = GetMinLaneProfileTessellationTolerance(
 		LaneProfile, ZoneTags, BuildSettings);
 
