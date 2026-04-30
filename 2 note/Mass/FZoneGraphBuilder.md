@@ -104,7 +104,7 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 	TArray<FZoneShapeLaneInternalLink>& OutInternalLinks,
 	FZoneGraphBuildData* InBuildData)
  {
-	// 获取ShapeComp上的Points
+	// 获取来源ShapeComp上的Points，赋值到设置临时变量AdjustedPoints里
 	TArray<FZoneShapePoint> AdjustedPoints(ShapeComp.GetPoints());
 	// 获取ShapeComp上的Connector，这个Connector是根据ShapeComp的形状来的，表示可连接点
 	TConstArrayView<FZoneShapeConnector> ShapeConnectors = 
@@ -163,7 +163,7 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 						BlendFactor = 0.5f;
 					}
 				}
-				// 有混合因子，所以需要调整来源
+				// 有混合因子，所以需要调整来源ShapeComp上的Point位置
 				if (BlendFactor > 0.0f)
 				{
 					// 
