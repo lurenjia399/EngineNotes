@@ -2,9 +2,12 @@
 ```cpp
 /*
 void TessellateSplineShape(
-TConstArrayView<FZoneShapePoint> Points, const FZoneLaneProfile& LaneProfile, const FZoneGraphTagMask ZoneTags, const FMatrix& LocalToWorld,
-							FZoneGraphStorage& OutZoneStorage, TArray<FZoneShapeLaneInternalLink>& OutInternalLinks)
-
+	TConstArrayView<FZoneShapePoint> Points, 
+	const FZoneLaneProfile& LaneProfile, 
+	const FZoneGraphTagMask ZoneTags, 
+	const FMatrix& LocalToWorld,
+	FZoneGraphStorage& OutZoneStorage, 
+	TArray<FZoneShapeLaneInternalLink>& OutInternalLinks)
 {
 	const UZoneGraphSettings* ZoneGraphSettings = GetDefault<UZoneGraphSettings>();
 	check(ZoneGraphSettings);
