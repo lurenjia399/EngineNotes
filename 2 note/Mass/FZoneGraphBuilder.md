@@ -115,8 +115,9 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 	// 如果ShapeComp上所有可连接点都链接了
 	if (ConnectedShapes.Num() == ShapeConnectors.Num())
 	{
-		// Comp身上的Transform是CompTo
+		// Comp身上的Transform是CompToWorld的矩阵，取反就是WorldToComp的矩阵了
 		FTransform WorldToSource = ShapeComp.GetComponentTransform().Inverse();
+		
 		for (int32 i = 0; i < ShapeConnectors.Num(); i++)
 		{
 			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
@@ -153,13 +154,6 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 					{
 						BlendFactor = 0.5f;
 					}
-#if HOTTA_ENGINE_MODIFY // add by jintaojie
-					if (BuildSettings.CloseTrafficLaneFilter.Pass(DestShapeComp->GetTags()))
-					{
-						// 标记道路为期望关闭交通
-						AdjustedPoints[SourceConnector.PointIndex].bDestShapePointCloseTraffic = true;
-					}
-#endif
 				}
 
 				if (BlendFactor > 0.0f)
