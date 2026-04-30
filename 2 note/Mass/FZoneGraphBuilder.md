@@ -139,7 +139,7 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 				// 目标ShapeComp的形状
 				const FZoneShapeType DestShapeType = DestShapeComp->GetShapeType();
 
-				// 根据来源ShapeComp和目标ShapeComp确定连接的两个点Blend
+				// 根据来源ShapeComp和目标ShapeComp确定连接的两个点的混合因子
 				float BlendFactor = 1.0f;
 				if (SourceShapeType == FZoneShapeType::Spline)
 				{
@@ -163,11 +163,12 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 						BlendFactor = 0.5f;
 					}
 				}
-
+				// 有混合因子，所以需要调整来源
 				if (BlendFactor > 0.0f)
 				{
-					// Convert dest position and normal to source space
-					const FTransform DestToSource = DestShapeComp->GetComponentTransform() * WorldToSource;
+					// 
+					const FTransform DestToSource = 
+						DestShapeComp->GetComponentTransform() * WorldToSource;
 					const FVector LocalDestPosition = DestToSource.TransformPosition(DestConnector.Position);
 					const FVector LocalDestNormal = DestToSource.TransformVector(DestConnector.Normal);
 					const FVector LocalDestUp = DestToSource.TransformVector(DestConnector.Up);
