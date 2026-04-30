@@ -120,21 +120,22 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 		// 遍历所有的连接点
 		for (int32 i = 0; i < ShapeConnectors.Num(); i++)
 		{
-			// 当前遍历到的连接点
+			// 当前遍历到的来源连接点
 			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
 			// SourceShapeComp的形状
 			const FZoneShapeType SourceShapeType = ShapeComp.GetShapeType();
-			// 当前遍历到的连接
+			// 当前遍历到的来源连接
 			const FZoneShapeConnection& Connection = ConnectedShapes[i];
 			// 根据连接取出连接目标的ShapeComp
 			if (const UZoneShapeComponent* DestShapeComp = 
 					Connection.ShapeComponent.Get())
 			{
-				// 目标ShapeComp身上的连接点
+				// 目标ShapeComp身上所有的连接点
 				TConstArrayView<FZoneShapeConnector> DestConnectors = 
 					DestShapeComp->GetShapeConnectors();
-				check(Connection.ConnectorIndex < DestConnectors.Num());
-				const FZoneShapeConnector& DestConnector = DestConnectors[Connection.ConnectorIndex];
+				// 找到当前与来源连接点连接的mu'biao
+				const FZoneShapeConnector& DestConnector = 
+					DestConnectors[Connection.ConnectorIndex];
 				const FZoneShapeType DestShapeType = DestShapeComp->GetShapeType();
 
 				
