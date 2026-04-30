@@ -113,6 +113,90 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 	TConstArrayView<FZoneShapeConnection> ConnectedShapes = 
 		ShapeComp.GetConnectedShapes();
 		
+	if (ConnectedShapes.Num() == ShapeConnectors.Num())
+	{
+		FTransform WorldToSource = ShapeComp.GetComponentTransform().Inverse();
+
+		// The points that are connectors will be moved so that they align perfectly with the connect shape's geometry.
+		for (int32 i = 0; i < ShapeConnectors.Num(); i++)
+		{
+			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
+			const FZoneShapeType SourceShapeType = ShapeComp.GetShapeType();
+
+			const FZoneShapeConnection& Connection = ConnectedShapes[i];
+			if (const UZoneShapeComponent* DestShapeComp = Connection.ShapeComponent.Get())
+			{
+				TConstArrayView<FZoneShapeConnector> DestConnectors = DestShapeComp->GetShapeConnectors();
+				check(Connection.ConnectorIndex < DestConnectors.Num());
+				const FZoneShapeConnector& DestConnector = DestConnectors[Connection.ConnectorIndex];
+				const FZoneShapeType DestShapeType = DestShapeComp->GetShapeType();
+
+				// When connecting spline to polygon, only adjust the polygon, otherwise adjust both shapes equally.
+				float BlendFactor = 1.0f;
+				if (SourceShapeType == FZoneShapeType::Spline)
+				{
+					if (DestShapeType == FZoneShapeType::Spline)
+					{
+						BlendFactor = 0.5f;
+					}
+					else // Polygon
+					{
+						BlendFactor = 0.0f;
+					}
+				}
+				else // Polygon
+				{
+					if (DestShapeType == FZoneShapeType::Spline)
+					{
+						BlendFactor = 1.0f;
+					}
+					else // Polygon
+					{
+						BlendFactor = 0.5f;
+					}
+#if HOTTA_ENGINE_MODIFY // add by jintaojie
+					if (BuildSettings.CloseTrafficLaneFilter.Pass(DestShapeComp->GetTags()))
+					{
+						// 标记道路为期望关闭交通
+						AdjustedPoints[SourceConnector.PointIndex].bDestShapePointCloseTraffic = true;
+					}
+#endif
+				}
+
+				if (BlendFactor > 0.0f)
+				{
+					// Convert dest position and normal to source space
+					const FTransform DestToSource = DestShapeComp->GetComponentTransform() * WorldToSource;
+					const FVector LocalDestPosition = DestToSource.TransformPosition(DestConnector.Position);
+					const FVector LocalDestNormal = DestToSource.TransformVector(DestConnector.Normal);
+					const FVector LocalDestUp = DestToSource.TransformVector(DestConnector.Up);
+
+					const FVector NewPosition = FMath::Lerp(SourceConnector.Position, LocalDestPosition, BlendFactor);
+					const FVector NewNormal = FMath::Lerp(SourceConnector.Normal, -LocalDestNormal, BlendFactor).GetSafeNormal();
+					const FVector NewUp = FMath::Lerp(SourceConnector.Up, LocalDestUp, BlendFactor).GetSafeNormal();
+
+					if (SourceShapeType == FZoneShapeType::Spline)
+					{
+						// Adjust spline extremity.
+						FZoneShapePoint& Point = AdjustedPoints[SourceConnector.PointIndex];
+						Point.Position = NewPosition;
+						// Connector and spline end points the same direction as spline, as connectors point out, spline start needs reversing.
+						const float FlipNormal = SourceConnector.PointIndex == 0 ? -1.0f : 1.0f;
+						Point.SetRotationFromForwardAndUp(NewNormal * FlipNormal, NewUp);
+					}
+					else
+					{
+						// Adjust polygon lane segment.
+						FZoneShapePoint& Point = AdjustedPoints[SourceConnector.PointIndex];
+						check(Point.Type == FZoneShapePointType::LaneProfile);
+						Point.Position = NewPosition;
+						// Connector normals point away from the shape, lane profile points rotations point in, need to reverse.
+						Point.SetRotationFromForwardAndUp(-NewNormal, NewUp);
+					}
+				}
+			}
+		}
+	}
  }
 ```
 ```
