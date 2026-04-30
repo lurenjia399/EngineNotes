@@ -117,21 +117,24 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 	{
 		// Comp身上的Transform是CompToWorld的矩阵，取反就是WorldToComp的矩阵了
 		FTransform WorldToSource = ShapeComp.GetComponentTransform().Inverse();
-		
+		// 遍历所有的连接点
 		for (int32 i = 0; i < ShapeConnectors.Num(); i++)
 		{
+			// 当前遍历到的链接点
 			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
+			// Sor
 			const FZoneShapeType SourceShapeType = ShapeComp.GetShapeType();
 
 			const FZoneShapeConnection& Connection = ConnectedShapes[i];
-			if (const UZoneShapeComponent* DestShapeComp = Connection.ShapeComponent.Get())
+			if (const UZoneShapeComponent* DestShapeComp = 
+					Connection.ShapeComponent.Get())
 			{
 				TConstArrayView<FZoneShapeConnector> DestConnectors = DestShapeComp->GetShapeConnectors();
 				check(Connection.ConnectorIndex < DestConnectors.Num());
 				const FZoneShapeConnector& DestConnector = DestConnectors[Connection.ConnectorIndex];
 				const FZoneShapeType DestShapeType = DestShapeComp->GetShapeType();
 
-				// When connecting spline to polygon, only adjust the polygon, otherwise adjust both shapes equally.
+				
 				float BlendFactor = 1.0f;
 				if (SourceShapeType == FZoneShapeType::Spline)
 				{
