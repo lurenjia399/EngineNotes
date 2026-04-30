@@ -106,27 +106,27 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
  {
 	// 获取来源ShapeComp上的Points，赋值到设置临时变量AdjustedPoints里
 	TArray<FZoneShapePoint> AdjustedPoints(ShapeComp.GetPoints());
-	// 获取ShapeComp上的Connector，这个Connector是根据ShapeComp的形状来的，表示可连接点
+	// 获取来源ShapeComp上的Connector，这个Connector是根据ShapeComp的形状来的，表示可连接点
 	TConstArrayView<FZoneShapeConnector> ShapeConnectors = 
 		ShapeComp.GetShapeConnectors();
-	// 获取ShapeComp上的Connetion，这个是记录Connector链接的目标上的信息
+	// 获取来源ShapeComp上的Connetion，这个是记录Connector链接的目标上的信息
 	TConstArrayView<FZoneShapeConnection> ConnectedShapes = 
 		ShapeComp.GetConnectedShapes();
-	// 如果ShapeComp上所有可连接点都链接了
+	// 如果来源ShapeComp上所有可连接点都链接了
 	if (ConnectedShapes.Num() == ShapeConnectors.Num())
 	{
 		// Comp身上的Transform是CompToWorld的矩阵，取反就是WorldToComp的矩阵了
 		FTransform WorldToSource = ShapeComp.GetComponentTransform().Inverse();
-		// 遍历所有的连接点
+		// 遍历所有的来源连接点
 		for (int32 i = 0; i < ShapeConnectors.Num(); i++)
 		{
 			// 当前遍历到的来源连接点
 			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
-			// SourceShapeComp的形状
+			// 来源ShapeComp的形状
 			const FZoneShapeType SourceShapeType = ShapeComp.GetShapeType();
 			// 当前遍历到的来源连接
 			const FZoneShapeConnection& Connection = ConnectedShapes[i];
-			// 根据连接取出连接目标的ShapeComp
+			// 根据来源连接取出连接目标的ShapeComp
 			if (const UZoneShapeComponent* DestShapeComp = 
 					Connection.ShapeComponent.Get())
 			{
@@ -166,7 +166,7 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 				// 有混合因子，所以需要调整来源ShapeComp上的Point位置
 				if (BlendFactor > 0.0f)
 				{
-					// 
+					// 获取目标
 					const FTransform DestToSource = 
 						DestShapeComp->GetComponentTransform() * WorldToSource;
 					const FVector LocalDestPosition = DestToSource.TransformPosition(DestConnector.Position);
