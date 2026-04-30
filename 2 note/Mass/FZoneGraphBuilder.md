@@ -133,12 +133,13 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 				// 目标ShapeComp身上所有的连接点
 				TConstArrayView<FZoneShapeConnector> DestConnectors = 
 					DestShapeComp->GetShapeConnectors();
-				// 找到当前与来源连接点连接的mu'biao
+				// 找到当前与来源连接点连接的目标连接点
 				const FZoneShapeConnector& DestConnector = 
 					DestConnectors[Connection.ConnectorIndex];
+				// 目标ShapeComp的形状
 				const FZoneShapeType DestShapeType = DestShapeComp->GetShapeType();
 
-				
+				// 根据来源ShapeComp和目标ShapeComp确定连接的两个点Blend
 				float BlendFactor = 1.0f;
 				if (SourceShapeType == FZoneShapeType::Spline)
 				{
