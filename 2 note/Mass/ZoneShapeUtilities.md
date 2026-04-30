@@ -2,8 +2,8 @@
 ```cpp
 /*
 void TessellateSplineShape(
-	TConstArrayView<FZoneShapePoint> Points, 
-	const FZoneLaneProfile& LaneProfile, 
+	TConstArrayView<FZoneShapePoint> Points, //需要调整的所有点
+	const FZoneLaneProfile& LaneProfile, //车道
 	const FZoneGraphTagMask ZoneTags, 
 	const FMatrix& LocalToWorld,
 	FZoneGraphStorage& OutZoneStorage, 
