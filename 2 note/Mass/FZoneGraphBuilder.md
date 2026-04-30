@@ -112,12 +112,11 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 	// 获取ShapeComp上的Connetion，这个是记录Connector链接的目标上的信息
 	TConstArrayView<FZoneShapeConnection> ConnectedShapes = 
 		ShapeComp.GetConnectedShapes();
-		
+	// 如果ShapeComp上所有可连接点都链接了
 	if (ConnectedShapes.Num() == ShapeConnectors.Num())
 	{
+		// Comp身上的Transform是CompTo
 		FTransform WorldToSource = ShapeComp.GetComponentTransform().Inverse();
-
-		// The points that are connectors will be moved so that they align perfectly with the connect shape's geometry.
 		for (int32 i = 0; i < ShapeConnectors.Num(); i++)
 		{
 			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
