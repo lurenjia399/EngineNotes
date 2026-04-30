@@ -122,10 +122,11 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 		{
 			// 当前遍历到的链接点
 			const FZoneShapeConnector& SourceConnector = ShapeConnectors[i];
-			// Sor
+			// SourceShapeComp的形状
 			const FZoneShapeType SourceShapeType = ShapeComp.GetShapeType();
-
+			// 当前遍历到的链接
 			const FZoneShapeConnection& Connection = ConnectedShapes[i];
+			// 根据链接取出链接目标的
 			if (const UZoneShapeComponent* DestShapeComp = 
 					Connection.ShapeComponent.Get())
 			{
