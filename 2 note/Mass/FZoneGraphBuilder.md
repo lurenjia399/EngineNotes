@@ -104,10 +104,12 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 	TArray<FZoneShapeLaneInternalLink>& OutInternalLinks,
 	FZoneGraphBuildData* InBuildData)
  {
-	// 
+	// 获取ShapeComp上的Points
 	TArray<FZoneShapePoint> AdjustedPoints(ShapeComp.GetPoints());
+	// 获取ShapeComp上的connector
 	TConstArrayView<FZoneShapeConnector> ShapeConnectors = 
 		ShapeComp.GetShapeConnectors();
+	// 获取ShapeComp上的Connetion
 	TConstArrayView<FZoneShapeConnection> ConnectedShapes = 
 		ShapeComp.GetConnectedShapes();
  }
