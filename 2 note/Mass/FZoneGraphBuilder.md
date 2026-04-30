@@ -195,19 +195,20 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 					if (SourceShapeType == FZoneShapeType::Spline)
 					{
 						// Adjust spline extremity.
-						FZoneShapePoint& Point = AdjustedPoints[SourceConnector.PointIndex];
+						FZoneShapePoint& Point = 
+							AdjustedPoints[SourceConnector.PointIndex];
 						Point.Position = NewPosition;
-						// Connector and spline end points the same direction as spline, as connectors point out, spline start needs reversing.
-						const float FlipNormal = SourceConnector.PointIndex == 0 ? -1.0f : 1.0f;
-						Point.SetRotationFromForwardAndUp(NewNormal * FlipNormal, NewUp);
+						const float FlipNormal =
+							SourceConnector.PointIndex == 0 ? -1.0f : 1.0f;
+						Point.SetRotationFromForwardAndUp(
+							NewNormal * FlipNormal, NewUp);
 					}
 					else
 					{
 						// Adjust polygon lane segment.
-						FZoneShapePoint& Point = AdjustedPoints[SourceConnector.PointIndex];
-						check(Point.Type == FZoneShapePointType::LaneProfile);
+						FZoneShapePoint& Point = 
+							AdjustedPoints[SourceConnector.PointIndex];
 						Point.Position = NewPosition;
-						// Connector normals point away from the shape, lane profile points rotations point in, need to reverse.
 						Point.SetRotationFromForwardAndUp(-NewNormal, NewUp);
 					}
 				}
