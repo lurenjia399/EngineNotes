@@ -10,15 +10,17 @@ void TessellateSplineShape(
 	TArray<FZoneShapeLaneInternalLink>& OutInternalLinks)
 {
 	const UZoneGraphSettings* ZoneGraphSettings = GetDefault<UZoneGraphSettings>();
-	check(ZoneGraphSettings);
-	const FZoneGraphBuildSettings& BuildSettings = ZoneGraphSettings->GetBuildSettings();
+	const FZoneGraphBuildSettings& BuildSettings = 
+		ZoneGraphSettings->GetBuildSettings();
 
 	const bool bClosedShape = false;
 
+	// 添加一个新的Zone
 	const int32 ZoneIndex = OutZoneStorage.Zones.Num();
 	FZoneData& Zone = OutZoneStorage.Zones.AddDefaulted_GetRef();
 	Zone.Tags = ZoneTags;
 
+	// 将点
 	const float TessTolerance = GetMinLaneProfileTessellationTolerance(LaneProfile, ZoneTags, BuildSettings);
 
 	// Flatten spline segments to points.
