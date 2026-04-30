@@ -1,0 +1,186 @@
+1 TessellateSplineShape
+```cpp
+/*
+void TessellateSplineShape(
+TConstArrayView<FZoneShapePoint> Points, const FZoneLaneProfile& LaneProfile, const FZoneGraphTagMask ZoneTags, const FMatrix& LocalToWorld,
+							FZoneGraphStorage& OutZoneStorage, TArray<FZoneShapeLaneInternalLink>& OutInternalLinks)
+
+{
+	const UZoneGraphSettings* ZoneGraphSettings = GetDefault<UZoneGraphSettings>();
+	check(ZoneGraphSettings);
+	const FZoneGraphBuildSettings& BuildSettings = ZoneGraphSettings->GetBuildSettings();
+
+	const bool bClosedShape = false;
+
+	const int32 ZoneIndex = OutZoneStorage.Zones.Num();
+	FZoneData& Zone = OutZoneStorage.Zones.AddDefaulted_GetRef();
+	Zone.Tags = ZoneTags;
+
+	const float TessTolerance = GetMinLaneProfileTessellationTolerance(LaneProfile, ZoneTags, BuildSettings);
+
+	// Flatten spline segments to points.
+	TArray<FShapePoint> CurvePoints;
+	FlattenSplineSegments(Points, bClosedShape, LocalToWorld, TessTolerance, CurvePoints);
+
+	// Remove points which are too close to each other.
+	RemoveDegenerateSegments(CurvePoints, bClosedShape);
+
+	// Calculate edge normals.
+	TArray<FVector> EdgeNormals;
+	CalculateEdgeNormals(CurvePoints, EdgeNormals);
+
+	CalculateStartAndEndNormals(Points, LocalToWorld, EdgeNormals[0], EdgeNormals[EdgeNormals.Num() - 1]);
+
+	// Calculate miter extrusion at vertices
+	CalculateMiters(CurvePoints, EdgeNormals);
+
+#if HOTTA_ENGINE_MODIFY
+	//���ŷ��߷���ƽ��OffsetAlongNormal
+	for (int32 i = 0; i < CurvePoints.Num(); i++)
+	{
+		FShapePoint& Point = CurvePoints[i];
+		Point.Position = Point.Position + Point.Right * OffsetAlongNormal;
+	}
+#endif
+
+	// Build spline boundary polygon
+	Zone.BoundaryPointsBegin = OutZoneStorage.BoundaryPoints.Num();
+	const float TotalWidth = LaneProfile.GetLanesTotalWidth();
+	const float HalfWidth = TotalWidth * 0.5f;
+	for (int32 i = 0; i < CurvePoints.Num(); i++)
+	{
+		const FShapePoint& Point = CurvePoints[i];
+		OutZoneStorage.BoundaryPoints.Add(Point.Position - Point.Right * HalfWidth);
+	}
+	for (int32 i = CurvePoints.Num() - 1; i >= 0; i--)
+	{
+		const FShapePoint& Point = CurvePoints[i];
+		OutZoneStorage.BoundaryPoints.Add(Point.Position + Point.Right * HalfWidth);
+	}
+	Zone.BoundaryPointsEnd = OutZoneStorage.BoundaryPoints.Num();
+
+	// Build lanes
+
+	const FVector StartForward = LocalToWorld.TransformVector(Points[0].Rotation.RotateVector(FVector::ForwardVector).GetSafeNormal());
+	const FVector EndForward = LocalToWorld.TransformVector(Points.Last().Rotation.RotateVector(FVector::ForwardVector).GetSafeNormal());
+
+	TArray<FShapePoint> LanePoints;
+	Zone.LanesBegin = OutZoneStorage.Lanes.Num();
+	const int32 NumLanes = LaneProfile.Lanes.Num();
+
+	const uint16 FirstPointID = 0;
+	const uint16 LastPointID = uint16(Points.Num() - 1);
+	
+	float CurWidth = 0.0f;
+	for (int32 i = 0; i < NumLanes; i++)
+	{
+		const FZoneLaneDesc& LaneDesc = LaneProfile.Lanes[i];
+
+		// Skip spacer lanes, but apply their width.
+		if (LaneDesc.Direction == EZoneLaneDirection::None)
+		{
+			CurWidth += LaneDesc.Width;
+			continue;
+		}
+
+		FZoneLaneData& Lane = OutZoneStorage.Lanes.AddDefaulted_GetRef();
+		Lane.ZoneIndex = ZoneIndex;
+		Lane.Width = LaneDesc.Width;
+		Lane.Tags = LaneDesc.Tags | ZoneTags;
+		// Store which inputs points corresponds to the lane start/end point.
+		Lane.StartEntryId = FirstPointID;
+		Lane.EndEntryId = LastPointID;
+		const int32 CurrentLaneIndex = OutZoneStorage.Lanes.Num() - 1;
+
+		// Add internal adjacent links.
+		AddAdjacentLaneLinks(CurrentLaneIndex, i, LaneProfile.Lanes, OutInternalLinks);
+
+		const float LanePos = HalfWidth - (CurWidth + LaneDesc.Width * 0.5f);
+
+		// Create lane points.
+		LanePoints.Reset();
+		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
+		{
+			for (int32 j = 0; j < CurvePoints.Num(); j++)
+			{
+				const FShapePoint& Point = CurvePoints[j];
+				FShapePoint& NewPoint = LanePoints.Add_GetRef(Point);
+				NewPoint.Position += Point.Right * LanePos;
+			}
+		}
+		else if (LaneDesc.Direction == EZoneLaneDirection::Backward)
+		{
+			Swap(Lane.StartEntryId, Lane.EndEntryId);
+
+			for (int32 j = CurvePoints.Num() - 1; j >= 0; j--)
+			{
+				const FShapePoint& Point = CurvePoints[j];
+				FShapePoint& NewPoint = LanePoints.Add_GetRef(Point);
+				NewPoint.Position += Point.Right * LanePos;
+			}
+		}
+		else
+		{
+			ensure(false);
+		}
+
+		// The spline is tessellated at the finest level of all lanes, simplify it to match the lanes tessellation tolerance.
+		const float LaneTessTolerance = BuildSettings.GetLaneTessellationTolerance(Lane.Tags);
+		SimplifyShape(LanePoints, LaneTessTolerance);
+
+		Lane.PointsBegin = OutZoneStorage.LanePoints.Num();
+		for (const FShapePoint& Point : LanePoints)
+		{
+			OutZoneStorage.LanePoints.Add(Point.Position);
+			OutZoneStorage.LaneUpVectors.Add(Point.Up);
+		}
+		Lane.PointsEnd = OutZoneStorage.LanePoints.Num();
+
+		// Calculate per point forward.
+		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
+		{
+			OutZoneStorage.LaneTangentVectors.Add(StartForward);
+		}
+		else
+		{
+			OutZoneStorage.LaneTangentVectors.Add(-EndForward);
+		}
+		
+		for (int32 PointIndex = Lane.PointsBegin + 1; PointIndex < Lane.PointsEnd - 1; PointIndex++)
+		{
+			const FVector WorldTangent = (OutZoneStorage.LanePoints[PointIndex + 1] - OutZoneStorage.LanePoints[PointIndex - 1]).GetSafeNormal();
+			OutZoneStorage.LaneTangentVectors.Add(WorldTangent);
+		}
+
+		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
+		{
+			OutZoneStorage.LaneTangentVectors.Add(EndForward);
+		}
+		else
+		{
+			OutZoneStorage.LaneTangentVectors.Add(-StartForward);
+		}
+
+
+		CurWidth += LaneDesc.Width;
+	}
+
+	Zone.LanesEnd = OutZoneStorage.Lanes.Num();
+
+	// Calculate progression distance along lanes.
+	OutZoneStorage.LanePointProgressions.AddZeroed(OutZoneStorage.LanePoints.Num() - OutZoneStorage.LanePointProgressions.Num());
+	for (int32 i = Zone.LanesBegin; i < Zone.LanesEnd; i++)
+	{
+		const FZoneLaneData& Lane = OutZoneStorage.Lanes[i];
+		CalculateLaneProgression(OutZoneStorage.LanePoints, Lane.PointsBegin, Lane.PointsEnd, OutZoneStorage.LanePointProgressions);
+	}
+
+	// Calculate zone bounding box, all lanes are assumed to be inside the boundary
+	Zone.Bounds.Init();
+	for (int32 i = Zone.BoundaryPointsBegin; i < Zone.BoundaryPointsEnd; i++)
+	{
+		Zone.Bounds += OutZoneStorage.BoundaryPoints[i];
+	}
+}
+*/
+```
