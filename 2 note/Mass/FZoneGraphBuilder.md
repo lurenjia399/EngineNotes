@@ -215,6 +215,23 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 			}
 		}
 	}
+	int32 ZoneIndex = OutZoneStorage.Zones.Num();
+	if (ShapeComp.GetShapeType() == FZoneShapeType::Spline)
+	{
+		// 获取样条线的车道
+		FZoneLaneProfile SplineLaneProfile;
+		ShapeComp.GetSplineLaneProfile(SplineLaneProfile);
+		if (ShapeComp.IsLaneProfileReversed())
+		{
+			SplineLaneProfile.ReverseLanes();
+		}
+		
+#if HOTTA_ENGINE_MODIFY
+		UE::ZoneShape::Utilities::TessellateSplineShape(AdjustedPoints, SplineLaneProfile, ShapeComp.GetOffsetAlongNormal(), ShapeComp.GetTags(), LocalToWorld, OutZoneStorage, OutInternalLinks);
+#else
+		UE::ZoneShape::Utilities::TessellateSplineShape(AdjustedPoints, SplineLaneProfile, ShapeComp.GetTags(), LocalToWorld, OutZoneStorage, OutInternalLinks);
+#endif
+	}
  }
-```
+
 ```
