@@ -178,10 +178,19 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 					// 将目标连接点Up向量转到来源ShapeComp空间下
 					const FVector LocalDestUp = 
 						DestToSource.TransformVector(DestConnector.Up);
-
-					const FVector NewPosition = FMath::Lerp(SourceConnector.Position, LocalDestPosition, BlendFactor);
-					const FVector NewNormal = FMath::Lerp(SourceConnector.Normal, -LocalDestNormal, BlendFactor).GetSafeNormal();
-					const FVector NewUp = FMath::Lerp(SourceConnector.Up, LocalDestUp, BlendFactor).GetSafeNormal();
+					// 将来源连接点信息插值到m
+					const FVector NewPosition = FMath::Lerp(
+							SourceConnector.Position, 
+							LocalDestPosition, 
+							BlendFactor);
+					const FVector NewNormal = FMath::Lerp(
+						SourceConnector.Normal, 
+						-LocalDestNormal, 
+						BlendFactor).GetSafeNormal();
+					const FVector NewUp = FMath::Lerp(
+						SourceConnector.Up, 
+						LocalDestUp, 
+						BlendFactor).GetSafeNormal();
 
 					if (SourceShapeType == FZoneShapeType::Spline)
 					{
