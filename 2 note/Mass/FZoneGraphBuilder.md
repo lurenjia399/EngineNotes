@@ -106,10 +106,10 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
  {
 	// 获取ShapeComp上的Points
 	TArray<FZoneShapePoint> AdjustedPoints(ShapeComp.GetPoints());
-	// 获取ShapeComp上的connector
+	// 获取ShapeComp上的connector，这个connector是根据ShapeComp的形状来的，表示可连接点
 	TConstArrayView<FZoneShapeConnector> ShapeConnectors = 
 		ShapeComp.GetShapeConnectors();
-	// 获取ShapeComp上的Connetion
+	// 获取ShapeComp上的Connetion，这个是Connector链接的
 	TConstArrayView<FZoneShapeConnection> ConnectedShapes = 
 		ShapeComp.GetConnectedShapes();
  }
