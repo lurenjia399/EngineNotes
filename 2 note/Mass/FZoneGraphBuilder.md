@@ -178,14 +178,14 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 					// 将目标连接点Up向量转到来源ShapeComp空间下
 					const FVector LocalDestUp = 
 						DestToSource.TransformVector(DestConnector.Up);
-					// 将来源连接点信息插值到m
+					// 将来源连接点信息插值到目标来源点
 					const FVector NewPosition = FMath::Lerp(
 							SourceConnector.Position, 
 							LocalDestPosition, 
 							BlendFactor);
 					const FVector NewNormal = FMath::Lerp(
 						SourceConnector.Normal, 
-						-LocalDestNormal, 
+						-LocalDestNormal, // 这里为啥是取负数？
 						BlendFactor).GetSafeNormal();
 					const FVector NewUp = FMath::Lerp(
 						SourceConnector.Up, 
