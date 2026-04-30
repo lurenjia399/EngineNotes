@@ -225,9 +225,9 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 		{
 			SplineLaneProfile.ReverseLanes();
 		}
-		// 
+		// 将样条线细分成点的方法
 		UE::ZoneShape::Utilities::TessellateSplineShape(
-			AdjustedPoints, 
+			AdjustedPoints, //上边我们Blend的来源连接点
 			SplineLaneProfile, 
 			ShapeComp.GetTags(), 
 			LocalToWorld, 
