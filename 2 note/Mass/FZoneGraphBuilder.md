@@ -228,9 +228,9 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 		// 将样条线细分成点的方法
 		UE::ZoneShape::Utilities::TessellateSplineShape(
 			AdjustedPoints, //上边我们Blend的来源连接点
-			SplineLaneProfile, 
-			ShapeComp.GetTags(), 
-			LocalToWorld, 
+			SplineLaneProfile, //车道配置
+			ShapeComp.GetTags(), //来源ShapeComp身上的Tag
+			LocalToWorld, //来源ShapeComp转换到世界的矩阵
 			OutZoneStorage, 
 			OutInternalLinks);
 	}
