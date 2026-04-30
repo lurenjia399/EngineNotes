@@ -166,13 +166,15 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 				// 有混合因子，所以需要调整来源ShapeComp上的Point位置
 				if (BlendFactor > 0.0f)
 				{
-					// 获取目标ShapeComp空间到来源ShapeComp的矩阵
+					// 获取目标ShapeComp空间变换到来源ShapeComp的矩阵
 					const FTransform DestToSource = 
 						DestShapeComp->GetComponentTransform() * WorldToSource;
-					// 将目标连接点位置转到
+					// 将目标连接点位置转到来源ShapeComp空间下
 					const FVector LocalDestPosition = 
 						DestToSource.TransformPosition(DestConnector.Position);
-					const FVector LocalDestNormal = DestToSource.TransformVector(DestConnector.Normal);
+					// 将目标连接点法线转到来源ShapeComp空间x
+					const FVector LocalDestNormal = 
+						DestToSource.TransformVector(DestConnector.Normal);
 					const FVector LocalDestUp = DestToSource.TransformVector(DestConnector.Up);
 
 					const FVector NewPosition = FMath::Lerp(SourceConnector.Position, LocalDestPosition, BlendFactor);
