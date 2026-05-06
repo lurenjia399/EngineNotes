@@ -38,6 +38,7 @@ void TessellateSplineShape(
 	TArray<FVector> EdgeNormals;
 	CalculateEdgeNormals(CurvePoints, EdgeNormals);
 
+	// 计算开始点和最终点的Nor
 	CalculateStartAndEndNormals(Points, LocalToWorld, EdgeNormals[0], EdgeNormals[EdgeNormals.Num() - 1]);
 
 	// Calculate miter extrusion at vertices
