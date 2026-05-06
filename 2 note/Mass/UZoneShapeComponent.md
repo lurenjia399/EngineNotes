@@ -65,7 +65,7 @@ UZoneShapeComponent::UZoneShapeComponent(const FObjectInitializer& ObjectInitial
 {
 	SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	// Add default Shape points
+	// 默认的点，从-x轴开始计数
 	Points.Emplace(FVector(-400, 0, 0));
 	Points.Emplace(FVector(400, 0, 0));
 }
