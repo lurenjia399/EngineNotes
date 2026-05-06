@@ -56,3 +56,18 @@
 	UPROPERTY(Transient)
 	TArray<FZoneShapeConnection> ConnectedShapes;
 ```
+
+# 2 UZoneShapeComponent 构造函数
+```cpp
+UZoneShapeComponent::UZoneShapeComponent(const FObjectInitializer& ObjectInitializer)
+	: UPrimitiveComponent(ObjectInitializer)
+	, ShapeType(FZoneShapeType::Spline)
+{
+	SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	// Add default Shape points
+	Points.Emplace(FVector(-400, 0, 0));
+	Points.Emplace(FVector(400, 0, 0));
+}
+
+```
