@@ -30,6 +30,7 @@ void TessellateSplineShape(
 	FlattenSplineSegments(Points, bClosedShape, LocalToWorld, TessTolerance, CurvePoints);
 
 	// Remove points which are too close to each other.
+	// 移除靠的特别近的点
 	RemoveDegenerateSegments(CurvePoints, bClosedShape);
 
 	// Calculate edge normals.
