@@ -25,6 +25,7 @@ void TessellateSplineShape(
 		LaneProfile, ZoneTags, BuildSettings);
 
 	// Flatten spline segments to points.
+	// li's
 	TArray<FShapePoint> CurvePoints;
 	FlattenSplineSegments(Points, bClosedShape, LocalToWorld, TessTolerance, CurvePoints);
 
