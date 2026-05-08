@@ -53,7 +53,7 @@ void TessellateSplineShape(
 	}
 #endif
 
-	// Build spline boundary polygon
+	// 计算道路的边缘点，也就是Point沿着Right向量延申
 	Zone.BoundaryPointsBegin = OutZoneStorage.BoundaryPoints.Num();
 	const float TotalWidth = LaneProfile.GetLanesTotalWidth();
 	const float HalfWidth = TotalWidth * 0.5f;
