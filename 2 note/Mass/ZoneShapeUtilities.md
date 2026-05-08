@@ -101,7 +101,7 @@ void TessellateSplineShape(
 			CurWidth += LaneDesc.Width;
 			continue;
 		}
-		// 在
+		// 在ZoneStorage的Lanes上添加新的，并赋值数据
 		FZoneLaneData& Lane = OutZoneStorage.Lanes.AddDefaulted_GetRef();
 		Lane.ZoneIndex = ZoneIndex;
 		Lane.Width = LaneDesc.Width;
