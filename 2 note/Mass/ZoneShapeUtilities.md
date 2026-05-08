@@ -111,7 +111,7 @@ void TessellateSplineShape(
 		Lane.EndEntryId = LastPointID;
 		const int32 CurrentLaneIndex = OutZoneStorage.Lanes.Num() - 1;
 
-		// 添加车道内部的链接，
+		// 添加车道内部的链接，用来查看是否可变道，逆行
 		// Add internal adjacent links.
 		AddAdjacentLaneLinks(CurrentLaneIndex, i, LaneProfile.Lanes, OutInternalLinks);
 
