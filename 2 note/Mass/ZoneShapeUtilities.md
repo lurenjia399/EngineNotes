@@ -38,7 +38,7 @@ void TessellateSplineShape(
 	TArray<FVector> EdgeNormals;
 	CalculateEdgeNormals(CurvePoints, EdgeNormals);
 
-	// 重新计算赋值开始点和最终点的Normal
+	// 重新计算赋值开始点和最终点的edge Normal
 	CalculateStartAndEndNormals(Points, LocalToWorld, EdgeNormals[0], EdgeNormals[EdgeNormals.Num() - 1]);
 
 	// 计算点的Right向量
