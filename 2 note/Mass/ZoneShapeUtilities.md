@@ -76,7 +76,11 @@ void TessellateSplineShape(
 		LocalToWorld.TransformVector(
 			Points[0].Rotation.RotateVector(
 				FVector::ForwardVector).GetSafeNormal());
-	const FVector EndForward = LocalToWorld.TransformVector(Points.Last().Rotation.RotateVector(FVector::ForwardVector).GetSafeNormal());
+	// 拿到最后一个点的Forward向量，转换到世界坐标
+	const FVector EndForward = 
+		LocalToWorld.TransformVector(
+			Points.Last().Rotation.RotateVector(
+				FVector::ForwardVector).GetSafeNormal());
 
 	TArray<FShapePoint> LanePoints;
 	Zone.LanesBegin = OutZoneStorage.Lanes.Num();
