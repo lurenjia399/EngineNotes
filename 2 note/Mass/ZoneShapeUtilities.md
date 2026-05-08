@@ -71,12 +71,12 @@ void TessellateSplineShape(
 	Zone.BoundaryPointsEnd = OutZoneStorage.BoundaryPoints.Num();
 
 	// Build lanes
-	// 拿到第一个点的Forward向量，转换到世界坐标
+	// 拿到ShapeComp第一个点的Forward向量，转换到世界坐标
 	const FVector StartForward = 
 		LocalToWorld.TransformVector(
 			Points[0].Rotation.RotateVector(
 				FVector::ForwardVector).GetSafeNormal());
-	// 拿到最后一个点的Forward向量，转换到世界坐标
+	// 拿到ShapeComp最后一个点的Forward向量，转换到世界坐标
 	const FVector EndForward = 
 		LocalToWorld.TransformVector(
 			Points.Last().Rotation.RotateVector(
@@ -90,6 +90,7 @@ void TessellateSplineShape(
 	const uint16 LastPointID = uint16(Points.Num() - 1);
 	
 	float CurWidth = 0.0f;
+	// 遍历ShapeComp的车道配置上的所有车道
 	for (int32 i = 0; i < NumLanes; i++)
 	{
 		const FZoneLaneDesc& LaneDesc = LaneProfile.Lanes[i];
@@ -100,7 +101,7 @@ void TessellateSplineShape(
 			CurWidth += LaneDesc.Width;
 			continue;
 		}
-
+		// 在
 		FZoneLaneData& Lane = OutZoneStorage.Lanes.AddDefaulted_GetRef();
 		Lane.ZoneIndex = ZoneIndex;
 		Lane.Width = LaneDesc.Width;
