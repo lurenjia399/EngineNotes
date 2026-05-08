@@ -71,7 +71,7 @@ void TessellateSplineShape(
 	Zone.BoundaryPointsEnd = OutZoneStorage.BoundaryPoints.Num();
 
 	// Build lanes
-	// 拿到第一个点的Forward
+	// 拿到第一个点的Forward向量，转换到世界坐标
 	const FVector StartForward = 
 		LocalToWorld.TransformVector(
 			Points[0].Rotation.RotateVector(
