@@ -85,3 +85,7 @@ static FAutoConsoleCommandWithOutputDevice GDumpCachedObjectsCmd(
 ```cpp
 // cheat Log LogHTAI Log
 ```
+9 定义log
+```cpp
+// DEFINE_LOG_CATEGORY_STATIC(LogVehicleAutopilot, Log, All)
+```
