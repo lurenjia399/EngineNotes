@@ -34,13 +34,14 @@ void TessellateSplineShape(
 	RemoveDegenerateSegments(CurvePoints, bClosedShape);
 
 	// Calculate edge normals.
-	// 计算点的normal，也就是UP和Forword叉乘的结果
+	// 计算点的edge normal，也就是UP和Forword叉乘的结果
 	TArray<FVector> EdgeNormals;
 	CalculateEdgeNormals(CurvePoints, EdgeNormals);
 
 	// 重新计算赋值开始点和最终点的Normal
 	CalculateStartAndEndNormals(Points, LocalToWorld, EdgeNormals[0], EdgeNormals[EdgeNormals.Num() - 1]);
 
+	// 计算点的Right向量
 	// Calculate miter extrusion at vertices
 	CalculateMiters(CurvePoints, EdgeNormals);
 
