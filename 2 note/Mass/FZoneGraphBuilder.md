@@ -370,7 +370,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			if (SourceLane.Tags.ContainsAny(
 				DestLane.Tags & BuildSettings.LaneConnectionMask))
 			{
-				// 如果当前车道和目标车道不是一个车道 && 目标车道是终点 && 当前车道起始点和目标车道终点距离满足阈值，则是
+				// 如果当前车道和目标车道不是一个车道 && 目标车道是终点 && 当前车道起始点和目标车道终点距离满足阈值，则是入口车道，就是两个车道x
 				if (SourceLane.ZoneIndex != DestLane.ZoneIndex
 					&& LaneID.Extremity == ELaneExtremity::End
 					&& FVector::DistSquared(SourceStartPosition, DestEndPosition) 
