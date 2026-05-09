@@ -167,7 +167,7 @@ void TessellateSplineShape(
 			OutZoneStorage.LaneUpVectors.Add(Point.Up);
 		}
 		Lane.PointsEnd = OutZoneStorage.LanePoints.Num();
-		// 计算车道上点Forward向量，开始点和结束点都是取得（1，0，0）
+		// 计算车道上点Forward向量，开始点和结束点都是取得（1，0，0）方向的向量，剩余的点是车行驶的方向
 		// Calculate per point forward.
 		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
 		{
@@ -193,7 +193,7 @@ void TessellateSplineShape(
 			OutZoneStorage.LaneTangentVectors.Add(-StartForward);
 		}
 
-
+		// 最后累加车道宽度
 		CurWidth += LaneDesc.Width;
 	}
 
