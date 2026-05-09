@@ -114,7 +114,7 @@ void TessellateSplineShape(
 		// 添加车道内部的链接，用来查看是否可变道，逆行
 		// Add internal adjacent links.
 		AddAdjacentLaneLinks(CurrentLaneIndex, i, LaneProfile.Lanes, OutInternalLinks);
-
+		// 车道的一半
 		const float LanePos = HalfWidth - (CurWidth + LaneDesc.Width * 0.5f);
 
 		// Create lane points.
