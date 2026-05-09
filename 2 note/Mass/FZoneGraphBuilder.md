@@ -314,7 +314,7 @@ void FZoneGraphBuilder::ConnectLanes(
 	TArray<FLanePointID> QueryResults;
 	for (int32 LaneIndex = 0; LaneIndex < ZoneStorage.Lanes.Num(); LaneIndex++)
 	{
-		// 当前遍历到的车道
+		// 引用当前遍历到的车道
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIndex];
 		// 往车道里记录车道link开始的索引
 		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
@@ -338,11 +338,13 @@ void FZoneGraphBuilder::ConnectLanes(
 				}
 			}
 		}
-		// 
+		// 拷贝当前遍历到的车道
 		// Add links to connected lanes
 		const FZoneLaneData& SourceLane = ZoneStorage.Lanes[LaneIndex];
+		// 当前遍历车道的起始位置
 		const FVector& SourceStartPosition = 
 			ZoneStorage.LanePoints[SourceLane.PointsBegin];
+		// 当前遍历车道的终点位置
 		const FVector& SourceEndPosition = 
 			ZoneStorage.LanePoints[SourceLane.PointsEnd - 1];
 
