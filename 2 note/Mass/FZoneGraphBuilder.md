@@ -293,6 +293,16 @@ void FZoneGraphBuilder::ConnectLanes(
 	}
 	// 创建一个Grid2D结构，level为1，每层lelvel是上一层的1倍，每个格子的key是FLanePointID
 	THierarchicalHashGrid2D<1, 1, FLanePointID> LinkGrid(100.0f);
+	// 初始化静态局部变量，注意只会初始化一次
+	static const float ConnectionTolerance = 2.0f;
+	static const float ConnectionToleranceSqr = FMath::Square(ConnectionTolerance);
+	static const FVector ConnectionToleranceExtent(ConnectionTolerance);
 	
+	for (int32 LaneIdx = 0; LaneIdx < ZoneStorage.Lanes.Num(); LaneIdx++)
+	{
+		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIdx];
+		LinkGrid.Add(FLanePointID(LaneIdx, ELaneExtremity::Start), FBox::BuildAABB(ZoneStorage.LanePoints[Lane.PointsBegin], FVector::ZeroVector));
+		LinkGrid.Add(FLanePointID(LaneIdx, ELaneExtremity::End), FBox::BuildAABB(ZoneStorage.LanePoints[Lane.PointsEnd - 1], FVector::ZeroVector));
+	}
 }
 ```
