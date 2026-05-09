@@ -348,11 +348,15 @@ void FZoneGraphBuilder::ConnectLanes(
 		const FVector& SourceEndPosition = 
 			ZoneStorage.LanePoints[SourceLane.PointsEnd - 1];
 
-		// Lanes touching the source lane start point.
+		// 在起始位置创建盒子，查询和这个盒子相交的FLanePointID
 		QueryResults.Reset();
 		LinkGrid.Query(
 			FBox::BuildAABB(
 				SourceStartPosition, ConnectionToleranceExtent), QueryResults);
+		for (FLanePointID LaneID : QueryResults)  
+		{
+			
+		}
 	}
 }
 ```
