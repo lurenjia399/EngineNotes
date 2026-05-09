@@ -145,7 +145,7 @@ void TessellateSplineShape(
 			ensure(false);
 		}
 
-		// The spline is tessellated at the finest level of all lanes, simplify it to match the lanes tessellation tolerance.
+		// 简化点的数量，用三个点，只要mid到start和end组成的线段小于误差，则移除middian
 		const float LaneTessTolerance = BuildSettings.GetLaneTessellationTolerance(Lane.Tags);
 		SimplifyShape(LanePoints, LaneTessTolerance);
 
