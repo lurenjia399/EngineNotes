@@ -199,8 +199,11 @@ void TessellateSplineShape(
 	// 记录车道结束索引，车道只包含车能行驶的，不包括障碍物
 	Zone.LanesEnd = OutZoneStorage.Lanes.Num();
 
+	// 记录车道上点到车道开始点的k
 	// Calculate progression distance along lanes.
-	OutZoneStorage.LanePointProgressions.AddZeroed(OutZoneStorage.LanePoints.Num() - OutZoneStorage.LanePointProgressions.Num());
+	OutZoneStorage.LanePointProgressions.AddZeroed(
+		OutZoneStorage.LanePoints.Num() 
+			- OutZoneStorage.LanePointProgressions.Num());
 	for (int32 i = Zone.LanesBegin; i < Zone.LanesEnd; i++)
 	{
 		const FZoneLaneData& Lane = OutZoneStorage.Lanes[i];
