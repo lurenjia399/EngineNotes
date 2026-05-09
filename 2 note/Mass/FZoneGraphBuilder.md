@@ -360,6 +360,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			{
 				continue;
 			}
+			// 相交的chu'le
 			const FZoneLaneData& DestLane = ZoneStorage.Lanes[LaneID.Index];
 			const FVector& DestStartPosition = 
 				ZoneStorage.LanePoints[DestLane.PointsBegin];
@@ -381,10 +382,11 @@ void FZoneGraphBuilder::ConnectLanes(
 					Link.Type = EZoneLaneLinkType::Incoming;
 					Link.SetFlags(EZoneLaneLinkFlags::None);
 				}
-				else if (SourceLane.ZoneIndex == DestLane.ZoneIndex
-						 && LaneID.Extremity == ELaneExtremity::Start
-						 && FVector::DistSquared(SourceStartPosition, estStartPosition) 
-						 < ConnectionToleranceSqr)
+				else if (
+					SourceLane.ZoneIndex == DestLane.ZoneIndex 
+					&& LaneID.Extremity == ELaneExtremity::Start
+					&& FVector::DistSquared(SourceStartPosition, estStartPosition) 
+						< ConnectionToleranceSqr)
 				{
 					// Splitting lane
 					FZoneLaneLinkData& Link = ZoneStorage.LaneLinks.AddDefaulted_GetRef();
