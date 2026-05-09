@@ -360,13 +360,13 @@ void FZoneGraphBuilder::ConnectLanes(
 			{
 				continue;
 			}
-			// 相交的chu'le
+			// 相交的除了自己，的另一个车道。也就是和遍历到的车道起始点链接的另一个车道
 			const FZoneLaneData& DestLane = ZoneStorage.Lanes[LaneID.Index];
 			const FVector& DestStartPosition = 
 				ZoneStorage.LanePoints[DestLane.PointsBegin];
 			const FVector& DestEndPosition = 
 				ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
-
+			// 目标车道的tag符合条件
 			if (SourceLane.Tags.ContainsAny(
 				DestLane.Tags & BuildSettings.LaneConnectionMask))
 			{
