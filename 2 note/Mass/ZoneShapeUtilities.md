@@ -159,7 +159,7 @@ void TessellateSplineShape(
 		const float LaneTessTolerance = BuildSettings.GetLaneTessellationTolerance(Lane.Tags);
 		SimplifyShape(LanePoints, LaneTessTolerance);
 
-		// 记录车道的位置和up向量
+		// 记录车道点的位置和up向量
 		Lane.PointsBegin = OutZoneStorage.LanePoints.Num();
 		for (const FShapePoint& Point : LanePoints)
 		{
@@ -167,7 +167,7 @@ void TessellateSplineShape(
 			OutZoneStorage.LaneUpVectors.Add(Point.Up);
 		}
 		Lane.PointsEnd = OutZoneStorage.LanePoints.Num();
-
+		// 计算车道上点Forward向量，开始点和结束点都是取得（1，0，0）
 		// Calculate per point forward.
 		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
 		{
