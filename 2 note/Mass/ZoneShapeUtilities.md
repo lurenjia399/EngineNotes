@@ -144,8 +144,7 @@ void TessellateSplineShape(
 		{
 			ensure(false);
 		}
-
-		// 简化点的数量，用三个点，只要mid到start和end组成的线段小于误差，则移除mid点 
+ 
 		/*
 			这里用于简化形状：
 		  - 检查中间点 Mid 是否足够接近由 Start 到 End 构成的线段
