@@ -355,7 +355,44 @@ void FZoneGraphBuilder::ConnectLanes(
 				SourceStartPosition, ConnectionToleranceExtent), QueryResults);
 		for (FLanePointID LaneID : QueryResults)  
 		{
-			
+			// 自己不用
+			if (LaneID.Index == LaneIndex)
+			{
+				continue;
+			}
+			const FZoneLaneData& DestLane = ZoneStorage.Lanes[LaneID.Index];
+			const FVector& DestStartPosition = 
+				ZoneStorage.LanePoints[DestLane.PointsBegin];
+			const FVector& DestEndPosition = 
+				ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
+
+			if (SourceLane.Tags.ContainsAny(
+				DestLane.Tags & BuildSettings.LaneConnectionMask))
+			{
+				if (SourceLane.ZoneIndex != DestLane.ZoneIndex
+					&& LaneID.Extremity == ELaneExtremity::End
+					&& FVector::DistSquared(SourceStartPosition, DestEndPosition) 
+						< ConnectionToleranceSqr)
+				{
+					// Incoming lane
+					FZoneLaneLinkData& Link = 
+						ZoneStorage.LaneLinks.AddDefaulted_GetRef();
+					Link.DestLaneIndex = LaneID.Index;
+					Link.Type = EZoneLaneLinkType::Incoming;
+					Link.SetFlags(EZoneLaneLinkFlags::None);
+				}
+				else if (SourceLane.ZoneIndex == DestLane.ZoneIndex
+						 && LaneID.Extremity == ELaneExtremity::Start
+						 && FVector::DistSquared(SourceStartPosition, estStartPosition) 
+						 < ConnectionToleranceSqr)
+				{
+					// Splitting lane
+					FZoneLaneLinkData& Link = ZoneStorage.LaneLinks.AddDefaulted_GetRef();
+					Link.DestLaneIndex = LaneID.Index;
+					Link.Type = EZoneLaneLinkType::Adjacent;
+					Link.SetFlags(EZoneLaneLinkFlags::Splitting);
+				}
+			}
 		}
 	}
 }
