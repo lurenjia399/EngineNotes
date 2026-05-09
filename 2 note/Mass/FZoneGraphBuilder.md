@@ -316,7 +316,7 @@ void FZoneGraphBuilder::ConnectLanes(
 	{
 		// 当前遍历到的车道
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIndex];
-		// 记录
+		// 往车道里记录车道link开始的索引
 		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
 
 		// Add internal links
