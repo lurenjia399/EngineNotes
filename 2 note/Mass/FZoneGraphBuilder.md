@@ -254,3 +254,11 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
  }
 
 ```
+## 2.2 void FZoneGraphBuilder::ConnectLanes 
+```cpp
+void FZoneGraphBuilder::ConnectLanes(
+	TArray<FZoneShapeLaneInternalLink>& InternalLinks,// 离散化
+	FZoneGraphStorage& ZoneStorage)
+{
+
+```
