@@ -159,6 +159,7 @@ void TessellateSplineShape(
 		const float LaneTessTolerance = BuildSettings.GetLaneTessellationTolerance(Lane.Tags);
 		SimplifyShape(LanePoints, LaneTessTolerance);
 
+		// 记录车道的位置和up向量
 		Lane.PointsBegin = OutZoneStorage.LanePoints.Num();
 		for (const FShapePoint& Point : LanePoints)
 		{
