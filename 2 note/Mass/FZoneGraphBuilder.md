@@ -297,12 +297,18 @@ void FZoneGraphBuilder::ConnectLanes(
 	static const float ConnectionTolerance = 2.0f;
 	static const float ConnectionToleranceSqr = FMath::Square(ConnectionTolerance);
 	static const FVector ConnectionToleranceExtent(ConnectionTolerance);
-	
+	// 
 	for (int32 LaneIdx = 0; LaneIdx < ZoneStorage.Lanes.Num(); LaneIdx++)
 	{
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIdx];
-		LinkGrid.Add(FLanePointID(LaneIdx, ELaneExtremity::Start), FBox::BuildAABB(ZoneStorage.LanePoints[Lane.PointsBegin], FVector::ZeroVector));
-		LinkGrid.Add(FLanePointID(LaneIdx, ELaneExtremity::End), FBox::BuildAABB(ZoneStorage.LanePoints[Lane.PointsEnd - 1], FVector::ZeroVector));
+		LinkGrid.Add(
+			FLanePointID(LaneIdx, ELaneExtremity::Start),
+			FBox::BuildAABB(
+				ZoneStorage.LanePoints[Lane.PointsBegin], FVector::ZeroVector));
+		LinkGrid.Add(
+		FLanePointID(LaneIdx, ELaneExtremity::End),
+			FBox::BuildAABB(
+			ZoneStorage.LanePoints[Lane.PointsEnd - 1], FVector::ZeroVector));
 	}
 }
 ```
