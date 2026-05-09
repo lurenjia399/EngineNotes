@@ -310,6 +310,31 @@ void FZoneGraphBuilder::ConnectLanes(
 			FBox::BuildAABB(
 				ZoneStorage.LanePoints[Lane.PointsEnd - 1], FVector::ZeroVector));
 	}
-	
+	// 遍历这个ZoneStorage上的所有车道
+	TArray<FLanePointID> QueryResults;
+	for (int32 LaneIndex = 0; LaneIndex < ZoneStorage.Lanes.Num(); LaneIndex++)
+	{
+		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIndex];
+		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
+
+		// Add internal links
+		int32 AdjacentLaneCount = 0;
+		if (const int32* FirstLink = FirstLinkByLane.Find(LaneIndex))
+		{
+			for (int32 LinkIdx = *FirstLink; LinkIdx < InternalLinks.Num(); LinkIdx++)
+			{
+				const FZoneShapeLaneInternalLink& Link = InternalLinks[LinkIdx];
+				if (Link.LaneIndex != LaneIndex)
+				{
+					break;
+				}
+				ZoneStorage.LaneLinks.Add(Link.LinkData);
+				if (Link.LinkData.Type == EZoneLaneLinkType::Adjacent)
+				{
+					AdjacentLaneCount++;
+				}
+			}
+		}
+	}
 }
 ```
