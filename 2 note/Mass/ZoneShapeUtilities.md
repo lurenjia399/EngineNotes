@@ -196,7 +196,7 @@ void TessellateSplineShape(
 		// 最后累加车道宽度
 		CurWidth += LaneDesc.Width;
 	}
-
+	// 记录车道结束索引，车道只包含车能行驶的，不包括障碍物
 	Zone.LanesEnd = OutZoneStorage.Lanes.Num();
 
 	// Calculate progression distance along lanes.
