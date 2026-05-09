@@ -117,7 +117,7 @@ void TessellateSplineShape(
 		// 车道的一半
 		const float LanePos = HalfWidth - (CurWidth + LaneDesc.Width * 0.5f);
 
-		// 将point沿着right向量平移到车道jia
+		// 将point沿着right向量平移到车道箭头上，然后把结果记录到LanPoints上
 		// Create lane points.
 		LanePoints.Reset();
 		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
