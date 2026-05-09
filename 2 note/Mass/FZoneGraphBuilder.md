@@ -276,6 +276,7 @@ void FZoneGraphBuilder::ConnectLanes(
 		ELaneExtremity Extremity;
 	};
 
-	
+	// 用于快速查询的缓存，key是车道在ZoneStorage里的索引，value是在InternalLink中索引
+	TMap<int32, int32> FirstLinkByLane;
 }
 ```
