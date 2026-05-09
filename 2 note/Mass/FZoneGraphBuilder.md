@@ -291,7 +291,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			PrevLaneIndex = Link.LaneIndex;
 		}
 	}
-	// 创建一个Grid2D结构，level为1，
+	// 创建一个Grid2D结构，level为1，每层lelvel有1个grid，每个格子的key是FLanePointID
 	THierarchicalHashGrid2D<1, 1, FLanePointID> LinkGrid(100.0f);
 }
 ```
