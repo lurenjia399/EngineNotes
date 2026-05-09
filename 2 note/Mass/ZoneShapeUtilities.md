@@ -1,6 +1,6 @@
 1 TessellateSplineShape
 ```cpp
-/*
+
 void TessellateSplineShape(
 	TConstArrayView<FZoneShapePoint> Points, //需要调整的所有点
 	const FZoneLaneProfile& LaneProfile, //车道
@@ -145,7 +145,18 @@ void TessellateSplineShape(
 			ensure(false);
 		}
 
-		// 简化点的数量，用三个点，只要mid到start和end组成的线段小于误差，则移除middian
+		// 简化点的数量，用三个点，只要mid到start和end组成的线段小于误差，则移除mid点 
+		/*
+			这里用于简化形状：
+		  - 检查中间点 Mid 是否足够接近由 Start 到 End 构成的线段
+		  - 如果距离平方小于容差平方（ToleranceSqr），说明中间点是冗余的
+		  - 移除中间点以简化曲线，减少点的数量
+		
+		  计算原理:
+		  1. 将点投影到线段所在的直线上
+		  2. 如果投影点在线段内，返回点到投影点的距离平方
+		  3. 如果投影点在线段外，返回点到最近端点的距离平方
+		*/
 		const float LaneTessTolerance = BuildSettings.GetLaneTessellationTolerance(Lane.Tags);
 		SimplifyShape(LanePoints, LaneTessTolerance);
 
@@ -203,5 +214,5 @@ void TessellateSplineShape(
 		Zone.Bounds += OutZoneStorage.BoundaryPoints[i];
 	}
 }
-*/
+
 ```
