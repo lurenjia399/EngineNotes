@@ -370,6 +370,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			if (SourceLane.Tags.ContainsAny(
 				DestLane.Tags & BuildSettings.LaneConnectionMask))
 			{
+				// 如果当前车道和目标车道不是一个车道 && 目标车道是终点
 				if (SourceLane.ZoneIndex != DestLane.ZoneIndex
 					&& LaneID.Extremity == ELaneExtremity::End
 					&& FVector::DistSquared(SourceStartPosition, DestEndPosition) 
