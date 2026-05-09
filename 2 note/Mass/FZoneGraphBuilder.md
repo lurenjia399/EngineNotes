@@ -370,7 +370,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			if (SourceLane.Tags.ContainsAny(
 				DestLane.Tags & BuildSettings.LaneConnectionMask))
 			{
-				// 如果当前车道所属的ShapComp和目标车道suo'chu不是一个车道 && 目标车道是终点 && 当前车道起始点和目标车道终点距离满足阈值，则是入口车道，就是两个车道相连并同向
+				// 如果当前车道所属的ShapeComp和目标车道所属的ShapeComp不是一个 && 目标车道是终点 && 当前车道起始点和目标车道终点距离满足阈值，则是入口车道，就是两个车道相连并同向
 				if (SourceLane.ZoneIndex != DestLane.ZoneIndex
 					&& LaneID.Extremity == ELaneExtremity::End
 					&& FVector::DistSquared(SourceStartPosition, DestEndPosition) 
@@ -383,6 +383,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					Link.Type = EZoneLaneLinkType::Incoming;
 					Link.SetFlags(EZoneLaneLinkFlags::None);
 				}
+				// 如果当前车道所属的ShapeComp和目标车道所属的ShapeComp是
 				else if (
 					SourceLane.ZoneIndex == DestLane.ZoneIndex 
 					&& LaneID.Extremity == ELaneExtremity::Start
