@@ -314,7 +314,9 @@ void FZoneGraphBuilder::ConnectLanes(
 	TArray<FLanePointID> QueryResults;
 	for (int32 LaneIndex = 0; LaneIndex < ZoneStorage.Lanes.Num(); LaneIndex++)
 	{
+		// 当前遍历到的车道
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIndex];
+		// 记录
 		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
 
 		// Add internal links
