@@ -280,5 +280,18 @@ void FZoneGraphBuilder::ConnectLanes(
 	TMap<int32, int32> FirstLinkByLane;
 	// 根据Link中每个车道在ZoneStorage里索引排序
 	InternalLinks.Sort();
+	// 组装FirstLinkByLane这个结构
+	int32 PrevLaneIndex = INDEX_NONE;
+	for (int32 LinkIdx = 0; LinkIdx < InternalLinks.Num(); LinkIdx++)
+	{
+		const FZoneShapeLaneInternalLink& Link = InternalLinks[LinkIdx];
+		if (Link.LaneIndex != PrevLaneIndex)
+		{
+			FirstLinkByLane.Add(Link.LaneIndex, LinkIdx);
+			PrevLaneIndex = Link.LaneIndex;
+		}
+	}
+	// 创建一个Grid2D结构，level为1，
+	THierarchicalHashGrid2D<1, 1, FLanePointID> LinkGrid(100.0f);
 }
 ```
