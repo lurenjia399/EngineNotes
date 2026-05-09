@@ -318,12 +318,13 @@ void FZoneGraphBuilder::ConnectLanes(
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIndex];
 		// 往车道里记录车道link开始的索引
 		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
-		// 这部分mei'xiang'ming
+		// 这部分没想明白还
 		// Add internal links
 		int32 AdjacentLaneCount = 0;
 		if (const int32* FirstLink = FirstLinkByLane.Find(LaneIndex))
 		{
-			for (int32 LinkIdx = *FirstLink; LinkIdx < InternalLinks.Num(); LinkIdx++)
+			for (int32 LinkIdx = *FirstLink; 
+					LinkIdx < InternalLinks.Num(); LinkIdx++)
 			{
 				const FZoneShapeLaneInternalLink& Link = InternalLinks[LinkIdx];
 				if (Link.LaneIndex != LaneIndex)
@@ -337,6 +338,19 @@ void FZoneGraphBuilder::ConnectLanes(
 				}
 			}
 		}
+		// 
+		// Add links to connected lanes
+		const FZoneLaneData& SourceLane = ZoneStorage.Lanes[LaneIndex];
+		const FVector& SourceStartPosition = 
+			ZoneStorage.LanePoints[SourceLane.PointsBegin];
+		const FVector& SourceEndPosition = 
+			ZoneStorage.LanePoints[SourceLane.PointsEnd - 1];
+
+		// Lanes touching the source lane start point.
+		QueryResults.Reset();
+		LinkGrid.Query(
+			FBox::BuildAABB(
+				SourceStartPosition, ConnectionToleranceExtent), QueryResults);
 	}
 }
 ```
