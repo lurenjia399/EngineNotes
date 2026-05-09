@@ -297,7 +297,7 @@ void FZoneGraphBuilder::ConnectLanes(
 	static const float ConnectionTolerance = 2.0f;
 	static const float ConnectionToleranceSqr = FMath::Square(ConnectionTolerance);
 	static const FVector ConnectionToleranceExtent(ConnectionTolerance);
-	// 
+	// 每个车道取开始点和结束点组成两个Box，添加到Grid2D里
 	for (int32 LaneIdx = 0; LaneIdx < ZoneStorage.Lanes.Num(); LaneIdx++)
 	{
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIdx];
@@ -306,9 +306,10 @@ void FZoneGraphBuilder::ConnectLanes(
 			FBox::BuildAABB(
 				ZoneStorage.LanePoints[Lane.PointsBegin], FVector::ZeroVector));
 		LinkGrid.Add(
-		FLanePointID(LaneIdx, ELaneExtremity::End),
+			FLanePointID(LaneIdx, ELaneExtremity::End),
 			FBox::BuildAABB(
-			ZoneStorage.LanePoints[Lane.PointsEnd - 1], FVector::ZeroVector));
+				ZoneStorage.LanePoints[Lane.PointsEnd - 1], FVector::ZeroVector));
 	}
+	
 }
 ```
