@@ -260,5 +260,22 @@ void FZoneGraphBuilder::ConnectLanes(
 	TArray<FZoneShapeLaneInternalLink>& InternalLinks,// 离散化
 	FZoneGraphStorage& ZoneStorage)
 {
+	enum class ELaneExtremity : uint8
+	{
+		Start,
+		End,
+	};
 
+	struct FLanePointID
+	{
+		FLanePointID() = default;
+		FLanePointID(const int32 InIndex, const ELaneExtremity InExtremity) 
+		: Index(InIndex), Extremity(InExtremity) {}
+
+		int32 Index;
+		ELaneExtremity Extremity;
+	};
+
+	
+}
 ```
