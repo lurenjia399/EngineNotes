@@ -49,7 +49,7 @@ void FZoneGraphBuilder::UnregisterZoneShapeComponent(
 注册，每个UZoneShapeComponent的onRegister方法或者是onUnRegister就会执行。会把这个Component放到Builder的ShapeComponents数组中缓存起来。
 # 2 Build
 ```cpp
-/*
+
 void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 {
 	
@@ -92,7 +92,7 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 
 	ZoneGraphData.UpdateDrawing();
 }
-*/
+
 ```
 ## 2.1 AppendShapeToZoneStorage
 
