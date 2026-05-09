@@ -210,6 +210,7 @@ void TessellateSplineShape(
 		CalculateLaneProgression(OutZoneStorage.LanePoints, Lane.PointsBegin, Lane.PointsEnd, OutZoneStorage.LanePointProgressions);
 	}
 
+	// shapeComp构成的车道描述的boundingbox，就是边缘点的和
 	// Calculate zone bounding box, all lanes are assumed to be inside the boundary
 	Zone.Bounds.Init();
 	for (int32 i = Zone.BoundaryPointsBegin; i < Zone.BoundaryPointsEnd; i++)
