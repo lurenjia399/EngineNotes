@@ -383,7 +383,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					Link.Type = EZoneLaneLinkType::Incoming;
 					Link.SetFlags(EZoneLaneLinkFlags::None);
 				}
-				// 如果当前车道所属的ShapeComp和目标车道所属的ShapeComp是同一个 && 目标车道是起始点 && 当前车道起始点和目标车道终点距离满足阈值，则是相邻车道，相邻的类型是分流点，那种T子路口，
+				// 如果当前车道所属的ShapeComp和目标车道所属的ShapeComp是同一个 && 目标车道是起始点 && 当前车道起始点和目标车道终点距离满足阈值，则是相邻车道，相邻的类型是分流点，那种T子路口
 				else if (
 					SourceLane.ZoneIndex == DestLane.ZoneIndex 
 					&& LaneID.Extremity == ELaneExtremity::Start
