@@ -234,6 +234,23 @@ void FZoneGraphBuilder::AppendShapeToZoneStorage(
 			OutZoneStorage, 
 			OutInternalLinks);
 	}
+	// 记录映射，方便查询
+	// Build mapping data between ZoneShapeComponents and baked data.
+	if (InBuildData && ZoneIndex != INDEX_NONE)
+	{
+		FZoneData& Zone = OutZoneStorage.Zones[ZoneIndex];
+
+		FZoneShapeComponentBuildData ComponentBuildData;
+		ComponentBuildData.ZoneIndex = ZoneIndex;
+		for (int32 i = Zone.LanesBegin; i != Zone.LanesEnd; i++)
+		{
+			ComponentBuildData.Lanes.Add(
+				FZoneGraphLaneHandle(i, OutZoneStorage.DataHandle));
+		}
+
+		InBuildData->ZoneShapeComponentBuildData.Add(
+			&ShapeComp, ComponentBuildData);
+	}
  }
 
 ```
