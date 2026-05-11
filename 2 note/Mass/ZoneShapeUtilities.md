@@ -113,7 +113,7 @@ void TessellateSplineShape(
 
 		// 添加车道内部的链接，用来查看是否可变道，逆行
 		/*
-		1 没
+		1 每一条车道都会检测相邻的车道，看相邻的车道是否反向或者同向，并且记录相邻的车道是zuo
 		*/
 		// Add internal adjacent links.
 		AddAdjacentLaneLinks(CurrentLaneIndex, i, LaneProfile.Lanes, OutInternalLinks);
