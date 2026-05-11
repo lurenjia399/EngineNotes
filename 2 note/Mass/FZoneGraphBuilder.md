@@ -405,8 +405,87 @@ void FZoneGraphBuilder::ConnectLanes(
 					Link.Type = EZoneLaneLinkType::Adjacent;
 					Link.SetFlags(EZoneLaneLinkFlags::Splitting);
 				}
-			}
+			}	
+		}
+		// 当前
+		if (AdjacentLaneCount == 0)
+		{
+			const float AdjacentRadius = SourceLane.Width + ConnectionTolerance;
+			const float AdjacentRadiusSqr = FMath::Square(AdjacentRadius);
+			const FVector AdjacentExt(AdjacentRadius);
+			QueryResults.Reset();
+			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
+
+			const FVector SourceStartSide = FVector::CrossProduct(ZoneStorage.LaneTangentVectors[SourceLane.PointsBegin], ZoneStorage.LaneUpVectors[SourceLane.PointsBegin]);
+			const FVector SourceEndSide = FVector::CrossProduct(ZoneStorage.LaneTangentVectors[SourceLane.PointsEnd - 1], ZoneStorage.LaneUpVectors[SourceLane.PointsEnd - 1]);
 			
+			for (FLanePointID LaneID : QueryResults)
+			{
+				// skip self.
+				if (LaneID.Index == LaneIndex)
+				{
+					continue;
+				}
+
+				const FZoneLaneData& DestLane = ZoneStorage.Lanes[LaneID.Index];
+				if (SourceLane.ZoneIndex == DestLane.ZoneIndex
+					&& SourceLane.Tags.ContainsAny(DestLane.Tags & BuildSettings.LaneConnectionMask))
+				{
+					// If the link already exists, do not create a duplicate one.
+					bool bLinkExists = false;
+					for (int32 LinkIndex = Lane.LinksBegin; LinkIndex < ZoneStorage.LaneLinks.Num(); LinkIndex++)
+					{
+						const FZoneLaneLinkData& Link = ZoneStorage.LaneLinks[LinkIndex];
+						if (Link.DestLaneIndex == LaneID.Index)
+						{
+							bLinkExists = true;
+							break;
+						}
+					}
+					if (bLinkExists)
+					{
+						continue;
+					}
+
+					const FVector& DestStartPosition = ZoneStorage.LanePoints[DestLane.PointsBegin];
+					const FVector& DestEndPosition = ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
+
+					// Using range checks, since we assume that the points should not be overlapping.
+					
+					if (UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceStartPosition, DestStartPosition), ConnectionToleranceSqr, AdjacentRadiusSqr)
+						&& UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceEndPosition, DestEndPosition), ConnectionToleranceSqr, AdjacentRadiusSqr))
+					{
+						// Same direction adjacent lanes
+						const bool bStartIsLeft = FVector::DotProduct(SourceStartSide, DestStartPosition - SourceStartPosition) > 0.0f;
+						const bool bEndIsLeft = FVector::DotProduct(SourceEndSide, DestEndPosition - SourceEndPosition) > 0.0f;
+						
+						// Expect the adjacent lane points to be same side of the lane at start and end.
+						if (bStartIsLeft == bEndIsLeft)
+						{
+							FZoneLaneLinkData& Link = ZoneStorage.LaneLinks.AddDefaulted_GetRef();
+							Link.DestLaneIndex = LaneID.Index;
+							Link.Type = EZoneLaneLinkType::Adjacent;
+							Link.SetFlags(bStartIsLeft ? EZoneLaneLinkFlags::Left : EZoneLaneLinkFlags::Right);
+						}
+					}
+					else if (UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceStartPosition, DestEndPosition), ConnectionToleranceSqr, AdjacentRadiusSqr)
+						&& UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceEndPosition, DestStartPosition), ConnectionToleranceSqr, AdjacentRadiusSqr))
+					{
+						// Opposite direction adjacent lanes
+						const bool bStartIsLeft = FVector::DotProduct(SourceStartSide, DestEndPosition - SourceStartPosition) > 0.0f;
+						const bool bEndIsLeft = FVector::DotProduct(SourceEndSide, DestStartPosition - SourceEndPosition) > 0.0f;
+
+						// Expect the adjacent lane points to be same side of the lane at start and end.
+						if (bStartIsLeft == bEndIsLeft)
+						{
+							FZoneLaneLinkData& Link = ZoneStorage.LaneLinks.AddDefaulted_GetRef();
+							Link.DestLaneIndex = LaneID.Index;
+							Link.Type = EZoneLaneLinkType::Adjacent;
+							Link.SetFlags((bStartIsLeft ? EZoneLaneLinkFlags::Left : EZoneLaneLinkFlags::Right) | EZoneLaneLinkFlags::OppositeDirection);
+						}
+					}
+				}		
+			}
 		}
 	}
 }
