@@ -355,7 +355,8 @@ void FZoneGraphBuilder::ConnectLanes(
 		// 在起始位置创建盒子，查询和这个盒子相交的FLanePointID
 		/*
 		1 这里在车道的起始位置创建盒子，获取到相交的LanePointID
-		2 
+		2 起始车道就有两种情况，一种是同向相连，一前一后的这种，另一种是分流，to
+		3 后面省略了
 		*/
 		QueryResults.Reset();
 		LinkGrid.Query(
