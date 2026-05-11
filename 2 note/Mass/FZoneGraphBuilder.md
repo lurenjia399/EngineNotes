@@ -353,6 +353,10 @@ void FZoneGraphBuilder::ConnectLanes(
 			ZoneStorage.LanePoints[SourceLane.PointsEnd - 1];
 
 		// 在起始位置创建盒子，查询和这个盒子相交的FLanePointID
+		/*
+		1 这里在车道的起始位置创建盒子，获取到相交的LanePointID
+		2 
+		*/
 		QueryResults.Reset();
 		LinkGrid.Query(
 			FBox::BuildAABB(
