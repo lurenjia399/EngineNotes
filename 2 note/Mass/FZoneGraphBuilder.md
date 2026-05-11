@@ -412,9 +412,11 @@ void FZoneGraphBuilder::ConnectLanes(
 		{
 			// 当前车道的宽度 + 连接误差2cm
 			const float AdjacentRadius = SourceLane.Width + ConnectionTolerance;
-			// 
+			// 平方
 			const float AdjacentRadiusSqr = FMath::Square(AdjacentRadius);
+			// 换成FVector
 			const FVector AdjacentExt(AdjacentRadius);
+			
 			QueryResults.Reset();
 			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
 
