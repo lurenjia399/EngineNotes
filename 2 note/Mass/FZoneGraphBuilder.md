@@ -407,7 +407,7 @@ void FZoneGraphBuilder::ConnectLanes(
 				}
 			}	
 		}
-		// 当前
+		// 当前车道有相邻车道
 		if (AdjacentLaneCount == 0)
 		{
 			const float AdjacentRadius = SourceLane.Width + ConnectionTolerance;
