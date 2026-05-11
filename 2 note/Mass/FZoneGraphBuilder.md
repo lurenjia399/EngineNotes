@@ -416,7 +416,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			const float AdjacentRadiusSqr = FMath::Square(AdjacentRadius);
 			// 换成FVector
 			const FVector AdjacentExt(AdjacentRadius);
-			
+			// 以起始点为中心，
 			QueryResults.Reset();
 			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
 			/**/
