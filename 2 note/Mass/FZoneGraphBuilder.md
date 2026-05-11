@@ -318,7 +318,9 @@ void FZoneGraphBuilder::ConnectLanes(
 		FZoneLaneData& Lane = ZoneStorage.Lanes[LaneIndex];
 		// 往车道里记录车道link开始的索引
 		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
-		// 这部分没想明白还
+		/*
+		1 
+		*/
 		// Add internal links
 		int32 AdjacentLaneCount = 0;
 		if (const int32* FirstLink = FirstLinkByLane.Find(LaneIndex))
