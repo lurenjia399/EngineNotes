@@ -410,7 +410,9 @@ void FZoneGraphBuilder::ConnectLanes(
 		// 当前车道有相邻车道
 		if (AdjacentLaneCount == 0)
 		{
+			// 当前车道的宽度 + 连接误差2cm
 			const float AdjacentRadius = SourceLane.Width + ConnectionTolerance;
+			// 
 			const float AdjacentRadiusSqr = FMath::Square(AdjacentRadius);
 			const FVector AdjacentExt(AdjacentRadius);
 			QueryResults.Reset();
