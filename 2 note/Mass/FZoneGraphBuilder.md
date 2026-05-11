@@ -319,7 +319,8 @@ void FZoneGraphBuilder::ConnectLanes(
 		// 往车道里记录车道link开始的索引
 		Lane.LinksBegin = ZoneStorage.LaneLinks.Num();
 		/*
-		1 
+		1 通过当前遍历到的车道，先找到InternalLink数据，link数据就说明当前车道有相邻
+		2 找到link数据后
 		*/
 		// Add internal links
 		int32 AdjacentLaneCount = 0;
