@@ -20,8 +20,9 @@ void FZoneGraphBVTree::Build(TStridedView<const FBox> Boxes)
 	{
 		TotalBounds += Box;
 	}
-
+	// 容纳盒子的尺寸，最大坐标 减 最小坐标
 	const FVector BoxSize = TotalBounds.GetSize();
+	// 获取最大chi
 	const float MaxDimension = FMath::Max(1.0f, BoxSize.GetMax());
 	QuantizationScale = MaxQuantizedCoord / MaxDimension;
 	Origin = TotalBounds.Min;
