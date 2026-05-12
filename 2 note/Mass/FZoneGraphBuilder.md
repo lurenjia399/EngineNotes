@@ -523,7 +523,7 @@ void FZoneGraphBuilder::ConnectLanes(
 						// 如果目标车道终止点和目标车道起始点点都在当前车道同一侧，防止两条车道交叉
 						if (bStartIsLeft == bEndIsLeft)
 						{
-							// 添加新的LaneLink车道，并标记是目标车道为左侧或者右侧，并标记是fa
+							// 添加新的LaneLink车道，并标记是目标车道为左侧或者右侧，并标记是反向车道
 							FZoneLaneLinkData& Link = 
 								ZoneStorage.LaneLinks.AddDefaulted_GetRef();
 							Link.DestLaneIndex = LaneID.Index;
