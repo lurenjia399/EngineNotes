@@ -469,12 +469,15 @@ void FZoneGraphBuilder::ConnectLanes(
 					const FVector& DestEndPosition = 
 						ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
 
-
+					// 
 					if (UE::ZoneGraph::Internal::InRange(
-						FVector::DistSquared(SourceStartPosition, 
-							DestStartPosition), 
-						ConnectionToleranceSqr, AdjacentRadiusSqr)
-						&& UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceEndPosition, DestEndPosition), ConnectionToleranceSqr, AdjacentRadiusSqr))
+							FVector::DistSquared(SourceStartPosition, 
+								DestStartPosition), 
+							ConnectionToleranceSqr, AdjacentRadiusSqr)
+						&& UE::ZoneGraph::Internal::InRange(
+							FVector::DistSquared(SourceEndPosition, 
+								DestEndPosition), 
+							ConnectionToleranceSqr, AdjacentRadiusSqr))
 					{
 						// Same direction adjacent lanes
 						const bool bStartIsLeft = FVector::DotProduct(SourceStartSide, DestStartPosition - SourceStartPosition) > 0.0f;
