@@ -479,9 +479,14 @@ void FZoneGraphBuilder::ConnectLanes(
 								DestEndPosition), 
 							ConnectionToleranceSqr, AdjacentRadiusSqr))
 					{
+						// 起始点朝左方向 dian'ch
 						// Same direction adjacent lanes
-						const bool bStartIsLeft = FVector::DotProduct(SourceStartSide, DestStartPosition - SourceStartPosition) > 0.0f;
-						const bool bEndIsLeft = FVector::DotProduct(SourceEndSide, DestEndPosition - SourceEndPosition) > 0.0f;
+						const bool bStartIsLeft = 
+							FVector::DotProduct(SourceStartSide, 
+								DestStartPosition - SourceStartPosition) > 0.0f;
+						const bool bEndIsLeft = 
+							FVector::DotProduct(SourceEndSide, 
+									DestEndPosition - SourceEndPosition) > 0.0f;
 						
 						// Expect the adjacent lane points to be same side of the lane at start and end.
 						if (bStartIsLeft == bEndIsLeft)
