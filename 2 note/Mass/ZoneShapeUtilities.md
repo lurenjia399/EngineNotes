@@ -54,7 +54,7 @@ void TessellateSplineShape(
 	}
 #endif
 
-	// 计算道路的边缘点，
+	// 计算ZoneShapeComp的边缘点，从起始点的坐下开始，顺时针转一圈，如果是Sharp的话就是四个点
 	Zone.BoundaryPointsBegin = OutZoneStorage.BoundaryPoints.Num();
 	const float TotalWidth = LaneProfile.GetLanesTotalWidth();
 	const float HalfWidth = TotalWidth * 0.5f;
