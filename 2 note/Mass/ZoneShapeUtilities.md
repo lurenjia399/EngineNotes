@@ -260,7 +260,7 @@ static void FlattenSplineSegments(TConstArrayView<FZoneShapePoint> Points, bool 
 			StartControlPoint(ForceInitToZero), 
 			EndControlPoint(ForceInitToZero), 
 			EndPosition(ForceInitToZero);
-		// 生成白塞尔曲线的起始点，终止点和起始控制dia
+		// 生成白塞尔曲线的起始点，终止点和起始控制点，终止控制点
 		GetCubicBezierPointsFromShapeSegment(Points[StartIdx], Points[Idx], LocalToWorld, StartPosition, StartControlPoint, EndControlPoint, EndPosition);
 
 		// TODO: The Bezier tessellation does not take into account the roll when calculating tolerance.
