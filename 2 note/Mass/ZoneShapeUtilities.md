@@ -226,5 +226,68 @@ void TessellateSplineShape(
 
 # 2 FlattenSplineSegments
 ```cpp
+static void FlattenSplineSegments(TConstArrayView<FZoneShapePoint> Points, bool bClosed, const FMatrix& LocalToWorld, const float Tolerance, TArray<FShapePoint>& OutPoints)
+{
+	// Tessellate points.
+	const int32 NumPoints = Points.Num();
+	int StartIdx = bClosed ? (NumPoints - 1) : 0;
+	int Idx = bClosed ? 0 : 1;
 
+
+	if (!bClosed)
+	{
+		const FZoneShapePoint& StartShapePoint = Points[StartIdx];
+		if (StartShapePoint.Type != FZoneShapePointType::LaneProfile)
+		{
+			const FVector WorldPosition = LocalToWorld.TransformPosition(StartShapePoint.Position);
+			const FVector WorldUp = LocalToWorld.TransformVector(StartShapePoint.Rotation.RotateVector(FVector::UpVector)).GetSafeNormal();
+			OutPoints.Add(FShapePoint(WorldPosition, WorldUp));
+		}
+	}
+
+	TArray<FVector> TempPoints;
+	TArray<float> TempProgression;
+
+	while (Idx < NumPoints)
+	{
+		FVector StartPosition(ForceInitToZero), StartControlPoint(ForceInitToZero), EndControlPoint(ForceInitToZero), EndPosition(ForceInitToZero);
+		GetCubicBezierPointsFromShapeSegment(Points[StartIdx], Points[Idx], LocalToWorld, StartPosition, StartControlPoint, EndControlPoint, EndPosition);
+
+		// TODO: The Bezier tessellation does not take into account the roll when calculating tolerance.
+		// Maybe we should have a templated version which would do the up axis interpolation too.
+
+		TempPoints.Reset();
+		if (Points[StartIdx].Type == FZoneShapePointType::LaneProfile)
+		{
+			TempPoints.Add(StartPosition);
+		}
+		UE::CubicBezier::Tessellate(TempPoints, StartPosition, StartControlPoint, EndControlPoint, EndPosition, Tolerance);
+
+		TempProgression.SetNum(TempPoints.Num());
+
+		// Interpolate up vector for points
+		float TotalDist = FVector::Dist(StartPosition, TempPoints[0]);
+		for (int32 i = 0; i < TempPoints.Num() - 1; i++)
+		{
+			TempProgression[i] = TotalDist;
+			TotalDist += FVector::Dist(TempPoints[i], TempPoints[i + 1]);
+		}
+		TempProgression[TempProgression.Num() - 1] = TotalDist;
+
+		// Add points and interpolate up axis
+		const FQuat StartRotation = Points[StartIdx].Rotation.Quaternion();
+		const FQuat EndRotation = Points[Idx].Rotation.Quaternion();
+		for (int32 i = 0; i < TempPoints.Num(); i++)
+		{
+			const float Alpha = TempProgression[i] / TotalDist;
+			FQuat Rotation = FMath::Lerp(StartRotation, EndRotation, Alpha);
+			const FVector WorldUp = LocalToWorld.TransformVector(Rotation.RotateVector(FVector::UpVector)).GetSafeNormal();
+			OutPoints.Add(FShapePoint(TempPoints[i], WorldUp));
+		}
+
+		StartPosition = EndPosition;
+		StartIdx = Idx;
+		Idx++;
+	}
+}
 ```
