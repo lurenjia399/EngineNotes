@@ -421,6 +421,7 @@ void FZoneGraphBuilder::ConnectLanes(
 			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
 			/*
 			1 起始点的行驶方向 叉乘 起始点的Up向量 ，根据左手法则，结果是起始点朝向左边向量
+			2 终止点一样，结果是终止点朝向左边向量
 			*/
 			const FVector SourceStartSide = 
 				FVector::CrossProduct(
@@ -445,6 +446,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					&& SourceLane.Tags.ContainsAny(
 						DestLane.Tags & BuildSettings.LaneConnectionMask))
 				{
+					// 过滤掉已经link过的目标点，比如
 					// If the link already exists, do not create a duplicate one.
 					bool bLinkExists = false;
 					for (int32 LinkIndex = Lane.LinksBegin; LinkIndex < ZoneStorage.LaneLinks.Num(); LinkIndex++)
