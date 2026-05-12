@@ -536,6 +536,8 @@ void FZoneGraphBuilder::ConnectLanes(
 				}		
 			}
 		}
+		// 记录当前车道Link的结束索引
+		Lane.LinksEnd = ZoneStorage.LaneLinks.Num();
 	}
 }
 ```
