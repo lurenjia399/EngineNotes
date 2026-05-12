@@ -470,7 +470,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					const FVector& DestEndPosition = 
 						ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
 
-					// 范围检查，如果当前车道和目标车道的起始点在范围中，说明这两个车道是同向的
+					// 如果当前车道起始点和目标车道的起始点在范围中 && 当前车道终止点和目标车道终止点在范围中，说明这两个车道是同向的
 					if (UE::ZoneGraph::Internal::InRange(
 							FVector::DistSquared(SourceStartPosition, 
 								DestStartPosition), 
@@ -501,7 +501,7 @@ void FZoneGraphBuilder::ConnectLanes(
 								 : EZoneLaneLinkFlags::Right);
 						}
 					}
-					// 范围检查，如果当前车道和目标车道的起始点在范围中，说明这两个车道是同向的
+					// 如果当前车道起始点和目标车道的终止点点在范围中 && 当前车道终止点和目标车道起始点在范围中，说明这两个车道是反向的
 					else if (UE::ZoneGraph::Internal::InRange(
 								FVector::DistSquared(SourceStartPosition, 
 									DestEndPosition), 
