@@ -487,7 +487,7 @@ void FZoneGraphBuilder::ConnectLanes(
 						const bool bEndIsLeft = 
 							FVector::DotProduct(SourceEndSide, 
 									DestEndPosition - SourceEndPosition) > 0.0f;
-						// 
+						// 如果目标点的起始点和终止点都在同一侧，
 						// Expect the adjacent lane points to be same side of the lane at start and end.
 						if (bStartIsLeft == bEndIsLeft)
 						{
