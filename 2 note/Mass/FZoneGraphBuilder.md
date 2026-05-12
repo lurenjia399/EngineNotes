@@ -84,6 +84,7 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 		ZoneStorage.Bounds += Zone.Bounds;
 	}
 
+	// 通过将和
 	// Build BV-tree for faster zone lookup.
 	ZoneStorage.ZoneBVTree.Build(
 		MakeStridedView(ZoneStorage.Zones, &FZoneData::Bounds));
