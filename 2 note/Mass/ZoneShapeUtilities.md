@@ -34,7 +34,7 @@ void TessellateSplineShape(
 	RemoveDegenerateSegments(CurvePoints, bClosedShape);
 
 	// Calculate edge normals.
-	// 计算点的edge normal，也就是UP和Forword（车行驶的方向）叉乘的结果，
+	// 计算点的edge normal，也就是UP和Forword（车行驶的方向）叉乘的结果，结果就是指向y轴并且是在世界坐标系下的
 	TArray<FVector> EdgeNormals;
 	CalculateEdgeNormals(CurvePoints, EdgeNormals);
 
