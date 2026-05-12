@@ -94,6 +94,7 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 	ZoneStorage.ZoneBVTree.Build(
 		MakeStridedView(ZoneStorage.Zones, &FZoneData::Bounds));
 
+	// 缓存hash值，yong'lai'pan'duan
 	// Update combined hash
 	const uint32 NewHash = CalculateCombinedShapeHash(ZoneGraphData);
 	ZoneGraphData.SetCombinedShapeHash(NewHash);
