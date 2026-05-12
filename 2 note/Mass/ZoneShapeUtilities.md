@@ -71,12 +71,12 @@ void TessellateSplineShape(
 	Zone.BoundaryPointsEnd = OutZoneStorage.BoundaryPoints.Num();
 
 	// Build lanes
-	// 拿到ShapeComp第一个点的Forward向量，转换到世界坐标
+	// 拿到ShapeComp第一个点的Forward向量，转换到世界坐标，这个就是起始点车的行驶方向
 	const FVector StartForward = 
 		LocalToWorld.TransformVector(
 			Points[0].Rotation.RotateVector(
 				FVector::ForwardVector).GetSafeNormal());
-	// 拿到ShapeComp最后一个点的Forward向量，转换到世界坐标
+	// 拿到ShapeComp最后一个点的Forward向量，转换到世界坐标，这个就是终止点车的行驶方向
 	const FVector EndForward = 
 		LocalToWorld.TransformVector(
 			Points.Last().Rotation.RotateVector(
@@ -170,7 +170,7 @@ void TessellateSplineShape(
 			OutZoneStorage.LaneUpVectors.Add(Point.Up);
 		}
 		Lane.PointsEnd = OutZoneStorage.LanePoints.Num();
-		// 计算车道上点Forward向量，开始点和结束点都是取得（1，0，0）方向的向量，剩余的点是车行驶的方向
+		// 计算车道上点Forward向量，把车的行驶方向都存到LaneTangentVectors里
 		// Calculate per point forward.
 		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
 		{
