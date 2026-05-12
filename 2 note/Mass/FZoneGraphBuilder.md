@@ -84,7 +84,12 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 		ZoneStorage.Bounds += Zone.Bounds;
 	}
 
-	// 通过将和
+	/*
+	1. 量化 - 将浮点坐标压缩为 uint16，节省 50% 内存
+	  2. 归一化 - 计算统一的坐标系（Origin + Scale）
+	  3. 转换 - 将所有输入盒子转换为量化节点
+	  4. 分割 - 递归构建二叉树，优化空间查询
+	*/
 	// Build BV-tree for faster zone lookup.
 	ZoneStorage.ZoneBVTree.Build(
 		MakeStridedView(ZoneStorage.Zones, &FZoneData::Bounds));
