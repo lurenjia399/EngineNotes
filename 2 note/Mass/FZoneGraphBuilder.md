@@ -428,18 +428,20 @@ void FZoneGraphBuilder::ConnectLanes(
 				FVector::CrossProduct(
 					ZoneStorage.LaneTangentVectors[SourceLane.PointsEnd - 1],
 						ZoneStorage.LaneUpVectors[SourceLane.PointsEnd - 1]);
-			// 遍历查询到d
+			// 遍历查询到的结果，也就是左右相邻的车道
 			for (FLanePointID LaneID : QueryResults)
 			{
-				// skip self.
+				// 自己不处理
 				if (LaneID.Index == LaneIndex)
 				{
 					continue;
 				}
-
+				// 目标车道
 				const FZoneLaneData& DestLane = ZoneStorage.Lanes[LaneID.Index];
+				// 在同一个ZoneShapeComp里 && Tags满足要求
 				if (SourceLane.ZoneIndex == DestLane.ZoneIndex
-					&& SourceLane.Tags.ContainsAny(DestLane.Tags & BuildSettings.LaneConnectionMask))
+					&& SourceLane.Tags.ContainsAny(
+						DestLane.Tags & BuildSettings.LaneConnectionMask))
 				{
 					// If the link already exists, do not create a duplicate one.
 					bool bLinkExists = false;
