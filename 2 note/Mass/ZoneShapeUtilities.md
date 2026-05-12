@@ -170,7 +170,7 @@ void TessellateSplineShape(
 			OutZoneStorage.LaneUpVectors.Add(Point.Up);
 		}
 		Lane.PointsEnd = OutZoneStorage.LanePoints.Num();
-		// 计算车道上点Forward向量，把车的行驶方向都存到LaneTangentVectors里
+		// 计算车道上点Forward向量，把车的行驶方向都存到LaneTangentVectors里，存的是世界空间下的行驶方向
 		// Calculate per point forward.
 		if (LaneDesc.Direction == EZoneLaneDirection::Forward)
 		{
