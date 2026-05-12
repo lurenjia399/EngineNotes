@@ -487,14 +487,16 @@ void FZoneGraphBuilder::ConnectLanes(
 						const bool bEndIsLeft = 
 							FVector::DotProduct(SourceEndSide, 
 									DestEndPosition - SourceEndPosition) > 0.0f;
-						
+						// 
 						// Expect the adjacent lane points to be same side of the lane at start and end.
 						if (bStartIsLeft == bEndIsLeft)
 						{
-							FZoneLaneLinkData& Link = ZoneStorage.LaneLinks.AddDefaulted_GetRef();
+							FZoneLaneLinkData& Link = 
+								ZoneStorage.LaneLinks.AddDefaulted_GetRef();
 							Link.DestLaneIndex = LaneID.Index;
 							Link.Type = EZoneLaneLinkType::Adjacent;
-							Link.SetFlags(bStartIsLeft ? EZoneLaneLinkFlags::Left : EZoneLaneLinkFlags::Right);
+							Link.SetFlags(bStartIsLeft ? EZoneLaneLinkFlags::Left
+								 : EZoneLaneLinkFlags::Right);
 						}
 					}
 					else if (UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceStartPosition, DestEndPosition), ConnectionToleranceSqr, AdjacentRadiusSqr)
