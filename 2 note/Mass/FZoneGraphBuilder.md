@@ -492,7 +492,7 @@ void FZoneGraphBuilder::ConnectLanes(
 						// Expect the adjacent lane points to be same side of the lane at start and end.
 						if (bStartIsLeft == bEndIsLeft)
 						{
-							// 
+							// 添加新的LaneLink车道，并标记是目标车道为左侧或者右侧
 							FZoneLaneLinkData& Link = 
 								ZoneStorage.LaneLinks.AddDefaulted_GetRef();
 							Link.DestLaneIndex = LaneID.Index;
