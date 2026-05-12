@@ -469,7 +469,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					const FVector& DestEndPosition = 
 						ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
 
-					// 
+					// 范围检查
 					if (UE::ZoneGraph::Internal::InRange(
 							FVector::DistSquared(SourceStartPosition, 
 								DestStartPosition), 
