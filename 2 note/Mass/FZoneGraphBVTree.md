@@ -2,6 +2,7 @@
 ```cpp
 void FZoneGraphBVTree::Build(TStridedView<const FBox> Boxes)
 {
+	// 初始化当前状态
 	// Reset current state
 	Nodes.Reset();
 	Origin = FVector::ZeroVector;
@@ -12,6 +13,7 @@ void FZoneGraphBVTree::Build(TStridedView<const FBox> Boxes)
 		return;
 	}
 	
+	// 计算
 	// Calculate quantization values from the bounds containing all the boxes.
 	FBox TotalBounds(ForceInit);
 	for (const FBox& Box : Boxes)
