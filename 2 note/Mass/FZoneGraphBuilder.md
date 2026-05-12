@@ -511,7 +511,7 @@ void FZoneGraphBuilder::ConnectLanes(
 									DestStartPosition), 
 								ConnectionToleranceSqr, AdjacentRadiusSqr))
 					{
-						// 当前车道起始点的作响
+						// 当前车道起始点的朝左向量 点乘 （当前车道起始点 朝向 目标车道终止点），如果小于90度说明目标车道终止点在当前车道起始点左边
 						// Opposite direction adjacent lanes
 						const bool bStartIsLeft = 
 							FVector::DotProduct(SourceStartSide, 
