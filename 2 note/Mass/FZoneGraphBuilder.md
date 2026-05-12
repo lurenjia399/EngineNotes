@@ -72,7 +72,7 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 				&BuildData);
 		}
 	}
-	// 创建当前ZoneStorage里面所有车道的Link
+	// 创建当前ZoneStorage里面所有车道的Link车道，包括相邻车道（左侧车道，右侧车道，同向，反向），相连车道（）
 	// Connect Lanes
 	ConnectLanes(InternalLinks, ZoneStorage);
 
