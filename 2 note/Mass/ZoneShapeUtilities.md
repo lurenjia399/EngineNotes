@@ -263,7 +263,7 @@ static void FlattenSplineSegments(TConstArrayView<FZoneShapePoint> Points, bool 
 		// 生成白塞尔曲线的起始点，终止点和起始控制点，终止控制点
 		GetCubicBezierPointsFromShapeSegment(Points[StartIdx], Points[Idx], LocalToWorld, StartPosition, StartControlPoint, EndControlPoint, EndPosition);
 
-		// 细分曲线，获得
+		// 细分曲线，获得一系列点集
 		TempPoints.Reset();
 		if (Points[StartIdx].Type == FZoneShapePointType::LaneProfile)
 		{
