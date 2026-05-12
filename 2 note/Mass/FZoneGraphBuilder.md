@@ -420,9 +420,15 @@ void FZoneGraphBuilder::ConnectLanes(
 			QueryResults.Reset();
 			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
 			/**/
-			const FVector SourceStartSide = FVector::CrossProduct(ZoneStorage.LaneTangentVectors[SourceLane.PointsBegin], ZoneStorage.LaneUpVectors[SourceLane.PointsBegin]);
-			const FVector SourceEndSide = FVector::CrossProduct(ZoneStorage.LaneTangentVectors[SourceLane.PointsEnd - 1], ZoneStorage.LaneUpVectors[SourceLane.PointsEnd - 1]);
-			
+			const FVector SourceStartSide = 
+				FVector::CrossProduct(
+					ZoneStorage.LaneTangentVectors[SourceLane.PointsBegin],
+						ZoneStorage.LaneUpVectors[SourceLane.PointsBegin]);
+			const FVector SourceEndSide = 
+				FVector::CrossProduct(
+					ZoneStorage.LaneTangentVectors[SourceLane.PointsEnd - 1],
+						ZoneStorage.LaneUpVectors[SourceLane.PointsEnd - 1]);
+			// 遍历查询到d
 			for (FLanePointID LaneID : QueryResults)
 			{
 				// skip self.
