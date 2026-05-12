@@ -76,6 +76,7 @@ void FZoneGraphBuilder::Build(AZoneGraphData& ZoneGraphData)
 	// Connect Lanes
 	ConnectLanes(InternalLinks, ZoneStorage);
 
+	// 组装所有ZoneShapeComp上的Bounds
 	// Update bounds for the whole data
 	ZoneStorage.Bounds = FBox(ForceInit);
 	for (FZoneData& Zone : ZoneStorage.Zones)
