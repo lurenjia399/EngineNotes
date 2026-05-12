@@ -41,7 +41,7 @@ void TessellateSplineShape(
 	// 重新计算赋值开始点和最终点的edge Normal
 	CalculateStartAndEndNormals(Points, LocalToWorld, EdgeNormals[0], EdgeNormals[EdgeNormals.Num() - 1]);
 
-	// 计算点的Right向量
+	// 通过EdgeNormal在计算下点的Right向量
 	// Calculate miter extrusion at vertices
 	CalculateMiters(CurvePoints, EdgeNormals);
 
