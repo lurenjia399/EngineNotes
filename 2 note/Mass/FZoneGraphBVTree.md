@@ -44,3 +44,7 @@ void FZoneGraphBVTree::Build(TStridedView<const FBox> Boxes)
 	UE::ZoneGraph::BVTree::Subdivide(Items, 0, Items.Num(), Nodes);
 }
 ```
+
+```
+
+```
