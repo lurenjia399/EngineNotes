@@ -416,11 +416,11 @@ void FZoneGraphBuilder::ConnectLanes(
 			const float AdjacentRadiusSqr = FMath::Square(AdjacentRadius);
 			// 换成FVector
 			const FVector AdjacentExt(AdjacentRadius);
-			// 以起始点为中心，查询与盒子相交的LanePoint
+			// 以当前车道的起始点为中心，查询与盒子相交的LanePoint
 			QueryResults.Reset();
 			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
 			/*
-			1 起始点的行驶方向 叉乘 起始点的Up向量 ，根据左手法则，结果是起始点朝向左边向量
+			1 当前车道的起始点的行驶方向 叉乘 当前车道的起始点的Up向量 ，根据左手法则，结果是起始点朝向左边向量
 			2 终止点一样，结果是终止点朝向左边向量
 			*/
 			const FVector SourceStartSide = 
@@ -469,7 +469,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					const FVector& DestEndPosition = 
 						ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
 
-					// 范围检查
+					// 范围检查，如果
 					if (UE::ZoneGraph::Internal::InRange(
 							FVector::DistSquared(SourceStartPosition, 
 								DestStartPosition), 
