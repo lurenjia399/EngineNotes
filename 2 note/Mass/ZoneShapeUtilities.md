@@ -263,9 +263,7 @@ static void FlattenSplineSegments(TConstArrayView<FZoneShapePoint> Points, bool 
 		// 生成白塞尔曲线的起始点，终止点和起始控制点，终止控制点
 		GetCubicBezierPointsFromShapeSegment(Points[StartIdx], Points[Idx], LocalToWorld, StartPosition, StartControlPoint, EndControlPoint, EndPosition);
 
-		// TODO: The Bezier tessellation does not take into account the roll when calculating tolerance.
-		// Maybe we should have a templated version which would do the up axis interpolation too.
-
+		// 细分曲线，获得
 		TempPoints.Reset();
 		if (Points[StartIdx].Type == FZoneShapePointType::LaneProfile)
 		{
