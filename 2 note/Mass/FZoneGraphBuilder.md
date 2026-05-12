@@ -488,7 +488,7 @@ void FZoneGraphBuilder::ConnectLanes(
 						const bool bEndIsLeft = 
 							FVector::DotProduct(SourceEndSide, 
 									DestEndPosition - SourceEndPosition) > 0.0f;
-						// 如果目标车道起始和目标车道终止点都在当前车道同一侧，防止两条车道交叉
+						// 如果目标车道起始点和目标车道终止点都在当前车道同一侧，防止两条车道交叉
 						// Expect the adjacent lane points to be same side of the lane at start and end.
 						if (bStartIsLeft == bEndIsLeft)
 						{
@@ -520,13 +520,17 @@ void FZoneGraphBuilder::ConnectLanes(
 							FVector::DotProduct(SourceEndSide, 
 							DestStartPosition - SourceEndPosition) > 0.0f;
 
-						// Expect the adjacent lane points to be same side of the lane at start and end.
+						// 如果目标车道终止点和目标车道起始点点都在当前车道同一侧，防止两条车道交叉
 						if (bStartIsLeft == bEndIsLeft)
 						{
-							FZoneLaneLinkData& Link = ZoneStorage.LaneLinks.AddDefaulted_GetRef();
+							// 添加新的LaneLink车道，并标记是目标车道为左侧或者右侧，并标记是fa
+							FZoneLaneLinkData& Link = 
+								ZoneStorage.LaneLinks.AddDefaulted_GetRef();
 							Link.DestLaneIndex = LaneID.Index;
 							Link.Type = EZoneLaneLinkType::Adjacent;
-							Link.SetFlags((bStartIsLeft ? EZoneLaneLinkFlags::Left : EZoneLaneLinkFlags::Right) | EZoneLaneLinkFlags::OppositeDirection);
+							Link.SetFlags((bStartIsLeft ? EZoneLaneLinkFlags::Left
+								 : EZoneLaneLinkFlags::Right) | 
+									 EZoneLaneLinkFlags::OppositeDirection);
 						}
 					}
 				}		
