@@ -420,8 +420,8 @@ void FZoneGraphBuilder::ConnectLanes(
 			QueryResults.Reset();
 			LinkGrid.Query(FBox::BuildAABB(SourceStartPosition, AdjacentExt), QueryResults);
 			/*
-			1 当前车道的起始点的行驶方向 叉乘 当前车道的起始点的Up向量 ，根据左手法则，结果是起始点朝向左边向量
-			2 终止点一样，结果是终止点朝向左边向量
+			1 当前车道的起始点的行驶方向 叉乘 当前车道的起始点的Up向量 ，根据左手法则，结果是当前车道起始点朝向左边向量
+			2 终止点一样，结果是当前车道终止点朝向左边向量
 			*/
 			const FVector SourceStartSide = 
 				FVector::CrossProduct(
@@ -463,13 +463,14 @@ void FZoneGraphBuilder::ConnectLanes(
 						continue;
 					}
 
-					// 目标点的位置
+					// 目标车道的起始点的位置
 					const FVector& DestStartPosition = 
 						ZoneStorage.LanePoints[DestLane.PointsBegin];
+					// 目标车道的终止点的位置
 					const FVector& DestEndPosition = 
 						ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
 
-					// 范围检查，如果
+					// 范围检查，如果当前车道和目标车道的起始点在范围中，说明zhe
 					if (UE::ZoneGraph::Internal::InRange(
 							FVector::DistSquared(SourceStartPosition, 
 								DestStartPosition), 
