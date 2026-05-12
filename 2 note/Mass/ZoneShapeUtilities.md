@@ -233,7 +233,12 @@ static void FlattenSplineSegments(TConstArrayView<FZoneShapePoint> Points, bool 
 	int StartIdx = bClosed ? (NumPoints - 1) : 0;
 	int Idx = bClosed ? 0 : 1;
 
-
+	
+	/*
+		为什么只对开放曲线添加起点？
+	  - 闭合曲线会在循环中处理所有点
+	  - 开放曲线需要显式添加第一个点
+	*/
 	if (!bClosed)
 	{
 		const FZoneShapePoint& StartShapePoint = Points[StartIdx];
