@@ -446,7 +446,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					&& SourceLane.Tags.ContainsAny(
 						DestLane.Tags & BuildSettings.LaneConnectionMask))
 				{
-					// 过滤掉已经link过的目标点，比如
+					// 过滤掉已经link过的目标点，比如同向相连的流入流出，分流
 					// If the link already exists, do not create a duplicate one.
 					bool bLinkExists = false;
 					for (int32 LinkIndex = Lane.LinksBegin; LinkIndex < ZoneStorage.LaneLinks.Num(); LinkIndex++)
