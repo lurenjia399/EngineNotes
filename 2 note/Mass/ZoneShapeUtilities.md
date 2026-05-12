@@ -25,7 +25,7 @@ void TessellateSplineShape(
 		LaneProfile, ZoneTags, BuildSettings);
 
 	// Flatten spline segments to points.
-	// 离散成点
+	// 离散成点，离散完成后CurvePoints里存储的是世界坐标的点
 	TArray<FShapePoint> CurvePoints;
 	FlattenSplineSegments(Points, bClosedShape, LocalToWorld, TessTolerance, CurvePoints);
 
