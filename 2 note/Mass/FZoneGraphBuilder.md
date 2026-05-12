@@ -446,7 +446,7 @@ void FZoneGraphBuilder::ConnectLanes(
 					&& SourceLane.Tags.ContainsAny(
 						DestLane.Tags & BuildSettings.LaneConnectionMask))
 				{
-					// 过滤掉已经link过的目标点，比如同向相连的流入流出，分流
+					// 过滤掉已经link过的目标点，比如同向相连的流入流出，分流合流
 					// If the link already exists, do not create a duplicate one.
 					bool bLinkExists = false;
 					for (int32 LinkIndex = Lane.LinksBegin; LinkIndex < ZoneStorage.LaneLinks.Num(); LinkIndex++)
@@ -463,12 +463,17 @@ void FZoneGraphBuilder::ConnectLanes(
 						continue;
 					}
 
-					const FVector& DestStartPosition = ZoneStorage.LanePoints[DestLane.PointsBegin];
-					const FVector& DestEndPosition = ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
+					// 目标点的位置
+					const FVector& DestStartPosition = 
+						ZoneStorage.LanePoints[DestLane.PointsBegin];
+					const FVector& DestEndPosition = 
+						ZoneStorage.LanePoints[DestLane.PointsEnd - 1];
 
-					// Using range checks, since we assume that the points should not be overlapping.
-					
-					if (UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceStartPosition, DestStartPosition), ConnectionToleranceSqr, AdjacentRadiusSqr)
+
+					if (UE::ZoneGraph::Internal::InRange(
+						FVector::DistSquared(SourceStartPosition, 
+							DestStartPosition), 
+						ConnectionToleranceSqr, AdjacentRadiusSqr)
 						&& UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceEndPosition, DestEndPosition), ConnectionToleranceSqr, AdjacentRadiusSqr))
 					{
 						// Same direction adjacent lanes
