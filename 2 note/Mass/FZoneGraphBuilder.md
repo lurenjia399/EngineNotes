@@ -492,6 +492,7 @@ void FZoneGraphBuilder::ConnectLanes(
 						// Expect the adjacent lane points to be same side of the lane at start and end.
 						if (bStartIsLeft == bEndIsLeft)
 						{
+							// 
 							FZoneLaneLinkData& Link = 
 								ZoneStorage.LaneLinks.AddDefaulted_GetRef();
 							Link.DestLaneIndex = LaneID.Index;
