@@ -13,7 +13,7 @@ void FZoneGraphBVTree::Build(TStridedView<const FBox> Boxes)
 		return;
 	}
 	
-	// 找到所有盒子的最小点和zu
+	// 找到所有盒子的最小值和最大值，也就是能容纳所有盒子的盒子
 	// Calculate quantization values from the bounds containing all the boxes.
 	FBox TotalBounds(ForceInit);
 	for (const FBox& Box : Boxes)
