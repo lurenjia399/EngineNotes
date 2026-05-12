@@ -479,7 +479,7 @@ void FZoneGraphBuilder::ConnectLanes(
 								DestEndPosition), 
 							ConnectionToleranceSqr, AdjacentRadiusSqr))
 					{
-						// 起始点朝左方向 dian'ch
+						// 起始点朝左方向 点乘 （起始点 朝向 目标点），如果是小于90度说明目标点在起始点左边
 						// Same direction adjacent lanes
 						const bool bStartIsLeft = 
 							FVector::DotProduct(SourceStartSide, 
