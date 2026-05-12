@@ -501,8 +501,15 @@ void FZoneGraphBuilder::ConnectLanes(
 								 : EZoneLaneLinkFlags::Right);
 						}
 					}
-					else if (UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceStartPosition, DestEndPosition), ConnectionToleranceSqr, AdjacentRadiusSqr)
-						&& UE::ZoneGraph::Internal::InRange(FVector::DistSquared(SourceEndPosition, DestStartPosition), ConnectionToleranceSqr, AdjacentRadiusSqr))
+					// 范围检查，如果当前车道和目标车道的起始点在范围中，说明这两个车道是同向的
+					else if (UE::ZoneGraph::Internal::InRange(
+								FVector::DistSquared(SourceStartPosition, 
+									DestEndPosition), 
+								ConnectionToleranceSqr, AdjacentRadiusSqr)
+						&& UE::ZoneGraph::Internal::InRange(
+								FVector::DistSquared(SourceEndPosition, 
+									DestStartPosition), 
+								ConnectionToleranceSqr, AdjacentRadiusSqr))
 					{
 						// Opposite direction adjacent lanes
 						const bool bStartIsLeft = FVector::DotProduct(SourceStartSide, DestEndPosition - SourceStartPosition) > 0.0f;
