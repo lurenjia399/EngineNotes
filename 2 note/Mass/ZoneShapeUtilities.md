@@ -1,4 +1,4 @@
-1 TessellateSplineShape
+# 1 TessellateSplineShape
 ```cpp
 
 void TessellateSplineShape(
@@ -221,5 +221,10 @@ void TessellateSplineShape(
 		Zone.Bounds += OutZoneStorage.BoundaryPoints[i];
 	}
 }
+
+```
+
+# 2 FlattenSplineSegments
+```cpp
 
 ```
