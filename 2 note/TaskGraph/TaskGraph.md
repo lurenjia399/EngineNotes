@@ -47,5 +47,20 @@ public:
 		}
 		return FirstItem;
 	}
+	/*
+		- 通过除法和取模计算页面索引和页内偏移
+		- 索引0返回 nullptr（空指针语义）
+	*/
+	FORCEINLINE T* GetItem(uint32 Index)
+	{
+		if (!Index)
+		{
+			return nullptr;
+		}
+		uint32 BlockIndex = Index / ItemsPerPage;
+		uint32 SubIndex = Index % ItemsPerPage;
+		checkLockFreePointerList(Index < (uint32)NextIndex.GetValue() && Index < MaxTotalItems && BlockIndex < MaxBlocks && Pages[BlockIndex]);
+		return Pages[BlockIndex] + SubIndex;
+	}
 }
 ```
