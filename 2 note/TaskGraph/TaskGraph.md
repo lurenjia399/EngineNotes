@@ -104,5 +104,18 @@ public:
 ```
 # 3 LockFreeLinkAllocator_TLSCache
 ```cpp
+// 全局单例，唯一一个回收池
+static LockFreeLinkAllocator_TLSCache& GetLockFreeAllocator()
+{
+	// make memory that will not go away, a replacement for TLazySingleton, which will still get destructed
+	alignas(LockFreeLinkAllocator_TLSCache) static unsigned char Data[sizeof(LockFreeLinkAllocator_TLSCache)];
+	static bool bIsInitialized = false;
+	if (!bIsInitialized)
+	{
+		::new((void*)Data)LockFreeLinkAllocator_TLSCache();
+		bIsInitialized = true;
+	}
+	return *(LockFreeLinkAllocator_TLSCache*)Data;
+}
 
 ```
