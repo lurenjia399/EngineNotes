@@ -29,9 +29,9 @@ public:
 		}
 	}
 	/*
-	- 使用原子递增获取索引范围，无需加锁
-	  - 对每个新分配的位置调用placement new构造对象
-  - 如果超出容量则调用 LockFreeLinksExhausted 报错
+		- 使用原子递增获取索引范围，无需加锁
+		- 对每个新分配的位置调用placement new构造对象
+		- 如果超出容量则调用 LockFreeLinksExhausted 报错
 	*/
 	FORCEINLINE uint32 Alloc(uint32 Count = 1)
 	{
