@@ -62,7 +62,14 @@ public:
 		checkLockFreePointerList(Index < (uint32)NextIndex.GetValue() && Index < MaxTotalItems && BlockIndex < MaxBlocks && Pages[BlockIndex]);
 		return Pages[BlockIndex] + SubIndex;
 	}
-	
+	/*
+		- 双重检查：先检查页面是否存在
+		- CAS操作：使用 InterlockedCompareExchangePointer
+		原子地设置页面指针
+		- 竞争处理：如果多个线程同时分配同一页面，只有一个成功，其他线程释
+		  放多余的内存
+
+	*/
 	void* GetRawItem(uint32 Index)
 	{
 		uint32 BlockIndex = Index / ItemsPerPage;
@@ -76,7 +83,8 @@ public:
 				(void**)&Pages[BlockIndex], NewBlock, nullptr) != nullptr)
 			{
 				// we lost discard block
-				checkLockFreePointerList(Pages[BlockIndex] && Pages[BlockIndex] != NewBlock);
+				checkLockFreePointerList(Pages[BlockIndex] 
+				&& Pages[BlockIndex] != NewBlock);
 				LockFreeFreeLinks(ItemsPerPage * sizeof(T), NewBlock);
 			}
 			else
