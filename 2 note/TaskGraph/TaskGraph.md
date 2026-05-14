@@ -62,5 +62,29 @@ public:
 		checkLockFreePointerList(Index < (uint32)NextIndex.GetValue() && Index < MaxTotalItems && BlockIndex < MaxBlocks && Pages[BlockIndex]);
 		return Pages[BlockIndex] + SubIndex;
 	}
+	
+	void* GetRawItem(uint32 Index)
+	{
+		uint32 BlockIndex = Index / ItemsPerPage;
+		uint32 SubIndex = Index % ItemsPerPage;
+		checkLockFreePointerList(Index && Index < (uint32)NextIndex.GetValue() && Index < MaxTotalItems && BlockIndex < MaxBlocks);
+		if (!Pages[BlockIndex])
+		{
+			T* NewBlock = (T*)LockFreeAllocLinks(ItemsPerPage * sizeof(T));
+			checkLockFreePointerList(IsAligned(NewBlock, alignof(T)));
+			if (FPlatformAtomics::InterlockedCompareExchangePointer(
+				(void**)&Pages[BlockIndex], NewBlock, nullptr) != nullptr)
+			{
+				// we lost discard block
+				checkLockFreePointerList(Pages[BlockIndex] && Pages[BlockIndex] != NewBlock);
+				LockFreeFreeLinks(ItemsPerPage * sizeof(T), NewBlock);
+			}
+			else
+			{
+				checkLockFreePointerList(Pages[BlockIndex]);
+			}
+		}
+		return (void*)(Pages[BlockIndex] + SubIndex);
+	}
 }
 ```
