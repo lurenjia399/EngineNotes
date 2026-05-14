@@ -94,5 +94,9 @@ public:
 		}
 		return (void*)(Pages[BlockIndex] + SubIndex);
 	}
+	
+	// 缓存行对齐避免伪共享（false sharing），提升多核性能。
+	alignas(PLATFORM_CACHE_LINE_SIZE) FThreadSafeCounter NextIndex;
+	alignas(PLATFORM_CACHE_LINE_SIZE) T* Pages[MaxBlocks];
 }
 ```
