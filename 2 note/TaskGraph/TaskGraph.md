@@ -8,7 +8,7 @@
 template<class T, unsigned int MaxTotalItems, unsigned int ItemsPerPage>
 class TLockFreeAllocOnceIndexedAllocator
 {
-	// 
+	// 计算Block的数量
 	enum
 	{
 		MaxBlocks = (MaxTotalItems + ItemsPerPage - 1) / ItemsPerPage
