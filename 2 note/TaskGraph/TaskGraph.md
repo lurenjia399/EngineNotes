@@ -16,8 +16,9 @@ class TLockFreeAllocOnceIndexedAllocator
 public:
 	// 
 	/*
+		构造函数
 		索引从1开始，保留0作为空指针标记
-	  所有页面初始化为 nullptr
+		所有页面初始化为 nullptr
 	*/
 	TLockFreeAllocOnceIndexedAllocator()
 	{
@@ -26,6 +27,25 @@ public:
 		{
 			Pages[Index] = nullptr;
 		}
+	}
+	/*
+	- 使用原子递增获取索引范围，无需加锁
+	  - 对每个新分配的位置调用placement new构造对象
+  - 如果超出容量则调用 LockFreeLinksExhausted 报错
+	*/
+	FORCEINLINE uint32 Alloc(uint32 Count = 1)
+	{
+		uint32 FirstItem = NextIndex.Add(Count);
+		if (FirstItem + Count > MaxTotalItems)
+		{
+			LockFreeLinksExhausted(MaxTotalItems);
+		}
+		for (uint32 CurrentItem = FirstItem; 
+			CurrentItem < FirstItem + Count; CurrentItem++)
+		{
+			::new (GetRawItem(CurrentItem)) T();
+		}
+		return FirstItem;
 	}
 }
 ```
