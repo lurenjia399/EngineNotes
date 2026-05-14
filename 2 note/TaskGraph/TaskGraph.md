@@ -14,7 +14,11 @@ class TLockFreeAllocOnceIndexedAllocator
 		MaxBlocks = (MaxTotalItems + ItemsPerPage - 1) / ItemsPerPage
 	};
 public:
-	// 构造函数
+	// 
+	/*
+		索引从1开始，保留0作为空指针标记
+	  所有页面初始化为 nullptr
+	*/
 	TLockFreeAllocOnceIndexedAllocator()
 	{
 		NextIndex.Increment(); // skip the null ptr
