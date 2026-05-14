@@ -2,6 +2,8 @@
 1 CAS
 2 ABA
 3 TLS
+
+
 # 2 TLockFreeAllocOnceIndexedAllocator
 ```cpp
 
