@@ -102,3 +102,7 @@ public:
 	alignas(PLATFORM_CACHE_LINE_SIZE) T* Pages[MaxBlocks];
 }
 ```
+# 3 LockFreeLinkAllocator_TLSCache
+```cpp
+
+```
