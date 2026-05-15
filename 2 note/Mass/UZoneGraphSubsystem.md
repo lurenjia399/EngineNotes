@@ -66,5 +66,36 @@ FZoneGraphDataHandle UZoneGraphSubsystem::RegisterZoneGraphData(
 ```
 # 3 OnRequestRebuild
 ```cpp
+void UZoneGraphSubsystem::OnRequestRebuild()
+{
+	// 重新构建ZoneGraph
+	RebuildGraph(true /*bForceRebuild*/);
 
+	// Force update viewport
+	if (GCurrentLevelEditingViewportClient)
+	{
+		GCurrentLevelEditingViewportClient->Invalidate();
+	}
+}
+
+void UZoneGraphSubsystem::RebuildGraph(const bool bForceRebuild)
+{
+	
+	UnregisterStaleZoneGraphDataInstances();
+	RegisterZoneGraphDataInstances();
+	SpawnMissingZoneGraphData();
+
+	TArray<AZoneGraphData*> AllZoneGraphData;
+	AllZoneGraphData.Reserve(RegisteredZoneGraphData.Num());
+
+	for (const FRegisteredZoneGraphData& RegisteredData : RegisteredZoneGraphData)
+	{
+		if (RegisteredData.ZoneGraphData)
+		{
+			AllZoneGraphData.Add(RegisteredData.ZoneGraphData);
+		}
+	}
+
+	Builder.BuildAll(AllZoneGraphData, bForceRebuild);
+}
 ```
