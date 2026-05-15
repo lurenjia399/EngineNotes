@@ -82,6 +82,7 @@ void UZoneGraphSubsystem::RebuildGraph(const bool bForceRebuild)
 {
 	
 	UnregisterStaleZoneGraphDataInstances();
+	// 这个里面就是遍历World里的所有ZoneGraphData
 	RegisterZoneGraphDataInstances();
 	SpawnMissingZoneGraphData();
 
