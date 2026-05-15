@@ -100,3 +100,4 @@ void UZoneGraphSubsystem::RebuildGraph(const bool bForceRebuild)
 	Builder.BuildAll(AllZoneGraphData, bForceRebuild);
 }
 ```
+在编辑器点击BuildZoneGraph后，就是
