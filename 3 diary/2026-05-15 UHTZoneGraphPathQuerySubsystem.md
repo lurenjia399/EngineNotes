@@ -39,3 +39,5 @@ void UHTZoneGraphPathQuerySubsystem::RebuildForAllGraphs(const FZoneGraphBuildDa
 }
 #endif
 ```
+RebuildForAllGraphs 这个方法就是监听UE::ZoneGraphDelegates::OnZoneGraphDataBuildDone这个事件，在ZoneGraphData构建完成后，就会执行。内容就是创建出AZoneGraphPathQuerySaveActor这个Actor
+# OnRebuildForAllGraphsSucceed
