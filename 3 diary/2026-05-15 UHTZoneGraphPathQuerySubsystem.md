@@ -126,4 +126,4 @@ void AZoneGraphPathQuerySaveActor::OnRebuildForAllGraphsSucceed(const FZoneGraph
 1 遍历ZoneShpeComp上的额外车道信息ExtraLaneInfos，如果车道满足火车车道的tag，就记录了到UnOrderTrainRoutes数组中
 2 处理火车变轨车站，AHTTrainStationChangeLaneActor就是变轨actor，在变轨Actor上配置可以变轨的车站Actor（AHTTrainStationMarkerActor），把可变轨车站Actor记录在NeedChangeLaneStations数组中
 3 遍历所有车站，构建路线名称-车站Actor的TMap（StationsByRoute），如果路线是变轨车站还需要额外添加到StationChangeLanesMap数组中
-4 找车道起始位置，如果是变轨车道
+4 找车道起始位置，如果是变轨车道，通过FindNearestLocationOnLane接口lai'cha'xu
