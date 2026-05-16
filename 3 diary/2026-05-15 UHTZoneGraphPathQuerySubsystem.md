@@ -123,4 +123,4 @@ void AZoneGraphPathQuerySaveActor::OnRebuildForAllGraphsSucceed(const FZoneGraph
 
 ```
 构建火车路线的方法，
-1 
+1 遍历ZoneShpeComp上的额外车道信息ExtraLaneInfos，如果che'dao
