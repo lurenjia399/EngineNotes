@@ -106,7 +106,8 @@ void UZoneGraphSubsystem::RebuildGraph(const bool bForceRebuild)
 3 ZoneShapeComp的OnRegister方法里就会把自己注册到Builder里面
 # 4 AdvanceLaneLocation
 ```cpp
-// 从起始点开始，沿着起始点所在的车道，向前yi'do
+// 从起始点开始，沿着起始点所在的车道，向前移动AdvanceDistance这个距离，返回到达点
+// 不能跨ZoneShapeComp车道
 bool AdvanceLaneLocation(
 	const FZoneGraphStorage& Storage, 
 	const FZoneGraphLaneLocation& InLaneLocation, 
