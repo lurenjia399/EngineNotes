@@ -104,3 +104,4 @@ void UZoneGraphSubsystem::RebuildGraph(const bool bForceRebuild)
 1 会首先从world中找所有的 AZoneGraphData
 2 然后会遍历所有的ZoneGraphData，把Builder里所有的ZoneShapeComp数据都存到ZoneGraphData里的ZoneStorage里
 3 ZoneShapeComp的OnRegister方法里就会把自己注册到Builder里面
+# 4 AdvanceLaneLocation
