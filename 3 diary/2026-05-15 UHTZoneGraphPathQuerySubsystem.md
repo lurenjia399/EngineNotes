@@ -123,4 +123,4 @@ void AZoneGraphPathQuerySaveActor::OnRebuildForAllGraphsSucceed(const FZoneGraph
 
 ```
 构建火车路线的方法，
-1 遍历ZoneShpeComp上的额外车道信息ExtraLaneInfos，如果che'dao
+1 遍历ZoneShpeComp上的额外车道信息ExtraLaneInfos，如果车道满足火车车道的tag，就记录了到UnOrderTrainRoutes数组中
