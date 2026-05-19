@@ -11,7 +11,7 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 
 	// 设置Owner是AbilityComp
 	Owner = InAbilitySystemComponent;
-	// 如果是可同步的或者不是权威的
+	// 如果不是可同步的 || 是权威的
 	if (!ensure(Owner.IsValid()) 
 		|| InAbilitySystemComponent->IsNetSimulating() == false)
 	{
