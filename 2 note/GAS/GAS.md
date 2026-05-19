@@ -2,26 +2,15 @@
 ```cpp
 UAbilitySystemComponent::InternalTryActivateAbility(...)
 {
-	// 其余不关心的全省略掉
+	// 其余不关心的全省略掉，只关心预测相关的
 	
-	if (Ability->GetNetExecutionPolicy() == EGameplayAbilityNetExecutionPolicy::LocalPredicted)
+	// GA是预测执行的
+	if (Ability->GetNetExecutionPolicy() == 
+		EGameplayAbilityNetExecutionPolicy::LocalPredicted)
 	{
-		// Flush server moves that occurred before this ability activation so that the server receives the RPCs in the correct order
-		// Necessary to prevent abilities that trigger animation root motion or impact movement from causing network corrections
-		if (!ActorInfo->IsNetAuthority())
-		{
-			ACharacter* AvatarCharacter = Cast<ACharacter>(ActorInfo->AvatarActor.Get());
-			if (AvatarCharacter)
-			{
-				UCharacterMovementComponent* AvatarCharMoveComp = Cast<UCharacterMovementComponent>(AvatarCharacter->GetMovementComponent());
-				if (AvatarCharMoveComp)
-				{
-					AvatarCharMoveComp->FlushServerMoves();
-				}
-			}
-		}
+		
 
-		// This execution is now officially EGameplayAbilityActivationMode:Predicting and has a PredictionKey
+		// 客户端生成新的PredictionKey
 		FScopedPredictionWindow ScopedPredictionWindow(this, true);
 
 		ActivationInfo.SetPredicting(ScopedPredictionKey);
