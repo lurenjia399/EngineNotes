@@ -24,9 +24,11 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 	{
 		
 		ClearScopedPredictionKey = true;
-		// 把当前AbilityComp中的Pre
+		// 把当前AbilityComp中的PredictionKey缓存到Window中
 		RestoreKey = InAbilitySystemComponent->ScopedPredictionKey;
-		InAbilitySystemComponent->ScopedPredictionKey.GenerateDependentPredictionKey();
+		// 通过AbilityComp生成新的PredictionKey
+		InAbilitySystemComponent-
+		>	ScopedPredictionKey.GenerateDependentPredictionKey();
 	}
 
 #if !UE_BUILD_SHIPPING
