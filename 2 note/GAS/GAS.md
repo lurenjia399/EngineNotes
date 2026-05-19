@@ -212,27 +212,10 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 			.BindUObject(this, 
 				&UAbilitySystemComponent::OnClientActivateAbilityCaughtUp, 
 					Handle, ScopedPredictionKey.Current);
-
-		if (Ability->GetInstancingPolicy() == EGameplayAbilityInstancingPolicy::InstancedPerExecution)
-		{
-			// For now, only NonReplicated + InstancedPerExecution abilities can be Predictive.
-			// We lack the code to predict spawning an instance of the execution and then merge/combine
-			// with the server spawned version when it arrives.
-
-			if (Ability->GetReplicationPolicy() == EGameplayAbilityReplicationPolicy::ReplicateNo)
-			{
-				InstancedAbility = CreateNewInstanceOfAbility(*Spec, Ability);
-				InstancedAbility->CallActivateAbility(Handle, ActorInfo, ActivationInfo, OnGameplayAbilityEndedDelegate, TriggerEventData);
-			}
-			else
-			{
-				ABILITY_LOG(Error, TEXT("InternalTryActivateAbility called on ability %s that is InstancedPerExecution and Replicated. This is an invalid configuration."), *Ability->GetName() );
-			}
-		}
-		else
-		{
-			AbilitySource->CallActivateAbility(Handle, ActorInfo, ActivationInfo, OnGameplayAbilityEndedDelegate, TriggerEventData);
-		}
+		// 激活GA
+		AbilitySource->CallActivateAbility(
+			Handle, ActorInfo, ActivationInfo, 
+			OnGameplayAbilityEndedDelegate, TriggerEventData);
 	}
 }
 ```
