@@ -47,7 +47,7 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 	// 是不支持同步PredictionKey的版本
 	const bool bReplicateDeprecatedBaseForDemoPurposes = (Ar.EngineNetVer() < FEngineNetworkCustomVersion::PredictionKeyBaseNotReplicated);
 
-	// 同步数据的第一位表示PredictionKey是否有效
+	// 同步数据的第一位表示Connection是否有效
 	uint8 ValidKeyForConnection = 0;
 	if (Ar.IsSaving())
 	{	
