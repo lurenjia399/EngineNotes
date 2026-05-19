@@ -9,9 +9,11 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 	ClearScopedPredictionKey = false;
 	SetReplicatedPredictionKey = false;
 
-	// 设置Owner是Ab
+	// 设置Owner是AbilityComp
 	Owner = InAbilitySystemComponent;
-	if (!ensure(Owner.IsValid()) || InAbilitySystemComponent->IsNetSimulating() == false)
+	// 如果是可同步的或者不是权威的
+	if (!ensure(Owner.IsValid()) 
+		|| InAbilitySystemComponent->IsNetSimulating() == false)
 	{
 		return;
 	}
