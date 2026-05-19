@@ -74,16 +74,16 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 	Ar.SerializeBits(&ServerInitiatedByte, 1);
 	bIsServerInitiated = ServerInitiatedByte & 1;
 
-	// Conditionally Serialize the Current and Base keys
+	// 如果是有效Connection，再把Currnt和Base序列化进去
 	if (ValidKeyForConnection)
 	{
 		Ar << Current;
 		if (HasBaseKey)
 		{
-			ensureMsgf(bReplicateDeprecatedBaseForDemoPurposes, TEXT("We should only ever be replicating a Base Key if we're loading an old demo, see bReplicateDeprecatedBaseForDemoPurposes"));
 			Ar << Base;
 		}
-	}	
+	}
+	// 如果是从Ar里读
 	if (Ar.IsLoading())
 	{
 		// We are reading this key: the connection that gave us this key is the predictive connection, and we will only serialize this key back to it.
