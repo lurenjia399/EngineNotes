@@ -38,6 +38,65 @@ void FPredictionKey::GenerateNewPredictionKey()
 	}
 }
 ```
+
+```cpp
+bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
+{
+	Ar.UsingCustomVersion(FEngineNetworkCustomVersion::Guid);
+	const bool bReplicateDeprecatedBaseForDemoPurposes = (Ar.EngineNetVer() < FEngineNetworkCustomVersion::PredictionKeyBaseNotReplicated);
+
+	// First bit for valid key for this connection or not. (most keys are not valid)
+	uint8 ValidKeyForConnection = 0;
+	if (Ar.IsSaving())
+	{
+		/**
+		 *	Only serialize the payload if we have no owning connection (Client sending to server)
+		 *	or if the owning connection is this connection (Server only sends the prediction key to the client who gave it to us)
+		 *  or if this is a server initiated key (valid on all connections)
+		 */		
+		ValidKeyForConnection = (Current > 0) && (bIsServerInitiated || (PredictiveConnectionObjectKey == FObjectKey()) || (PredictiveConnectionObjectKey == FObjectKey(Map)));
+	}
+	Ar.SerializeBits(&ValidKeyForConnection, 1);
+
+	// Second bit for the now-deprecated base key (only if valid connection)
+	uint8 HasBaseKey = 0;
+	if (bReplicateDeprecatedBaseForDemoPurposes && ValidKeyForConnection)
+	{
+		if (Ar.IsSaving())
+		{
+			HasBaseKey = Base > 0;
+		}
+		Ar.SerializeBits(&HasBaseKey, 1);
+	}
+
+	// Third bit for server initiated
+	uint8 ServerInitiatedByte = bIsServerInitiated;
+	Ar.SerializeBits(&ServerInitiatedByte, 1);
+	bIsServerInitiated = ServerInitiatedByte & 1;
+
+	// Conditionally Serialize the Current and Base keys
+	if (ValidKeyForConnection)
+	{
+		Ar << Current;
+		if (HasBaseKey)
+		{
+			ensureMsgf(bReplicateDeprecatedBaseForDemoPurposes, TEXT("We should only ever be replicating a Base Key if we're loading an old demo, see bReplicateDeprecatedBaseForDemoPurposes"));
+			Ar << Base;
+		}
+	}	
+	if (Ar.IsLoading())
+	{
+		// We are reading this key: the connection that gave us this key is the predictive connection, and we will only serialize this key back to it.
+		if (!bIsServerInitiated)
+		{
+			PredictiveConnectionObjectKey = FObjectKey(Map);
+		}
+	}
+
+	bOutSuccess = true;
+	return true;
+}
+```
 ## 1 FScopedPredictionWindow
 ```cpp
 FScopedPredictionWindow::FScopedPredictionWindow(
