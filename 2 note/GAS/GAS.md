@@ -28,8 +28,11 @@ void FPredictionKey::GenerateDependentPredictionKey()
 
 void FPredictionKey::GenerateNewPredictionKey()
 {
+	// 静态局部变量，只初始化一次，只能在这个方法里使用，生命周期是整个进程
 	static KeyType GKey = 1;
+	// 增加Current计数
 	Current = GKey++;
+	// ru'guo
 	if (GKey <= 0)
 	{
 		GKey = 1;
