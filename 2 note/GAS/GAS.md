@@ -2,27 +2,81 @@
 ## 1 FScopedPredictionWindow
 ```cpp
 FScopedPredictionWindow::FScopedPredictionWindow(
-	UAbilitySystemComponent* AbilitySystemComponent, 
-	FPredictionKey InPredictionKey, 
-	bool InSetReplicatedPredictionKey /*=true*/)
+	UAbilitySystemComponent* InAbilitySystemComponent, 
+	bool bCanGenerateNewKey)
 {
-	if (AbilitySystemComponent == nullptr)
+	// On the server, this will do nothing since it is authoritative and doesn't need a prediction key for anything.
+	// On the client, this will generate a new prediction key if bCanGenerateNewKey is true, and we have a invalid prediction key.
+
+	ClearScopedPredictionKey = false;
+	SetReplicatedPredictionKey = false;
+
+	// Owners that are mid destruction will not be valid and will trigger the ensure below (ie. when they stop their anim montages)
+	// Original ensure has been left in to catch other cases of invalid Owner ASCs
+	if ((!InAbilitySystemComponent) || (InAbilitySystemComponent->IsBeingDestroyed()) || (!IsValidChecked(InAbilitySystemComponent) || InAbilitySystemComponent->IsUnreachable()))
+	{
+		ABILITY_LOG(Verbose, TEXT("FScopedPredictionWindow() aborting due to Owner (ASC) being null, destroyed or pending kill / unreachable"));
+		return;
+	}
+
+	Owner = InAbilitySystemComponent;
+	if (!ensure(Owner.IsValid()) || InAbilitySystemComponent->IsNetSimulating() == false)
 	{
 		return;
 	}
 
-	// This is used to set an already generated prediction key as the current scoped prediction key.
-	// Should be called on the server for logical scopes where a given key is valid. E.g, "client gave me this key, we both are going to run Foo()".
-	
-	if (AbilitySystemComponent->IsNetSimulating() == false)
+	// Because of the check above, this is expected to only run on the client.
+	if (bCanGenerateNewKey)
 	{
-		Owner = AbilitySystemComponent;
-		check(Owner.IsValid());
-		RestoreKey = AbilitySystemComponent->ScopedPredictionKey;
-		AbilitySystemComponent->ScopedPredictionKey = InPredictionKey;
+		check(InAbilitySystemComponent != NULL); // Should have bailed above with ensure(Owner.IsValid())
 		ClearScopedPredictionKey = true;
-		SetReplicatedPredictionKey = InSetReplicatedPredictionKey;
+		RestoreKey = InAbilitySystemComponent->ScopedPredictionKey;
+		InAbilitySystemComponent->ScopedPredictionKey.GenerateDependentPredictionKey();
 	}
+
+#if !UE_BUILD_SHIPPING
+	// Add some debugging functionality if we're the first scoped prediction window (will become a BaseKey value)
+	if (bCanGenerateNewKey && !RestoreKey.IsValidKey())
+	{
+		// Intercept any RPC's of FPredictionKeys so that we can mark them as sent to the server.
+		// For RPC's not marked as sent-to-server, we can log them and track them down with breakpoints.
+		const UWorld* NetWorldPtr = Owner->GetWorld();
+		UNetDriver* NetDriver = NetWorldPtr ? NetWorldPtr->GetNetDriver() : nullptr;
+		if (NetDriver && NetDriver->GetNetMode() == NM_Client)
+		{
+			DebugSavedNetDriver = NetDriver;
+			DebugSavedOnSendRPC = NetDriver->SendRPCDel;
+			DebugBaseKeyOfChain = InAbilitySystemComponent->ScopedPredictionKey.Current;
+
+			NetDriver->SendRPCDel.BindWeakLambda(InAbilitySystemComponent,
+				[this, SendRPCDel = DebugSavedOnSendRPC](AActor* Actor, UFunction* Function, void* Parameters, FOutParmRec* OutParms, FFrame* Stack, UObject* SubObject, bool& bBlockSendRPC)
+				{
+					// Chain the previous RPC callback (e.g. packet loss simulation)
+					SendRPCDel.ExecuteIfBound(Actor, Function, Parameters, OutParms, Stack, SubObject, bBlockSendRPC);
+
+					// If we've already reset this, it's an indication this PredictionKey Chain has already been sent.
+					if (!DebugBaseKeyOfChain.IsSet())
+					{
+						return;
+					}
+
+					const FPredictionKey::KeyType BaseKey = DebugBaseKeyOfChain.GetValue();
+
+					// See if we are communicating a key based on this scope, if so, reset our debug value so as not to warn that it was never sent on Scope destruct.
+					TArray<FPredictionKey> PassedInKeys = UE::AbilitySystem::Private::FindPredictionKeysInPropertyLink(Function->PropertyLink, static_cast<uint8_t*>(Parameters));
+					for (const FPredictionKey& PassedInKey : PassedInKeys)
+					{
+						if (PassedInKey.Current == BaseKey || PassedInKey.Base == BaseKey)
+						{
+							UE_LOG(LogPredictionKey, Verbose, TEXT("Sent key %s with %s to confirm BaseKey %d"), *PassedInKey.ToString(), *Function->GetName(), BaseKey);
+							DebugBaseKeyOfChain.Reset();
+							break;
+						}
+					}
+				});
+		}
+	}
+#endif
 }
 ```
 
