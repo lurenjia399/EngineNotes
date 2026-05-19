@@ -44,19 +44,15 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 {
 	// 设置网络版本
 	Ar.UsingCustomVersion(FEngineNetworkCustomVersion::Guid);
-	// 是
+	// 是不支持同步PredictionKey的版本
 	const bool bReplicateDeprecatedBaseForDemoPurposes = (Ar.EngineNetVer() < FEngineNetworkCustomVersion::PredictionKeyBaseNotReplicated);
 
-	// First bit for valid key for this connection or not. (most keys are not valid)
+	// 同步数据的第一位表示PredictionKey是否有效
 	uint8 ValidKeyForConnection = 0;
 	if (Ar.IsSaving())
-	{
-		/**
-		 *	Only serialize the payload if we have no owning connection (Client sending to server)
-		 *	or if the owning connection is this connection (Server only sends the prediction key to the client who gave it to us)
-		 *  or if this is a server initiated key (valid on all connections)
-		 */		
-		ValidKeyForConnection = (Current > 0) && (bIsServerInitiated || (PredictiveConnectionObjectKey == FObjectKey()) || (PredictiveConnectionObjectKey == FObjectKey(Map)));
+	{	
+		ValidKeyForConnection = (Current > 0) 
+			&& (bIsServerInitiated || (PredictiveConnectionObjectKey == FObjectKey()) || (PredictiveConnectionObjectKey == FObjectKey(Map)));
 	}
 	Ar.SerializeBits(&ValidKeyForConnection, 1);
 
