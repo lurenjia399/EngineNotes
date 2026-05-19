@@ -1,4 +1,41 @@
 # 1 预测
+## PredictionKey
+```cpp
+// 客户端生成PredictionKey方法，服务器不生成
+void FPredictionKey::GenerateDependentPredictionKey()
+{
+	if (bIsServerInitiated)
+	{
+		// Can't have dependent keys on server keys, use same key
+		return;
+	}
+
+	KeyType Previous = Current;
+	if (Base == 0)
+	{
+		Base = Current;
+	}
+
+	GenerateNewPredictionKey();
+
+	ensureAlwaysMsgf((Base == 0) || (Current - Base < 20), TEXT("Deep PredictionKey Chain Detected.  It's likely there's circular logic that could stack overflow."));
+
+	if (Previous > 0)
+	{
+		FPredictionKeyDelegates::AddDependency(Current, Previous);
+	}
+}
+
+void FPredictionKey::GenerateNewPredictionKey()
+{
+	static KeyType GKey = 1;
+	Current = GKey++;
+	if (GKey <= 0)
+	{
+		GKey = 1;
+	}
+}
+```
 ## 1 FScopedPredictionWindow
 ```cpp
 FScopedPredictionWindow::FScopedPredictionWindow(
