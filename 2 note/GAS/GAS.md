@@ -52,7 +52,9 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 	if (Ar.IsSaving())
 	{	
 		ValidKeyForConnection = (Current > 0) 
-			&& (bIsServerInitiated || (PredictiveConnectionObjectKey == FObjectKey()) || (PredictiveConnectionObjectKey == FObjectKey(Map)));
+			&& (bIsServerInitiated || 
+				(PredictiveConnectionObjectKey == FObjectKey()) 
+				|| (PredictiveConnectionObjectKey == FObjectKey(Map)));
 	}
 	Ar.SerializeBits(&ValidKeyForConnection, 1);
 
