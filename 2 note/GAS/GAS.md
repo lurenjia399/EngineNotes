@@ -1,5 +1,30 @@
 # 1 预测
-## 1 PredictionKey
+## 1 FScopedPredictionWindow
+```cpp
+FScopedPredictionWindow::FScopedPredictionWindow(
+	UAbilitySystemComponent* AbilitySystemComponent, 
+	FPredictionKey InPredictionKey, 
+	bool InSetReplicatedPredictionKey /*=true*/)
+{
+	if (AbilitySystemComponent == nullptr)
+	{
+		return;
+	}
+
+	// This is used to set an already generated prediction key as the current scoped prediction key.
+	// Should be called on the server for logical scopes where a given key is valid. E.g, "client gave me this key, we both are going to run Foo()".
+	
+	if (AbilitySystemComponent->IsNetSimulating() == false)
+	{
+		Owner = AbilitySystemComponent;
+		check(Owner.IsValid());
+		RestoreKey = AbilitySystemComponent->ScopedPredictionKey;
+		AbilitySystemComponent->ScopedPredictionKey = InPredictionKey;
+		ClearScopedPredictionKey = true;
+		SetReplicatedPredictionKey = InSetReplicatedPredictionKey;
+	}
+}
+```
 
 
 ## 2 GA预测流程
