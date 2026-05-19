@@ -197,6 +197,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 		ActivationInfo.SetPredicting(ScopedPredictionKey);
 		
 		// This must be called immediately after GeneratePredictionKey to prevent problems with recursively activating abilities
+		// 发送RPC让服务器激活GA
 		if (TriggerEventData)
 		{
 			ServerTryActivateAbilityWithEventData(Handle, Spec->InputPressed, ScopedPredictionKey, *TriggerEventData);
