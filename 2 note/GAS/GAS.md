@@ -5,20 +5,11 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 	UAbilitySystemComponent* InAbilitySystemComponent, 
 	bool bCanGenerateNewKey)
 {
-	// On the server, this will do nothing since it is authoritative and doesn't need a prediction key for anything.
-	// On the client, this will generate a new prediction key if bCanGenerateNewKey is true, and we have a invalid prediction key.
 
 	ClearScopedPredictionKey = false;
 	SetReplicatedPredictionKey = false;
 
-	// Owners that are mid destruction will not be valid and will trigger the ensure below (ie. when they stop their anim montages)
-	// Original ensure has been left in to catch other cases of invalid Owner ASCs
-	if ((!InAbilitySystemComponent) || (InAbilitySystemComponent->IsBeingDestroyed()) || (!IsValidChecked(InAbilitySystemComponent) || InAbilitySystemComponent->IsUnreachable()))
-	{
-		ABILITY_LOG(Verbose, TEXT("FScopedPredictionWindow() aborting due to Owner (ASC) being null, destroyed or pending kill / unreachable"));
-		return;
-	}
-
+	// 设置Owner是Ab
 	Owner = InAbilitySystemComponent;
 	if (!ensure(Owner.IsValid()) || InAbilitySystemComponent->IsNetSimulating() == false)
 	{
