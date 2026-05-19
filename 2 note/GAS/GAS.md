@@ -89,6 +89,7 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 		// 如果服务器还没初始化过这个PredictionKey，这里就标记下
 		if (!bIsServerInitiated)
 		{
+			// 记录这个Map
 			PredictiveConnectionObjectKey = FObjectKey(Map);
 		}
 	}
