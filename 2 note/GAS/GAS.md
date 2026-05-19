@@ -58,7 +58,7 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 	}
 	Ar.SerializeBits(&ValidKeyForConnection, 1);
 
-	// Second bit for the now-deprecated base key (only if valid connection)
+	// 同步数据的第二位表示是否有Base，（在Connection有效的情况下）
 	uint8 HasBaseKey = 0;
 	if (bReplicateDeprecatedBaseForDemoPurposes && ValidKeyForConnection)
 	{
