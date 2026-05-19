@@ -16,6 +16,7 @@ void FPredictionKey::GenerateDependentPredictionKey()
 		Base = Current;
 	}
 
+	// 下面介绍了，增加Cur
 	GenerateNewPredictionKey();
 
 	ensureAlwaysMsgf((Base == 0) || (Current - Base < 20), TEXT("Deep PredictionKey Chain Detected.  It's likely there's circular logic that could stack overflow."));
@@ -32,7 +33,7 @@ void FPredictionKey::GenerateNewPredictionKey()
 	static KeyType GKey = 1;
 	// 增加Current计数
 	Current = GKey++;
-	// ru'guo
+	// 应该是防止增加计数的时候，计数不变，保证计数正常增加
 	if (GKey <= 0)
 	{
 		GKey = 1;
