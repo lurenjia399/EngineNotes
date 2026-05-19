@@ -19,10 +19,12 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 	}
 
 	// Because of the check above, this is expected to only run on the client.
+	// 如果要生成新的Key
 	if (bCanGenerateNewKey)
 	{
-		check(InAbilitySystemComponent != NULL); // Should have bailed above with ensure(Owner.IsValid())
+		
 		ClearScopedPredictionKey = true;
+		// 把当前AbilityComp中的Pre
 		RestoreKey = InAbilitySystemComponent->ScopedPredictionKey;
 		InAbilitySystemComponent->ScopedPredictionKey.GenerateDependentPredictionKey();
 	}
