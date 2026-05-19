@@ -42,7 +42,9 @@ void FPredictionKey::GenerateNewPredictionKey()
 ```cpp
 bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess)
 {
+	// 设置网络版本
 	Ar.UsingCustomVersion(FEngineNetworkCustomVersion::Guid);
+	// 是
 	const bool bReplicateDeprecatedBaseForDemoPurposes = (Ar.EngineNetVer() < FEngineNetworkCustomVersion::PredictionKeyBaseNotReplicated);
 
 	// First bit for valid key for this connection or not. (most keys are not valid)
