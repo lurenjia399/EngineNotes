@@ -16,10 +16,8 @@ void FPredictionKey::GenerateDependentPredictionKey()
 		Base = Current;
 	}
 
-	// 下面介绍了，增加Cur
+	// 下面介绍了，增加Current计数
 	GenerateNewPredictionKey();
-
-	ensureAlwaysMsgf((Base == 0) || (Current - Base < 20), TEXT("Deep PredictionKey Chain Detected.  It's likely there's circular logic that could stack overflow."));
 
 	if (Previous > 0)
 	{
