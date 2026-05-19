@@ -69,7 +69,7 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 		Ar.SerializeBits(&HasBaseKey, 1);
 	}
 
-	// Third bit for server initiated
+	// 同步数据的第三位是bIsServerInitiated
 	uint8 ServerInitiatedByte = bIsServerInitiated;
 	Ar.SerializeBits(&ServerInitiatedByte, 1);
 	bIsServerInitiated = ServerInitiatedByte & 1;
