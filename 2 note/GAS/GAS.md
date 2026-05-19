@@ -208,7 +208,10 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 		}
 
 		// When this prediction key is caught up, we better know if the ability was confirmed or rejected
-		ScopedPredictionKey.NewCaughtUpDelegate().BindUObject(this, &UAbilitySystemComponent::OnClientActivateAbilityCaughtUp, Handle, ScopedPredictionKey.Current);
+		ScopedPredictionKey.NewCaughtUpDelegate()
+			.BindUObject(this, 
+				&UAbilitySystemComponent::OnClientActivateAbilityCaughtUp, 
+					Handle, ScopedPredictionKey.Current);
 
 		if (Ability->GetInstancingPolicy() == EGameplayAbilityInstancingPolicy::InstancedPerExecution)
 		{
