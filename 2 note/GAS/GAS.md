@@ -86,7 +86,7 @@ bool FPredictionKey::NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bO
 	// 如果是从Ar里读
 	if (Ar.IsLoading())
 	{
-		// We are reading this key: the connection that gave us this key is the predictive connection, and we will only serialize this key back to it.
+		// 如果服务器还没初始化过这个PredictionKey，这里就标记下
 		if (!bIsServerInitiated)
 		{
 			PredictiveConnectionObjectKey = FObjectKey(Map);
