@@ -123,15 +123,17 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 {
 	// 其余不关心的全省略掉，只关心预测相关的
 	
+	// 创建GA的激活信息
+	ActivationInfo = FGameplayAbilityActivationInfo(ActorInfo->OwnerActor.Get());
+	
 	// GA是预测执行的
 	if (Ability->GetNetExecutionPolicy() == 
 		EGameplayAbilityNetExecutionPolicy::LocalPredicted)
 	{
 		
-
 		// 客户端生成新的PredictionKey
 		FScopedPredictionWindow ScopedPredictionWindow(this, true);
-
+		// 在激活信息中设置PredictionKey
 		ActivationInfo.SetPredicting(ScopedPredictionKey);
 		
 		// This must be called immediately after GeneratePredictionKey to prevent problems with recursively activating abilities
