@@ -310,7 +310,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 			ActivationInfo.ServerSetActivationPredictionKey(InPredictionKey);
 		}
 
-		// 根据PredictionKey来创建
+		// 根据PredictionKey来创建PredictionWindow
 		// we may have changed the prediction key so we need to update the scoped key to match
 		FScopedPredictionWindow ScopedPredictionWindow(this, ActivationInfo.GetActivationPredictionKey());
 
