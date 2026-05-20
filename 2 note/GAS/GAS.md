@@ -391,6 +391,7 @@ void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implemen
 	// 客户端上的GASpec标记成确认
 	// Confirm and allow the remote ending of the ability
 	ActivationInfo.SetActivationConfirmed();
+	// 是预测类型的GA
 	const bool bLocallyPredicted = AbilityToActivate->NetExecutionPolicy == EGameplayAbilityNetExecutionPolicy::LocalPredicted;
 	if (bLocallyPredicted)
 	{
