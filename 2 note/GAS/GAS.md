@@ -327,3 +327,5 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 	}
 }
 ```
+
+# EGameplayAbilityInstancingPolicy
