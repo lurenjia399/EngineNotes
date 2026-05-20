@@ -426,3 +426,21 @@ void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implemen
 
 # EGameplayAbilityInstancingPolicy
 
+```cpp
+/**
+	 *	How the ability is instanced when executed. This limits what an ability can do in its implementation. For example, a NonInstanced
+	 *	Ability cannot have state. It is probably unsafe for an InstancedPerActor ability to have latent actions, etc.
+	 */
+	enum Type : int
+	{
+		// 这个
+		// This ability is never instanced. Anything that executes the ability is operating on the CDO.
+		NonInstanced UE_DEPRECATED_FORGAME(5.5, "Use InstancedPerActor as the default to avoid confusing corner cases"),
+
+		// Each actor gets their own instance of this ability. State can be saved, replication is possible.
+		InstancedPerActor,
+
+		// We instance this ability each time it is executed. Replication currently unsupported.
+		InstancedPerExecution,
+	};
+```
