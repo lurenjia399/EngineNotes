@@ -401,6 +401,7 @@ void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implemen
 		}
 		else
 		{
+			// 通知GASpec里面的GAInstance也经过服务器校验了
 			// Find the one we predictively spawned, tell them we are confirmed
 			bool found = false;
 			TArray<UGameplayAbility*> Instances = Spec->GetAbilityInstances();
