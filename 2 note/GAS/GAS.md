@@ -280,6 +280,12 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 	}
 #endif
 }
+
+// 服务器由上边调用，校验
+UAbilitySystemComponent::InternalTryActivateAbility(...)
+{
+	
+}
 ```
 
 校验失败
