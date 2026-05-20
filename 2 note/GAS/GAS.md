@@ -302,11 +302,11 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 		FPredictionKeyDelegates::BroadcastRejectedDelegate(PredictionKey);
 	}
 
-	// Find the actual UGameplayAbility		
+	// Find the actual UGameplayAbility	
+	// 客户端找不到被拒绝的GA	
 	FGameplayAbilitySpec* Spec = FindAbilitySpecFromHandle(Handle);
 	if (Spec == nullptr)
 	{
-		ABILITY_LOG(Display, TEXT("ClientActivateAbilityFailed_Implementation. PredictionKey: %d Ability: Could not find!"), PredictionKey);
 		return;
 	}
 
