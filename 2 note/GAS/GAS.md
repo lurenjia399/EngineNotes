@@ -381,4 +381,15 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 }
 ```
 
+校验成功
+```cpp
+void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implementation(
+	FGameplayAbilitySpecHandle Handle, 
+	FPredictionKey PredictionKey, 
+	FGameplayEventData TriggerEventData)
+{
+	
+}
+```
+
 # EGameplayAbilityInstancingPolicy
