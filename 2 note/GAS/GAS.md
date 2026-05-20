@@ -194,7 +194,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 		EGameplayAbilityNetExecutionPolicy::LocalPredicted)
 	{
 		
-		// 客户端生成新的PredictionKey
+		// 客户端生成新的PredictionKey，并创建PredictionWindow
 		FScopedPredictionWindow ScopedPredictionWindow(this, true);
 		// 在激活信息中设置PredictionKey
 		ActivationInfo.SetPredicting(ScopedPredictionKey);
