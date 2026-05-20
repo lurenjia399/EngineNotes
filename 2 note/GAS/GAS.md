@@ -261,28 +261,21 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 	// 根据客户端传上来的PredictionKey创建一个PredictionWindow
 	FScopedPredictionWindow ScopedPredictionWindow(this, PredictionKey);
 
-	ensure(AbilityActorInfo.IsValid());
-
-	SCOPE_CYCLE_COUNTER(STAT_AbilitySystemComp_ServerTryActivate);
-	SCOPE_CYCLE_UOBJECT(Ability, AbilityToActivate);
-
 	UGameplayAbility* InstancedAbility = nullptr;
 	Spec->InputPressed = true;
 
 	// Attempt to activate the ability (server side) and tell the client if it succeeded or failed.
-	if (InternalTryActivateAbility(Handle, PredictionKey, &InstancedAbility, nullptr, TriggerEventData))
+	// 服务器上尝试激活Ability
+	if (InternalTryActivateAbility(
+		Handle, PredictionKey, &InstancedAbility, nullptr, TriggerEventData))
 	{
 		// TryActivateAbility handles notifying the client of success, but let's still log it
-		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Verbose, TEXT("%hs: Accepted ClientActivation of %s with PredictionKey %s."), __func__, *GetNameSafe(Spec->Ability), *PredictionKey.ToString());
 	}
+	// 服务器上尝试激活Ability失败了，就通知客户端校验失败
 	else
 	{
-		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Display, TEXT("%hs: Rejecting ClientActivation of %s with PredictionKey %s. InternalTryActivateAbility failed: %s"),
-			__func__, *GetNameSafe(Spec->Ability), *PredictionKey.ToString(), *InternalTryActivateAbilityFailureTags.ToStringSimple() );
-
 		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
 		Spec->InputPressed = false;
-
 		MarkAbilitySpecDirty(*Spec);
 	}
 #endif
