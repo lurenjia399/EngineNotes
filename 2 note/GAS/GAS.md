@@ -296,7 +296,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 				EGameplayAbilityNetExecutionPolicy::ServerInitiated ||
 			  Ability->GetNetExecutionPolicy() == 
 			  EGameplayAbilityNetExecutionPolicy::ServerOnly));
-		// 如果需要
+		// 如果需要创建新的PredictionKey，
 		if (bCreateNewServerKey)
 		{
 			ActivationInfo.ServerSetActivationPredictionKey(
