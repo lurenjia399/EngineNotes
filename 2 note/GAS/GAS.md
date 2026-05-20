@@ -289,13 +289,18 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 			|| (NetMode == ROLE_Authority))
 	{
 		// if we're the server and don't have a valid key or this ability should be started on the server create a new activation key
+		// 判断服务器上是否需要创建PredictionKey
 		bool bCreateNewServerKey = NetMode == ROLE_Authority &&
 			(!InPredictionKey.IsValidKey() ||
-			 (Ability->GetNetExecutionPolicy() == EGameplayAbilityNetExecutionPolicy::ServerInitiated ||
-			  Ability->GetNetExecutionPolicy() == EGameplayAbilityNetExecutionPolicy::ServerOnly));
+			(Ability->GetNetExecutionPolicy() == 
+				EGameplayAbilityNetExecutionPolicy::ServerInitiated ||
+			  Ability->GetNetExecutionPolicy() == 
+			  EGameplayAbilityNetExecutionPolicy::ServerOnly));
+		// 如果需要
 		if (bCreateNewServerKey)
 		{
-			ActivationInfo.ServerSetActivationPredictionKey(FPredictionKey::CreateNewServerInitiatedKey(this));
+			ActivationInfo.ServerSetActivationPredictionKey(
+				FPredictionKey::CreateNewServerInitiatedKey(this));
 		}
 		else if (InPredictionKey.IsValidKey())
 		{
