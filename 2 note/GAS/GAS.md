@@ -315,7 +315,7 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 	{
 		Spec->ActivationInfo.SetActivationRejected();
 	}
-	// 设置GASpec里实际的GA为被拒绝的，并EndAbility
+	// 设置GASpec里的GAInstance为被拒绝的，并EndAbility
 	TArray<UGameplayAbility*> Instances = Spec->GetAbilityInstances();
 	for (UGameplayAbility* Ability : Instances)
 	{
