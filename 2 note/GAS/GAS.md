@@ -210,6 +210,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 			CallServerTryActivateAbility(Handle, Spec->InputPressed, ScopedPredictionKey);
 		}
 
+		// 给这个PredictionKey生成回调，在服务器回应客户端会执行
 		// When this prediction key is caught up, we better know if the ability was confirmed or rejected
 		ScopedPredictionKey.NewCaughtUpDelegate()
 			.BindUObject(this, 
