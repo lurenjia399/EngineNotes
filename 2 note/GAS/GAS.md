@@ -231,40 +231,25 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 	const FGameplayEventData* TriggerEventData)
 {
 #if WITH_SERVER_CODE
-#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
-	if (DenyClientActivation > 0)
-	{
-		DenyClientActivation--;
-		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
-		return;
-	}
-#endif
 
-	ABILITYLIST_SCOPE_LOCK();
-
+	// 如果是一些异常qin
 	FGameplayAbilitySpec* Spec = FindAbilitySpecFromHandle(Handle);
 	if (!Spec)
 	{
-		// Can potentially happen in race conditions where client tries to activate ability that is removed server side before it is received.
-		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Display, TEXT("%hs: Rejecting ClientActivation of ability with invalid SpecHandle!"), __func__);
 		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
 		return;
 	}
-
 	const UGameplayAbility* AbilityToActivate = Spec->Ability;
-
 	if (!ensure(AbilityToActivate))
 	{
-		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Error, TEXT("%hs: Rejecting ClientActivation of unconfigured spec ability!"), __func__);
 		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
 		return;
 	}
-
-	// Ignore a client trying to activate an ability requiring server execution
-	if (AbilityToActivate->GetNetSecurityPolicy() == EGameplayAbilityNetSecurityPolicy::ServerOnlyExecution ||
-		AbilityToActivate->GetNetSecurityPolicy() == EGameplayAbilityNetSecurityPolicy::ServerOnly)
+	if (AbilityToActivate->GetNetSecurityPolicy() == 
+		EGameplayAbilityNetSecurityPolicy::ServerOnlyExecution ||
+			AbilityToActivate->GetNetSecurityPolicy() == 
+			EGameplayAbilityNetSecurityPolicy::ServerOnly)
 	{
-		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Display, TEXT("%hs: Rejecting ClientActivation of %s due to security policy violation."), __func__, *GetNameSafe(AbilityToActivate));
 		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
 		return;
 	}
