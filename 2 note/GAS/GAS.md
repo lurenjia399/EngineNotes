@@ -222,7 +222,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 	}
 }
 ```
-服务器
+服务器校验
 ```cpp
 // 收到客户端发送的RPC后，服务器也TryActivateAbility
 void UAbilitySystemComponent::InternalServerTryActivateAbility(
@@ -286,5 +286,66 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 		MarkAbilitySpecDirty(*Spec);
 	}
 #endif
+}
+```
+
+校验失败
+```cpp
+void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
+	FGameplayAbilitySpecHandle Handle, 
+	int16 PredictionKey)
+{
+	// Tell anything else listening that this was rejected
+	if (PredictionKey > 0)
+	{
+		FPredictionKeyDelegates::BroadcastRejectedDelegate(PredictionKey);
+	}
+
+	// Find the actual UGameplayAbility		
+	FGameplayAbilitySpec* Spec = FindAbilitySpecFromHandle(Handle);
+	if (Spec == nullptr)
+	{
+		ABILITY_LOG(Display, TEXT("ClientActivateAbilityFailed_Implementation. PredictionKey: %d Ability: Could not find!"), PredictionKey);
+		return;
+	}
+
+	ABILITY_LOG(Display, TEXT("ClientActivateAbilityFailed_Implementation. PredictionKey :%d Ability: %s"), PredictionKey, *GetNameSafe(Spec->Ability));
+	
+	if (ClientActivateAbilityFailedPrintDebugThreshhold > 0)
+	{
+		if ((ClientActivateAbilityFailedStartTime <= 0.f) || ((GetWorld()->GetTimeSeconds() - ClientActivateAbilityFailedStartTime) > ClientActivateAbilityFailedPrintDebugThreshholdTime))
+		{
+			ClientActivateAbilityFailedStartTime = GetWorld()->GetTimeSeconds();
+			ClientActivateAbilityFailedCountRecent = 0;
+		}
+		
+		
+		if (++ClientActivateAbilityFailedCountRecent > ClientActivateAbilityFailedPrintDebugThreshhold)
+		{
+			ABILITY_LOG(Display, TEXT("Threshold hit! Printing debug information"));
+			PrintDebug();
+			ClientActivateAbilityFailedCountRecent = 0;
+			ClientActivateAbilityFailedStartTime = 0.f;
+		}
+	}
+
+
+PRAGMA_DISABLE_DEPRECATION_WARNINGS
+	// The ability should be either confirmed or rejected by the time we get here
+	if (Spec->ActivationInfo.GetActivationPredictionKey().Current == PredictionKey)
+	{
+		Spec->ActivationInfo.SetActivationRejected();
+	}
+PRAGMA_ENABLE_DEPRECATION_WARNINGS
+
+	TArray<UGameplayAbility*> Instances = Spec->GetAbilityInstances();
+	for (UGameplayAbility* Ability : Instances)
+	{
+		if (Ability->CurrentActivationInfo.GetActivationPredictionKey().Current == PredictionKey)
+		{
+			Ability->CurrentActivationInfo.SetActivationRejected();
+			Ability->K2_EndAbility();
+		}
+	}
 }
 ```
