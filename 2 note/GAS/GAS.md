@@ -436,10 +436,10 @@ void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implemen
 		// 这个GA不会创建实例，在GASpec中只会有CDO
 		// This ability is never instanced. Anything that executes the ability is operating on the CDO.
 		NonInstanced UE_DEPRECATED_FORGAME(5.5, "Use InstancedPerActor as the default to avoid confusing corner cases"),
-		// 这个GA会创建实例，在GiveAbility的时候就会创建了，这个实li
+		// 这个GA会创建实例，在GiveAbility的时候就会创建了
 		// Each actor gets their own instance of this ability. State can be saved, replication is possible.
 		InstancedPerActor,
-
+		// 在需要用到实例的时候才会创建
 		// We instance this ability each time it is executed. Replication currently unsupported.
 		InstancedPerExecution,
 	};
