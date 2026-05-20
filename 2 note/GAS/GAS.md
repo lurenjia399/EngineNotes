@@ -281,7 +281,7 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 #endif
 }
 
-// 服务器由上边调用，校验
+// 服务器由上边调用，校验能否激活Ability
 UAbilitySystemComponent::InternalTryActivateAbility(...)
 {
 	
