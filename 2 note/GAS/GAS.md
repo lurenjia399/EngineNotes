@@ -316,20 +316,12 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 
 		// ----------------------------------------------
 		// Tell the client that you activated it (if we're not local and not server only)
+		// 通知客户端，服务器校验通过
 		// ----------------------------------------------
 		if (!bIsLocal && Ability->GetNetExecutionPolicy() != EGameplayAbilityNetExecutionPolicy::ServerOnly)
 		{
-			if (TriggerEventData)
-			{
-				ClientActivateAbilitySucceedWithEventData(Handle, ActivationInfo.GetActivationPredictionKey(), *TriggerEventData);
-			}
-			else
-			{
-				ClientActivateAbilitySucceed(Handle, ActivationInfo.GetActivationPredictionKey());
-			}
-			
-			// This will get copied into the instanced abilities
-			ActivationInfo.bCanBeEndedByOtherInstance = Ability->bServerRespectsRemoteAbilityCancellation;
+			ClientActivateAbilitySucceed(
+					Handle, ActivationInfo.GetActivationPredictionKey());
 		}
 
 		// ----------------------------------------------
