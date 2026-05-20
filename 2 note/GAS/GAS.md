@@ -296,14 +296,16 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 				EGameplayAbilityNetExecutionPolicy::ServerInitiated ||
 			  Ability->GetNetExecutionPolicy() == 
 			  EGameplayAbilityNetExecutionPolicy::ServerOnly));
-		// 如果需要创建新的PredictionKey，
+		// 如果需要创建新的PredictionKey，说明不是校验
 		if (bCreateNewServerKey)
 		{
 			ActivationInfo.ServerSetActivationPredictionKey(
 				FPredictionKey::CreateNewServerInitiatedKey(this));
 		}
+		// PredictionKey是有效的，说明需要校验
 		else if (InPredictionKey.IsValidKey())
 		{
+			// 把PredictionKey
 			// Otherwise if available, set the prediction key to what was passed up
 			ActivationInfo.ServerSetActivationPredictionKey(InPredictionKey);
 		}
