@@ -305,11 +305,12 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 		// PredictionKey是有效的，说明需要校验
 		else if (InPredictionKey.IsValidKey())
 		{
-			// 把PredictionKey
+			// 把PredictionKey设置到GASpec里
 			// Otherwise if available, set the prediction key to what was passed up
 			ActivationInfo.ServerSetActivationPredictionKey(InPredictionKey);
 		}
 
+		// 根据PredictionKey来创建
 		// we may have changed the prediction key so we need to update the scoped key to match
 		FScopedPredictionWindow ScopedPredictionWindow(this, ActivationInfo.GetActivationPredictionKey());
 
