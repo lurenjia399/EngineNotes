@@ -296,6 +296,7 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 	int16 PredictionKey)
 {
 	// Tell anything else listening that this was rejected
+	// 广播被拒绝的代理
 	if (PredictionKey > 0)
 	{
 		FPredictionKeyDelegates::BroadcastRejectedDelegate(PredictionKey);
