@@ -284,7 +284,61 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 // 服务器由上边调用，校验能否激活Ability
 UAbilitySystemComponent::InternalTryActivateAbility(...)
 {
-	
+	if (Ability->GetNetExecutionPolicy() == 
+			EGameplayAbilityNetExecutionPolicy::LocalOnly 
+			|| (NetMode == ROLE_Authority))
+	{
+		// if we're the server and don't have a valid key or this ability should be started on the server create a new activation key
+		bool bCreateNewServerKey = NetMode == ROLE_Authority &&
+			(!InPredictionKey.IsValidKey() ||
+			 (Ability->GetNetExecutionPolicy() == EGameplayAbilityNetExecutionPolicy::ServerInitiated ||
+			  Ability->GetNetExecutionPolicy() == EGameplayAbilityNetExecutionPolicy::ServerOnly));
+		if (bCreateNewServerKey)
+		{
+			ActivationInfo.ServerSetActivationPredictionKey(FPredictionKey::CreateNewServerInitiatedKey(this));
+		}
+		else if (InPredictionKey.IsValidKey())
+		{
+			// Otherwise if available, set the prediction key to what was passed up
+			ActivationInfo.ServerSetActivationPredictionKey(InPredictionKey);
+		}
+
+		// we may have changed the prediction key so we need to update the scoped key to match
+		FScopedPredictionWindow ScopedPredictionWindow(this, ActivationInfo.GetActivationPredictionKey());
+
+		// ----------------------------------------------
+		// Tell the client that you activated it (if we're not local and not server only)
+		// ----------------------------------------------
+		if (!bIsLocal && Ability->GetNetExecutionPolicy() != EGameplayAbilityNetExecutionPolicy::ServerOnly)
+		{
+			if (TriggerEventData)
+			{
+				ClientActivateAbilitySucceedWithEventData(Handle, ActivationInfo.GetActivationPredictionKey(), *TriggerEventData);
+			}
+			else
+			{
+				ClientActivateAbilitySucceed(Handle, ActivationInfo.GetActivationPredictionKey());
+			}
+			
+			// This will get copied into the instanced abilities
+			ActivationInfo.bCanBeEndedByOtherInstance = Ability->bServerRespectsRemoteAbilityCancellation;
+		}
+
+		// ----------------------------------------------
+		//	Call ActivateAbility (note this could end the ability too!)
+		// ----------------------------------------------
+
+		// Create instance of this ability if necessary
+		if (Ability->GetInstancingPolicy() == EGameplayAbilityInstancingPolicy::InstancedPerExecution)
+		{
+			InstancedAbility = CreateNewInstanceOfAbility(*Spec, Ability);
+			InstancedAbility->CallActivateAbility(Handle, ActorInfo, ActivationInfo, OnGameplayAbilityEndedDelegate, TriggerEventData);
+		}
+		else
+		{
+			AbilitySource->CallActivateAbility(Handle, ActorInfo, ActivationInfo, OnGameplayAbilityEndedDelegate, TriggerEventData);
+		}
+	}
 }
 ```
 
