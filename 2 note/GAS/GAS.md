@@ -309,7 +309,7 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 	{
 		return;
 	}
-	// she
+	// 设置这个GASpec为被拒绝的
 	// The ability should be either confirmed or rejected by the time we get here
 	if (Spec->ActivationInfo.GetActivationPredictionKey().Current == PredictionKey)
 	{
