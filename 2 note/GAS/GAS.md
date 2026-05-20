@@ -179,6 +179,7 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 
 ## 2 GA预测流程
 
+客户端激活GA，并通知服务器校验
 ```cpp
 // 客户端来TryActivateAbility
 UAbilitySystemComponent::InternalTryActivateAbility(...)
@@ -221,7 +222,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 	}
 }
 ```
-
+服务器
 ```cpp
 // 收到客户端发送的RPC后，服务器也TryActivateAbility
 void UAbilitySystemComponent::InternalServerTryActivateAbility(
@@ -232,7 +233,7 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 {
 #if WITH_SERVER_CODE
 
-	// 如果是一些异常qin
+	// 如果是一些异常情况，就直接通知客户端激活失败
 	FGameplayAbilitySpec* Spec = FindAbilitySpecFromHandle(Handle);
 	if (!Spec)
 	{
@@ -254,6 +255,7 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 		return;
 	}
 
+	//
 	// Consume any pending target info, to clear out cancels from old executions
 	ConsumeAllReplicatedData(Handle, PredictionKey);
 
