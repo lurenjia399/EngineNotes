@@ -178,7 +178,9 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 
 
 ## 2 GA预测流程
+
 ```cpp
+// 客户端来TryActivateAbility
 UAbilitySystemComponent::InternalTryActivateAbility(...)
 {
 	// 其余不关心的全省略掉，只关心预测相关的
@@ -217,5 +219,81 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 			Handle, ActorInfo, ActivationInfo, 
 			OnGameplayAbilityEndedDelegate, TriggerEventData);
 	}
+}
+```
+
+```cpp
+void UAbilitySystemComponent::InternalServerTryActivateAbility(
+	FGameplayAbilitySpecHandle Handle, bool InputPressed, const FPredictionKey& PredictionKey, const FGameplayEventData* TriggerEventData)
+{
+#if WITH_SERVER_CODE
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
+	if (DenyClientActivation > 0)
+	{
+		DenyClientActivation--;
+		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
+		return;
+	}
+#endif
+
+	ABILITYLIST_SCOPE_LOCK();
+
+	FGameplayAbilitySpec* Spec = FindAbilitySpecFromHandle(Handle);
+	if (!Spec)
+	{
+		// Can potentially happen in race conditions where client tries to activate ability that is removed server side before it is received.
+		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Display, TEXT("%hs: Rejecting ClientActivation of ability with invalid SpecHandle!"), __func__);
+		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
+		return;
+	}
+
+	const UGameplayAbility* AbilityToActivate = Spec->Ability;
+
+	if (!ensure(AbilityToActivate))
+	{
+		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Error, TEXT("%hs: Rejecting ClientActivation of unconfigured spec ability!"), __func__);
+		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
+		return;
+	}
+
+	// Ignore a client trying to activate an ability requiring server execution
+	if (AbilityToActivate->GetNetSecurityPolicy() == EGameplayAbilityNetSecurityPolicy::ServerOnlyExecution ||
+		AbilityToActivate->GetNetSecurityPolicy() == EGameplayAbilityNetSecurityPolicy::ServerOnly)
+	{
+		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Display, TEXT("%hs: Rejecting ClientActivation of %s due to security policy violation."), __func__, *GetNameSafe(AbilityToActivate));
+		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
+		return;
+	}
+
+	// Consume any pending target info, to clear out cancels from old executions
+	ConsumeAllReplicatedData(Handle, PredictionKey);
+
+	FScopedPredictionWindow ScopedPredictionWindow(this, PredictionKey);
+
+	ensure(AbilityActorInfo.IsValid());
+
+	SCOPE_CYCLE_COUNTER(STAT_AbilitySystemComp_ServerTryActivate);
+	SCOPE_CYCLE_UOBJECT(Ability, AbilityToActivate);
+
+	UGameplayAbility* InstancedAbility = nullptr;
+	Spec->InputPressed = true;
+
+	// Attempt to activate the ability (server side) and tell the client if it succeeded or failed.
+	if (InternalTryActivateAbility(Handle, PredictionKey, &InstancedAbility, nullptr, TriggerEventData))
+	{
+		// TryActivateAbility handles notifying the client of success, but let's still log it
+		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Verbose, TEXT("%hs: Accepted ClientActivation of %s with PredictionKey %s."), __func__, *GetNameSafe(Spec->Ability), *PredictionKey.ToString());
+	}
+	else
+	{
+		UE_VLOG_UELOG(GetOwner(), LogAbilitySystem, Display, TEXT("%hs: Rejecting ClientActivation of %s with PredictionKey %s. InternalTryActivateAbility failed: %s"),
+			__func__, *GetNameSafe(Spec->Ability), *PredictionKey.ToString(), *InternalTryActivateAbilityFailureTags.ToStringSimple() );
+
+		ClientActivateAbilityFailed(Handle, PredictionKey.Current);
+		Spec->InputPressed = false;
+
+		MarkAbilitySpecDirty(*Spec);
+	}
+#endif
 }
 ```
