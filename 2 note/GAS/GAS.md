@@ -327,7 +327,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 		// ----------------------------------------------
 		//	Call ActivateAbility (note this could end the ability too!)
 		// ----------------------------------------------
-
+		// 服务器执行GAInstance的ActivateAbility方法
 		// Create instance of this ability if necessary
 		if (Ability->GetInstancingPolicy() == EGameplayAbilityInstancingPolicy::InstancedPerExecution)
 		{
