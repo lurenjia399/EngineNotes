@@ -388,7 +388,37 @@ void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implemen
 	FPredictionKey PredictionKey, 
 	FGameplayEventData TriggerEventData)
 {
-	
+	// 客户端上的GASpec标记成确认
+	// Confirm and allow the remote ending of the ability
+	ActivationInfo.SetActivationConfirmed();
+	const bool bLocallyPredicted = AbilityToActivate->NetExecutionPolicy == EGameplayAbilityNetExecutionPolicy::LocalPredicted;
+	if (bLocallyPredicted)
+	{
+		if (bNonInstanced)
+		{
+			// AbilityToActivate->ConfirmActivateSucceed(); // This doesn't do anything for non instanced
+		}
+		else
+		{
+			// Find the one we predictively spawned, tell them we are confirmed
+			bool found = false;
+			TArray<UGameplayAbility*> Instances = Spec->GetAbilityInstances();
+			for (UGameplayAbility* LocalAbility : Instances)
+			{
+				if (LocalAbility != nullptr && LocalAbility->GetCurrentActivationInfo().GetActivationPredictionKey() == PredictionKey)
+				{
+					LocalAbility->ConfirmActivateSucceed();
+					found = true;
+					break;
+				}
+			}
+
+			if (!found)
+			{
+				ABILITY_LOG(Verbose, TEXT("Ability %s was confirmed by server but no longer exists on client (replication key: %s)"), *AbilityToActivate->GetName(), *PredictionKey.ToString());
+			}
+		}
+	}
 }
 ```
 
