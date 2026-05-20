@@ -223,7 +223,7 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 ```
 
 ```cpp
-// 收到客户端RPC后，服务器也TryActivateAbility
+// 收到客户端发送的RPC后，服务器也TryActivateAbility
 void UAbilitySystemComponent::InternalServerTryActivateAbility(
 	FGameplayAbilitySpecHandle Handle, 
 	bool InputPressed, 
