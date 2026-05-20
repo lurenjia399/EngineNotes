@@ -223,8 +223,12 @@ UAbilitySystemComponent::InternalTryActivateAbility(...)
 ```
 
 ```cpp
+// 收到客户端RPC后，服务器也TryActivateAbility
 void UAbilitySystemComponent::InternalServerTryActivateAbility(
-	FGameplayAbilitySpecHandle Handle, bool InputPressed, const FPredictionKey& PredictionKey, const FGameplayEventData* TriggerEventData)
+	FGameplayAbilitySpecHandle Handle, 
+	bool InputPressed, 
+	const FPredictionKey& PredictionKey, 
+	const FGameplayEventData* TriggerEventData)
 {
 #if WITH_SERVER_CODE
 #if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
