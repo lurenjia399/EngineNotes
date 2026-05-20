@@ -258,7 +258,7 @@ void UAbilitySystemComponent::InternalServerTryActivateAbility(
 	//
 	// Consume any pending target info, to clear out cancels from old executions
 	ConsumeAllReplicatedData(Handle, PredictionKey);
-
+	// 根据客户端传上来的PredictionKey创建一个PredictionWindow
 	FScopedPredictionWindow ScopedPredictionWindow(this, PredictionKey);
 
 	ensure(AbilityActorInfo.IsValid());
