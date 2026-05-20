@@ -309,35 +309,11 @@ void UAbilitySystemComponent::ClientActivateAbilityFailed_Implementation(
 	{
 		return;
 	}
-
-	ABILITY_LOG(Display, TEXT("ClientActivateAbilityFailed_Implementation. PredictionKey :%d Ability: %s"), PredictionKey, *GetNameSafe(Spec->Ability));
-	
-	if (ClientActivateAbilityFailedPrintDebugThreshhold > 0)
-	{
-		if ((ClientActivateAbilityFailedStartTime <= 0.f) || ((GetWorld()->GetTimeSeconds() - ClientActivateAbilityFailedStartTime) > ClientActivateAbilityFailedPrintDebugThreshholdTime))
-		{
-			ClientActivateAbilityFailedStartTime = GetWorld()->GetTimeSeconds();
-			ClientActivateAbilityFailedCountRecent = 0;
-		}
-		
-		
-		if (++ClientActivateAbilityFailedCountRecent > ClientActivateAbilityFailedPrintDebugThreshhold)
-		{
-			ABILITY_LOG(Display, TEXT("Threshold hit! Printing debug information"));
-			PrintDebug();
-			ClientActivateAbilityFailedCountRecent = 0;
-			ClientActivateAbilityFailedStartTime = 0.f;
-		}
-	}
-
-
-PRAGMA_DISABLE_DEPRECATION_WARNINGS
 	// The ability should be either confirmed or rejected by the time we get here
 	if (Spec->ActivationInfo.GetActivationPredictionKey().Current == PredictionKey)
 	{
 		Spec->ActivationInfo.SetActivationRejected();
 	}
-PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
 	TArray<UGameplayAbility*> Instances = Spec->GetAbilityInstances();
 	for (UGameplayAbility* Ability : Instances)
