@@ -425,6 +425,8 @@ void UAbilitySystemComponent::ClientActivateAbilitySucceedWithEventData_Implemen
 }
 ```
 
+GA激活可能会施加CD，减能量的buff，这些buff的预测回滚怎么实现的？
+
 # GE预测
 
 ```cpp
