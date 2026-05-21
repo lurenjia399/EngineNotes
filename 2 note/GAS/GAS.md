@@ -435,7 +435,20 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	FPredictionKey PredictionKey// 带有这个PredictionKey
 	)
 {
-	
+	// Don't allow prediction of periodic effects
+	if (PredictionKey.IsValidKey() && Spec.GetPeriod() > 0.f)
+	{
+		if (IsOwnerActorAuthoritative())
+		{
+			// Server continue with invalid prediction key
+			PredictionKey = FPredictionKey();
+		}
+		else
+		{
+			// Client just return now
+			return FActiveGameplayEffectHandle();
+		}
+	}
 }
 ```
 
