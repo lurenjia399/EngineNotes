@@ -437,7 +437,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 {
 	/*
 	1 客户端不允许预测持续型的GE，需要在权威端执行持续型GE
-	2 权威端如果有PredictionKey，就清掉
+	2 权威端如果有PredictionKey，就清掉,此次执行添加GE的操作就没有PredictionKey
 	*/
 	// Don't allow prediction of periodic effects
 	if (PredictionKey.IsValidKey() && Spec.GetPeriod() > 0.f)
