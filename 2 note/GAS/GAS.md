@@ -435,6 +435,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	FPredictionKey PredictionKey// 带有这个PredictionKey
 	)
 {
+	/**/
 	// Don't allow prediction of periodic effects
 	if (PredictionKey.IsValidKey() && Spec.GetPeriod() > 0.f)
 	{
