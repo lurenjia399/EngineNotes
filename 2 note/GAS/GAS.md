@@ -454,6 +454,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 		}
 	}
 	
+	// 不是权威端，PredictionKey是客户端Key，shu
 	// Clients should treat predicted instant effects as if they have infinite duration. The effects will be cleaned up later.
 	bool bTreatAsInfiniteDuration = GetOwnerRole() != ROLE_Authority 
 		&& PredictionKey.IsLocalClientKey() 
