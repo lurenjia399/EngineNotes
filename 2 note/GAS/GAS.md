@@ -453,6 +453,11 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 			return FActiveGameplayEffectHandle();
 		}
 	}
+	
+	// Clients should treat predicted instant effects as if they have infinite duration. The effects will be cleaned up later.
+	bool bTreatAsInfiniteDuration = GetOwnerRole() != ROLE_Authority 
+		&& PredictionKey.IsLocalClientKey() 
+		&& Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant;
 }
 ```
 
