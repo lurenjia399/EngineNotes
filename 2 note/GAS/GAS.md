@@ -491,12 +491,80 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 {
 	// 只显示相关方法，其余的省略掉
 	
+	// 这个Scope在创建时会执行IncrementLock，z
 	FScopedActiveGameplayEffectLock ScopeLock(ActiveGameplayEffects);
 	
 	AppliedEffect = ActiveGameplayEffects.ApplyGameplayEffectSpec(
 		Spec, PredictionKey, bFoundExistingStackableGE);
 }
+
+void FActiveGameplayEffectsContainer::IncrementLock()
+{
+	ScopedLockCount++;
+}
+
+void FActiveGameplayEffectsContainer::DecrementLock()
+{
+	if (--ScopedLockCount == 0)
+	{
+		// ------------------------------------------
+		// Move any pending effects onto the real list
+		// ------------------------------------------
+		FActiveGameplayEffect* PendingGameplayEffect = PendingGameplayEffectHead;
+		FActiveGameplayEffect* Stop = *PendingGameplayEffectNext;
+		bool ModifiedArray = false;
+
+		while (PendingGameplayEffect != Stop)
+		{
+			if (!PendingGameplayEffect->IsPendingRemove)
+			{
+				GameplayEffects_Internal.Add(MoveTemp(*PendingGameplayEffect));
+				ModifiedArray = true;
+			}
+			else
+			{
+				PendingRemoves--;
+			}
+			PendingGameplayEffect = PendingGameplayEffect->PendingNext;
+		}
+
+		// Reset our pending GameplayEffect linked list
+		PendingGameplayEffectNext = &PendingGameplayEffectHead;
+
+		// -----------------------------------------
+		// Delete any pending remove effects
+		// -----------------------------------------
+		for (int32 idx=GameplayEffects_Internal.Num()-1; idx >= 0 && PendingRemoves > 0; --idx)
+		{
+			FActiveGameplayEffect& Effect = GameplayEffects_Internal[idx];
+
+			if (Effect.IsPendingRemove)
+			{
+				UE_LOG(LogGameplayEffects, Verbose, TEXT("%s: Finish PendingRemove: %s. Auth: %d"), *GetNameSafe(Owner->GetOwnerActor()), *Effect.GetDebugString(), IsNetAuthority());
+				
+				// Remove this handle from the global map
+				Effect.Handle.RemoveFromGlobalMap();
+
+				GameplayEffects_Internal.RemoveAtSwap(idx, EAllowShrinking::No);
+				ModifiedArray = true;
+				PendingRemoves--;
+			}
+		}
+
+		if (!ensure(PendingRemoves == 0))
+		{
+			UE_LOG(LogGameplayEffects, Error, TEXT("~FScopedActiveGameplayEffectLock has %d pending removes after a scope lock removal"), PendingRemoves);
+			PendingRemoves = 0;
+		}
+
+		if (ModifiedArray)
+		{
+			MarkArrayDirty();
+		}
+	}
+}
 ```
+
 
 ```cpp
 FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
@@ -512,7 +580,6 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 		const FActiveGameplayEffect* PreviousPendingNext =
 			(*PendingGameplayEffectNext) ? 
 				(*PendingGameplayEffectNext)->PendingNext : nullptr;
-
 		/*
 		2 如果*PendingGameplayEffectNext的内容是空的，说明Pending队列里还没东西，就需要New一个新的ActiveGE放到队列中
 		*/
