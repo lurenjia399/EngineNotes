@@ -491,7 +491,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 {
 	// 只显示相关方法，其余的省略掉
 	
-	// 这个Scope在创建时会执行IncrementLock，z
+	// 这个Scope在创建时会执行IncrementLock，在析构时会执行DecrementLock
 	FScopedActiveGameplayEffectLock ScopeLock(ActiveGameplayEffects);
 	
 	AppliedEffect = ActiveGameplayEffects.ApplyGameplayEffectSpec(
@@ -611,6 +611,6 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	}
 }
 ```
-1 ApplyGameplayEffectSpec 这个方法就是实际应用GE的方法，里面会创建ActiveGE，会把ActiveGE放到GameplayEffects_Internal这个数组里面。
+1 ApplyGameplayEffectSpec 这个方法就是实际激活GE的方法，里面会创建ActiveGE，会把ActiveGE放到GameplayEffects_Internal这个数组里面。
 2 如果GameplayEffects_Internal这个数组已经满了，就会使用Pending队列的方式，在堆上创建ActiveGE
-3 
+3 在实际激活GE前，会创建 FScopedActiveGameplayEffectLock 这个Scope，这个ActiveGE
