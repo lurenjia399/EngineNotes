@@ -458,11 +458,13 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	bool bTreatAsInfiniteDuration = GetOwnerRole() != ROLE_Authority 
 		&& PredictionKey.IsLocalClientKey() 
 		&& Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant;
-		
-	if (Spec.Def->DurationPolicy != EGameplayEffectDurationType::Instant || bTreatAsInfiniteDuration)
-		{
-			AppliedEffect = ActiveGameplayEffects.ApplyGameplayEffectSpec(Spec, PredictionKey, bFoundExistingStackableGE);
-		}
+	// 如果是可以预测的，就激活GE，也就是创建ActiveGameplayEffect
+	if (Spec.Def->DurationPolicy != EGameplayEffectDurationType::Instant 
+		|| bTreatAsInfiniteDuration)
+	{
+		AppliedEffect = ActiveGameplayEffects.ApplyGameplayEffectSpec(
+			Spec, PredictionKey, bFoundExistingStackableGE);
+	}
 	
 }
 ```
