@@ -476,7 +476,9 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	bool& bFoundExistingStackableGE
 	)
 {
-	
+	// 捕获qu
+	AppliedEffectSpec.CaptureAttributeDataFromTarget(Owner);
+	AppliedEffectSpec.CalculateModifierMagnitudes();
 }
 ```
 
