@@ -480,6 +480,11 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	AppliedEffectSpec.CaptureAttributeDataFromTarget(Owner);
 	// 计算需要修改属性的修改值，记录在Modifiers里
 	AppliedEffectSpec.CalculateModifierMagnitudes();
+	// 在PredictionKey上绑定服务器校验结果的回调
+	InPredictionKey.NewRejectOrCaughtUpDelegate(
+		FPredictionKeyEvent::CreateUObject(Owner, 
+		&UAbilitySystemComponent::RemoveActiveGameplayEffect_AllowClientRemoval,
+		AppliedActiveGE->Handle, -1));
 }
 ```
 
