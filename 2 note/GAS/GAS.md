@@ -505,17 +505,17 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	bool& bFoundExistingStackableGE)
 {
 	/*
-	1 GameplayEffects_Internal 这个数组就是实际存储ActiveGE的数组，这个判断的含义是数组是否还有空间容纳新的数据，<=0就是不能容纳了，
+	1 GameplayEffects_Internal 这个数组就是实际存储ActiveGE的数组，这个判断的含义是数组是否还有空间容纳新的数据，<=0就是不能容纳了，需要扩容了
+	2 如果*PendingGameplayEffectNext的内容是空的，说明
 	*/
 	if (GameplayEffects_Internal.GetSlack() <= 0)
 	{
-		check(PendingGameplayEffectNext);
-		const FActiveGameplayEffect* PreviousPendingNext = (*PendingGameplayEffectNext) ? (*PendingGameplayEffectNext)->PendingNext : nullptr;
+		const FActiveGameplayEffect* PreviousPendingNext =
+			(*PendingGameplayEffectNext) ? 
+				(*PendingGameplayEffectNext)->PendingNext : nullptr;
 
 		if (*PendingGameplayEffectNext == nullptr)
 		{
-			// We have no memory allocated to put our next pending GE, so make a new one.
-			// [#1] If you change this, please change #1-3!!!
 			AppliedActiveGE = new FActiveGameplayEffect(NewHandle, Spec, GetWorldTime(), GetServerWorldTime(), InPredictionKey);
 			*PendingGameplayEffectNext = AppliedActiveGE;
 		}
