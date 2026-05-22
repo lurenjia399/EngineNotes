@@ -489,6 +489,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	const FGameplayEffectSpec &Spec, 
 	FPredictionKey PredictionKey)
 {
+	// 只显示相关方法，其余的省略掉
+	
 	FScopedActiveGameplayEffectLock ScopeLock(ActiveGameplayEffects);
 	
 	AppliedEffect = ActiveGameplayEffects.ApplyGameplayEffectSpec(
