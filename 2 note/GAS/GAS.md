@@ -613,4 +613,4 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 ```
 1 ApplyGameplayEffectSpec 这个方法就是实际激活GE的方法，里面会创建ActiveGE，会把ActiveGE放到GameplayEffects_Internal这个数组里面。
 2 如果GameplayEffects_Internal这个数组已经满了，就会使用Pending队列的方式，在堆上创建ActiveGE
-3 在实际激活GE前，会创建 FScopedActiveGameplayEffectLock 这个Scope，这个ActiveGE
+3 在实际激活GE前，会创建 FScopedActiveGameplayEffectLock 这个Scope，这个ActiveGEScope的作用就是在析构的时候，把Pending队列上的ActiveGE右移到GameplayEffects_Internal这个数组里，右移完后Pending队列上只存在空壳，实际shu'j
