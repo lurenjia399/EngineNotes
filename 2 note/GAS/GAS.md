@@ -545,4 +545,5 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 }
 ```
 1 ApplyGameplayEffectSpec 这个方法就是实际应用GE的方法，里面会创建ActiveGE，会把ActiveGE放到GameplayEffects_Internal这个数组里面。
-2 如果GameplayEffects_Internal这个数组yi
+2 如果GameplayEffects_Internal这个数组已经满了，就会使用Pending队列的方式，在堆上创建ActiveGE
+3 
