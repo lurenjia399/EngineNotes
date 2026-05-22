@@ -504,6 +504,40 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	FPredictionKey& InPredictionKey, 
 	bool& bFoundExistingStackableGE)
 {
-	
+	/*
+	1 GameplayEffects_Internal 这个数组就是实际存储Active
+	*/
+	if (GameplayEffects_Internal.GetSlack() <= 0)
+	{
+		check(PendingGameplayEffectNext);
+		const FActiveGameplayEffect* PreviousPendingNext = (*PendingGameplayEffectNext) ? (*PendingGameplayEffectNext)->PendingNext : nullptr;
+
+		if (*PendingGameplayEffectNext == nullptr)
+		{
+			// We have no memory allocated to put our next pending GE, so make a new one.
+			// [#1] If you change this, please change #1-3!!!
+			AppliedActiveGE = new FActiveGameplayEffect(NewHandle, Spec, GetWorldTime(), GetServerWorldTime(), InPredictionKey);
+			*PendingGameplayEffectNext = AppliedActiveGE;
+		}
+		else
+		{
+			// We already had memory allocated to put a pending GE, move in.
+			// [#2] If you change this, please change #1-3!!!
+			**PendingGameplayEffectNext = FActiveGameplayEffect(NewHandle, Spec, GetWorldTime(), GetServerWorldTime(), InPredictionKey);
+			AppliedActiveGE = *PendingGameplayEffectNext;
+		}
+
+		// Let's check that our Pending Active GE Chain is still intact. If this triggers, the code is wrong, not the asset.
+		ensureMsgf(AppliedActiveGE->PendingNext == PreviousPendingNext, TEXT("ApplyGameplayEffectSpec Code Leaked a Pending FActiveGameplayEffect while applying %s"), *AppliedActiveGE->Spec.ToSimpleString());
+
+		// The next pending GameplayEffect goes to where our PendingNext points
+		PendingGameplayEffectNext = &AppliedActiveGE->PendingNext;
+	}
+	else
+	{
+
+		// [#3] If you change this, please change #1-3!!!
+		AppliedActiveGE = new(GameplayEffects_Internal) FActiveGameplayEffect(NewHandle, Spec, GetWorldTime(), GetServerWorldTime(), InPredictionKey);
+	}
 }
 ```
