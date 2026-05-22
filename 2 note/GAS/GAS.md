@@ -522,7 +522,7 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 			*PendingGameplayEffectNext = AppliedActiveGE;
 		}
 		/*
-		3 
+		3 如果*PendingGameplayEffectNext的内容不是空的，说明已经通过MoveTemp操作把Pending队列里的数据右移到
 		*/
 		else
 		{
