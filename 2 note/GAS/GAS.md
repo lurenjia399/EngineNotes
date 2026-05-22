@@ -482,3 +482,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 		InstancedPerExecution,
 	};
 ```
+
+# GE激活的内存池实现
+```cpp
+
+```
