@@ -470,7 +470,14 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 ```
 
 ```cpp
-
+FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
+	const FGameplayEffectSpec& Spec, 
+	FPredictionKey& InPredictionKey, 
+	bool& bFoundExistingStackableGE
+	)
+{
+	
+}
 ```
 
 # EGameplayAbilityInstancingPolicy
