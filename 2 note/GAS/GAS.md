@@ -505,7 +505,7 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	bool& bFoundExistingStackableGE)
 {
 	/*
-	1 GameplayEffects_Internal 这个数组就是实际存储Active
+	1 GameplayEffects_Internal 这个数组就是实际存储ActiveGE的数组，这个判断的含义是数组是否还有空间容纳新的数据，<=0就是不能容纳了，
 	*/
 	if (GameplayEffects_Internal.GetSlack() <= 0)
 	{
