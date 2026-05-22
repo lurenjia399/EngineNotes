@@ -458,7 +458,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	bool bTreatAsInfiniteDuration = GetOwnerRole() != ROLE_Authority 
 		&& PredictionKey.IsLocalClientKey() 
 		&& Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant;
-	// 如果是可以预测的，就激活GE，也就是创建ActiveGameplayEffect
+	// 如果是可以预测的，就激活GE，也就是创建ActiveGameplayEffect，回滚的核心操作在这方法里绑定的
 	if (Spec.Def->DurationPolicy != EGameplayEffectDurationType::Instant 
 		|| bTreatAsInfiniteDuration)
 	{
