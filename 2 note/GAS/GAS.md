@@ -476,8 +476,9 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	bool& bFoundExistingStackableGE
 	)
 {
-	// 捕获qu
+	// 捕获需要的属性，记录在CapturedRelevantAttributes里
 	AppliedEffectSpec.CaptureAttributeDataFromTarget(Owner);
+	// 计算需要修改属性的修改值，记录在Modifiers里
 	AppliedEffectSpec.CalculateModifierMagnitudes();
 }
 ```
