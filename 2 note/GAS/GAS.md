@@ -489,6 +489,9 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	const FGameplayEffectSpec &Spec, 
 	FPredictionKey PredictionKey)
 {
+	FScopedActiveGameplayEffectLock ScopeLock(ActiveGameplayEffects);
 	
+	AppliedEffect = ActiveGameplayEffects.ApplyGameplayEffectSpec(
+		Spec, PredictionKey, bFoundExistingStackableGE);
 }
 ```
