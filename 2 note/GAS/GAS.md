@@ -530,14 +530,16 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 			AppliedActiveGE = *PendingGameplayEffectNext;
 		}
 		/*
-		4 重新赋值PendingNext指针，让他指向新创建的ActiveGE的Next，也就是
+		4 重新赋值PendingNext指针，让他指向新创建的ActiveGE的Next
 		*/
 		PendingGameplayEffectNext = &AppliedActiveGE->PendingNext;
 	}
 	else
 	{
 
-		// [#3] If you change this, please change #1-3!!!
+		/*
+		5 FActiveGameplayEffect 这个结构体重写了operate new方法，所以这里执行的placement new 实际上等同于 GameplayEffects_Internal.add（新的ActiveGE）
+		*/
 		AppliedActiveGE = new(GameplayEffects_Internal) FActiveGameplayEffect(NewHandle, Spec, GetWorldTime(), GetServerWorldTime(), InPredictionKey);
 	}
 }
