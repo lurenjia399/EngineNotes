@@ -485,5 +485,10 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 
 # GE激活的内存池实现
 ```cpp
-
+FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSelf(
+	const FGameplayEffectSpec &Spec, 
+	FPredictionKey PredictionKey)
+{
+	
+}
 ```
