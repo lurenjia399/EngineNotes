@@ -497,7 +497,11 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	const FGameplayEffectSpec &Spec, 
 	FPredictionKey PredictionKey)
 {
-	
+	else if (Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant)
+	{
+		// This is a non-predicted instant effect (it never gets added to ActiveGameplayEffects)
+		ExecuteGameplayEffect(*OurCopyOfSpec, PredictionKey);
+	}
 }
 ```
 
