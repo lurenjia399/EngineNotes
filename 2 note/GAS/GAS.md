@@ -497,3 +497,13 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 		Spec, PredictionKey, bFoundExistingStackableGE);
 }
 ```
+
+```cpp
+FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
+	const FGameplayEffectSpec& Spec, 
+	FPredictionKey& InPredictionKey, 
+	bool& bFoundExistingStackableGE)
+{
+	
+}
+```
