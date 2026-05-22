@@ -485,6 +485,11 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 		FPredictionKeyEvent::CreateUObject(Owner, 
 		&UAbilitySystemComponent::RemoveActiveGameplayEffect_AllowClientRemoval,
 		AppliedActiveGE->Handle, -1));
+	// 直接应用GE效果
+	const bool bInvokeGameplayCueEvents = 
+		(Spec.Def->DurationPolicy != EGameplayEffectDurationType::Instant);
+		InternalOnActiveGameplayEffectAdded(
+			*AppliedActiveGE, bInvokeGameplayCueEvents);
 }
 ```
 
