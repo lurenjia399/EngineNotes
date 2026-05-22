@@ -529,11 +529,9 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 			**PendingGameplayEffectNext = FActiveGameplayEffect(NewHandle, Spec, GetWorldTime(), GetServerWorldTime(), InPredictionKey);
 			AppliedActiveGE = *PendingGameplayEffectNext;
 		}
-
-		// Let's check that our Pending Active GE Chain is still intact. If this triggers, the code is wrong, not the asset.
-		ensureMsgf(AppliedActiveGE->PendingNext == PreviousPendingNext, TEXT("ApplyGameplayEffectSpec Code Leaked a Pending FActiveGameplayEffect while applying %s"), *AppliedActiveGE->Spec.ToSimpleString());
-
-		// The next pending GameplayEffect goes to where our PendingNext points
+		/*
+		4 重新赋值PendingNext指针，让他指向新创建的ActiveGE的Next，也就是
+		*/
 		PendingGameplayEffectNext = &AppliedActiveGE->PendingNext;
 	}
 	else
