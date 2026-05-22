@@ -469,6 +469,10 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 }
 ```
 
+```cpp
+
+```
+
 # EGameplayAbilityInstancingPolicy
 
 ```cpp
