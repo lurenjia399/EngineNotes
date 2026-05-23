@@ -490,10 +490,6 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 			*AppliedActiveGE, bInvokeGameplayCueEvents);
 }
 ```
-1 不允许非权威端预测持续型GE，只能预测Instance的GE
-2 InstanceGE会通过ApplyGameplayEffectSpec方法，记录ActiveGE，
-3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE也会通过ApplyGameplayEffectSpec方法记录ActiveGE
-
 
 权威端校验
 ```cpp
@@ -509,6 +505,10 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	}
 }
 ```
+
+1 InstanceGE可以通过
+2 InstanceGE会通过ApplyGameplayEffectSpec方法，记录ActiveGE，
+3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE也会通过ApplyGameplayEffectSpec方法记录ActiveGE
 
 # EGameplayAbilityInstancingPolicy
 
