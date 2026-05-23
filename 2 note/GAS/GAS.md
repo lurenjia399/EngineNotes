@@ -506,9 +506,9 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 }
 ```
 
-1 InstanceGE可以通过非权威端预测，在非权威端会通过ApplyGameplayEffectSpec方法将预测ActiveGE添加到ActiveGEContainer里（这里有个池化技术），放到Container里就相当于将InstanceGE变成了持续型GE。然后也会计算InstanceGE的属性变化量
-2 InstanceGE会
-3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE也会通过ApplyGameplayEffectSpec方法记录ActiveGE
+1 InstanceGE可以通过非权威端预测，在非权威端会通过ApplyGameplayEffectSpec方法将预测ActiveGE添加到ActiveGEContainer里（这里有个池化技术），放到Container里就相当于将InstanceGE变成了持续型GE。然后也会计算InstanceGE的属性变化量。
+2 InstanceGE在权威端是不执行ApplyGameplayEffectSpec方法的，直接
+
 
 # EGameplayAbilityInstancingPolicy
 
