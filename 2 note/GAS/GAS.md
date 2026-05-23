@@ -506,8 +506,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 }
 ```
 
-1 InstanceGE可以通过
-2 InstanceGE会通过ApplyGameplayEffectSpec方法，记录ActiveGE，
+1 InstanceGE可以通过非权威端预测，在权威端会通过ApplyGameplayEffectSpec方法，记录ActiveGE，
+2 InstanceGE会
 3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE也会通过ApplyGameplayEffectSpec方法记录ActiveGE
 
 # EGameplayAbilityInstancingPolicy
