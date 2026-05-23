@@ -106,7 +106,7 @@ FScopedPredictionWindow::FScopedPredictionWindow(
 {
 
 	ClearScopedPredictionKey = false;
-	// 是在Scoped析构的时候，是否需要同步，
+	// 是在Scoped析构的时候，是否需要同步
 	SetReplicatedPredictionKey = false;
 
 	// 设置Owner是AbilityComp
