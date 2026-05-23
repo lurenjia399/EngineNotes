@@ -491,8 +491,9 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 }
 ```
 1 不允许非权威端预测持续型GE，只能预测Instance的GE
-2 InstanceGE会通过ApplyGameplayEffectSpec方法应用，记录ActiveGE，
-3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE
+2 InstanceGE会通过ApplyGameplayEffectSpec方法，记录ActiveGE，
+3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE也会通过ApplyGameplayEffectSpec方法记录ActiveGE
+4 
 
 权威端校验
 ```cpp
@@ -502,7 +503,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 {
 	else if (Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant)
 	{
-		// 这个方法直接执行了GE效果
+		// 如果是Instance这个方法直接执行了GE效果
 		// This is a non-predicted instant effect (it never gets added to ActiveGameplayEffects)
 		ExecuteGameplayEffect(*OurCopyOfSpec, PredictionKey);
 	}
