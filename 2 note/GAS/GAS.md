@@ -490,6 +490,8 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 			*AppliedActiveGE, bInvokeGameplayCueEvents);
 }
 ```
+1 不允许非权威端预测持续型GE，只能预测Instance的GE
+2 
 
 权威端校验
 ```cpp
