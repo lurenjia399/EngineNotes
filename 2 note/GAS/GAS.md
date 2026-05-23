@@ -503,7 +503,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 {
 	else if (Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant)
 	{
-		// 如果是Instance这个方法直接执行了GE效果
+		// 如果是InstanceGE，直接执行GE效果
 		// This is a non-predicted instant effect (it never gets added to ActiveGameplayEffects)
 		ExecuteGameplayEffect(*OurCopyOfSpec, PredictionKey);
 	}
