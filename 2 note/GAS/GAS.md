@@ -492,7 +492,7 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 ```
 1 不允许非权威端预测持续型GE，只能预测Instance的GE
 2 InstanceGE会通过ApplyGameplayEffectSpec方法应用，记录ActiveGE，
-3 权威端执行Instance的GE
+3 权威端执行Instance的GE就直接执行GE的效果，非InstanceGE
 
 权威端校验
 ```cpp
