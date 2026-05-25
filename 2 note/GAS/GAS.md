@@ -542,7 +542,7 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 	FActiveGameplayEffect& Effect, 
 	bool bInvokeGameplayCueEvents)
 {
-	// 如果是 InstanceGE
+	// 如果是 InstanceGE 。如果执行是非权威端预测
 	if (Effect.Spec.GetPeriod() <= UGameplayEffect::NO_PERIOD)
 	{
 		for (int32 ModIdx = 0; ModIdx < Effect.Spec.Modifiers.Num(); ++ModIdx)
@@ -551,7 +551,7 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 			FAggregator* Aggregator = 
 				FindOrCreateAttributeAggregator(
 				Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
-			/
+			// 应用这个聚合器，直接根据本地BaseValue计算出CurrentValue
 			if (ensure(Aggregator))
 			{
 				Aggregator->AddAggregatorMod(
