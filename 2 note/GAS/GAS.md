@@ -695,3 +695,8 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 2 如果GameplayEffects_Internal这个数组已经满了，就会使用Pending队列的方式，在堆上创建ActiveGE。
 3 在实际激活GE前，会创建 FScopedActiveGameplayEffectLock 这个Scope，这个ActiveGEScope的作用就是在析构的时候，把Pending队列上的ActiveGE右移到GameplayEffects_Internal这个数组里，右移完后Pending队列上只存在空壳，实际数据就在GameplayEffects_Internal数组中了。
 4 FActiveGameplayEffectsContainer 在这个的析构函数，才会遍历Pending队列，一次执行delete，所以也不会内存泄漏。
+
+# 关键
+1 PredictionKey设计方式
+2 Pending队列的池化设计方式
+3 FastArraySerilize
