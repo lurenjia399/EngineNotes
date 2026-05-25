@@ -544,6 +544,31 @@ void FActiveGameplayEffectsContainer::InternalOnActiveGameplayEffectAdded(
 	Owner->SetActiveGameplayEffectInhibit(MoveTemp(EffectHandle), !bActive, bInvokeGameplayCueEvents);
 }
 
+
+FActiveGameplayEffectHandle UAbilitySystemComponent::SetActiveGameplayEffectInhibit(FActiveGameplayEffectHandle&& ActiveGEHandle, bool bInhibit, bool bInvokeGameplayCueEvents)
+{
+	if (ActiveGE->bIsInhibited != bInhibit)
+	{
+		ActiveGE->bIsInhibited = bInhibit;
+
+		FScopedActiveGameplayEffectLock ScopeLockActiveGameplayEffects(
+			ActiveGameplayEffects);
+
+		FScopedAggregatorOnDirtyBatch	AggregatorOnDirtyBatcher;
+		if (bInhibit)
+		{
+			ActiveGameplayEffects.
+				RemoveActiveGameplayEffectGrantedTagsAndModifiers(
+				*ActiveGE, bInvokeGameplayCueEvents);
+		}
+		else
+		{
+			ActiveGameplayEffects.AddActiveGameplayEffectGrantedTagsAndModifiers(
+				*ActiveGE, bInvokeGameplayCueEvents);
+		}
+}
+
+
 void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModifiers(
 	FActiveGameplayEffect& Effect, 
 	bool bInvokeGameplayCueEvents)
