@@ -537,6 +537,51 @@ void FActiveGameplayEffectsContainer::InternalOnActiveGameplayEffectAdded(
 	FActiveGameplayEffectHandle EffectHandle = Effect.Handle;
 	Owner->SetActiveGameplayEffectInhibit(MoveTemp(EffectHandle), !bActive, bInvokeGameplayCueEvents);
 }
+
+FActiveGameplayEffectHandle
+	UAbilitySystemComponent::SetActiveGameplayEffectInhibit(
+		FActiveGameplayEffectHandle&& ActiveGEHandle, 
+		bool bInhibit, 
+		bool bInvokeGameplayCueEvents)
+{
+
+
+	if (ActiveGE->bIsInhibited != bInhibit)
+	{
+		ActiveGE->bIsInhibited = bInhibit;
+
+		// It's possible the adding or removing of the tags can invalidate the ActiveGE.  As such,
+		// let's make sure we hold on to that memory until this function is done.
+		FScopedActiveGameplayEffectLock ScopeLockActiveGameplayEffects(ActiveGameplayEffects);
+
+		// All OnDirty callbacks must be inhibited until we update this entire GameplayEffect.
+		FScopedAggregatorOnDirtyBatch	AggregatorOnDirtyBatcher;
+		if (bInhibit)
+		{
+			// Remove our ActiveGameplayEffects modifiers with our Attribute Aggregators
+			ActiveGameplayEffects.RemoveActiveGameplayEffectGrantedTagsAndModifiers(*ActiveGE, bInvokeGameplayCueEvents);
+		}
+		else
+		{
+			ActiveGameplayEffects.AddActiveGameplayEffectGrantedTagsAndModifiers(*ActiveGE, bInvokeGameplayCueEvents);
+		}
+
+		// The act of executing anything on the ActiveGE can invalidate it.  So we need to recheck if we can continue to execute the callbacks.
+		if (!ActiveGE->IsPendingRemove)
+		{
+			ActiveGE->EventSet.OnInhibitionChanged.Broadcast(ActiveGEHandle, ActiveGE->bIsInhibited);
+		}
+
+		// We lost that it was active somewhere along the way, let the caller know
+		if (ActiveGE->IsPendingRemove)
+		{
+			return FActiveGameplayEffectHandle();
+		}
+	}
+
+	// Normal case is the passed-in ActiveGEHandle is still active and thus can continue execution
+	return MoveTemp(ActiveGEHandle);
+}
 ```
 
 # EGameplayAbilityInstancingPolicy
