@@ -547,10 +547,21 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 	{
 		for (int32 ModIdx = 0; ModIdx < Effect.Spec.Modifiers.Num(); ++ModIdx)
 		{
-			FAggregator* Aggregator = FindOrCreateAttributeAggregator(Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
+			// 客户端根据属性创建新的聚合器
+			FAggregator* Aggregator = 
+				FindOrCreateAttributeAggregator(
+				Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
+			/
 			if (ensure(Aggregator))
 			{
-				Aggregator->AddAggregatorMod(EvaluatedMagnitude, ModInfo.ModifierOp, ModInfo.EvaluationChannelSettings.GetEvaluationChannel(), &ModInfo.SourceTags, &ModInfo.TargetTags, Effect.PredictionKey.WasLocallyGenerated(), Effect.Handle);
+				Aggregator->AddAggregatorMod(
+					EvaluatedMagnitude, 
+					ModInfo.ModifierOp, 
+					ModInfo.EvaluationChannelSettings.GetEvaluationChannel(), 
+					&ModInfo.SourceTags, 
+					&ModInfo.TargetTags, 
+					Effect.PredictionKey.WasLocallyGenerated(), 
+					Effect.Handle);
 			}
 		}
 	}
