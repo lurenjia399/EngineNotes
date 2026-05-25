@@ -523,7 +523,7 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 {
 	// 快照属性
 	AppliedEffectSpec.CaptureAttributeDataFromTarget(Owner);
-	// 计算属性的Modifier，直接改变本地的属性
+	// 计算属性的Modifier，先算出属性的改变量
 	AppliedEffectSpec.CalculateModifierMagnitudes();
 	
 	// 不是InstanceGE可以执行GC，这个里面根据GESpec计算出属性Modifier，然后
