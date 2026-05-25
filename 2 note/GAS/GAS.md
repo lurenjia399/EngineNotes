@@ -521,6 +521,11 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	FPredictionKey& InPredictionKey, 
 	bool& bFoundExistingStackableGE)
 {
+	// 快照属性
+	AppliedEffectSpec.CaptureAttributeDataFromTarget(Owner);
+	// 计算属性的Modifier
+	AppliedEffectSpec.CalculateModifierMagnitudes();
+	
 	// 不是InstanceGE可以执行GC
 	const bool bInvokeGameplayCueEvents = 
 		(Spec.Def->DurationPolicy != EGameplayEffectDurationType::Instant);
