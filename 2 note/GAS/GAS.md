@@ -591,8 +591,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 }
 ```
 
-1 非权威端在 ApplyGameplayEffectSpec 方法中执行，根据Modifier配置直接生成新的聚合器，然后根据聚合器计算出改变值，就是通过BaseValue + 改。
-2 InstanceGE的权威端直接调用ExecuteGameplayEffect这个方法，执行一遍属性改变的流程
+1 非权威端在 ApplyGameplayEffectSpec 方法中执行，根据Modifier配置直接生成新的聚合器，然后根据聚合器计算出改变值，就是通过BaseValue + 改变值 = CurrentValue，非权威端通过Mod计算出CurrentValue。
+2 InstanceGE的权威端直接调用ExecuteGameplayEffect这个方法，执行一遍属性改变的流程，直接改变属性的BaseValue。
 3 
 
 
