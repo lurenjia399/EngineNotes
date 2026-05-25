@@ -553,7 +553,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::SetActiveGameplayEffectInhi
 		
 		/*
 		1 创建新的Scope，在这个析构的时候会 BroadcastOnDirty 广播脏属性
-		2 
+		2 在 FindOrCreateAttributeAggregator 方法中会监听脏属性回调
+		3 脏属性回调中会执行属性计算，本地
 		*/
 		FScopedActiveGameplayEffectLock ScopeLockActiveGameplayEffects(
 			ActiveGameplayEffects);
