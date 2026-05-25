@@ -554,7 +554,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::SetActiveGameplayEffectInhi
 		/*
 		1 创建新的Scope，在这个析构的时候会 BroadcastOnDirty 广播脏属性
 		2 在 FindOrCreateAttributeAggregator 方法中会监听脏属性回调
-		3 脏属性回调中会执行属性计算，本地
+		3 脏属性回调中会执行属性计算，本地根据新的属性mod和BaseValue计算出CurrentValue
 		*/
 		FScopedActiveGameplayEffectLock ScopeLockActiveGameplayEffects(
 			ActiveGameplayEffects);
@@ -587,7 +587,7 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 			FAggregator* Aggregator = 
 				FindOrCreateAttributeAggregator(
 				Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
-			// 应用这个聚合器，把属性改变Mod添加到聚合器里并广播OnDirty
+			// 应用这个聚合器
 			if (ensure(Aggregator))
 			{
 				Aggregator->AddAggregatorMod(
@@ -615,7 +615,6 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 	else if (Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant)
 	{
 		// 如果是InstanceGE，直接执行GE效果
-		// This is a non-predicted instant effect (it never gets added to ActiveGameplayEffects)
 		ExecuteGameplayEffect(*OurCopyOfSpec, PredictionKey);
 	}
 }
