@@ -550,7 +550,11 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::SetActiveGameplayEffectInhi
 	if (ActiveGE->bIsInhibited != bInhibit)
 	{
 		ActiveGE->bIsInhibited = bInhibit;
-
+		
+		/*
+		1 创建新的Scope，在这个析构的时候会 BroadcastOnDirty 广播脏属性
+		2 
+		*/
 		FScopedActiveGameplayEffectLock ScopeLockActiveGameplayEffects(
 			ActiveGameplayEffects);
 
