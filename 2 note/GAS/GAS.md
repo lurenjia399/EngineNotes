@@ -515,7 +515,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 # 属性预测
 
 ```cpp
-// 这个方法在应用GE的时候，是非权威端InstanceGE，huo'zhe非InstanceGE会执行
+// 非权威端InstanceGE，或者非InstanceGE会执行
 FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 	const FGameplayEffectSpec& Spec, 
 	FPredictionKey& InPredictionKey, 
