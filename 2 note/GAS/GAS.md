@@ -537,7 +537,7 @@ void FActiveGameplayEffectsContainer::InternalOnActiveGameplayEffectAdded(
 	FActiveGameplayEffect& Effect, 
 	const bool bInvokeGameplayCueEvents)
 {
-	// 具体激活GE方法 SetActiveGameplayEffectInhibit，里面会应用属性改变
+	// 具体激活GE方法 SetActiveGameplayEffectInhibit，里面会把属性Mod添加到聚合器里
 	FActiveGameplayEffectHandle EffectHandle = Effect.Handle;
 	Owner->SetActiveGameplayEffectInhibit(MoveTemp(EffectHandle), !bActive, bInvokeGameplayCueEvents);
 }
