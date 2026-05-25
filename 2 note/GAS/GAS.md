@@ -642,7 +642,7 @@ void UAttributeSet::PostNetReceive()
 1 非权威端在 ApplyGameplayEffectSpec 方法中执行，根据Modifier配置直接生成新的聚合器，然后根据聚合器计算出改变值，就是通过BaseValue + 改变值 = CurrentValue，非权威端通过Mod计算出CurrentValue。
 2 InstanceGE的权威端直接调用ExecuteGameplayEffect这个方法，执行一遍属性改变的流程，直接改变属性的BaseValue。
 3 等到属性同步下来后，会执行FScopedAggregatorOnDirtyBatch这个结构体的析构，然后就会执行OnAttributeAggregatorDirty这个方法，客户端会重新根据新的BaseValue在计算一遍CurrentValue。
-4 在CatchUpTo追上客户端后，客户端会执行RemoveActiveGameplayEffect方法，把ActiveGEs
+4 在CatchUpTo追上客户端后，客户端会执行RemoveActiveGameplayEffect方法，把数组中的预测ActiveGE移除掉，顺便移除预测聚合器Mod。
 
 
 
