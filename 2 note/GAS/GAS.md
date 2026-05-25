@@ -574,13 +574,25 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 }
 
 ```
-在 ApplyGameplayEffectSpec 方法中执行，根据Modifier配置直接生成新的聚合器，然后根据聚合器修改本地的属性值。
 
-权威端执行
+
+权威端校验
 ```cpp
-
+FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSelf(
+	const FGameplayEffectSpec &Spec, 
+	FPredictionKey PredictionKey)
+{
+	else if (Spec.Def->DurationPolicy == EGameplayEffectDurationType::Instant)
+	{
+		// 如果是InstanceGE，直接执行GE效果
+		// This is a non-predicted instant effect (it never gets added to ActiveGameplayEffects)
+		ExecuteGameplayEffect(*OurCopyOfSpec, PredictionKey);
+	}
+}
 ```
 
+1 非权威端在 ApplyGameplayEffectSpec 方法中执行，根据Modifier配置直接生成新的聚合器，然后根据聚合器修改本地的属性值。
+2 InstanceGE的权威端
 
 
 
