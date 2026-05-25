@@ -621,6 +621,16 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 
 同步属性改变
 ```cpp
+void UAttributeSet::PreNetReceive()
+{
+	FScopedAggregatorOnDirtyBatch::BeginNetReceiveLock();
+}
+	
+void UAttributeSet::PostNetReceive()
+{
+	FScopedAggregatorOnDirtyBatch::EndNetReceiveLock();
+}
+
 
 ```
 
