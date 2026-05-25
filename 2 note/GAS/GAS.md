@@ -592,7 +592,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 ```
 
 1 非权威端在 ApplyGameplayEffectSpec 方法中执行，根据Modifier配置直接生成新的聚合器，然后根据聚合器修改本地的属性值。
-2 InstanceGE的权威端
+2 InstanceGE的权威端直接调用ExecuteGameplayEffect这个方法，执行一遍属性改变的流程
+3 
 
 
 
