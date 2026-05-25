@@ -631,6 +631,11 @@ void UAttributeSet::PostNetReceive()
 	FScopedAggregatorOnDirtyBatch::EndNetReceiveLock();
 }
 
+/*
+1 这个FScopedAggregatorOnDirtyBatch含义一样，就是广播脏属性事件
+2 客户端的脏属性回调是在AddActiveGameplayEffectGrantedTagsAndModifiers这个方法里绑定的
+3 
+*/
 
 ```
 
