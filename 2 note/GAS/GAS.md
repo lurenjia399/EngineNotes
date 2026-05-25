@@ -542,7 +542,7 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 	FActiveGameplayEffect& Effect, 
 	bool bInvokeGameplayCueEvents)
 {
-	// 如果是 InstanceGE 。如果执行是非权威端预测
+	// 如果是 InstanceGE 。
 	if (Effect.Spec.GetPeriod() <= UGameplayEffect::NO_PERIOD)
 	{
 		for (int32 ModIdx = 0; ModIdx < Effect.Spec.Modifiers.Num(); ++ModIdx)
