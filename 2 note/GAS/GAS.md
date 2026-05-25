@@ -523,13 +523,12 @@ FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
 {
 	// 快照属性
 	AppliedEffectSpec.CaptureAttributeDataFromTarget(Owner);
-	// 计算属性的Modifier
+	// 计算属性的Modifier，直接改变本地的属性
 	AppliedEffectSpec.CalculateModifierMagnitudes();
 	
-	// 不是InstanceGE可以执行GC
+	// 不是InstanceGE可以执行GC，这个里面根据GESpec计算出属性Modifier，然后
 	const bool bInvokeGameplayCueEvents = 
 		(Spec.Def->DurationPolicy != EGameplayEffectDurationType::Instant);
-	// 
 	InternalOnActiveGameplayEffectAdded(
 		*AppliedActiveGE, bInvokeGameplayCueEvents);
 }
@@ -556,7 +555,7 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 			FAggregator* Aggregator = 
 				FindOrCreateAttributeAggregator(
 				Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
-			// 应用这个聚合器，直接根据本地BaseValue计算出CurrentValue
+			// 应用这个聚合器，把属性改变Mod添加到聚合器里
 			if (ensure(Aggregator))
 			{
 				Aggregator->AddAggregatorMod(
