@@ -551,11 +551,11 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 	{
 		for (int32 ModIdx = 0; ModIdx < Effect.Spec.Modifiers.Num(); ++ModIdx)
 		{
-			// 客户端根据属性创建新的聚合器
+			// 客户端根据属性创建新的聚合器，监听OnDirty回调，回调里执行属性改变
 			FAggregator* Aggregator = 
 				FindOrCreateAttributeAggregator(
 				Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
-			// 应用这个聚合器，把属性改变Mod添加到聚合器里
+			// 应用这个聚合器，把属性改变Mod添加到聚合器里并广播OnDirty
 			if (ensure(Aggregator))
 			{
 				Aggregator->AddAggregatorMod(
