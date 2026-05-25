@@ -515,7 +515,7 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 # 属性预测
 
 
-非权威端执行
+非权威端执行(InstanceGE)
 ```cpp
 // 非权威端InstanceGE，或者非InstanceGE会执行
 FActiveGameplayEffect* FActiveGameplayEffectsContainer::ApplyGameplayEffectSpec(
@@ -605,8 +605,7 @@ void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModif
 
 ```
 
-
-权威端校验
+权威端校验(InstanceGE)
 ```cpp
 FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSelf(
 	const FGameplayEffectSpec &Spec, 
