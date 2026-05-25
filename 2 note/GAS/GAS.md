@@ -511,10 +511,6 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 2 InstanceGE在权威端是不执行ApplyGameplayEffectSpec方法的，直接执行ExecuteGameplayEffect方法来应用效果。
 3 权威端在FScopedPredictionWindow这个scope析构的时候会往客户端同步这个PredictionKey，告诉客户端追上了CatchUpTo。
 4 注意：通过ApplyGameplayEffectSpec方法可以将ActiveGE添加到GameplayEffects_Internal 这个数组中，这个数组也是增量同步的数组。如果是InstanceGE，非权威端是预测添加到数组中的，权威端是直接执行GE效果的，权威端通过PredictionKey的增量同步来移除非权威端数组中的值。
-
-
-
-
 # EGameplayAbilityInstancingPolicy
 
 ```cpp
