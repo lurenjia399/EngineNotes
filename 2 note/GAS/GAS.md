@@ -533,26 +533,7 @@ void FActiveGameplayEffectsContainer::InternalOnActiveGameplayEffectAdded(
 	FActiveGameplayEffect& Effect, 
 	const bool bInvokeGameplayCueEvents)
 {
-	SCOPE_CYCLE_COUNTER(STAT_OnActiveGameplayEffectAdded);
-
-	const UGameplayEffect* EffectDef = Effect.Spec.Def;
-
-	if (EffectDef == nullptr)
-	{
-		UE_LOG(LogGameplayEffects, Error, TEXT("FActiveGameplayEffectsContainer serialized new GameplayEffect with NULL Def!"));
-		return;
-	}
-
-	SCOPE_CYCLE_UOBJECT(EffectDef, EffectDef);
-
-	GAMEPLAYEFFECT_SCOPE_LOCK();
-
-	// Add any external dependencies that might dirty the effect, if necessary
-	AddCustomMagnitudeExternalDependencies(Effect);
-
-	const bool bActive = EffectDef->OnAddedToActiveContainer(*this, Effect);
-	Effect.bIsInhibited = true; // Effect has to start inhibited, so our call to Inhibit will trigger if we should be active
-
+	// 具体激活GE方法 SetActiveGameplayEffectInhibit
 	FActiveGameplayEffectHandle EffectHandle = Effect.Handle;
 	Owner->SetActiveGameplayEffectInhibit(MoveTemp(EffectHandle), !bActive, bInvokeGameplayCueEvents);
 }
