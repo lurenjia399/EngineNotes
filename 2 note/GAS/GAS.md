@@ -513,6 +513,8 @@ FActiveGameplayEffectHandle UAbilitySystemComponent::ApplyGameplayEffectSpecToSe
 4 注意：通过ApplyGameplayEffectSpec方法可以将ActiveGE添加到GameplayEffects_Internal 这个数组中，这个数组也是增量同步的数组。如果是InstanceGE，非权威端是预测添加到数组中的，权威端是直接执行GE效果的，权威端通过PredictionKey的增量同步来移除非权威端数组中的值。
 
 
+
+
 # EGameplayAbilityInstancingPolicy
 
 ```cpp
