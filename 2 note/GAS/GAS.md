@@ -538,6 +538,24 @@ void FActiveGameplayEffectsContainer::InternalOnActiveGameplayEffectAdded(
 	Owner->SetActiveGameplayEffectInhibit(MoveTemp(EffectHandle), !bActive, bInvokeGameplayCueEvents);
 }
 
+void FActiveGameplayEffectsContainer::AddActiveGameplayEffectGrantedTagsAndModifiers(
+	FActiveGameplayEffect& Effect, 
+	bool bInvokeGameplayCueEvents)
+{
+	if (Effect.Spec.GetPeriod() <= UGameplayEffect::NO_PERIOD)
+	{
+		for (int32 ModIdx = 0; ModIdx < Effect.Spec.Modifiers.Num(); ++ModIdx)
+		{
+			if (Effect.Spec.Def->Modifiers.IsValidIndex(ModIdx) == false)
+			{
+			FAggregator* Aggregator = FindOrCreateAttributeAggregator(Effect.Spec.Def->Modifiers[ModIdx].Attribute).Get();
+			if (ensure(Aggregator))
+			{
+				Aggregator->AddAggregatorMod(EvaluatedMagnitude, ModInfo.ModifierOp, ModInfo.EvaluationChannelSettings.GetEvaluationChannel(), &ModInfo.SourceTags, &ModInfo.TargetTags, Effect.PredictionKey.WasLocallyGenerated(), Effect.Handle);
+			}
+		}
+	}
+}
 
 ```
 
