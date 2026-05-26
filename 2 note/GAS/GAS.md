@@ -646,7 +646,6 @@ void UAttributeSet::PostNetReceive()
 注意 4和3都是属性同步，4是ASC中的ReplicatedPredictionKeyMap，3是ASC中的SpawnedAttributes，其中3声明在4前边，同步的信息也能保证3在4前边吧，不能保证的话也没关系，不影响结果。
 
 
-
 # EGameplayAbilityInstancingPolicy
 
 ```cpp
