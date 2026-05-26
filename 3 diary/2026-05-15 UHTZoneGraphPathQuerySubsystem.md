@@ -128,3 +128,92 @@ void AZoneGraphPathQuerySaveActor::OnRebuildForAllGraphsSucceed(const FZoneGraph
 3 遍历所有车站，构建路线名称-车站Actor的TMap（StationsByRoute），如果路线是变轨车站还需要额外添加到StationChangeLanesMap数组中
 4 找车道起始位置，如果是变轨车道，通过FindNearestLocationOnLane接口来查询变轨车道上距离AHTTrainStationMarkerActor这个车站Actor最近的点（起始位置）。如果不是变轨车道，就直接通过FindNearestLane接口来查询最近车道上距离车站Actor最近的点（起始位置）。
 5 构建火车路线，通过GetLinkedLanes接口获取当前车道相连的车道，把路线上所有车道添加到TrainRoute数组中
+
+```cpp
+TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLocation(
+	const FName& RouteName) const
+{
+	TArray<FZoneGraphLaneLocation> Res;
+	if (!ZoneGraphPathQuerySaveActor)
+	{
+		return Res;
+	}
+
+	UWorld* World = GetWorld();
+	if (!World)
+	{
+		return Res;
+	}
+	
+	UZoneGraphSubsystem* ZoneGraphSubsystem = UWorld::GetSubsystem<UZoneGraphSubsystem>(World);
+	if (!ZoneGraphSubsystem)
+	{
+		return Res;
+	}
+
+	const TMap<int32, FTrainRouteCache>& TrainRouteCacheMap = ZoneGraphPathQuerySaveActor->TrainRouteCacheMap;
+
+	const FTrainRouteCache* RouteCache = nullptr;
+	int32 RouteIndex = INDEX_NONE;
+    for (const auto& PairVal : TrainRouteCacheMap)
+    {
+    	if (PairVal.Value.RouteName == RouteName)
+    	{
+    		RouteCache = &PairVal.Value;
+    		RouteIndex = PairVal.Key;
+    		break;
+    	}
+    }
+
+	if (!RouteCache)
+	{
+		UE_LOG(LogHTGame, Error, TEXT("UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLocation RouteName:%s not found"), *RouteName.ToString())
+		return Res;
+	}
+
+	// 根据车站位置计算点位
+	TArray<FZoneGraphLaneLocation> TrainStationLocations;
+	for (int32 i = 0; i < RouteCache->TrainLanesInOrderArray.Num(); ++i)
+	{
+		if (RouteCache->TrainLanesInOrderArray[i].PossibleStationLoction.IsValid())
+		{
+			TrainStationLocations.Add(RouteCache->TrainLanesInOrderArray[i].PossibleStationLoction.GetLaneLocation());
+		}
+	}
+
+	auto CheckLaneSuitableFunc = [](const FZoneGraphLaneHandle& LaneHandle, OUT bool& bFailedAndContinueNextLane)-> bool
+	{
+		// 没有道路限制，都允许
+		return true;
+	};
+
+	for (int32 i = 0; i < TrainStationLocations.Num(); ++i)
+	{
+	    if(!RouteCache->bLoopRoute && i == TrainStationLocations.Num() - 1)
+	    {
+	        // 如果非闭环，则不处理最后一个车站
+	        break;
+	    }
+	
+		FZoneGraphLaneLocation TrainStationLoc = TrainStationLocations[i];
+		FZoneGraphLaneLocation NextTrainStationLoc = TrainStationLocations.IsValidIndex(i+1) ? TrainStationLocations[i+1] : TrainStationLocations[0];
+		
+		float Dist = 0.f;
+		if (GetTrainRouteLocationDistacne(TrainStationLoc, RouteIndex, NextTrainStationLoc, Dist))
+		{
+			if (Dist <= 0.f)
+			{
+				continue;
+			}
+
+			FZoneGraphLaneLocation SpawnLoc;
+			if (UHTUtil::AdvanceLaneLocationFullDist(ZoneGraphSubsystem, TrainStationLoc, Dist/2.f, CheckLaneSuitableFunc, SpawnLoc))
+			{
+				Res.Add(SpawnLoc);
+			}
+		}
+	}
+	
+	return Res;
+}
+```
