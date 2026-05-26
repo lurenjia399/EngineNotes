@@ -124,7 +124,7 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 			continue;
 		}
 		
-		// huo'qu
+		// 获取这个路线火车的生成点
 		TArray<FZoneGraphLaneLocation> SpawnPoints = 
 		ZoneGraphPathQuerySubsystem->GetTrainSpawnLocation(SpawnConfigPairVal.Key);
 
