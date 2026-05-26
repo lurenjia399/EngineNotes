@@ -115,11 +115,13 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 	
 	FName SkipRouteName = OwnerTrainSpawner->GetSkipSpawnRouteName();
 	
-	for (const auto& SpawnConfigPairVal:OwnerTrainSpawner->TrainEnityConfigOverride)
+	for (const auto& SpawnConfigPairVal:
+		OwnerTrainSpawner->TrainEnityConfigOverride)
 	{
-		if (!SkipRouteName.IsNone() && SpawnConfigPairVal.Key.IsEqual(SkipRouteName))
+		if (!SkipRouteName.IsNone() && 
+			SpawnConfigPairVal.Key.IsEqual(SkipRouteName))
 		{
-			UE_LOG(LogHTTrain, Warning, TEXT("Train Spawn Skipped Route:[%s], player On the Train"), *SpawnConfigPairVal.Key.ToString());
+			
 			continue;
 		}
 		
