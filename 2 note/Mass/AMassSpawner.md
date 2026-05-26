@@ -83,6 +83,35 @@ void AMassSpawner::DoSpawning()
 }
 ```
 
+DoSpawning之后生成数据构建完成
+```cpp
+void AMassSpawner::OnSpawnDataGenerationFinished(TConstArrayView<FMassEntitySpawnDataGeneratorResult> Results, FMassSpawnDataGenerator* FinishedGenerator)
+{
+	// @todo: this can be potentially expensive copy for the instanced structs, could there be a way to use move gere instead?
+	AllGeneratedResults.Append(Results.GetData(), Results.Num());
+
+	bool bAllSpawnPointsGenerated = true;
+	bool bFoundFinishedGenerator = false;
+	for (FMassSpawnDataGenerator& Generator : SpawnDataGenerators)
+	{
+		if (&Generator == FinishedGenerator)
+		{
+			Generator.bDataGenerated = true;
+			bFoundFinishedGenerator = true;
+		}
+
+		bAllSpawnPointsGenerated &= Generator.bDataGenerated;
+	}
+
+	checkf(bFoundFinishedGenerator, TEXT("Something went wrong, we are receiving a callback on an unknow spawn point generator"));
+	
+	if (bAllSpawnPointsGenerated)
+	{
+		
+	}
+}
+```
+
 # UMassEntitySpawnDataGeneratorBase
 生成器
 ```cpp
