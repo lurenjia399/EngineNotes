@@ -206,5 +206,5 @@ void AActor::PostSpawnInitialize(
 与 PostLoad 的区别：
   - PostLoad: 只在从磁盘加载时调用，运行时创建不调用
   - PostRegisterAllComponents: 无论加载还是运行时创建都会调用
-4 
+4 BeginPlay
 
