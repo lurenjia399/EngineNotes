@@ -198,7 +198,7 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 				continue;
 			}
 			
-			// 从当前车站开始，沿着火车路线前进长度的一半，作为火车sheng'chen
+			// 从当前车站开始，沿着火车路线前进长度的一半，作为火车生成位置点
 			FZoneGraphLaneLocation SpawnLoc;
 			if (UHTUtil::AdvanceLaneLocationFullDist(
 				ZoneGraphSubsystem, 
