@@ -112,20 +112,21 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 	}
 
 	TArray<FMassEntitySpawnDataGeneratorResult> Results;
-	
 	FName SkipRouteName = OwnerTrainSpawner->GetSkipSpawnRouteName();
 	
 	for (const auto& SpawnConfigPairVal:
 		OwnerTrainSpawner->TrainEnityConfigOverride)
 	{
+		// 跳过的车站，玩家在火车上，读取火车是哪个车站路线的，跳过生成
 		if (!SkipRouteName.IsNone() && 
 			SpawnConfigPairVal.Key.IsEqual(SkipRouteName))
 		{
-			
 			continue;
 		}
 		
-		TArray<FZoneGraphLaneLocation> SpawnPoints = ZoneGraphPathQuerySubsystem->GetTrainSpawnLocation(SpawnConfigPairVal.Key);
+		// huo'qu
+		TArray<FZoneGraphLaneLocation> SpawnPoints = 
+		ZoneGraphPathQuerySubsystem->GetTrainSpawnLocation(SpawnConfigPairVal.Key);
 
 		int32 EntityTemplateIndex = INDEX_NONE;
 		for (int32 i = 0; i < EntityTypes.Num(); i++)
