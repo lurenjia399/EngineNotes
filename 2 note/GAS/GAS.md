@@ -643,7 +643,7 @@ void UAttributeSet::PostNetReceive()
 2 InstanceGE的权威端直接调用ExecuteGameplayEffect这个方法，执行一遍属性改变的流程，直接改变属性的BaseValue。
 3 等到属性同步下来后，会执行FScopedAggregatorOnDirtyBatch这个结构体的析构，然后就会执行OnAttributeAggregatorDirty这个方法，客户端会重新根据新的BaseValue在计算一遍CurrentValue。
 4 在CatchUpTo追上客户端后，客户端会执行RemoveActiveGameplayEffect方法，把数组中的预测ActiveGE移除掉，顺便移除预测聚合器Mod。
-注意 4和3都是属性同步，4是ASC中的ReplicatedPredictionKeyMap，3是UA
+注意 4和3都是属性同步，4是ASC中的ReplicatedPredictionKeyMap，3是ASC中的SpawnedAttributes
 
 
 
