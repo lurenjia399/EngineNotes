@@ -33,7 +33,25 @@ void AMassSpawner::BeginPlay()
 ```cpp
 void AMassSpawner::DoSpawning()
 {
-	
+	// 调用 FMassSpawnDataGenerator 来生成
+	for (FMassSpawnDataGenerator& Generator : SpawnDataGenerators)
+	{
+		if (Generator.GeneratorInstance)
+		{
+			const float ProportionRatio = FMath::Min(
+				Generator.Proportion / ProportionRemaining, 1.0f);
+			const int32 SpawnCount = FMath::CeilToInt(
+				static_cast<float>(SpawnCountRemaining) * ProportionRatio);
+			
+			FFinishedGeneratingSpawnDataSignature Delegate = 
+				FFinishedGeneratingSpawnDataSignature::CreateUObject(
+				this, &AMassSpawner::OnSpawnDataGenerationFinished, &Generator);
+			Generator.GeneratorInstance->
+				Generate(*this, EntityTypes, SpawnCount, Delegate);
+			SpawnCountRemaining -= SpawnCount;
+			ProportionRemaining -= Generator.Proportion;
+		}
+	}
 }
 ```
 
