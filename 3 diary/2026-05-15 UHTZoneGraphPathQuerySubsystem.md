@@ -181,14 +181,17 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 	        break;
 	    }
 		
-		// dan
+		// 当前车站位置
 		FZoneGraphLaneLocation TrainStationLoc = TrainStationLocations[i];
+		// 下一个车站位置，如果是环就从0开始
 		FZoneGraphLaneLocation NextTrainStationLoc = 
 			TrainStationLocations.IsValidIndex(i+1) ? 
 			TrainStationLocations[i+1] : TrainStationLocations[0];
 		
 		float Dist = 0.f;
-		if (GetTrainRouteLocationDistacne(TrainStationLoc, RouteIndex, NextTrainStationLoc, Dist))
+		// 从车站位置开始，到下一个车站位置的长度
+		if (GetTrainRouteLocationDistacne(
+			TrainStationLoc, RouteIndex, NextTrainStationLoc, Dist))
 		{
 			if (Dist <= 0.f)
 			{
