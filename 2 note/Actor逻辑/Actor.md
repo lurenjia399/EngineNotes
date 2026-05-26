@@ -200,5 +200,11 @@ void AActor::PostSpawnInitialize(
 注意运行时通过 SpawnActor 创建的 Actor 会调用构造函数，但不会调用PostLoad
 2 PostActorCreated
 3 PostRegisterAllComponents
-
+4. 关卡加载时 - Actor 从关卡加载并完成组件注册
+5. 运行时生成 - 通过 SpawnActor 创建并完成组件注册
+6. 编辑器中 - 放置或修改 Actor 后
+与 PostLoad 的区别：
+  - PostLoad: 只在从磁盘加载时调用，运行时创建不调用
+  - PostRegisterAllComponents: 无论加载还是运行时创建都会调用
+4 
 
