@@ -124,7 +124,7 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 			continue;
 		}
 		
-		// 获取这个路线火车的生成点
+		// 获取这个路线火车的生成点，就是在车站之间的中点生成
 		TArray<FZoneGraphLaneLocation> SpawnPoints = 
 		ZoneGraphPathQuerySubsystem->GetTrainSpawnLocation(SpawnConfigPairVal.Key);
 
@@ -138,13 +138,6 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 			}
 		}
 		
-#if !UE_BUILD_SHIPPING || HOTTA_INNER_ENV
-		for (const FZoneGraphLaneLocation &LaneLocation: SpawnPoints)
-		{
-			UE_LOG(LogHTTrain, Log, TEXT("Train Log Will Spawn [%s] Location:%s, Distance:%f"), *SpawnConfigPairVal.Key.ToString(), *LaneLocation.LaneHandle.ToString(), LaneLocation.DistanceAlongLane);
-		}
-#endif
-		
 		if (SpawnPoints.Num() > 0 && EntityTemplateIndex >= 0)
 		{
 			FMassEntitySpawnDataGeneratorResult& Res = Results.AddDefaulted_GetRef();
@@ -152,10 +145,12 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 
 			Res.EntityConfigIndex = EntityTemplateIndex;
 			
-			Res.SpawnDataProcessor = UMassTrafficInitTrafficVehiclesProcessor::StaticClass();
-			//Res.PostSpawnProcessors.Add(UMassTrafficFindNextVehicleProcessor::StaticClass());
-			Res.PostSpawnProcessors.Add(UMassTrafficVisualLoggingFieldOperationProcessor::StaticClass());
-			Res.PostSpawnProcessors.Add(UMassTrafficUpdateDistanceToNearestObstacleProcessor::StaticClass());
+			Res.SpawnDataProcessor = 
+				UMassTrafficInitTrafficVehiclesProcessor::StaticClass();
+			Res.PostSpawnProcessors.Add(
+				UMassTrafficVisualLoggingFieldOperationProcessor::StaticClass());
+			Res.PostSpawnProcessors.Add(
+				UMassTrafficUpdateDistanceToNearestObstacleProcessor::StaticClass());
 			Res.PostSpawnProcessors.Add(UMassTrafficChooseNextLaneProcessor::StaticClass());
 			Res.PostSpawnProcessors.Add(UMassTrafficInitTrafficVehicleSpeedProcessor::StaticClass());
 			Res.PostSpawnProcessors.Add(UMassTrafficInitInterpolationProcessor::StaticClass());
