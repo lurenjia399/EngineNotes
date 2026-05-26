@@ -189,7 +189,7 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 			TrainStationLocations[i+1] : TrainStationLocations[0];
 		
 		float Dist = 0.f;
-		// 从车站位置开始，到下一个车站位置的长度
+		// 从当前车站位置开始，到下一个车站位置的长度
 		if (GetTrainRouteLocationDistacne(
 			TrainStationLoc, RouteIndex, NextTrainStationLoc, Dist))
 		{
@@ -197,7 +197,8 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 			{
 				continue;
 			}
-
+			
+			// 从当前车站开始，沿着火车路线前进长度的一半，作为火车sheng'chen
 			FZoneGraphLaneLocation SpawnLoc;
 			if (UHTUtil::AdvanceLaneLocationFullDist(
 				ZoneGraphSubsystem, 
