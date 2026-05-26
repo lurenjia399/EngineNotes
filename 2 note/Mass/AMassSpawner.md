@@ -1,4 +1,31 @@
 ```cpp
+/*
+注册 RegisterEntityTemplates
+*/
+void AMassSpawner::PostRegisterAllComponents()
+{
+	Super::PostRegisterAllComponents();
+
+	if (HasAnyFlags(RF_ClassDefaultObject) == false)
+	{
+		UWorld* World = GetWorld();
+		if (GEngine->GetNetMode(GetWorld()) == NM_Client)
+		{
+			UMassSpawnerSubsystem* MassSpawnerSubsystem = UWorld::GetSubsystem<UMassSpawnerSubsystem>(World);
+			if (MassSpawnerSubsystem)
+			{
+				RegisterEntityTemplates();
+			}
+			else
+			{
+				FWorldDelegates::OnPostWorldInitialization.AddUObject(this, &AMassSpawner::OnPostWorldInit);
+			}
+		}
+	}
+}
+```
+
+```cpp
 void AMassSpawner::BeginPlay()
 {
 	Super::BeginPlay();
@@ -29,6 +56,7 @@ void AMassSpawner::BeginPlay()
 		}
 }
 ```
+
 
 ```cpp
 void AMassSpawner::DoSpawning()
