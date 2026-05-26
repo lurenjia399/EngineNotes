@@ -150,16 +150,22 @@ void UHTMassTrainSpawnDataGenerator::Generate(
 			Res.PostSpawnProcessors.Add(
 				UMassTrafficVisualLoggingFieldOperationProcessor::StaticClass());
 			Res.PostSpawnProcessors.Add(
-				UMassTrafficUpdateDistanceToNearestObstacleProcessor::StaticClass());
-			Res.PostSpawnProcessors.Add(UMassTrafficChooseNextLaneProcessor::StaticClass());
-			Res.PostSpawnProcessors.Add(UMassTrafficInitTrafficVehicleSpeedProcessor::StaticClass());
-			Res.PostSpawnProcessors.Add(UMassTrafficInitInterpolationProcessor::StaticClass());
-			Res.PostSpawnProcessors.Add(UMassTrafficUpdateVelocityProcessor::StaticClass());
-			
-			Res.PostSpawnProcessors.Add(UHTMassTrafficMarkVehicleInitProcessor::StaticClass());
+				UMassTrafficUpdateDistanceToNearestObstacleProcessor
+				::StaticClass());
+			Res.PostSpawnProcessors.Add(
+				UMassTrafficChooseNextLaneProcessor::StaticClass());
+			Res.PostSpawnProcessors.Add(
+				UMassTrafficInitTrafficVehicleSpeedProcessor::StaticClass());
+			Res.PostSpawnProcessors.Add(
+				UMassTrafficInitInterpolationProcessor::StaticClass());
+			Res.PostSpawnProcessors.Add(
+				UMassTrafficUpdateVelocityProcessor::StaticClass());
+			Res.PostSpawnProcessors.Add(
+				UHTMassTrafficMarkVehicleInitProcessor::StaticClass());
 
 			Res.SpawnData.InitializeAs<FMassTrafficVehiclesSpawnData>();
-			Res.SpawnData.GetMutable<FMassTrafficVehiclesSpawnData>().LaneLocations = SpawnPoints;
+			Res.SpawnData.GetMutable<
+				FMassTrafficVehiclesSpawnData>().LaneLocations = SpawnPoints;
 		}
 	}
 
