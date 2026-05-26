@@ -133,23 +133,7 @@ void AZoneGraphPathQuerySaveActor::OnRebuildForAllGraphsSucceed(const FZoneGraph
 TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLocation(
 	const FName& RouteName) const
 {
-	TArray<FZoneGraphLaneLocation> Res;
-	if (!ZoneGraphPathQuerySaveActor)
-	{
-		return Res;
-	}
-
-	UWorld* World = GetWorld();
-	if (!World)
-	{
-		return Res;
-	}
 	
-	UZoneGraphSubsystem* ZoneGraphSubsystem = UWorld::GetSubsystem<UZoneGraphSubsystem>(World);
-	if (!ZoneGraphSubsystem)
-	{
-		return Res;
-	}
 
 	const TMap<int32, FTrainRouteCache>& TrainRouteCacheMap = ZoneGraphPathQuerySaveActor->TrainRouteCacheMap;
 
