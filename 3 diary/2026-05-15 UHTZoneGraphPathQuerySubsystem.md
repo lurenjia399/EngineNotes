@@ -151,17 +151,18 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 
 	if (!RouteCache)
 	{
-		UE_LOG(LogHTGame, Error, TEXT("UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLocation RouteName:%s not found"), *RouteName.ToString())
 		return Res;
 	}
 
-	// 根据车站位置计算点位
+	// 从火车路线中取出车站位置
 	TArray<FZoneGraphLaneLocation> TrainStationLocations;
 	for (int32 i = 0; i < RouteCache->TrainLanesInOrderArray.Num(); ++i)
 	{
 		if (RouteCache->TrainLanesInOrderArray[i].PossibleStationLoction.IsValid())
 		{
-			TrainStationLocations.Add(RouteCache->TrainLanesInOrderArray[i].PossibleStationLoction.GetLaneLocation());
+			TrainStationLocations.Add(
+				RouteCache->TrainLanesInOrderArray[i].
+				PossibleStationLoction.GetLaneLocation());
 		}
 	}
 
@@ -171,6 +172,7 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 		return true;
 	};
 
+	// 遍历车站位置
 	for (int32 i = 0; i < TrainStationLocations.Num(); ++i)
 	{
 	    if(!RouteCache->bLoopRoute && i == TrainStationLocations.Num() - 1)
@@ -178,9 +180,12 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 	        // 如果非闭环，则不处理最后一个车站
 	        break;
 	    }
-	
+		
+		// dan
 		FZoneGraphLaneLocation TrainStationLoc = TrainStationLocations[i];
-		FZoneGraphLaneLocation NextTrainStationLoc = TrainStationLocations.IsValidIndex(i+1) ? TrainStationLocations[i+1] : TrainStationLocations[0];
+		FZoneGraphLaneLocation NextTrainStationLoc = 
+			TrainStationLocations.IsValidIndex(i+1) ? 
+			TrainStationLocations[i+1] : TrainStationLocations[0];
 		
 		float Dist = 0.f;
 		if (GetTrainRouteLocationDistacne(TrainStationLoc, RouteIndex, NextTrainStationLoc, Dist))
