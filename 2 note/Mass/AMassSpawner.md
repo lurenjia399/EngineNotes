@@ -30,3 +30,10 @@ void AMassSpawner::BeginPlay()
 }
 ```
 
+```cpp
+void AMassSpawner::DoSpawning()
+{
+	
+}
+```
+
