@@ -193,12 +193,45 @@ void AActor::PostSpawnInitialize(
 
 # 各种方法执行时机
 
+  调用顺序（运行时创建）：                    
+  SpawnActor()
+      ↓
+  构造函数 (Constructor)
+      ↓
+  PostActorCreated() ← 这里（仅运行时创建）
+      ↓
+  OnConstruction()
+      ↓
+  PreInitializeComponents()
+      ↓
+  InitializeComponent()
+      ↓
+  PostInitializeComponents()
+      ↓
+  PostRegisterAllComponents()
+      ↓
+  BeginPlay()
+
+  调用顺序（从磁盘加载）：
+  LoadObject/LoadLevel
+      ↓
+  Serialize()
+      ↓
+  PostLoad() ← 加载时走这里，不走 PostActorCreated
+      ↓
+  OnConstruction()
+      ↓
+  PreInitializeComponents()
+
 1 PostLoad 
 1. 关卡加载时 - 当包含该 Actor 的关卡/地图被加载时
 2. 资产加载时 - 当 Actor 作为资产被 LoadObject 或类似函数加载时
 3. 编辑器中 - 打开包含该 Actor 的关卡时
 注意运行时通过 SpawnActor 创建的 Actor 会调用构造函数，但不会调用PostLoad
 2 PostActorCreated
+- PostLoad: 只在加载已保存的 Actor 时调用
+- PostActorCreated: 只在运行时新创建 Actor 时调用
+- 两者互斥，同一个 Actor 实例只会调用其中一个
 3 PostRegisterAllComponents
 4. 关卡加载时 - Actor 从关卡加载并完成组件注册
 5. 运行时生成 - 通过 SpawnActor 创建并完成组件注册
