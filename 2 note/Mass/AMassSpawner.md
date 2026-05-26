@@ -83,3 +83,9 @@ void AMassSpawner::DoSpawning()
 }
 ```
 
+# UMassEntitySpawnDataGeneratorBase
+生成器
+```cpp
+
+```
+
