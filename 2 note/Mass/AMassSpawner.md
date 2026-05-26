@@ -16,16 +16,17 @@ void AMassSpawner::BeginPlay()
 		else
 		{
 			SimulationStartedHandle = 
-UMassSimulationSubsystem::GetOnSimulationStarted().
-				AddLambda([this](UWorld* InWorld)
-			{
-				UWorld* World = GetWorld();
-
-				if (World == InWorld)
+				UMassSimulationSubsystem::GetOnSimulationStarted().AddLambda(
+				[this](UWorld* InWorld)
 				{
-					DoSpawning();
-				}
-			});
+					UWorld* World = GetWorld();
+	
+					if (World == InWorld)
+					{
+						DoSpawning();
+					}
+				});
 		}
 }
 ```
+
