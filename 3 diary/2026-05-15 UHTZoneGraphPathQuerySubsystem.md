@@ -199,7 +199,12 @@ TArray<FZoneGraphLaneLocation> UHTZoneGraphPathQuerySubsystem::GetTrainSpawnLoca
 			}
 
 			FZoneGraphLaneLocation SpawnLoc;
-			if (UHTUtil::AdvanceLaneLocationFullDist(ZoneGraphSubsystem, TrainStationLoc, Dist/2.f, CheckLaneSuitableFunc, SpawnLoc))
+			if (UHTUtil::AdvanceLaneLocationFullDist(
+				ZoneGraphSubsystem, 
+				TrainStationLoc, 
+				Dist/2.f, 
+				CheckLaneSuitableFunc, 
+				SpawnLoc))
 			{
 				Res.Add(SpawnLoc);
 			}
