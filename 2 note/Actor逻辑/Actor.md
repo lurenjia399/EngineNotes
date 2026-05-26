@@ -194,6 +194,8 @@ void AActor::PostSpawnInitialize(
 # 各种方法执行时机
 
 1 PostLoad 
- 1. 关卡加载时 - 当包含该 Actor 的关卡/地图被加载时
-  2. 资产加载时 - 当 Actor 作为资产被 LoadObject 或类似函数加载时
-  3. 编辑器中 - 打开包含该 Actor 的关卡时
+1. 关卡加载时 - 当包含该 Actor 的关卡/地图被加载时
+2. 资产加载时 - 当 Actor 作为资产被 LoadObject 或类似函数加载时
+3. 编辑器中 - 打开包含该 Actor 的关卡时
+注意运行时通过 SpawnActor 创建的 Actor 会调用构造函数，但不会调用PostLoad
+
