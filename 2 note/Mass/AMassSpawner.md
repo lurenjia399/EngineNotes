@@ -148,7 +148,7 @@ void AMassSpawner::SpawnGeneratedEntities(
 		UE::Mass::Executor::RunProcessorsView(Processors, ProcessingContext, EntityCollections);
 	}
 	
-	// 
+	// 广播事件
 	OnSpawningFinishedEvent.Broadcast();
 }
 ```
