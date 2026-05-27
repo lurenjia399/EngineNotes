@@ -127,7 +127,29 @@ void AMassSpawner::SpawnGeneratedEntities(
 		}
 	}
 	
+	// 执行一次PostSpawnProcessor的Execute
+	if (Processors.Num() > 0)
+	{
+		FMassEntityManager& EntityManager = UE::Mass::Utils::GetEntityManagerChecked(*World);
+		FMassProcessingContext ProcessingContext(EntityManager, /*TimeDelta=*/0.0f);
+
+		// gather freshly spawned entities
+		TArray<FMassEntityHandle> AllEntities;
+		AllEntities.Reserve(TotalNum);
+		
+		for (int32 Index = StartIndex; Index < AllSpawnedEntities.Num(); ++Index)
+		{
+			AllEntities.Append(AllSpawnedEntities[Index].Entities);
+		}
+
+		// create entity collections and run Processors on them. 
+		TArray<FMassArchetypeEntityCollection> EntityCollections;
+		UE::Mass::Utils::CreateEntityCollections(EntityManager, AllEntities, FMassArchetypeEntityCollection::NoDuplicates, EntityCollections);
+		UE::Mass::Executor::RunProcessorsView(Processors, ProcessingContext, EntityCollections);
+	}
 	
+	// 
+	OnSpawningFinishedEvent.Broadcast();
 }
 ```
 
