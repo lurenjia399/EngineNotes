@@ -95,7 +95,7 @@ void AMassSpawner::OnSpawnDataGenerationFinished(TConstArrayView<FMassEntitySpaw
 void AMassSpawner::SpawnGeneratedEntities(
 	TConstArrayView<FMassEntitySpawnDataGeneratorResult> Results)
 {
-	// 根据
+	// 根据Result，执行SpawnEntities方法，创建Entities
 	for (const FMassEntitySpawnDataGeneratorResult& Result : Results)
 	{
 		FSpawnedEntities& SpawnedEntities = 
