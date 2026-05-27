@@ -95,7 +95,20 @@ void AMassSpawner::OnSpawnDataGenerationFinished(TConstArrayView<FMassEntitySpaw
 void AMassSpawner::SpawnGeneratedEntities(
 	TConstArrayView<FMassEntitySpawnDataGeneratorResult> Results)
 {
-	
+	// 根据
+	for (const FMassEntitySpawnDataGeneratorResult& Result : Results)
+	{
+		FSpawnedEntities& SpawnedEntities = 
+			AllSpawnedEntities.AddDefaulted_GetRef();
+		SpawnedEntities.TemplateID = EntityTemplate.GetTemplateID();
+		SpawnerSystem->SpawnEntities(
+			EntityTemplate.GetTemplateID(), 
+			Result.NumEntities, 
+			Result.SpawnData, 
+			Result.SpawnDataProcessor, 
+			SpawnedEntities.Entities);
+		TotalNum += SpawnedEntities.Entities.Num();
+	}
 }
 ```
 
