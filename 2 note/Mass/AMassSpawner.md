@@ -109,6 +109,25 @@ void AMassSpawner::SpawnGeneratedEntities(
 			SpawnedEntities.Entities);
 		TotalNum += SpawnedEntities.Entities.Num();
 	}
+	
+	// 创建PostSpawnProcessor
+	for (const FMassEntitySpawnDataGeneratorResult& Result : Results)
+	{
+		for (const TSubclassOf<UMassProcessor>& ProcessorClass : Result.PostSpawnProcessors)
+		{
+			if (AddedProcessorClasses.Contains(ProcessorClass) == false)
+			{
+				if (UMassProcessor* Processor = 
+					GetPostSpawnProcessor(ProcessorClass))
+				{
+					Processors.Add(Processor);
+				}
+				AddedProcessorClasses.Add(ProcessorClass);
+			}
+		}
+	}
+	
+	
 }
 ```
 
