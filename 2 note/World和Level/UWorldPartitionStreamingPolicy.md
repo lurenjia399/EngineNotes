@@ -9,5 +9,50 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 	ProcessedToLoadCells = 0;
 	ProcessedToActivateCells = 0;
 	TargetState.Reset();
+	
+	// 如果开启了异步线程，这里就变成同步的等异步线程结束
+	if (WaitForAsyncUpdateStreamingState())
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(UWorldPartitionStreamingPolicy::UpdateTargetStateFromAsyncTask);
+
+		check(AsyncUpdateStreamingStateTask.IsCompleted());
+		PostUpdateStreamingStateInternal_GameThread(AsyncTaskTargetState);
+
+		// Update Target State using asynchronous task results
+		// Filter result (AsyncTaskTargetState) using CurrentState as asynchronous tasks started with a snapshot version of ActivatedCells/LoadedCells
+		for (const UWorldPartitionRuntimeCell* Cell : AsyncTaskTargetState.ToActivateCells)
+		{
+			if (!CurrentState.ActivatedCells.Contains(Cell))
+			{
+				TargetState.ToActivateCells.Add(Cell);
+			}
+		}
+		for (const UWorldPartitionRuntimeCell* Cell : AsyncTaskTargetState.ToLoadCells)
+		{
+			if (!CurrentState.LoadedCells.Contains(Cell))
+			{
+				TargetState.ToLoadCells.Add(Cell);
+			}
+		}
+
+		// Reset everything related to last asynchronous tasks
+		check(AsyncUpdateTaskState == EAsyncUpdateTaskState::Started);
+		AsyncUpdateTaskState = EAsyncUpdateTaskState::None;
+		AsyncUpdateStreamingStateTask = UE::Tasks::TTask<void>();
+		AsyncTaskCurrentState.Reset();
+		AsyncTaskTargetState.Reset();
+	}
+}
+```
+
+# PostUpdateStreamingStateInternal_GameThread
+```cpp
+void UWorldPartitionStreamingPolicy::PostUpdateStreamingStateInternal_GameThread(FWorldPartitionUpdateStreamingTargetState& InOutTargetState)
+{
+	if (!InOutTargetState.ToUnloadCells.IsEmpty())
+	{
+		SetCellsStateToUnloaded(InOutTargetState.ToUnloadCells);
+		InOutTargetState.ToUnloadCells.Reset();
+	}
 }
 ```
