@@ -31,6 +31,12 @@ void UWorldPartitionSubsystem::UpdateStreamingSources()
 		}
 	}
 	
+	// 重置StreamingSourcesVelocity
+	for (auto& Pair : StreamingSourcesVelocity)
+	{
+		Pair.Value.Invalidate();
+	}
+	
 	
 }
 ```
