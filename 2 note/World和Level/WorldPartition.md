@@ -293,9 +293,9 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 	
 	if (WorldPartitionSubsystem)
 	{
-		// Update streaming sources
+		// Update streaming sources，更新世界的StreamingSource数组
 		WorldPartitionSubsystem->UpdateStreamingSources();
-		// Update server's clients visible levels
+		// Update server's clients visible levels，在服务器上更新，客户端可见的Level
 		WorldPartitionSubsystem->UpdateServerClientsVisibleLevelNames();
 	}
 }
