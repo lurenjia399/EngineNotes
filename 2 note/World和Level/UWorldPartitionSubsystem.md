@@ -86,7 +86,7 @@ void UWorldPartitionSubsystem::UpdateServerClientsVisibleLevelNames()
 			}
 		}
 		
-		// ji's
+		// 计算一下ServerClientsVisibleLevelsHash 这个hash值，应该是为了比较ServerClientsVisibleLevelNames数组是否改变
 		FHashBuilder HashBuilder;
 		TArray<FName> SortedServerClientsVisibleLevelNames = ServerClientsVisibleLevelNames.Array();
 		SortedServerClientsVisibleLevelNames.Sort(FNameFastLess());
