@@ -38,7 +38,7 @@ void UWorldPartitionSubsystem::UpdateStreamingSources()
 	}
 	
 	/*
-	1 计
+	1 计算StreamingSource的平均速度，用位移/时间，并用上一个速度插值到当前速度
 	*/
 	StreamingSourcesHash = 0;
 	const double CurrentTime = World->GetTimeSeconds();
