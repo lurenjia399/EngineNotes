@@ -301,6 +301,7 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 }
 ```
 
+
 # Hlod创建流程
 如需生成HLOD代理网格体，需将Actor添加至HLOD层，然后将其 **移动性（Mobility）** 设置为 **静态（Static）**，并告知Actor生成HLOD。方法是使用 **构建（Build） > 构建HLOD（Build HLODs）** 或者使用 **WorldPartitionHLODsBuilder** commandlet。
 ## 1 build
