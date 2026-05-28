@@ -49,6 +49,7 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 ```cpp
 void UWorldPartitionStreamingPolicy::PostUpdateStreamingStateInternal_GameThread(FWorldPartitionUpdateStreamingTargetState& InOutTargetState)
 {
+	// 清掉没有加载的Cell
 	if (!InOutTargetState.ToUnloadCells.IsEmpty())
 	{
 		SetCellsStateToUnloaded(InOutTargetState.ToUnloadCells);
