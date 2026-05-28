@@ -353,7 +353,7 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 	}
 	
 	
-	// 在这个方法结束，还会执行，这个方法，这个是在前边写的，这个方法会执行到UWorldPartitionStreamingPolicy::OnStreamingStateUpdated这个方法里，就是kai'qi
+	// 在这个方法结束，还会执行，这个方法，这个是在前边写的，这个方法会执行到UWorldPartitionStreamingPolicy::OnStreamingStateUpdated这个方法里，就是开启线程，开始加载当前预期状态
 	// ON_SCOPE_EXIT
 	// {
 		// WorldPartitionSubsystem->OnStreamingStateUpdated().Broadcast();
