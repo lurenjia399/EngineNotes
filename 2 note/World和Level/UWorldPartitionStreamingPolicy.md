@@ -42,8 +42,19 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 		AsyncTaskCurrentState.Reset();
 		AsyncTaskTargetState.Reset();
 	}
-	
+	// 一样的东西，依然更新StreamingSource
 	UpdateStreamingSources(bCanOptimizeUpdate);
+	
+	if (bCanUpdateAsync)
+	{
+		AsyncUpdateTaskState = EAsyncUpdateTaskState::Pending;
+	}
+	else
+	{
+		TargetState.Reset();
+		UWorldPartitionStreamingPolicy::UpdateStreamingStateInternal(FUpdateStreamingStateParams(this, CurrentState), TargetState);
+		PostUpdateStreamingStateInternal_GameThread(TargetState);
+	}
 }
 ```
 
