@@ -64,17 +64,22 @@ void UWorldPartitionSubsystem::UpdateStreamingSources()
 void UWorldPartitionSubsystem::UpdateServerClientsVisibleLevelNames()
 {
 	UWorld* World = GetWorld();
-	// que
+	// 确保是服务器
 	if (IsServer(World))
 	{
+		// 重置数组
 		ServerClientsVisibleLevelNames.Reset();
+		
 		if (const UNetDriver* NetDriver = World->GetNetDriver())
 		{
 			for (UNetConnection* Connection : NetDriver->ClientConnections)
 			{
-				ServerClientsVisibleLevelNames.Add(Connection->GetClientWorldPackageName());
-				ServerClientsVisibleLevelNames.Append(Connection->ClientVisibleLevelNames);
-				ServerClientsVisibleLevelNames.Append(Connection->GetClientMakingVisibleLevelNames());
+				ServerClientsVisibleLevelNames.Add(
+					Connection->GetClientWorldPackageName());
+				ServerClientsVisibleLevelNames.Append(
+					Connection->ClientVisibleLevelNames);
+				ServerClientsVisibleLevelNames.Append(
+					Connection->GetClientMakingVisibleLevelNames());
 			}
 		}
 		FHashBuilder HashBuilder;
