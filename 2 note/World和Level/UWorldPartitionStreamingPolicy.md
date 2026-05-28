@@ -18,8 +18,7 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 		check(AsyncUpdateStreamingStateTask.IsCompleted());
 		PostUpdateStreamingStateInternal_GameThread(AsyncTaskTargetState);
 
-		// Update Target State using asynchronous task results
-		// Filter result (AsyncTaskTargetState) using CurrentState as asynchronous tasks started with a snapshot version of ActivatedCells/LoadedCells
+		// 把TaskTargetState中的CEll
 		for (const UWorldPartitionRuntimeCell* Cell : AsyncTaskTargetState.ToActivateCells)
 		{
 			if (!CurrentState.ActivatedCells.Contains(Cell))
@@ -35,6 +34,7 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 			}
 		}
 
+		// 清掉数据
 		// Reset everything related to last asynchronous tasks
 		check(AsyncUpdateTaskState == EAsyncUpdateTaskState::Started);
 		AsyncUpdateTaskState = EAsyncUpdateTaskState::None;
@@ -55,5 +55,7 @@ void UWorldPartitionStreamingPolicy::PostUpdateStreamingStateInternal_GameThread
 		SetCellsStateToUnloaded(InOutTargetState.ToUnloadCells);
 		InOutTargetState.ToUnloadCells.Reset();
 	}
+	
+
 }
 ```
