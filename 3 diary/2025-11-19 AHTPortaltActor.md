@@ -1,1 +1,0 @@
-# AHTPortaltActor 传送门的actor
