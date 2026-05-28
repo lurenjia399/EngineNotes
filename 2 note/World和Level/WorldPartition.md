@@ -322,10 +322,17 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 		}
 	}
 	
+	// 将ToLoadCell，ToActiveCell排序
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(SortStreamingCellsByImportance);
-		Algo::Sort(ToActivateCells, [](const UWorldPartitionRuntimeCell* CellA, const UWorldPartitionRuntimeCell* CellB) { return CellA->SortCompare(CellB) < 0; });
-		Algo::Sort(ToLoadCells, [](const UWorldPartitionRuntimeCell* CellA, const UWorldPartitionRuntimeCell* CellB) { return CellA->SortCompare(CellB) < 0; });
+		Algo::Sort(ToActivateCells, 
+		[](const UWorldPartitionRuntimeCell* CellA,
+			const UWorldPartitionRuntimeCell* CellB) 
+			{ return CellA->SortCompare(CellB) < 0; });
+		Algo::Sort(ToLoadCells, 
+		[](const UWorldPartitionRuntimeCell* CellA, 
+		const UWorldPartitionRuntimeCell* CellB) 
+		{ return CellA->SortCompare(CellB) < 0; });
 	}
 }
 ```
