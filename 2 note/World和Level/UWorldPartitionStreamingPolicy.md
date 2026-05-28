@@ -42,6 +42,8 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 		AsyncTaskCurrentState.Reset();
 		AsyncTaskTargetState.Reset();
 	}
+	
+	UpdateStreamingSources(bCanOptimizeUpdate);
 }
 ```
 
