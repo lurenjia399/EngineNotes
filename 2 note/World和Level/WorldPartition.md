@@ -335,7 +335,7 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 		{ return CellA->SortCompare(CellB) < 0; });
 	}
 	
-	// 激活ToActivateCell中的Cell
+	// 激活ToActivateCell中的Cell，就是设置Cell上的bVisible，bLoaded标志位
 	{
 		for (const UWorldPartitionRuntimeCell* Cell : ToActivateCells)
 		{
@@ -343,7 +343,7 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 		}
 	}
 	
-	// 加载ToLoadedCell中的Cell
+	// 加载ToLoadedCell中的Cell，就是设置Cell上的bVisible，bLoaded标志位
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(ToLoadCells);
 		for (const UWorldPartitionRuntimeCell* Cell : ToLoadCells)
@@ -351,6 +351,13 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 			Cell->GetOuterWorld()->GetWorldPartition()->StreamingPolicy->SetCellStateToLoaded(Cell, MaxCellsToLoad);
 		}
 	}
+	
+	
+	// 在这个方法结束，还会执行
+	ON_SCOPE_EXIT
+	{
+		WorldPartitionSubsystem->OnStreamingStateUpdated().Broadcast();
+	};
 }
 ```
 
