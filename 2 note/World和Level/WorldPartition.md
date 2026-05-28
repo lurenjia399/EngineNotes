@@ -308,6 +308,25 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 			RegisteredWorldPartition->StreamingPolicy->UpdateStreamingState();
 		}
 	}
+	
+	// 获取到需要加载的Cell，以及需要激活的Cell
+	TArray<const UWorldPartitionRuntimeCell*> ToLoadCells;
+	TArray<const UWorldPartitionRuntimeCell*> ToActivateCells;
+	for (UWorldPartition* RegisteredWorldPartition : 
+		GetRegisteredWorldPartitionsCopy())
+	{
+		if (RegisteredWorldPartition->StreamingPolicy)
+		{
+			RegisteredWorldPartition->StreamingPolicy
+				->GetCellsToUpdate(ToLoadCells, ToActivateCells);
+		}
+	}
+	
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(SortStreamingCellsByImportance);
+		Algo::Sort(ToActivateCells, [](const UWorldPartitionRuntimeCell* CellA, const UWorldPartitionRuntimeCell* CellB) { return CellA->SortCompare(CellB) < 0; });
+		Algo::Sort(ToLoadCells, [](const UWorldPartitionRuntimeCell* CellA, const UWorldPartitionRuntimeCell* CellB) { return CellA->SortCompare(CellB) < 0; });
+	}
 }
 ```
 
