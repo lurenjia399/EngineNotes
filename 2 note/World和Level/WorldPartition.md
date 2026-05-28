@@ -298,6 +298,16 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 		// Update server's clients visible levels，在服务器上更新，客户端可见的Level
 		WorldPartitionSubsystem->UpdateServerClientsVisibleLevelNames();
 	}
+	
+	// 遍历WP，执行Plicy里的UpdateStreamingState
+	for (UWorldPartition* RegisteredWorldPartition : 
+		GetRegisteredWorldPartitionsCopy())
+	{
+		if (RegisteredWorldPartition->StreamingPolicy)
+		{
+			RegisteredWorldPartition->StreamingPolicy->UpdateStreamingState();
+		}
+	}
 }
 ```
 
