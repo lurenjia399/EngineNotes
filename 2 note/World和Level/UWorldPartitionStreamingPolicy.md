@@ -18,7 +18,7 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 		check(AsyncUpdateStreamingStateTask.IsCompleted());
 		PostUpdateStreamingStateInternal_GameThread(AsyncTaskTargetState);
 
-		// 把TaskTargetState中的CEll
+		// 把TaskTargetState中的Cell放到TargetState里面
 		for (const UWorldPartitionRuntimeCell* Cell : AsyncTaskTargetState.ToActivateCells)
 		{
 			if (!CurrentState.ActivatedCells.Contains(Cell))
