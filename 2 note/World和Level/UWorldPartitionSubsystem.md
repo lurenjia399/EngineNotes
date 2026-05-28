@@ -74,10 +74,10 @@ void UWorldPartitionSubsystem::UpdateServerClientsVisibleLevelNames()
 		{
 			for (UNetConnection* Connection : NetDriver->ClientConnections)
 			{
-				// 将ClientWorldPackageName添加进来，这个值表示客户端已经加载好了的WorldPackageName
+				// 把客户端已经加载好的WorldPackageName添加进来
 				ServerClientsVisibleLevelNames.Add(
 					Connection->GetClientWorldPackageName());
-				// 
+				// 把客户端已经bVisible的StreamingLevel添加进来
 				ServerClientsVisibleLevelNames.Append(
 					Connection->ClientVisibleLevelNames);
 				ServerClientsVisibleLevelNames.Append(
