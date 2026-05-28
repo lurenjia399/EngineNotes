@@ -45,6 +45,7 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 	// 一样的东西，依然更新StreamingSource
 	UpdateStreamingSources(bCanOptimizeUpdate);
 	
+	// 开启了异步加载的话，就改变状态
 	if (bCanUpdateAsync)
 	{
 		AsyncUpdateTaskState = EAsyncUpdateTaskState::Pending;
@@ -52,7 +53,8 @@ void UWorldPartitionStreamingPolicy::UpdateStreamingState()
 	else
 	{
 		TargetState.Reset();
-		UWorldPartitionStreamingPolicy::UpdateStreamingStateInternal(FUpdateStreamingStateParams(this, CurrentState), TargetState);
+		UWorldPartitionStreamingPolicy::UpdateStreamingStateInternal(
+			FUpdateStreamingStateParams(this, CurrentState), TargetState);
 		PostUpdateStreamingStateInternal_GameThread(TargetState);
 	}
 }
