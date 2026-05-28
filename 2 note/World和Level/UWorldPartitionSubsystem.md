@@ -80,10 +80,13 @@ void UWorldPartitionSubsystem::UpdateServerClientsVisibleLevelNames()
 				// 把客户端已经bVisible的StreamingLevel添加进来
 				ServerClientsVisibleLevelNames.Append(
 					Connection->ClientVisibleLevelNames);
+				// 把客户端MakingVisible的SteamingLevel添加进来
 				ServerClientsVisibleLevelNames.Append(
 					Connection->GetClientMakingVisibleLevelNames());
 			}
 		}
+		
+		// ji's
 		FHashBuilder HashBuilder;
 		TArray<FName> SortedServerClientsVisibleLevelNames = ServerClientsVisibleLevelNames.Array();
 		SortedServerClientsVisibleLevelNames.Sort(FNameFastLess());
