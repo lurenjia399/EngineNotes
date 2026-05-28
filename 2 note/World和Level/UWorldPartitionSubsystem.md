@@ -5,7 +5,8 @@
 void UWorldPartitionSubsystem::UpdateStreamingSources()
 {
 	/*
-	1 遍历StreamingSourceProviders，这个Provider是某一个
+	1 遍历StreamingSourceProviders，这个Provider是继承IWorldPartitionStreamingSourceProvider这个接口的，继承接口后才能作为Provider
+	2 将Provider提供的S
 	*/
 	TArray<FWorldPartitionStreamingSource> ProviderStreamingSources;
 	for (IWorldPartitionStreamingSourceProvider* StreamingSourceProvider : 
