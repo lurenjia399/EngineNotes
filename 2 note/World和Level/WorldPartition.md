@@ -286,6 +286,19 @@ void UWorldPartitionSubsystem::UpdateStreamingState()
 ```cpp
 void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorld, UWorldPartition* InWorldPartition)
 {
+	ON_SCOPE_EXIT
+	{
+		WorldPartitionSubsystem->OnStreamingStateUpdated().Broadcast();
+	};
+	
+	if (WorldPartitionSubsystem)
+	{
+		// Update streaming sources
+		WorldPartitionSubsystem->UpdateStreamingSources();
+		// Update server's clients visible levels
+		WorldPartitionSubsystem->UpdateServerClientsVisibleLevelNames();
+	}
+}
 ```
 
 # Hlod创建流程
