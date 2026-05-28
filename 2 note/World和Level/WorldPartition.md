@@ -334,6 +334,23 @@ void UWorldPartitionSubsystem::UpdateStreamingStateInternal(const UWorld* InWorl
 		const UWorldPartitionRuntimeCell* CellB) 
 		{ return CellA->SortCompare(CellB) < 0; });
 	}
+	
+	// 激活ToActivateCell中的Cell
+	{
+		for (const UWorldPartitionRuntimeCell* Cell : ToActivateCells)
+		{
+			Cell->GetOuterWorld()->GetWorldPartition()->StreamingPolicy->SetCellStateToActivated(Cell, MaxCellsToLoad);
+		}
+	}
+	
+	// 加载ToLoadedCell中的Cell
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(ToLoadCells);
+		for (const UWorldPartitionRuntimeCell* Cell : ToLoadCells)
+		{
+			Cell->GetOuterWorld()->GetWorldPartition()->StreamingPolicy->SetCellStateToLoaded(Cell, MaxCellsToLoad);
+		}
+	}
 }
 ```
 
