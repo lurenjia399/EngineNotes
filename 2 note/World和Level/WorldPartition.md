@@ -207,6 +207,41 @@ static inline FCellCoord GetCellCoords(const FVector& InPos, int32 InCellSize, i
 - 如果`UWorldPartitionRuntimeSpatialHash`的设置上勾选了`bPlaceSmallActorsUsingLocation`，就用的是ActorSet的Bound中心位置(不考虑Z坐标)，计算它所处的Cell坐标，也就是位于哪个场景格子中。
 - 如果上面条件不满足，就会遍历所有level的场景，看当前actorSet的Bound和当前level场景中有几个格子相交，如果是一个格子相交，那么就说明当前actorSet要放到这个格子里。相交的计算就是通过actorSet的Bound最小值和最大值是否能放在同一个格子中判断的，具体在GetNumIntersectingCells方法中。
 
+```cpp
+bool UHTUtil::IsCollisionLoaded(const UObject* WorldContextObject, const TArray<FName>& GridList, const FTransform& Transform)
+{
+	if (!WorldContextObject)
+	{
+		return false;
+	}
+
+	if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::ReturnNull))
+	{
+		if (UWorldPartitionSubsystem* WorldPartitionSubsystem = World->GetSubsystem<UWorldPartitionSubsystem>())
+		{
+			// @todo optimize by doing one query per cell
+			// Build a query source
+			TArray<FWorldPartitionStreamingQuerySource> QuerySources;
+			FWorldPartitionStreamingQuerySource& QuerySource = QuerySources.Emplace_GetRef();
+			QuerySource.bSpatialQuery = true;
+			QuerySource.Location = Transform.GetLocation();
+			QuerySource.Rotation = Transform.Rotator();
+			if (!GridList.IsEmpty())
+			{
+				QuerySource.TargetGrids.Append(GridList);
+			}
+			QuerySource.bUseGridLoadingRange = false;
+			QuerySource.Radius = 1.f; // 1cm should be enough to know if grid is loaded at specific area
+			QuerySource.bDataLayersOnly = false;
+
+			// Execute query
+			return WorldPartitionSubsystem->IsStreamingCompleted(EWorldPartitionRuntimeCellState::Activated, QuerySources, /*bExactState*/ false);
+		}
+	}
+	return false;
+}
+```
+
 # 运行时StreamingCell切换
 ## 1 初始化
 
