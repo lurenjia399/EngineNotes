@@ -639,3 +639,10 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 - Runtime是运行时使用的，就是可以动态控制的，我们通过加载数据层在控制actor的显示与否。具体打包后生效是在 FDataLayerUtils::ResolveRuntimeDataLayerInstanceNames 方法中吧。
 15 同一个actor配多个数据层，他是or还是and的关系呢？
 - 由DataLayersLogicOperator WorldPartition中的这个属性，或者是config文件中的NewMapsDataLayersLogicOperator这个属性决定，yh这边用的是or。
+16 遇到的暴走族掉地下的问题？
+-  1 地板位于-26_Y20这个cell里
+- 2 刷怪器刷的位置，
+ 2 通过刷怪位置找到的cell 是XL_map_bigworld_test_MainGrid_L0_X-25_Y20这个
+ 3 刷怪的位置正好在这两个Cell的交集上
+ 4 为什么通过位置找只能找到-25这个，找不到-26这个呢？，，，（位置 - origin）/ cellsize = -25，就是根据位置找的是第25个格子
+ 5 为什么地板会被划分到-26呢？根据地板Bounds的中心位置，也根据（位置 - origin）/ cellsize = -26，地板就被划分到26个格子里了
