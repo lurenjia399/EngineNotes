@@ -208,6 +208,7 @@ static inline FCellCoord GetCellCoords(const FVector& InPos, int32 InCellSize, i
 - 如果上面条件不满足，就会遍历所有level的场景，看当前actorSet的Bound和当前level场景中有几个格子相交，如果是一个格子相交，那么就说明当前actorSet要放到这个格子里。相交的计算就是通过actorSet的Bound最小值和最大值是否能放在同一个格子中判断的，具体在GetNumIntersectingCells方法中。
 
 ```cpp
+// 判断Grid是否加载
 bool UHTUtil::IsCollisionLoaded(const UObject* WorldContextObject, const TArray<FName>& GridList, const FTransform& Transform)
 {
 	if (!WorldContextObject)
