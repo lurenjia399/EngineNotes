@@ -643,8 +643,4 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 - 1 地板位于X-26_Y20这个cell里
 - 2 刷怪器刷的位置，通过IsStreamingCompleted查询到的是X-25_Y20这个cell
 - 3 位置通过GetCellCoords这个方法计算得到的就是X-25_Y20这个
-- 4 地板被划分到-26的yun
- 2 通过刷怪位置找到的cell 是XL_map_bigworld_test_MainGrid_L0_X-25_Y20这个
- 3 刷怪的位置正好在这两个Cell的交集上
- 4 为什么通过位置找只能找到-25这个，找不到-26这个呢？，，，（位置 - origin）/ cellsize = -25，就是根据位置找的是第25个格子
- 5 为什么地板会被划分到-26呢？根据地板Bounds的中心位置，也根据（位置 - origin）/ cellsize = -26，地板就被划分到26个格子里了
+- 4 地板被划分到-26的原因是，地板太大了，地板的Bounds中心位置，通过GetCellCoords方法计算中心位置，得到的就是X-26_Y20这个
