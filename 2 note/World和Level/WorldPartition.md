@@ -640,9 +640,10 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 15 同一个actor配多个数据层，他是or还是and的关系呢？
 - 由DataLayersLogicOperator WorldPartition中的这个属性，或者是config文件中的NewMapsDataLayersLogicOperator这个属性决定，yh这边用的是or。
 16 遇到的暴走族掉地下的问题？
--  1 地板位于X-26_Y20这个cell里
+- 1 地板位于X-26_Y20这个cell里
 - 2 刷怪器刷的位置，通过IsStreamingCompleted查询到的是X-25_Y20这个cell
-- 3 
+- 3 位置通过GetCellCoords这个方法计算得到的就是X-25_Y20这个
+- 4 地板被划分到-26的yun
  2 通过刷怪位置找到的cell 是XL_map_bigworld_test_MainGrid_L0_X-25_Y20这个
  3 刷怪的位置正好在这两个Cell的交集上
  4 为什么通过位置找只能找到-25这个，找不到-26这个呢？，，，（位置 - origin）/ cellsize = -25，就是根据位置找的是第25个格子
