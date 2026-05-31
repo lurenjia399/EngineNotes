@@ -593,7 +593,7 @@ TArray<UActorComponent*> UHLODBuilderMeshApproximate::Build(const FHLODBuildCont
 # 问题
 1 BundleGuid是干嘛用的
 2 actor的runtimegrid不同，但他们在一个actorset里，grid会改么，改成什么呢？
-zui
+有引用关系的actor如果gridname不同，就会失效，相当于没配置gridname
 3 为什么grid要是一个数组呢？为啥需要多个呢？
 可以设置场景中不同actorset的streaming范围
 4 actorset表示一组相关的actor，这里是怎么判断相关的呢？
