@@ -317,7 +317,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 基本概念
 FMassEntityTemplate：
 ```cpp
-1 UMassEntityConfigAsset 通过这个config资产创建出来的
+1 UMassEntityConfigAsset 通过这个config资产调用GetOrCreateEntityTemplate这个方法创建出来的
 2 
 ```
 
