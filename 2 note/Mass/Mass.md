@@ -313,6 +313,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 目前来看应该是可能有重复的，没找到去重的逻辑，而且TArray的add也支持添加重复元素。
 */
 ```
-2 TaskGraph 系统里边的 Wait 方法，等待的是哪个线程呢？怎么理解这个wait
-# 1 MassSample学习
-## 1 # CrowdGym 场景
+
+
+FMassEntityTemplate
+
