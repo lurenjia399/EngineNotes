@@ -330,7 +330,7 @@ FMassEntityTemplateBuildContext
 	2 FMassArchetypeSharedFragmentValues SharedFragmentValues;
 	3 TArray<FInstancedStruct> InitialFragmentValues;
 	4 TArray<FObjectFragmentInitializerFunction> ObjectInitializers;缓存的TFunction,类似于构造函数，在创建出Template的时候立刻执行的回调
-	5 FMassArchetypeCreationParams CreationParams;
+	5 FMassArchetypeCreationParams CreationParams;创建原型的一些参数
 	6 FString TemplateName;
 }
 ```
