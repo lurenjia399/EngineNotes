@@ -327,11 +327,11 @@ FMassEntityTemplateBuildContext
 2 FMassEntityTemplateData& TemplateData，在Context创建时传进来的，具体的Template的数据
 {
 	1 FMassArchetypeCompositionDescriptor Composition;原型的组成描述结构，包含组成远程的Fragment,Tag,ChunkFragments,SharedFragments,ConstSharedFragments。每种Fragment都有对应的BitSet结构加速添加查询。就是每种不同的Fragment都在bitArray中占一位，通过与或非来添加查询。
-	FMassArchetypeSharedFragmentValues SharedFragmentValues;
-	TArray<FInstancedStruct> InitialFragmentValues;
-	TArray<FObjectFragmentInitializerFunction> ObjectInitializers;
-	FMassArchetypeCreationParams CreationParams;
-	FString TemplateName;
+	2 FMassArchetypeSharedFragmentValues SharedFragmentValues;
+	3 TArray<FInstancedStruct> InitialFragmentValues;
+	4 TArray<FObjectFragmentInitializerFunction> ObjectInitializers;缓存的TFunction,类似于构造函数，在创建出Template的时候立刻执行的回调
+	5 FMassArchetypeCreationParams CreationParams;
+	6 FString TemplateName;
 }
 ```
 FMassEntityTemplate：
