@@ -338,6 +338,8 @@ FMassEntityTemplate：
 ```
 FArchetype：
 ```cpp
-1 
+// 流程：
+1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的
+2 
 ```
 
