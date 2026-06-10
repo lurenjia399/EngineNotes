@@ -321,6 +321,10 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 ```
 
 基本概念
+FMassEntityTemplateBuildContext
+```cpp
+1 TraitsData 在创建EntityTemplate的时候，遍历创建Trait里hui
+```
 FMassEntityTemplate：
 ```cpp
 1 UMassEntityConfigAsset 通过这个config资产调用GetOrCreateEntityTemplate这个方法创建出来的
