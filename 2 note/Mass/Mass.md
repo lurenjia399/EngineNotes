@@ -314,6 +314,6 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 */
 ```
 
-
-FMassEntityTemplate
+基本概念
+FMassEntityTemplate：
 
