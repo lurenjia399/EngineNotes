@@ -332,10 +332,9 @@ FMassEntityTemplate：
 2 FMassArchetypeHandle Archetype;  记录原型指针的成员变量
 3 FMassEntityTemplateID TemplateID; 在创建Template的时候生成的唯一ID
 // 流程：
-1 由资产UMassEntityConfigAsset调用GetOrCreateEntityTemplate这个方法创建出来的，创建出来后保存到
+1 由资产UMassEntityConfigAsset调用GetOrCreateEntityTemplate这个方法创建出来的，创建出来后保存到MassSpawnerSubsystem的TemplateRegistry结构中
 2 在创建方法中，会首先创建一个MassEntityTemplateBuildContext，下面所有的步骤都会将Context传进去
 3 接下来会拿到配置的所有Traits，这些Trait都是InstanceObject的形式。所有的Trait都执行BuildTemplate方法
-4 FMassArchetypeHandle Archetype。记录原型指针的成员变量
-5 
+4 
 ```
 
