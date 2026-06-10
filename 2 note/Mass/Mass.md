@@ -328,7 +328,7 @@ FMassEntityTemplateBuildContext
 ```
 FMassEntityTemplate：
 ```cpp
-1 FMassEntityTemplateData TemplateData;
+1 FMassEntityTemplateData TemplateData; 在创建Template的时候创建的局部变量，通过move一直移动到Template中
 2 FMassArchetypeHandle Archetype;  记录原型指针的成员变量
 3 FMassEntityTemplateID TemplateID; 在创建Template的时候生成的唯一ID
 // 流程：
