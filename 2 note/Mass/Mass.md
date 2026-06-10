@@ -324,6 +324,6 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 FMassEntityTemplate：
 ```cpp
 1 UMassEntityConfigAsset 通过这个config资产调用GetOrCreateEntityTemplate这个方法创建出来的
-2 在创建方法中，会首先拿到配置的所有Traits，这些Trait都是InstanceObject的形式，
+2 在创建方法中，会首先拿到配置的所有Traits，这些Trait都是InstanceObject的形式。所有的Trait都执行BuildTemplate方法
 ```
 
