@@ -339,7 +339,7 @@ FMassEntityTemplate：
 FArchetype：
 ```cpp
 // 流程：
-1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的
+1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的，是通过FMassEntityManager::CreateArchetype这个方法来创建的
 2 
 ```
 
