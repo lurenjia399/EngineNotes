@@ -326,7 +326,7 @@ FMassEntityTemplateBuildContext
 1 数组TraitsData，数组中的元素是FTraitData（保留TraitObject的指针，添加的MassFragment，添加的MassTag）。在创建EntityTemplate的时候，通过RequireFragment，RequireTag方法向FTraitData中的添加，通过AddFragment方法向TemplateData中添加。
 2 FMassEntityTemplateData& TemplateData，在Context创建时传进来的，具体的Template的数据
 {
-	1 FMassArchetypeCompositionDescriptor Composition;原型的组成描述结构，包含组成远程的Frag
+	1 FMassArchetypeCompositionDescriptor Composition;原型的组成描述结构，包含组成远程的Fragment,Tag,ChunkFragments,SharedFragments,ConstSharedFragments。每种Fragment都有对应的BitSet结构加速添加查询。
 	FMassArchetypeSharedFragmentValues SharedFragmentValues;
 	TArray<FInstancedStruct> InitialFragmentValues;
 	TArray<FObjectFragmentInitializerFunction> ObjectInitializers;
