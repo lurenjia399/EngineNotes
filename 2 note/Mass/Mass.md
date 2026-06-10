@@ -25,6 +25,12 @@ GetOrCreateEntityTemplate这个方法我们来看下：
 ```cpp
 const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UWorld& World) const
 {
+	// 0 创建出Templat
+	FMassEntityTemplateID TemplateID;
+	if (const FMassEntityTemplate* ExistingTemplate = GetEntityTemplateInternal(World, TemplateID))
+	{
+		return *ExistingTemplate;
+	}
 	// 1 拿到EntityTemplateRegistry，一个注册器
 	UMassSpawnerSubsystem* SpawnerSystem = UWorld::GetSubsystem<UMassSpawnerSubsystem>(&World);
 	check(SpawnerSystem);
