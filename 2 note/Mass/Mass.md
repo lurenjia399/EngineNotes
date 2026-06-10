@@ -336,4 +336,8 @@ FMassEntityTemplate：
 2 在创建方法中，会首先创建一个MassEntityTemplateBuildContext，下面所有的步骤都会将Context传进去
 3 接下来会拿到配置的所有Traits，这些Trait都是InstanceObject的形式。所有的Trait都执行BuildTemplate方法
 ```
+FArchetype：
+```cpp
+1 
+```
 
