@@ -25,7 +25,7 @@ GetOrCreateEntityTemplate这个方法我们来看下：
 ```cpp
 const FMassEntityTemplate& FMassEntityConfig::GetOrCreateEntityTemplate(const UWorld& World) const
 {
-	// 0 创建出Templat
+	// 0 创建出TemplateID，就是FGuid
 	FMassEntityTemplateID TemplateID;
 	if (const FMassEntityTemplate* ExistingTemplate = GetEntityTemplateInternal(World, TemplateID))
 	{
