@@ -323,7 +323,8 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 基本概念
 FMassEntityTemplateBuildContext
 ```cpp
-1 TraitsData 在创建EntityTemplate的时候，遍历创建Trait里hui
+1 数组 TraitsData 在创建EntityTemplate的时候，遍历创建Trait里会通过RequireFragment，RequireTag方法向TraitsData中的元素添加数据
+2 
 ```
 FMassEntityTemplate：
 ```cpp
