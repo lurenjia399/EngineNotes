@@ -328,6 +328,10 @@ FMassEntityTemplateBuildContext
 ```
 FMassEntityTemplate：
 ```cpp
+1 FMassEntityTemplateData TemplateData;
+2 FMassArchetypeHandle Archetype;  记录原型指针的成员变量
+3 FMassEntityTemplateID TemplateID; 在创建Template的时候生成的唯一ID
+// 流程：
 1 UMassEntityConfigAsset 通过这个config资产调用GetOrCreateEntityTemplate这个方法创建出来的
 2 在创建方法中，会首先创建一个MassEntityTemplateBuildContext，下面所有的步骤都会将Context传进去
 3 接下来会拿到配置的所有Traits，这些Trait都是InstanceObject的形式。所有的Trait都执行BuildTemplate方法
