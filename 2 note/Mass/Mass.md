@@ -324,7 +324,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 FMassEntityTemplateBuildContext
 ```cpp
 1 数组TraitsData，数组中的元素是FTraitData（保留TraitObject的指针，添加的MassFragment，添加的MassTag）。在创建EntityTemplate的时候，遍历创建Trait里会通过RequireFragment，RequireTag方法向FTraitData中的添加。
-2 FMassEntityTemplateData& TemplateData，在Context创建时传进来的，具体的T
+2 FMassEntityTemplateData& TemplateData，在Context创建时传进来的，具体的Template的数据
 ```
 FMassEntityTemplate：
 ```cpp
