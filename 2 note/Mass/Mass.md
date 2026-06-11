@@ -104,7 +104,10 @@ FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢�
 
 # 4 SpawnEntities
 ```cpp
-
+UMassSpawnerSubsystem::DoSpawning
+{
+	
+}
 ```
 
 ## 4 UMassEntitySettings
