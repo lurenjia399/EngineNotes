@@ -372,9 +372,10 @@ void RunProcessorsView(
 	FProcessingContext& ProcessingContext, 
 	TConstArrayView<FMassArchetypeEntityCollection> EntityCollections)
 {
-	// 获取ExecutionContext上下文
+	// 从处理上下文中获取ExecutionContext上下文
 	FMassExecutionContext& ExecutionContext = 
 		ProcessingContext.GetExecutionContext();
+	// 从ProcessingContext上下文获取EntityManager
 	FMassEntityManager& EntityManager = *ProcessingContext.GetEntityManager();
 	FMassEntityManager::FScopedProcessing ProcessingScope = 
 		EntityManager.NewProcessingScope();
