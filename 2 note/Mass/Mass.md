@@ -118,6 +118,7 @@ UMassSpawnerSubsystem::DoSpawning(
 	TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext
 		= EntityManager->BatchCreateEntities(EntityTemplate.GetArchetype(), EntityTemplate.GetSharedFragmentValues(), NumToSpawn, SpawnedEntities);
 
+	// 将Template中的InitialFragment复制到Archetype中
 	// 2. Copy data from FMassEntityTemplate.Fragments.
 	//		a. @todo, could be done as part of creation?
 	TConstArrayView<FInstancedStruct> FragmentInstances = EntityTemplate.GetInitialFragmentValues();
