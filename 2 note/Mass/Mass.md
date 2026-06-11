@@ -367,7 +367,31 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 ### 1.2 RunProcessorsView
 
 ```cpp
+void RunProcessorsView(
+	TArrayView<UMassProcessor* const> Processors, 
+	FProcessingContext& ProcessingContext, 
+	TConstArrayView<FMassArchetypeEntityCollection> EntityCollections)
+{
+	FMassExecutionContext& ExecutionContext = 
+		ProcessingContext.GetExecutionContext();
+	FMassEntityManager& EntityManager = *ProcessingContext.GetEntityManager();
+	FMassEntityManager::FScopedProcessing ProcessingScope = 
+		EntityManager.NewProcessingScope();
 
+	if (EntityCollections.Num() == 0)
+	{
+		ExecuteProcessors(EntityManager, Processors, ExecutionContext);
+	}
+	else
+	{
+		for (const FMassArchetypeEntityCollection& Collection : EntityCollections)
+		{
+			ExecutionContext.SetEntityCollection(Collection);
+			ExecuteProcessors(EntityManager, Processors, ExecutionContext);
+			ExecutionContext.ClearEntityCollection();
+		}
+	}
+}
 ```
 
 # 基本概念
