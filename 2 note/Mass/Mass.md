@@ -346,17 +346,7 @@ FMassEntityTemplate：
 ```
 FArchetype：
 ```cpp
-1 FMassArchetypeCompositionDescriptor CompositionDescriptor;
-2 TArray<FInstancedStruct> ChunkFragmentsTemplate;
-3 TArray<FMassArchetypeFragmentConfig, TInlineAllocator<16>> FragmentConfigs;	
-4 TArray<FMassArchetypeChunk> Chunks;
-5 TMap<int32, int32> EntityMap;
-6 TMap<const UScriptStruct*, int32> FragmentIndexMap;
-7 UE::Mass::FArchetypeGroups Groups;
-8 int32 NumEntitiesPerChunk;
-9 SIZE_T TotalBytesPerEntity = 0;
-10 int32 EntityListOffsetWithinChunk;
-11 uint32 CreatedArchetypeDataVersion = 0;
+1 chunk的组成是，多个EntityHandle挨着存放 + 每个EntityHandle的FragmentA挨着存放 + mei'ge
 // 流程：
 1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的，是通过FMassEntityManager::CreateArchetype这个方法来创建的
 2 
