@@ -104,7 +104,44 @@ FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢�
 
 # 4 SpawnEntity
 ```cpp
+TSharedPtr<FMassEntityManager::FEntityCreationContext> 
+UMassSpawnerSubsystem::DoSpawning(
+	const FMassEntityTemplate& EntityTemplate, 
+	const int32 NumToSpawn, 
+	FConstStructView SpawnData, 
+	TSubclassOf<UMassProcessor> InitializerClass, 
+	TArray<FMassEntityHandle>& OutEntities)
+{
+	// 1. Create required number of entities with EntityTemplate.Archetype
+	TArray<FMassEntityHandle> SpawnedEntities;
+	TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext
+		= EntityManager->BatchCreateEntities(EntityTemplate.GetArchetype(), EntityTemplate.GetSharedFragmentValues(), NumToSpawn, SpawnedEntities);
 
+	// 2. Copy data from FMassEntityTemplate.Fragments.
+	//		a. @todo, could be done as part of creation?
+	TConstArrayView<FInstancedStruct> FragmentInstances = EntityTemplate.GetInitialFragmentValues();
+	EntityManager->BatchSetEntityFragmentValues(CreationContext->GetEntityCollections(*EntityManager.Get()), FragmentInstances);
+	
+	// 3. Run SpawnDataInitializer, if set. This is a special type of processor that operates on the entities to initialize them.
+	// e.g., will run UInstancedActorsInitializerProcessor for Mass InstancedActors
+	UMassProcessor* SpawnDataInitializer = SpawnData.IsValid() 
+		? GetSpawnDataInitializer(InitializerClass) 
+		: nullptr;
+
+	if (SpawnDataInitializer)
+	{
+		FMassProcessingContext ProcessingContext(EntityManager, /*TimeDelta=*/0.0f);
+		ProcessingContext.AuxData = SpawnData;
+		UE::Mass::Executor::RunProcessorsView(MakeArrayView(&SpawnDataInitializer, 1), ProcessingContext, CreationContext->GetEntityCollections(*EntityManager.Get()));
+	}
+
+	OutEntities.Append(MoveTemp(SpawnedEntities));
+
+	// 4. "OnEntitiesCreated" notifies will be sent out once the CreationContext gets destroyed (via its destructor).
+	// The caller can postpone this moment keeping the returned CreationContext alive as long as needed.
+
+	return CreationContext;
+}
 ```
 
 ## 4 UMassEntitySettings
