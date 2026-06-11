@@ -112,6 +112,7 @@ UMassSpawnerSubsystem::DoSpawning(
 	TSubclassOf<UMassProcessor> InitializerClass, 
 	TArray<FMassEntityHandle>& OutEntities)
 {
+	// 向Archetype
 	// 1. Create required number of entities with EntityTemplate.Archetype
 	TArray<FMassEntityHandle> SpawnedEntities;
 	TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext
