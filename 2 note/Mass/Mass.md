@@ -196,7 +196,7 @@ void FMassEntityQuery::ForEachEntityChunk(
 EProcessorExecutionFlags::Editor 这个枚举标志了此个Processor在哪个端执行的?
 
 只要 Processor中的 bAutoRegisterWithProcessingPhases 这个成员变量设置成true（无论是在构造函数中设置还是.ini文件中设置），他就会在UMassEntitySettings 这个类的 OnPostEngineInit 方法中将此 Processor 注册到全局，也就是可以Tick了。
-### 1.1 Processor的Execute怎么执行的？？
+### 1.1 Processor的Execute怎么执行的
 FMassExecutorDoneTask 这个是启动的task吧。
 编辑器模式下，tick入口是 UMassEntityEditorSubsystem 中的 Tick方法：
 ```cpp
@@ -364,8 +364,13 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 目前来看应该是可能有重复的，没找到去重的逻辑，而且TArray的add也支持添加重复元素。
 */
 ```
+### 1.2 RunProcessorsView
 
-基本概念
+```cpp
+
+```
+
+# 基本概念
 FMassEntityTemplateBuildContext
 ```cpp
 1 数组TraitsData，数组中的元素是FTraitData（保留TraitObject的指针，添加的MassFragment，添加的MassTag）。在创建EntityTemplate的时候，通过RequireFragment，RequireTag方法向FTraitData中的添加，通过AddFragment方法向TemplateData中添加。
