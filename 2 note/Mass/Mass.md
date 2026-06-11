@@ -377,7 +377,7 @@ void RunProcessorsView(
 		ProcessingContext.GetExecutionContext();
 	// 从ProcessingContext上下文获取EntityManager
 	FMassEntityManager& EntityManager = *ProcessingContext.GetEntityManager();
-	// 一个
+	// 一个Scope，增加计数表示正在处理的Process增加一个
 	FMassEntityManager::FScopedProcessing ProcessingScope = 
 		EntityManager.NewProcessingScope();
 
