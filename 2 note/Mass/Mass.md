@@ -124,6 +124,7 @@ UMassSpawnerSubsystem::DoSpawning(
 	TConstArrayView<FInstancedStruct> FragmentInstances = EntityTemplate.GetInitialFragmentValues();
 	EntityManager->BatchSetEntityFragmentValues(CreationContext->GetEntityCollections(*EntityManager.Get()), FragmentInstances);
 	
+	// 执行初始化的Processor
 	// 3. Run SpawnDataInitializer, if set. This is a special type of processor that operates on the entities to initialize them.
 	// e.g., will run UInstancedActorsInitializerProcessor for Mass InstancedActors
 	UMassProcessor* SpawnDataInitializer = SpawnData.IsValid() 
