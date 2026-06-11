@@ -372,6 +372,7 @@ void RunProcessorsView(
 	FProcessingContext& ProcessingContext, 
 	TConstArrayView<FMassArchetypeEntityCollection> EntityCollections)
 {
+	// 获取ExecutionContext上下文
 	FMassExecutionContext& ExecutionContext = 
 		ProcessingContext.GetExecutionContext();
 	FMassEntityManager& EntityManager = *ProcessingContext.GetEntityManager();
