@@ -346,6 +346,31 @@ FMassEntityTemplate：
 ```
 FArchetype：
 ```cpp
+1 FMassArchetypeCompositionDescriptor CompositionDescriptor;
+2 TArray<FInstancedStruct> ChunkFragmentsTemplate;
+
+3 TArray<FMassArchetypeFragmentConfig, TInlineAllocator<16>> FragmentConfigs;
+	
+4 TArray<FMassArchetypeChunk> Chunks;
+
+	// Entity ID to index within archetype
+	//@TODO: Could be folded into FEntityData in the entity manager at the expense of a bit
+	// of loss of encapsulation and extra complexity during archetype changes
+5 TMap<int32, int32> EntityMap;
+	
+6 TMap<const UScriptStruct*, int32> FragmentIndexMap;
+
+	UE::Mass::FArchetypeGroups Groups;
+
+	int32 NumEntitiesPerChunk;
+	SIZE_T TotalBytesPerEntity = 0;
+	int32 EntityListOffsetWithinChunk;
+
+	/**
+	 * Archetype version at which this archetype was created, useful for query to do incremental archetype matching.
+	 * Note that it's set once and never changed afterward.
+	 */
+	uint32 CreatedArchetypeDataVersion = 0;
 // 流程：
 1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的，是通过FMassEntityManager::CreateArchetype这个方法来创建的
 2 
