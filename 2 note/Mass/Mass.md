@@ -349,6 +349,5 @@ FArchetype：
 1 chunk的组成是，多个EntityHandle挨着存放 + 每个EntityHandle的FragmentA挨着存放 + 每个EntityHandle的FragmentB挨着存放
 // 流程：
 1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的，是通过FMassEntityManager::CreateArchetype这个方法来创建的
-2 
 ```
 
