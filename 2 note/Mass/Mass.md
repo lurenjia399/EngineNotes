@@ -418,6 +418,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 3 processor的依赖关系是通过 ResolveDependencies 这个方法来解析依赖关系的。可以通过ExecuteOrder显示设置Processor的依赖关系，然后会通过Processor读写Fragment来确定依赖关系，最后进行拓扑排序。
 非编辑器下：
 1 在UMassSimulationSubsystem的OnWorldBeginPlay方法中，会将ProcessorPhase（这个继承了TickFunction）注册到当前Level中并开启Tick，在tick中就是会执行Phase里的ExecuteTick方法。
+1 在MassSimulationSubsystem中
 ```
 
 ### 1.2 RunProcessorsView
