@@ -367,45 +367,13 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 			{
 				Prerequisites.Add(Events[DependencyIndex]);
 			}
-			// this means there are some inactive processors so we need to consider additional dependencies
-			if (AdditionalEvents.Num())
-			{
-				for (const int32 DependencyIndex : ProcessingNode.Dependencies)
-				{
-					Prerequisites.Append(AdditionalEvents[DependencyIndex]);
-				}
-			}
 
+			// 创建FMassProcessorTask这个任务，来执行Processor的tick
 			if (ProcessingNode.Processor->IsActive())
 			{
-#if HOTTA_ENGINE_MODIFY // add by wujingjing
-				if (FixedTimeTime > 0.0f)
-				{
-					if (ProcessingNode.Processor->ShouldTickEveryFrame())
-					{
-						Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, ExecutionContext, Prerequisites);
-					}
-					else
-					{
-						if (bShouldFixedTick)
-						{
-							Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, LocalExecutionContext, Prerequisites);
-						}
-						else
-						{
-							// 创建占位任务以维持依赖链。
-							FGraphEventRef SkippedEvent = FFunctionGraphTask::CreateAndDispatchWhenReady([](){}, TStatId(), &Prerequisites, ENamedThreads::AnyHiPriThreadHiPriTask);
-							Events[NodeIndex] = SkippedEvent;
-						}
-					}
-				}
-				else
-				{
-					Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, ExecutionContext, Prerequisites);
-				}
-#else
-				Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, ExecutionContext, Prerequisites);
-#endif
+				Events[NodeIndex] = ProcessingNode.Processor
+					->DispatchProcessorTasks(
+						EntityManager, ExecutionContext, Prerequisites);
 			}
 			else
 			{
