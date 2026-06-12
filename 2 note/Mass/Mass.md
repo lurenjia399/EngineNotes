@@ -361,7 +361,7 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 
 		if (ensureMsgf(ProcessingNode.Processor, TEXT("")))
 		{
-			// 组装依赖数组，每次遍历到Pro
+			// 组装依赖数组，每次遍历到Processor都需要重置依赖数组
 			Prerequisites.Reset(ProcessingNode.Dependencies.Num());
 			for (const int32 DependencyIndex : ProcessingNode.Dependencies)
 			{
