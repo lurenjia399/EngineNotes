@@ -377,6 +377,7 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 			}
 		}
 	}
+	// 
 	FGraphEventRef CompletionEvent = 
 		FFunctionGraphTask::CreateAndDispatchWhenReady(
 			[this](){}, GET_STATID(Mass_GroupCompletedTask), 
