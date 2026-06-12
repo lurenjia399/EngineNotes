@@ -375,23 +375,14 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 					->DispatchProcessorTasks(
 						EntityManager, ExecutionContext, Prerequisites);
 			}
-			else
-			{
-				if (AdditionalEvents.Num() == 0)
-				{
-					// lazy initialization
-					AdditionalEvents.AddDefaulted(FlatProcessingGraph.Num());
-				}
-				// if the processor is not going to run at all we store its Prerequisites so that
-				// processors waiting for this given processor to finish will keep their place
-				// in the overall processing graph
-				// NOTE: this is safer than just ignoring the dependencies since even though this
-				// processor is not running, the subsequent processors might unknowingly rely on
-				// implicit dependencies that the current processor was ensuring. 
-				AdditionalEvents[NodeIndex].Append(MoveTemp(Prerequisites));
-			}
 		}
 	}
+	FGraphEventRef CompletionEvent = 
+		FFunctionGraphTask::CreateAndDispatchWhenReady(
+			[this](){}, GET_STATID(Mass_GroupCompletedTask), 
+				&Events, ENamedThreads::AnyHiPriThreadHiPriTask);
+
+	return CompletionEvent;
 }
 ```
 
