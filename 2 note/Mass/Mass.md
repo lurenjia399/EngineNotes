@@ -361,14 +361,14 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 
 		if (ensureMsgf(ProcessingNode.Processor, TEXT("")))
 		{
-			// 依赖数组，
+			// 组装依赖数组，每次遍历到Pro
 			Prerequisites.Reset(ProcessingNode.Dependencies.Num());
 			for (const int32 DependencyIndex : ProcessingNode.Dependencies)
 			{
 				Prerequisites.Add(Events[DependencyIndex]);
 			}
 
-			// 创建FMassProcessorTask这个任务，来执行Processor的tick，这个任务
+			// 创建FMassProcessorTask这个任务，来执行Processor的tick
 			if (ProcessingNode.Processor->IsActive())
 			{
 				Events[NodeIndex] = ProcessingNode.Processor
