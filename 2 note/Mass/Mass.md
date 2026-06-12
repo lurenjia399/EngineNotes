@@ -415,6 +415,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 1 在MassSimulationSubsystem的OnWorldBeginPlay方法中，会首先获取项目设置里面配置的所有的ProcessorPhase，对齐初始化。然后紧接着StartSimulation，这里面会将所有的ProcessorPhase都注册到世界里，像TickFunction那种注册。
 2 在ProcessorPhase的tick里面，会将这个Phase的所有Processor都创建FMassProcessorTask任务，这些任务包含自己的依赖关系，如果没有依赖就并行。这个ProcessorTask是任意空闲线程执行。
 3 processor的依赖关系是通过 ResolveDependencies 这个方法来解析依赖关系的，是在ProcessorPhase的tick的一开始执行的，有缓存不会每次tick都执行。可以通过ExecuteOrder显示设置Processor的依赖关系，然后会通过Processor读写Fragment来确定依赖关系，最后进行拓扑排序。
+4 ProcessorPhase是tickfunction，没有设置工作线程执行，所以是gamethread执行的，每次执行都会
 ```
 
 ### 1.2 RunProcessorsView
