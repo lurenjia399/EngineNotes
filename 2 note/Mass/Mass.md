@@ -417,7 +417,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 2 PhaseTask执行的内容就是执行ExecuteTick这个方法。这个方法中就是为处在Phase阶段的所有Processor都创建FMassProcessorTask任务，这些任务包含自己的依赖关系，如果没有依赖就并行。这个ProcessorTask是任意空闲线程执行。
 3 processor的依赖关系是通过
 非编辑器下：
-1 在UMassSimulationSubsystem的OnWorldBeginPlay方法中，会将Pr
+1 在UMassSimulationSubsystem的OnWorldBeginPlay方法中，会将ProcessorPhase（这个继承了TickFunction）注册到当前Level中并开启Tick，在tick中就是会zhi'xi
 ```
 
 ### 1.2 RunProcessorsView
