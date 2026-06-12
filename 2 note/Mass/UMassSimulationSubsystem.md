@@ -12,3 +12,14 @@ void UMassSimulationSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	StartSimulation(InWorld);
 }
 ```
+
+```cpp
+void UMassSimulationSubsystem::RebuildTickPipeline()
+{
+	TConstArrayView<FMassProcessingPhaseConfig> ProcessingPhasesConfig = 
+		GET_MASS_CONFIG_VALUE(GetProcessingPhasesConfig());
+	FString DependencyGraphFileName;
+
+	PhaseManager->Initialize(*this, ProcessingPhasesConfig, DependencyGraphFileName);
+}
+```
