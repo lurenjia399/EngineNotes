@@ -354,6 +354,76 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 	
 	FGraphEventArray Prerequisites;
 	TArray<FGraphEventArray> AdditionalEvents;
+	
+	for (int32 NodeIndex = 0; NodeIndex < FlatProcessingGraph.Num(); ++NodeIndex)
+	{
+		FDependencyNode& ProcessingNode = FlatProcessingGraph[NodeIndex];
+
+		if (ensureMsgf(ProcessingNode.Processor, TEXT("")))
+		{
+			// yi'p
+			Prerequisites.Reset(ProcessingNode.Dependencies.Num());
+			for (const int32 DependencyIndex : ProcessingNode.Dependencies)
+			{
+				Prerequisites.Add(Events[DependencyIndex]);
+			}
+			// this means there are some inactive processors so we need to consider additional dependencies
+			if (AdditionalEvents.Num())
+			{
+				for (const int32 DependencyIndex : ProcessingNode.Dependencies)
+				{
+					Prerequisites.Append(AdditionalEvents[DependencyIndex]);
+				}
+			}
+
+			if (ProcessingNode.Processor->IsActive())
+			{
+#if HOTTA_ENGINE_MODIFY // add by wujingjing
+				if (FixedTimeTime > 0.0f)
+				{
+					if (ProcessingNode.Processor->ShouldTickEveryFrame())
+					{
+						Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, ExecutionContext, Prerequisites);
+					}
+					else
+					{
+						if (bShouldFixedTick)
+						{
+							Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, LocalExecutionContext, Prerequisites);
+						}
+						else
+						{
+							// 创建占位任务以维持依赖链。
+							FGraphEventRef SkippedEvent = FFunctionGraphTask::CreateAndDispatchWhenReady([](){}, TStatId(), &Prerequisites, ENamedThreads::AnyHiPriThreadHiPriTask);
+							Events[NodeIndex] = SkippedEvent;
+						}
+					}
+				}
+				else
+				{
+					Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, ExecutionContext, Prerequisites);
+				}
+#else
+				Events[NodeIndex] = ProcessingNode.Processor->DispatchProcessorTasks(EntityManager, ExecutionContext, Prerequisites);
+#endif
+			}
+			else
+			{
+				if (AdditionalEvents.Num() == 0)
+				{
+					// lazy initialization
+					AdditionalEvents.AddDefaulted(FlatProcessingGraph.Num());
+				}
+				// if the processor is not going to run at all we store its Prerequisites so that
+				// processors waiting for this given processor to finish will keep their place
+				// in the overall processing graph
+				// NOTE: this is safer than just ignoring the dependencies since even though this
+				// processor is not running, the subsequent processors might unknowingly rely on
+				// implicit dependencies that the current processor was ensuring. 
+				AdditionalEvents[NodeIndex].Append(MoveTemp(Prerequisites));
+			}
+		}
+	}
 }
 ```
 
