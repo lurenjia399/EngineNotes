@@ -342,7 +342,16 @@ FGraphEventRef TriggerParallelTasks(...)
 ==1 创建了ProcessingContext局部变量，并把局部变量右移到创建Task的方法中（这里不用拷贝的原因就是数据大不想拷贝，不用引用的原因是在Task还未知执行的时候引用对象就会销毁，所以用右移将局部变量中数据移到别的方法中延长生命周期）。==
 ==2 在 TriggerParallelTasks 方法里面，在局部变量的内存中用placement new的方式创建了ExecutionContext并右移出来（只是借用局部变量ProcessingContext的内存创建ExecutionContext并移动出来，局部变量ProcessingContext里面的数据什么都没变）。==
 ==3 在创建两个Task的方法里面，传给第一个Task的 ExecutionContext 是引用，这是因为这个Task之后的第二个Task还需要用 ExecutionContext ，所以这里不能是移动，移动的话 ExecutionContext 这个里的数据就没了，第二个Task还怎么用呢？所以第二个Task传的移动。==
-3 DispatchProcessorTasks
+3 DispatchProcessorTasks 是个虚函数
+```cpp
+FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
+	const TSharedPtr<FMassEntityManager>& EntityManager, 
+	FMassExecutionContext& ExecutionContext, 
+	const FGraphEventArray& InPrerequisites)
+{
+	
+}
+```
 
 #### 1.1.3 OnPhaseEnd 结束部分
 ```cpp
