@@ -414,7 +414,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 ```cpp
 在编辑器下：
 1 在UMassEntityEditorSubsystem的Tick里面，遍历所有的ProcessorPhase，为每个Phase创建FMassEditorPhaseTickTask这个Task，每个Phase的Task都依赖前一个PhaseTask。这个PhaseTask是在游戏线程运行的。
-2 PhaseTask执行的内容就是执行ExecuteTick这个方法。这个方法中就是为处在Phase阶段的所有Processor都创建FMassProcessorTask任务，这些任务包含自己的依赖关系，如果没有依赖就并行。
+2 PhaseTask执行的内容就是执行ExecuteTick这个方法。这个方法中就是为处在Phase阶段的所有Processor都创建FMassProcessorTask任务，这些任务包含自己的依赖关系，如果没有依赖就并行。这个ProcessorTask是任意空闲线程执行。
 3 
 非编辑器下：
 ```
