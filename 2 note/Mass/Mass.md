@@ -356,6 +356,7 @@ void FMassProcessingPhaseManager::OnPhaseEnd(FMassProcessingPhase& Phase)
 这个结束部分就比较简单了，就是执行CommandBuffer里面的命令。在单线程情况下会执行 FlushCommands ，在多线程情况下 FMassExecutorDoneTask 这个Task里面会执行一次 FlushCommands，不管Task是否执行完CommandBuffer里的命令，都会在OnPhaseEnd里在执行一次。
 
 问题：
+1 
 ```cpp
 /*
 1 TArray<const UScriptStruct*, TInlineAllocator<16>> SortedFragmentList;  
@@ -364,6 +365,7 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 目前来看应该是可能有重复的，没找到去重的逻辑，而且TArray的add也支持添加重复元素。
 */
 ```
+
 ### 1.2 RunProcessorsView
 
 ```cpp
