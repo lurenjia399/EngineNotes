@@ -368,7 +368,7 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 				Prerequisites.Add(Events[DependencyIndex]);
 			}
 
-			// 创建FMassProcessorTask这个任务，来执行Processor的tick
+			// 创建FMassProcessorTask这个任务，来执行Processor的tick，这个任务
 			if (ProcessingNode.Processor->IsActive())
 			{
 				Events[NodeIndex] = ProcessingNode.Processor
@@ -377,7 +377,7 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 			}
 		}
 	}
-	// 在Events依赖数组都执行完成后，在线程池中找到空闲的一个高优先级线程，在高优先级线程中执行lambda表达式，
+	// 在Events依赖数组都执行完成后，在线程池中找到空闲的一个高优先级线程，在高优先级线程中执行lambda表达式（是空的）
 	FGraphEventRef CompletionEvent = 
 		FFunctionGraphTask::CreateAndDispatchWhenReady(
 			[this](){}, GET_STATID(Mass_GroupCompletedTask), 
