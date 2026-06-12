@@ -361,7 +361,7 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 
 		if (ensureMsgf(ProcessingNode.Processor, TEXT("")))
 		{
-			// yi'p
+			// 依赖数组，
 			Prerequisites.Reset(ProcessingNode.Dependencies.Num());
 			for (const int32 DependencyIndex : ProcessingNode.Dependencies)
 			{
