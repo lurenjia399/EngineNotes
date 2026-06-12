@@ -365,6 +365,8 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 目前来看应该是可能有重复的，没找到去重的逻辑，而且TArray的add也支持添加重复元素。
 */
 ```
+2 processor并行的实现，entity遍历并行的实现
+
 
 ### 1.2 RunProcessorsView
 
