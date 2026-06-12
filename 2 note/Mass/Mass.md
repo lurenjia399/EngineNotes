@@ -412,7 +412,9 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 ```
 2 processor并行的实现
 ```cpp
+在编辑器下：
 1 在WorldSubSystem的Tick里面，遍历所有的ProcessorPhase，为每个Phase创建FMassEditorPhaseTickTask这个Task，
+非编辑器下：
 ```
 
 ### 1.2 RunProcessorsView
