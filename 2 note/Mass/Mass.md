@@ -349,7 +349,11 @@ FGraphEventRef UMassCompositeProcessor::DispatchProcessorTasks(
 	FMassExecutionContext& ExecutionContext, 
 	const FGraphEventArray& InPrerequisites)
 {
+	FGraphEventArray Events;
+	Events.AddDefaulted(FlatProcessingGraph.Num());
 	
+	FGraphEventArray Prerequisites;
+	TArray<FGraphEventArray> AdditionalEvents;
 }
 ```
 
