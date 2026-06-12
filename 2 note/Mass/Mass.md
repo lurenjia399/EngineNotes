@@ -400,7 +400,7 @@ void FMassProcessingPhaseManager::OnPhaseEnd(FMassProcessingPhase& Phase)
 ```
 这个结束部分就比较简单了，就是执行CommandBuffer里面的命令。在单线程情况下会执行 FlushCommands ，在多线程情况下 FMassExecutorDoneTask 这个Task里面会执行一次 FlushCommands，不管Task是否执行完CommandBuffer里的命令，都会在OnPhaseEnd里在执行一次。
 
-问题：
+
 1 
 ```cpp
 /*
@@ -495,7 +495,7 @@ FArchetype：
 // 流程：
 1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的，是通过FMassEntityManager::CreateArchetype这个方法来创建的
 ```
-
+Processor并行执行
 ```cpp
 1 在MassSimulationSubsystem的OnWorldBeginPlay方法中，会首先获取项目设置里面配置的所有的ProcessorPhase，对齐初始化。然后紧接着StartSimulation，这里面会将所有的ProcessorPhase都注册到世界里，像TickFunction那种注册。
 2 在ProcessorPhase的tick里面，会将这个Phase的所有Processor都创建FMassProcessorTask任务，这些任务包含自己的依赖关系，如果没有依赖就并行。这个ProcessorTask是任意空闲线程执行。
