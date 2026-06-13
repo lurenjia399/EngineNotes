@@ -35,7 +35,7 @@ void UMassStateTreeActivationProcessor::ConfigureQueries(const TSharedRef<FMassE
 		FMassSimulationVariableTickChunkFragment>
 			(EMassFragmentAccess::ReadOnly, 
 				MassFragmentPresence::Optional);
-	// 
+	// 读写UMassStateTreeSubsystem
 	EntityQuery.AddSubsystemRequirement<
 		UMassStateTreeSubsystem>(EMassFragmentAccess::ReadWrite);
 
