@@ -38,7 +38,8 @@ void UMassStateTreeActivationProcessor::ConfigureQueries(const TSharedRef<FMassE
 	// 读写UMassStateTreeSubsystem
 	EntityQuery.AddSubsystemRequirement<
 		UMassStateTreeSubsystem>(EMassFragmentAccess::ReadWrite);
-
-	ProcessorRequirements.AddSubsystemRequirement<UMassSignalSubsystem>(EMassFragmentAccess::ReadWrite);
+	// 
+	ProcessorRequirements.AddSubsystemRequirement<
+		UMassSignalSubsystem>(EMassFragmentAccess::ReadWrite);
 }
 ```
