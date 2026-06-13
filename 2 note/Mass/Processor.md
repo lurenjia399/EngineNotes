@@ -30,12 +30,14 @@ void UMassStateTreeActivationProcessor::ConfigureQueries(const TSharedRef<FMassE
 	// 不包含FMassStateTreeActivatedTag
 	EntityQuery.AddTagRequirement<
 		FMassStateTreeActivatedTag>(EMassFragmentPresence::None);
-	// 可选FMassSimulationVariableTickChunkFragment，zhi'du
+	// 可选FMassSimulationVariableTickChunkFragment，只读。如果这个方法只有Optional的，那么就会查询到包含这个Fragment的Entity
 	EntityQuery.AddChunkRequirement<
 		FMassSimulationVariableTickChunkFragment>
 			(EMassFragmentAccess::ReadOnly, 
 				MassFragmentPresence::Optional);
-	EntityQuery.AddSubsystemRequirement<UMassStateTreeSubsystem>(EMassFragmentAccess::ReadWrite);
+	// 
+	EntityQuery.AddSubsystemRequirement<
+		UMassStateTreeSubsystem>(EMassFragmentAccess::ReadWrite);
 
 	ProcessorRequirements.AddSubsystemRequirement<UMassSignalSubsystem>(EMassFragmentAccess::ReadWrite);
 }
