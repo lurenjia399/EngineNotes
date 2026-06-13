@@ -465,6 +465,13 @@ UMassTrafficUpdateVelocityProcessor::UMassTrafficUpdateVelocityProcessor()
 		UMassTrafficInterpolationProcessor::StaticClass()->GetFName());
 }
 ```
+
+# 4 FMassEntityQuery
+
+```cpp
+
+```
+
 # 基本概念
 FMassEntityTemplateBuildContext
 ```cpp
