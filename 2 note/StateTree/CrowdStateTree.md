@@ -1,18 +1,6 @@
 # 1 Flee
 1 条件设置
 ```cpp
-USTRUCT()
-struct FZoneGraphTagMaskConditionInstanceData
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, Category = Input)
-	FZoneGraphTagMask Left = FZoneGraphTagMask::None;
-
-	UPROPERTY(EditAnywhere, Category = Parameter)
-	FZoneGraphTagMask Right = FZoneGraphTagMask::None;
-};
-
 bool FZoneGraphTagMaskCondition::TestCondition(
 	FStateTreeExecutionContext& Context) const  
 {  
