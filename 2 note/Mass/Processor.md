@@ -19,3 +19,19 @@ UMassTrafficUpdateVelocityProcessor::UMassTrafficUpdateVelocityProcessor()
 }
 ```
 # UMassStateTreeActivationProcessor 
+```cpp
+void UMassStateTreeActivationProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
+{
+	// 包含读写FMassStateTreeInstanceFragment
+	EntityQuery.AddRequirement<FMassStateTreeInstanceFragment>(EMassFragmentAccess::ReadWrite);
+	//
+	EntityQuery.AddConstSharedRequirement<
+		FMassStateTreeSharedFragment>();
+	EntityQuery.AddTagRequirement<
+		FMassStateTreeActivatedTag>(EMassFragmentPresence::None);
+	EntityQuery.AddChunkRequirement<FMassSimulationVariableTickChunkFragment>(EMassFragmentAccess::ReadOnly, EMassFragmentPresence::Optional);
+	EntityQuery.AddSubsystemRequirement<UMassStateTreeSubsystem>(EMassFragmentAccess::ReadWrite);
+
+	ProcessorRequirements.AddSubsystemRequirement<UMassSignalSubsystem>(EMassFragmentAccess::ReadWrite);
+}
+```
