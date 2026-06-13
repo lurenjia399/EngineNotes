@@ -11,4 +11,7 @@ bool FZoneGraphTagMaskCondition::TestCondition(
 }
 ```
 
+UMassZoneGraphAnnotationTrait
+
+
 UMassStateTreeSchema
