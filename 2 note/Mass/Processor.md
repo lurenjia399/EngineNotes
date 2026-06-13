@@ -22,14 +22,19 @@ UMassTrafficUpdateVelocityProcessor::UMassTrafficUpdateVelocityProcessor()
 ```cpp
 void UMassStateTreeActivationProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
-	// 包含读写FMassStateTreeInstanceFragment
+	// 包含FMassStateTreeInstanceFragment，并且要读写
 	EntityQuery.AddRequirement<FMassStateTreeInstanceFragment>(EMassFragmentAccess::ReadWrite);
-	//
+	// 包含FMassStateTreeSharedFragment，只读
 	EntityQuery.AddConstSharedRequirement<
 		FMassStateTreeSharedFragment>();
+	// 不包含FMassStateTreeActivatedTag
 	EntityQuery.AddTagRequirement<
 		FMassStateTreeActivatedTag>(EMassFragmentPresence::None);
-	EntityQuery.AddChunkRequirement<FMassSimulationVariableTickChunkFragment>(EMassFragmentAccess::ReadOnly, EMassFragmentPresence::Optional);
+	// 可选FMassSimulationVariableTickChunkFragment，zhi'du
+	EntityQuery.AddChunkRequirement<
+		FMassSimulationVariableTickChunkFragment>
+			(EMassFragmentAccess::ReadOnly, 
+				MassFragmentPresence::Optional);
 	EntityQuery.AddSubsystemRequirement<UMassStateTreeSubsystem>(EMassFragmentAccess::ReadWrite);
 
 	ProcessorRequirements.AddSubsystemRequirement<UMassSignalSubsystem>(EMassFragmentAccess::ReadWrite);
