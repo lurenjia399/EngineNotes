@@ -478,7 +478,23 @@ FMassEntityTemplate：
 ```
 FArchetypeData：
 ```cpp
-1 chunk的组成是，多个EntityHandle挨着存放 + 每个EntityHandle的FragmentA挨着存放 + 每个EntityHandle的FragmentB挨着存放
+1 FMassArchetypeCompositionDescriptor CompositionDescriptor;//原型组成描述符，由五个Fragments, Tags, ChunkFragments, SharedFragments, ConstSharedFragments组成。在Trait创建的时候会生成相应的Fragments，并赋值给EntityTemplate的CompositionDescriptor, 然后在Archetype::Initialize方法中传递给Archetype的CompositionDescriptor成员变量。
+	2 uint32 CreatedArchetypeDataVersion = 0;// 就是一个计数器，每次我们创建新的Archetype的时候，这个计数器+1，并且这个值一旦设置就不会被更改。
+	3 TArray<FMassArchetypeFragmentConfig, TInlineAllocator<16>> FragmentConfigs;//这个看上去就是一个缓存用于加快索引。是一个数组，这个数组的key是Fragments的索引，value是Fragment的type和ArrayOffsetWithinChunk组成的FMassArchetypeFragmentConfig（ArrayOffsetWithinChunk指的是在Chunk中的偏移，Chunk是一块很大的内存，它里面保存了所有Entity的EntityHanle和Entity用到的所有的Fragment。Chunk的布局是所有的EntityHanle占一部分，所有相同的Fragment占一部分）。所以我们要想获取EntityA用到的FragmentB，就需要知道FragmentB在Chunk的偏移ArrayOffsetWithinChunk，有了这个偏移就能找到所有FragmentB,还需要知道EntityA在Chunk中是第几个，才能找到到EntityA用的FragmentB。
+	4 TMap<const UScriptStruct*, int32> FragmentIndexMap;//这个也是加快索引的，和FragmentConfigs搭配使用，key和value是FragmentConfigs的key和value反过来。
+	5 SIZE_T TotalBytesPerEntity = 0;//这个记录了EntityHandle的大小 + 所有不同Fragment的大小。字面意思上就是每个Entity所占的字节。
+	6 const SIZE_T ChunkMemorySize = 0;//Chunk在内存中所占的大小。目前是代码写死的，是128 * 1024，也就是128KB。
+	7 int32 NumEntitiesPerChunk;//字面意思就是Chunk能容纳多少个Entity。Chunk的结构是所有的EntityHangle放在一起，所有相同的Fragment放在一起。不同的Fragment之间对其大小可能不同，所以还需要字节对齐，就有可能出现占位的情况，但是呢占位的值不会大于对齐值（按四字节对齐，那占位的值不可能大于四字节）所以需要计算下所有不同Fragment的对齐值和，所以 
+	NumEntitiesPerChunk = （ChunkMemorySize - 对齐值和）/ TotalBytesPerEntity
+	注意：这是Chunk的计算方式，具体Chunk的内存结构是所有EnittyHangle存放一起，相同的Fragment存放在一起。
+	8 TArray<FInstancedStruct> ChunkFragmentsTemplate;//这个就是ChunkFragments里的数据，按照Fragment从大到小排序后，赋值到ChunkFragmentsTemplate成员变量里。
+	9 int32 EntityListOffsetWithinChunk;//这个属性在初始化的时候为0。正常来说会在Chunk的开头存放所有的EntityHanle，但是这个属性就是一个偏移，可以把所有的EntityHandle不放在开头放在这个偏移的后边。
+//**************以上9个都在 FMassArchetypeData::Initialize 方法中赋值***********
+	10 TArray<FMassArchetypeChunk> Chunks;//这个就是Archetype里的Chunk数组，会在生成Entity的时候创建一个Chunk，chunk的组成是，多个EntityHandle挨着存放 + 每个EntityHandle的FragmentA挨着存放 + 每个EntityHandle的FragmentB挨着存放。
+	11 TMap<int32, int32> EntityMap;//缓存个索引，key是EntityHandle的index，value是Archetype中Entity的绝对索引。
+//**************以上2个都在生成 Entity 的里面赋值***********
+	12 uint32 EntityOrderVersion = 0;//当Archetype中的Entity数据顺序改变的时候会增加。
+	13 UE::Mass::FArchetypeGroups Groups;//还不知道干嘛的，看上去是分组了？
 // 流程：
 1 EnittyTemplate里会存储Archetypehandle，所以原型也是在Template的创建流程里创建的，是通过FMassEntityManager::CreateArchetype这个方法来创建的
 ```
