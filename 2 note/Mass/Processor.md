@@ -69,7 +69,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 		{
 			UMassStateTreeSubsystem& MassStateTreeSubsystem = Context
 				.GetMutableSubsystemChecked<UMassStateTreeSubsystem>();
-			// 遍历到的Entities数量
+			// 遍历到的Entities刷零
 			const int32 NumEntities = Context.GetNumEntities();
 			
 			// 限制每帧激活statetree的数量
@@ -80,7 +80,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 			}
 			ActivationCounts[ChunkLOD] += NumEntities;
 			
-
+			// 拿到
 			const TArrayView<FMassStateTreeInstanceFragment> StateTreeInstanceList = Context.GetMutableFragmentView<FMassStateTreeInstanceFragment>();
 			const FMassStateTreeSharedFragment& SharedStateTree = Context.GetConstSharedFragment<FMassStateTreeSharedFragment>();
 
