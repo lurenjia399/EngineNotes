@@ -119,7 +119,8 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 	// Signal all entities inside the consolidated list
 	if (EntitiesToSignal.Num())
 	{
-		SignalSubsystem.SignalEntities(UE::Mass::Signals::StateTreeActivate, EntitiesToSignal);
+		SignalSubsystem.SignalEntities(
+			UE::Mass::Signals::StateTreeActivate, EntitiesToSignal);
 	}
 }
 ```
