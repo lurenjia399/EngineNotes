@@ -116,6 +116,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 			}
 		});
 	
+	// 把StateTreeActivate的信号发给这些Entities。
 	// Signal all entities inside the consolidated list
 	if (EntitiesToSignal.Num())
 	{
