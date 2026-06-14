@@ -69,15 +69,17 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 		{
 			UMassStateTreeSubsystem& MassStateTreeSubsystem = Context
 				.GetMutableSubsystemChecked<UMassStateTreeSubsystem>();
-				
+			// 遍历到的Entities数量
 			const int32 NumEntities = Context.GetNumEntities();
-			// Check if we already reached the maximum for this frame
+			
+			// 限制每帧激活statetree的数量
 			const EMassLOD::Type ChunkLOD = FMassSimulationVariableTickChunkFragment::GetChunkLOD(Context);
 			if (ActivationCounts[ChunkLOD] > MaxActivationsPerLOD[ChunkLOD])
 			{
 				return;
 			}
 			ActivationCounts[ChunkLOD] += NumEntities;
+			
 
 			const TArrayView<FMassStateTreeInstanceFragment> StateTreeInstanceList = Context.GetMutableFragmentView<FMassStateTreeInstanceFragment>();
 			const FMassStateTreeSharedFragment& SharedStateTree = Context.GetConstSharedFragment<FMassStateTreeSharedFragment>();
