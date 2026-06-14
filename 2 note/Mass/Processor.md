@@ -84,7 +84,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 			const TArrayView<FMassStateTreeInstanceFragment> StateTreeInstanceList = Context.GetMutableFragmentView<FMassStateTreeInstanceFragment>();
 			const FMassStateTreeSharedFragment& SharedStateTree = Context.GetConstSharedFragment<FMassStateTreeSharedFragment>();
 
-			// 修改FMassStateTreeInstanceFragment这个Fragment，为每个Entity创建
+			// 修改FMassStateTreeInstanceFragment这个Fragment，为Entity创建UMassStateTreeProcessor这个Proscessor，只要是不同的StateTree，就会创建一个Proc
 			for (FMassExecutionContext::FEntityIterator EntityIt = Context.CreateEntityIterator(); EntityIt; ++EntityIt)
 			{
 				FMassStateTreeInstanceFragment& StateTreeInstance = StateTreeInstanceList[EntityIt];
