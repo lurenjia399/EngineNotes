@@ -101,6 +101,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 					StateTreeFragment.LastUpdateTimeInSeconds = TimeInSeconds;
 				});
 
+			// 通过CommondBuffer给遍历到的Entity添加FMassStateTreeActivatedTag，在所有的Processor都执行完成，在主线程执行FlushCommond
 			// Adding a tag on each entities to remember we have sent the state tree initialization signal
 			EntitiesToSignal.Reserve(EntitiesToSignal.Num() + NumEntities);
 			for (FMassExecutionContext::FEntityIterator EntityIt = Context.CreateEntityIterator(); EntityIt; ++EntityIt)
