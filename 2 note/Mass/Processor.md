@@ -51,20 +51,25 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 	UMassSignalSubsystem& SignalSubsystem = ExecutionContext.
 		GetMutableSubsystemChecked<UMassSignalSubsystem>();
 
-	const UMassBehaviorSettings* BehaviorSettings = GetDefault<UMassBehaviorSettings>();
-	check(BehaviorSettings);
- 
-	// StateTree processor relies on signals to be ticked, but we need an 'initial tick' to set the tree in the proper state.
-	// The initializer provides that by sending a signal to all new entities that use StateTree.
-	const double TimeInSeconds = EntityManager.GetWorld()->GetTimeSeconds();
+	const UMassBehaviorSettings* BehaviorSettings = 
+		GetDefault<UMassBehaviorSettings>();
+	const double TimeInSeconds = EntityManager.GetWorld()
+		->GetTimeSeconds();
 
 	TArray<FMassEntityHandle> EntitiesToSignal;
 	int32 ActivationCounts[EMassLOD::Max] {0,0,0,0};
 	
 	EntityQuery.ForEachEntityChunk(ExecutionContext,
-		[&EntitiesToSignal, &ActivationCounts, MaxActivationsPerLOD = BehaviorSettings->MaxActivationsPerLOD, TimeInSeconds](FMassExecutionContext& Context)
+		[&EntitiesToSignal, 
+			&ActivationCounts, 
+			MaxActivationsPerLOD = BehaviorSettings
+				->MaxActivationsPerLOD, 
+			TimeInSeconds]
+		(FMassExecutionContext& Context)
 		{
-			UMassStateTreeSubsystem& MassStateTreeSubsystem = Context.GetMutableSubsystemChecked<UMassStateTreeSubsystem>();
+			UMassStateTreeSubsystem& MassStateTreeSubsystem = Context
+				.GetMutableSubsystemChecked<UMassStateTreeSubsystem>();
+				
 			const int32 NumEntities = Context.GetNumEntities();
 			// Check if we already reached the maximum for this frame
 			const EMassLOD::Type ChunkLOD = FMassSimulationVariableTickChunkFragment::GetChunkLOD(Context);
