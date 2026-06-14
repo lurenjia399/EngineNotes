@@ -91,6 +91,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 				StateTreeInstance.InstanceHandle = MassStateTreeSubsystem.AllocateInstanceData(SharedStateTree.StateTree);
 			}
 			
+			// 运行StateTree
 			// Start StateTree. This may do substantial amount of work, as we select and enter the first state.
 			UE::MassBehavior::ForEachEntityInChunk(Context, MassStateTreeSubsystem,
 				[TimeInSeconds](FMassStateTreeExecutionContext& StateTreeExecutionContext, FMassStateTreeInstanceFragment& StateTreeFragment)
