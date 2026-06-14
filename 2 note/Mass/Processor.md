@@ -116,7 +116,7 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 			}
 		});
 	
-	// 把StateTreeActivate的信号发给这些Entities。UMassStateTreeProcessor这个订阅了信号，收到信号后会将信息放到 把信号名称和Entities上面的信息放到UMassSignalProcessorBase的数组中
+	// 把StateTreeActivate的信号发给这些Entities。UMassStateTreeProcessor这个订阅了信号，收到信号后会将信息放到FrameReceivedSignals数组中，等到Execute的时候处理这个信号
 	// Signal all entities inside the consolidated list
 	if (EntitiesToSignal.Num())
 	{
