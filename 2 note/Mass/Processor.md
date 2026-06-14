@@ -80,11 +80,11 @@ void UMassStateTreeActivationProcessor::Execute(FMassEntityManager& EntityManage
 			}
 			ActivationCounts[ChunkLOD] += NumEntities;
 			
-			// 拿到
+			// 拿到FMassStateTreeInstanceFragment和FMassStateTreeSharedFragment数组
 			const TArrayView<FMassStateTreeInstanceFragment> StateTreeInstanceList = Context.GetMutableFragmentView<FMassStateTreeInstanceFragment>();
 			const FMassStateTreeSharedFragment& SharedStateTree = Context.GetConstSharedFragment<FMassStateTreeSharedFragment>();
 
-			// Allocate and initialize the StateTree instance memory
+			// 修改FMassStateTreeInstanceFragment这个Fragment，为每个Entity创建
 			for (FMassExecutionContext::FEntityIterator EntityIt = Context.CreateEntityIterator(); EntityIt; ++EntityIt)
 			{
 				FMassStateTreeInstanceFragment& StateTreeInstance = StateTreeInstanceList[EntityIt];
