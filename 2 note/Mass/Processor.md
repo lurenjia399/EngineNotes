@@ -43,3 +43,7 @@ void UMassStateTreeActivationProcessor::ConfigureQueries(const TSharedRef<FMassE
 		UMassSignalSubsystem>(EMassFragmentAccess::ReadWrite);
 }
 ```
+
+```cpp
+
+```
