@@ -24,4 +24,16 @@ UMassStateTreeSchema
 4 statetree的执行会处理Evaluator的tick，在tick里会设置不同的标志位，在statetree中根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
 ```
 1 MoveHit（在移动中收到攻击）
-会执行两个StateTask，FHTCrowdCharacterMassStandTask和
+会执行两个StateTask，FHTCrowdCharacterMassStandTask
+```cpp
+{
+	FMassMoveTargetFragment& MoveTarget = 
+		Context.GetExternalData(MoveTargetHandle);
+	MoveTarget.CreateNewAction(EMassMovementAction::Animate, *World);  
+	UE::MassNavigation::ActivateActionAnimate(
+	*World, Context.GetOwner(), 
+	MassContext.GetEntity(), MoveTarget);
+}
+
+
+```
