@@ -1,3 +1,4 @@
 1 StateTreeProcessor是继承UMassSignalProcessorBase这个的，Base是工作线程执行的，但因为StateTreeProcessor的ConfigureQueries方法中添加了subsystem，所以变成游戏线程执行。
 2 在InitializeInternal这个方法中会执行父类的SubscribeToSignal的方法，就是订阅不同的Signal，就是类似于绑定代理。
-3 StateTreeProcessor没有重写Execute方法，走的是父类的
+3 StateTreeProcessor没有重写Execute方法，走的是父类的。
+4 
