@@ -23,3 +23,4 @@ UMassStateTreeSchema
 3 HitReceived也被UMassStateTreeProcessor这个订阅，SignalEntities这个方法就是订阅回调，执行statetree
 4 statetree的执行会处理Evaluator的tick，在tick里会设置不同的标志位，在statetree中根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
 ```
+1 MoveHit（）
