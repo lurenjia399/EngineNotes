@@ -35,7 +35,7 @@ UMassStateTreeSchema
 		MassContext.GetEntity(), MoveTarget);
 }
 1 修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理
-2 MassMoveTargetFragment这个Fragment不是配的，是动态添加进去的
+2 MassMoveTargetFragment这个Fragment
 
 ```
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
