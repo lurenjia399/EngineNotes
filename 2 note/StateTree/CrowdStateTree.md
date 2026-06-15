@@ -37,7 +37,4 @@ UMassStateTreeSchema
 修改MassMoveTargetFragment这个，让Entity移动
 
 ```
-FMassLookAtTask，修改的FMassLookAtFragment这个片段，让Entity看向目标
-```cpp
-
-```
+FMassLookAtTask，修改的FMassLookAtFragment这个片段，
