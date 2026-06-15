@@ -31,9 +31,9 @@ UMassStateTreeSchema
 		Context.GetExternalData(MoveTargetHandle);
 	MoveTarget.CreateNewAction(EMassMovementAction::Animate, *World);  
 	UE::MassNavigation::ActivateActionAnimate(
-	*World, Context.GetOwner(), 
-	MassContext.GetEntity(), MoveTarget);
+		*World, Context.GetOwner(), 
+		MassContext.GetEntity(), MoveTarget);
 }
-
+修改MassMoveTargetFragment这个
 
 ```
