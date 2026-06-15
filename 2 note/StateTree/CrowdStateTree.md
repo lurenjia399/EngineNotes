@@ -34,7 +34,7 @@ UMassStateTreeSchema
 		*World, Context.GetOwner(), 
 		MassContext.GetEntity(), MoveTarget);
 }
-修改MassMoveTargetFragment这个，让Entity移动
+修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理
 
 ```
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
