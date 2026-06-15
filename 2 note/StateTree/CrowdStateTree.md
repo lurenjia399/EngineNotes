@@ -17,6 +17,6 @@ UMassZoneGraphAnnotationTrait
 UMassStateTreeSchema
 
 # 受击反应
-```
-
+```cpp
+1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把
 ```
