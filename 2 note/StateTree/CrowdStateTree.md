@@ -34,10 +34,10 @@ UMassStateTreeSchema
 		*World, Context.GetOwner(), 
 		MassContext.GetEntity(), MoveTarget);
 }
-修改MassMoveTargetFragment这个，让entity移动
+修改MassMoveTargetFragment这个，让Entity移动
 
 ```
-FMassLookAtTask
+FMassLookAtTask，修改的FMassLookAtFragment这个片段，让Entity看向目标
 ```cpp
 
 ```
