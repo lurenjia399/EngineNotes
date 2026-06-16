@@ -43,5 +43,5 @@ UMassStateTreeSchema
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
 ```cpp
 1 这个Task里主要设置FMassLookAtFragment这个Fragment
-2 
+2 玩家撞击到行人，就会通过玩家身上的massagentComponent的获取entity，然后设置这个Fragment，让其朝向玩家。
 ```
