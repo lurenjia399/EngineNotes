@@ -34,7 +34,7 @@ UMassStateTreeSchema
 		*World, Context.GetOwner(), 
 		MassContext.GetEntity(), MoveTarget);
 }
-1 修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理
+1 修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理,UMassSteerToMoveTargetProcessor这个也会读取处理
 2 MassMoveTargetFragment这个Fragment是由UMassSteeringTrait这个Trait添加的
 3 UMassProcessor_Animation 这个里会将MoveTargetFragment里的数据赋值给UMassCrowdAnimInstance的MassMovementInfo变量，
 
