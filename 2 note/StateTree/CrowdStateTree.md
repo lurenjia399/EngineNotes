@@ -36,6 +36,7 @@ UMassStateTreeSchema
 }
 1 修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理
 2 MassMoveTargetFragment这个Fragment是由UMassSteeringTrait这个Trait添加的
+3 UMassProcessor_Animation 这个里
 
 ```
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
