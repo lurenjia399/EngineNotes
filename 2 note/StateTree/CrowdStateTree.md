@@ -18,7 +18,7 @@ UMassStateTreeSchema
 
 ```cpp
 1 stateTree中通过FMassZoneGraphAnnotationEvaluator获取FMassZoneGraphAnnotationFragment的AnnotationTags
-1 进入逃跑的条件，判断AnnotationTags是否包含
+1 进入逃跑的条件，判断AnnotationTags是否包含LowDanger的Tag，以及
 ```
 
 # 受击反应
