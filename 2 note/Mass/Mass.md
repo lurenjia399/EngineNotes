@@ -150,7 +150,13 @@ UMassSpawnerSubsystem::DoSpawning(
 ## 4.1 FMassEntityManager::FEntityCreationContext
 
 ```cpp
-
+struct FCreationContext
+{
+	// FObserverLock
+	TSharedRef<FObserverLock> Lock;
+	// 
+	FCreationNotificationHandle CreationHandle;
+}
 ```
 
 ## 4.2 UMassEntitySettings
