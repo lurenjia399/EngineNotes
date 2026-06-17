@@ -17,7 +17,7 @@ UMassZoneGraphAnnotationTrait
 UMassStateTreeSchema
 
 ```cpp
-1 
+1 进入逃跑的条件，ZoneGraphAnnotation
 ```
 
 # 受击反应
