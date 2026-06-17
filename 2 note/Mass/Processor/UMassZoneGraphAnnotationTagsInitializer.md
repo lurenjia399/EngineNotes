@@ -1,1 +1,2 @@
-1 
+1 继承UMassObserverProcessor
+2 在Register的时候会将，Processor添加到
