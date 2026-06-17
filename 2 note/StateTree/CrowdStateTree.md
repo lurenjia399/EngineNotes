@@ -16,6 +16,10 @@ UMassZoneGraphAnnotationTrait
 
 UMassStateTreeSchema
 
+```cpp
+1 
+```
+
 # 受击反应
 ```cpp
 1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
