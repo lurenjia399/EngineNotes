@@ -102,7 +102,7 @@ FMassEntityTemplate 是用来存放 Archetype 的，那什么是 Archetype 呢�
 
 ```
 
-# 4 SpawnEntity
+## 4 SpawnEntity
 ```cpp
 TSharedPtr<FMassEntityManager::FEntityCreationContext> 
 UMassSpawnerSubsystem::DoSpawning(
@@ -147,7 +147,13 @@ UMassSpawnerSubsystem::DoSpawning(
 }
 ```
 
-## 4 UMassEntitySettings
+## 4.1 FMassEntityManager::FEntityCreationContext
+
+```cpp
+
+```
+
+## 4.2 UMassEntitySettings
 在引擎启动的时候就会执行 BuildProcessorListAndPhases 方法：
 ```cpp
 void UMassEntitySettings::OnPostEngineInit()
