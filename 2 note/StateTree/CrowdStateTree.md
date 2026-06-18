@@ -38,16 +38,11 @@
 
 3 stateTree更新状态
 ```cpp
-1 FHTMassComponentHitEvaluator 这个从UHTMassComponentHitSubsystem中根据entityhandle来获取HitResult击中信息，并根据信息来s
-2 
+1 FHTMassComponentHitEvaluator 这个从UHTMassComponentHitSubsystem中根据entityhandle来获取HitResult击中信息，并根据信息来设置标志位
+2 stateTree根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
+3 bu
 ```
 
-```cpp
-1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
-2 在subsystem的tick中，会遍历HitResults，通过SignalEntity发送HitReceived的信号
-3 HitReceived也被UMassStateTreeProcessor这个订阅，SignalEntities这个方法就是订阅回调，执行statetree
-4 statetree的执行会处理Evaluator的tick，在tick里会设置不同的标志位，在statetree中根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
-```
 1 MoveHit（在移动中收到攻击）
 会执行两个StateTask，FHTCrowdCharacterMassStandTask
 ```cpp
