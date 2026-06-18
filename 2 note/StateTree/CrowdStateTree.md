@@ -35,7 +35,6 @@ bool FZoneGraphTagMaskCondition::TestCondition(
 
 UMassZoneGraphAnnotationTrait
 
-
 ```cpp
 1 stateTree中通过FMassZoneGraphAnnotationEvaluator获取FMassZoneGraphAnnotationFragment的AnnotationTags
 2 进入逃跑的条件，判断AnnotationTags是否包含LowDanger的Tag
