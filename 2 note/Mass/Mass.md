@@ -264,8 +264,7 @@ void UMassEntitySettings::BuildProcessorListAndPhases()
 }
 ```
 
-## 5 UMassCompositeProcessor
-## 6 FMassEntityQuery
+## 5 FMassEntityQuery
 这是个加速结构，我们通过不同的Fragment组成Chunk之后，我们需要操作
 给这个Fragment赋值来实现具体的逻辑，这肯定不能遍历吧，所以就有了 FMassFragmentBitSet 这个结构来加速查询：
 ```cpp
