@@ -7,6 +7,7 @@
 3 在HandleEvents方法中，会将Danger记录到Comp数组中，在TickAnnotation中会处理这个Danger。
 4 在TickAnnotation中会修改ZoneGraphAnnotationSubSystem中的AnnotationTagContainer成员变量。
 5 结束，通过TriggerDanger触发的最终目的就是修改AnnotationTagContainer这个变量。
+6 UZoneGraphAnnotationComponent这个Comp是挂在AHTMassCrowdSpawner这个上的。
 ```
 
 2 修改FMassZoneGraphAnnotationFragment
