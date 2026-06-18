@@ -9,6 +9,11 @@
 5 结束，通过TriggerDanger触发的最终目的就是修改AnnotationTagContainer这个变量。
 ```
 
+2 修改FMassZoneGraphAnnotationFragment
+```cpp
+1 
+```
+
 1 条件设置
 ```cpp
 bool FZoneGraphTagMaskCondition::TestCondition(
