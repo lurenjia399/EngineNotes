@@ -170,7 +170,7 @@ FObserverLock::~FObserverLock()
 	}
 
 	--SharedEntityManager->GetObserverManager().LocksCount;
-	// 唤醒执行，找到Observer的Processor
+	// 唤醒执行，找到Observer的Processor。找到OberverLock上的BufferedNotifications数组，遍历数组
 	SharedEntityManager->GetObserverManager().ResumeExecution(*this);
 }
 ```
