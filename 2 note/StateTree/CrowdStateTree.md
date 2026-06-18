@@ -2,7 +2,8 @@
 1 触发
 
 ```cpp
-
+1 通过UZoneGraphDisturbanceAnnotationBPLibrary::TriggerDanger这个往ZoneGraphAnnotationSubSystem中添加一个Event
+2 
 ```
 
 1 条件设置
