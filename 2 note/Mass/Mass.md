@@ -158,6 +158,7 @@ struct FCreationContext
 	FCreationNotificationHandle CreationHandle;
 }
 ```
+1 SpawnEntities de 
 
 ## 4.2 UMassEntitySettings
 在引擎启动的时候就会执行 BuildProcessorListAndPhases 方法：
