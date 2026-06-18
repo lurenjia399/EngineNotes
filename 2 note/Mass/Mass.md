@@ -161,7 +161,18 @@ struct FCreationContext
 1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，在EntityCreationContext析构的时候，其中的Lock也会执行析构
 
 ```cpp
+FObserverLock::~FObserverLock()
+{
+	TSharedPtr<FMassEntityManager> SharedEntityManager = WeakEntityManager.Pin();
+	if (UNLIKELY(!SharedEntityManager))
+	{
+		return;
+	}
 
+	--SharedEntityManager->GetObserverManager().LocksCount;
+	// 唤醒执行，找到Observer的Processor
+	SharedEntityManager->GetObserverManager().ResumeExecution(*this);
+}
 ```
 
 ## 4.2 UMassEntitySettings
