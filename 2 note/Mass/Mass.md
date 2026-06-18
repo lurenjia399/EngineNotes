@@ -280,6 +280,13 @@ void FMassEntityQuery::ForEachEntityChunk(
 }
 ```
 
+## 6 FMassCommandAddFragments
+
+往
+```cpp
+
+```
+
 # 2 执行
 ## 1 MassProcessor
 EProcessorExecutionFlags::Editor 这个枚举标志了此个Processor在哪个端执行的?
