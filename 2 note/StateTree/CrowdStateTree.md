@@ -38,7 +38,8 @@
 
 3 stateTree更新状态
 ```cpp
-
+1 FHTMassComponentHitEvaluator 这个从UHTMassComponentHitSubsystem中根据entityhandle来获取HitResult击中信息，并根据信息来s
+2 
 ```
 
 ```cpp
