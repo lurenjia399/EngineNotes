@@ -17,7 +17,8 @@
 
 3 stateTree
 ```cpp
-1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的
+1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的来观察FMassZoneGraphAnnotationFragment中的Tag，然后传递到statetree中
+2 stateTree会根据这个Evaluator的Tag来进入Flee状态。
 ```
 
 1 条件设置
