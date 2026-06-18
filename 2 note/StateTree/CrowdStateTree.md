@@ -15,6 +15,11 @@
 2 如果entity添加了这个Fragment，就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取所在Land的Tag，设置到Fragment中
 ```
 
+3 stateTree
+```cpp
+1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的
+```
+
 1 条件设置
 ```cpp
 bool FZoneGraphTagMaskCondition::TestCondition(
