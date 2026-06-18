@@ -158,6 +158,8 @@ struct FCreationContext
 	FCreationNotificationHandle CreationHandle;
 }
 ```
+
+1 SpawnEntities的时候会将创建出的Entity放到ObserveLock的
 1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，在EntityCreationContext析构的时候，其中的Lock也会执行析构
 
 ```cpp
