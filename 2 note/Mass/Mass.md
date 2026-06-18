@@ -282,7 +282,7 @@ void FMassEntityQuery::ForEachEntityChunk(
 
 ## 6 FMassCommandAddFragments
 
-往现有的entity上添加其他Fragment
+往现有的entity上添加其他Fragment，添加Tag等操作都通过CommondBuff实现
 ```cpp
 EntityManager.Defer().PushCommand<FMassCommandAddFragments<
 			FMassNavigationObstacleGridCellLocationFragment	
