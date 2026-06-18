@@ -11,7 +11,8 @@
 
 2 修改FMassZoneGraphAnnotationFragment
 ```cpp
-1 
+1 UMassZoneGraphAnnotationTagsInitializer继承了UMassObserverProcessor，来观察FMassZoneGraphAnnotationFragment
+2 如果entity添加了这个Fragment，就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取
 ```
 
 1 条件设置
