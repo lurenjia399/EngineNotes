@@ -516,7 +516,9 @@ CompositionDescriptor.Fragments.ExportTypes(SortedFragmentList);
 ```
 2 Signal和Observe有什么区别
 ```cpp
+Mass 不是只有逐帧 Processor。实体组成变化、Fragment 添加移除、Tag 切换、延迟唤醒，都需要事件式机制。UMassObserverProcessor 用来观察实体操作，适合“某个 Fragment/Tag 被添加后初始化数据”或“某个状态退出后清理”。UMassSignalSubsystem 用来给实体发信号，适合“等待几秒后继续”“外部事件唤醒某批实体”。
 
+Observer 和 Signal 的关键区别是触发源不同：Observer 监听结构变化，Signal 监听显式信号。前者适合生命周期钩子，后者适合行为流。
 ```
 
 ### 1.2 RunProcessorsView
