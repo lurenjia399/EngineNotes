@@ -159,7 +159,31 @@ struct FCreationContext
 }
 ```
 
-1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，创建出的Entity放到ObserveLock的，在EntityCreationContext析构的时候，其中的Lock也会执行析构
+1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，创建出的Entity放到ObserveLock的BufferedNotifications通知数组中
+
+```cpp
+int32 AddCreatedEntities(
+	const TConstArrayView<FMassEntityHandle> InCreatedEntities, 
+	FMassArchetypeEntityCollection&& InEntityCollection)
+{
+	UE_CHECK_OWNER_THREADID();
+	if (CreationNotificationIndex == INDEX_NONE)
+	{
+		CreationNotificationIndex = BufferedNotifications.Num();
+		BufferedNotifications.Emplace(EObservedOperationNotification::Create, FBufferedNotification::FEmptyComposition{}
+			, UE::Mass::FEntityCollection(InCreatedEntities, Forward<FMassArchetypeEntityCollection>(InEntityCollection)));
+	}
+	else
+	{
+		BufferedNotifications[CreationNotificationIndex].AppendEntities(InCreatedEntities, Forward<FMassArchetypeEntityCollection>(InEntityCollection));
+	}
+
+	return CreationNotificationIndex;
+}
+```
+
+
+2 在EntityCreationContext析构的时候，其中的Lock也会执行析构
 
 ```cpp
 FObserverLock::~FObserverLock()
