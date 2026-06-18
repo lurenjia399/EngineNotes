@@ -159,7 +159,7 @@ struct FCreationContext
 }
 ```
 
-1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，创建出的Entity放到ObserveLock的BufferedNotifications通知数组中
+1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，创建出的Entity放到ObserveLock的BufferedNotifications通知数组中，通知数组存储的是通知类型，通知
 
 ```cpp
 int32 AddCreatedEntities(
