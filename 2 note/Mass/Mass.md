@@ -282,8 +282,16 @@ void FMassEntityQuery::ForEachEntityChunk(
 
 ## 6 FMassCommandAddFragments
 
-往
+往现有的entity上添加其他Fragment
 ```cpp
+EntityManager.Defer().PushCommand<FMassCommandAddFragments<
+			FMassNavigationObstacleGridCellLocationFragment	
+			, FMassCrowdObstacleFragment
+			, FMassTrafficVehicleDamageFragment
+			, FMassLookAtTargetFragment
+			, FMassTrafficVehicleLODSleepFragment>>	
+			(VehicleEntity);
+			
 
 ```
 
