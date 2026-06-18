@@ -190,7 +190,7 @@ void FMassObserverManager::ResumeExecution(FObserverLock& LockBeingReleased)
 		FBufferedNotificationExecutioner RemoveNotification(NotificationContext, EMassObservedOperation::Remove);
 		FBufferedCreationNotificationExecutioner CreationOpExecutioner(NotificationContext);
 
-		// 遍历ObserverLock中的BufferedNotifications数组，根据不同类型通过Executioner执行不同操作。在executioner里会判断
+		// 遍历ObserverLock中的BufferedNotifications数组，根据不同类型通过Executioner执行不同操作。在executioner里会ObservedFragments里面是否有entities中的Fragment
 		for (FBufferedNotification& Op : LockBeingReleased.BufferedNotifications)
 		{
 			switch (Op.Type)
