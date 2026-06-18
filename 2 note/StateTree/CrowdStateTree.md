@@ -30,6 +30,11 @@
 2 在subsystem的tick中，会遍历HitResults，通过SignalEntity发送HitReceived的信号
 ```
 
+2 UMassStateTreeProcessor
+```cpp
+1 UMassStateTreeProcessor继承UMassSignalProcessorBase
+```
+
 ```cpp
 1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
 2 在subsystem的tick中，会遍历HitResults，通过SignalEntity发送HitReceived的信号
