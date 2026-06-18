@@ -15,13 +15,20 @@
 2 如果entity添加了这个Fragment，就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取所在Land的Tag，设置到Fragment中
 ```
 
-3 stateTree
+3 stateTree更新状态
 ```cpp
 1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的来观察FMassZoneGraphAnnotationFragment中的Tag，然后传递到statetree中
 2 stateTree会根据这个Evaluator的Tag来进入Flee状态。
 ```
 
 # 受击反应
+
+1 触发
+
+```
+
+```
+
 ```cpp
 1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
 2 在subsystem的tick中，会遍历HitResults，通过SignalEntity发送HitReceived的信号
