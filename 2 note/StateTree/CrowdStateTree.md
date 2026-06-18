@@ -40,7 +40,7 @@
 ```cpp
 1 FHTMassComponentHitEvaluator 这个从UHTMassComponentHitSubsystem中根据entityhandle来获取HitResult击中信息，并根据信息来设置标志位
 2 stateTree根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
-3 bu
+3 StateTree内部不同状态会执行不同的Task
 ```
 
 1 MoveHit（在移动中收到攻击）
