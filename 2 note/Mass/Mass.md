@@ -235,7 +235,7 @@ void FMassObserverManager::ResumeExecution(FObserverLock& LockBeingReleased)
 	}
 }
 ```
-3 遍历通知数组中，对通知数组处理，就是获取观察数组，
+3 遍历通知数组中，对通知数组处理，就是获取观察数组，查找通知数组中的fragment是否在观察数组中，如果在就执行观察数组中的processor，这是create类型的
 ## 4.2 UMassEntitySettings
 在引擎启动的时候就会执行 BuildProcessorListAndPhases 方法：
 ```cpp
