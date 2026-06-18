@@ -158,7 +158,11 @@ struct FCreationContext
 	FCreationNotificationHandle CreationHandle;
 }
 ```
-1 SpawnEntities de 
+1 SpawnEntities 的返回值是FMassEntityManager::FEntityCreationContext，在EntityCreationContext析构的时候，其中的Lock也会执行析构
+
+```cpp
+
+```
 
 ## 4.2 UMassEntitySettings
 在引擎启动的时候就会执行 BuildProcessorListAndPhases 方法：
