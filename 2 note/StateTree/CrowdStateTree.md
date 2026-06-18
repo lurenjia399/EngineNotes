@@ -2,8 +2,8 @@
 1 触发
 
 ```cpp
-1 通过UZoneGraphDisturbanceAnnotationBPLibrary::TriggerDanger这个往ZoneGraphAnnotationSubSystem中添加一个Event
-2 
+1 通过UZoneGraphDisturbanceAnnotationBPLibrary::TriggerDanger这个往ZoneGraphAnnotationSubSystem的Event数组中添加一个。
+2 ZoneGraphAnnotationSubSystem会收集所有AnnotationComp，在subsystem的tick中会处理Event数组，
 ```
 
 1 条件设置
