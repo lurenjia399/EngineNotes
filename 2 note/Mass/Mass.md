@@ -182,8 +182,7 @@ int32 AddCreatedEntities(
 }
 ```
 
-
-2 在EntityCreationContext析构的时候，其中的Lock也会执行析构
+2 在EntityCreationContext析构的时候，其中的Lock也会执行析构，析构的时候会遍历通知数组
 
 ```cpp
 FObserverLock::~FObserverLock()
