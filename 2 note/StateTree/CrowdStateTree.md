@@ -1,4 +1,10 @@
 # 1 Flee
+1 触发
+
+```cpp
+
+```
+
 1 条件设置
 ```cpp
 bool FZoneGraphTagMaskCondition::TestCondition(
@@ -13,8 +19,6 @@ bool FZoneGraphTagMaskCondition::TestCondition(
 
 UMassZoneGraphAnnotationTrait
 
-
-UMassStateTreeSchema
 
 ```cpp
 1 stateTree中通过FMassZoneGraphAnnotationEvaluator获取FMassZoneGraphAnnotationFragment的AnnotationTags
