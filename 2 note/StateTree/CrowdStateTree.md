@@ -32,7 +32,13 @@
 
 2 UMassStateTreeProcessor
 ```cpp
-1 UMassStateTreeProcessor继承UMassSignalProcessorBase
+1 UMassStateTreeProcessor继承UMassSignalProcessorBase，在收到Signal回调后会执行SingnalEntities方法
+2 回调方法里会创建ExecuteContext，来执行StateTree
+```
+
+3 stateTree更新状态
+```cpp
+
 ```
 
 ```cpp
