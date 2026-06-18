@@ -4,7 +4,8 @@
 ```cpp
 1 通过UZoneGraphDisturbanceAnnotationBPLibrary::TriggerDanger这个往ZoneGraphAnnotationSubSystem的Event数组中添加一个。
 2 ZoneGraphAnnotationSubSystem会把AnnotatonComp记录到数组中，在subsystem的tick中会遍历AnnotationComp数组，每个Comp都执行HandleEvents，和TickAnnotation。
-3 在HandleEvents方法中，会将
+3 在HandleEvents方法中，会将Danger记录到Comp数组中，在TickAnnotation中会处理这个Danger。
+4 
 ```
 
 1 条件设置
