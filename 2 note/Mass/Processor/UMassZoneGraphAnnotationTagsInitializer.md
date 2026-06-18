@@ -1,4 +1,5 @@
 1 继承UMassObserverProcessor
 2 在Register的时候会将,Processor添加到UMassObserverRegistry中，是个映射
 key是观察的Fragment，value是processor
-3 在ObserveManager的
+3 在ObserveManager的Initialize中会遍历ObserverRegistry中注册的Processor，去执行Processor的初始化。并顺便将ObserverRegistry中记录的注册数组缓存到ObserveManager中的FragmentObservers观察数组中。
+4 在SpawnEntities方法的fan'h
