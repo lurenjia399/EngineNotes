@@ -175,6 +175,43 @@ FObserverLock::~FObserverLock()
 }
 ```
 
+```cpp
+void FMassObserverManager::ResumeExecution(FObserverLock& LockBeingReleased)
+{
+
+	if (LockBeingReleased.BufferedNotifications.IsEmpty() == false)
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(MassObserver_ResumeExecution);
+
+		UE::Mass::FProcessingContext ProcessingContext(EntityManager);
+
+		FNotificationContext NotificationContext{*this, ProcessingContext};
+		FBufferedNotificationExecutioner AddNotification(NotificationContext, EMassObservedOperation::Add);
+		FBufferedNotificationExecutioner RemoveNotification(NotificationContext, EMassObservedOperation::Remove);
+		FBufferedCreationNotificationExecutioner CreationOpExecutioner(NotificationContext);
+
+		// 遍历ObserverLock中的
+		for (FBufferedNotification& Op : LockBeingReleased.BufferedNotifications)
+		{
+			switch (Op.Type)
+			{
+				case EObservedOperationNotification::Add:
+					Visit(AddNotification, Op.CompositionChange, Op.AffectedEntities);
+					break;
+				case EObservedOperationNotification::Remove:
+					Visit(RemoveNotification, Op.CompositionChange, Op.AffectedEntities);
+					break;
+				case EObservedOperationNotification::Create:
+					Visit(CreationOpExecutioner, MoveTemp(Op.AffectedEntities));
+					break;
+				default:
+					ensureMsgf(false, TEXT("%hs: Unhandled EObservedOperationNotification value"), __FUNCTION__);
+			}
+		}
+	}
+}
+```
+
 ## 4.2 UMassEntitySettings
 在引擎启动的时候就会执行 BuildProcessorListAndPhases 方法：
 ```cpp
