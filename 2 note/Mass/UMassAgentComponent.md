@@ -58,7 +58,7 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 			AgentComponents[AgentIndex]->SetEntityHandle(Entities[AgentIndex]);
 		}
 	}
-	// 清掉Pending
+	// 清掉Pending数组
 	PendingAgentEntities.Reset();
 }
 ```
