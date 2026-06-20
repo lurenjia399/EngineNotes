@@ -20,7 +20,8 @@
 ```cpp
 1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的来观察FMassZoneGraphAnnotationFragment中的Tag，然后传递到statetree中
 2 stateTree会根据这个Evaluator的Tag来进入Flee状态。
-3 执行FHTMassZoneGraphFindEscapeDanger这个Task
+3 执行FHTMassZoneGraphFindEscapeDanger这个Task，这个计算出逃离路线
+4 
 ```
 
 # 受击反应
