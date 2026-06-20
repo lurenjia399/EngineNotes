@@ -85,6 +85,7 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 	for (TTuple<FMassEntityTemplateID, FMassAgentInitializationQueue>& Data :
 										 PendingPuppets)
 	{
+		// 遍历要成为傀儡的AgentComp
 		TArray<TObjectPtr<UMassAgentComponent>>& AgentComponents = 
 			Data.Get<1>().AgentComponents;
 		for (UMassAgentComponent* AgentComp : AgentComponents)
