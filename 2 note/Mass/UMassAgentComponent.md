@@ -50,6 +50,9 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 		{
 			continue;
 		}
+		// SpawnEntity
+		SpawnerSystem->SpawnEntities(EntityTemplate, NewEntityCount, Entities);
+		
 	}
 }
 ```
