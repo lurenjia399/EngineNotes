@@ -33,6 +33,11 @@ void UMassAgentSubsystem::OnProcessingPhaseStarted(const float DeltaSeconds, con
 		break;
 	}
 }
+```
 
-
+```cpp
+void UMassAgentSubsystem::HandlePendingInitialization()
+{
+	
+}
 ```
