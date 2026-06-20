@@ -38,6 +38,17 @@ void UMassAgentSubsystem::OnProcessingPhaseStarted(const float DeltaSeconds, con
 ```cpp
 void UMassAgentSubsystem::HandlePendingInitialization()
 {
-	
+	for (TTuple<FMassEntityTemplateID, FMassAgentInitializationQueue>& Data : 
+									PendingAgentEntities)
+	{
+		TArray<TObjectPtr<UMassAgentComponent>>& AgentComponents = 
+			Data.Get<1>().AgentComponents;
+		const int32 NewEntityCount = AgentComponents.Num();
+		if (NewEntityCount <= 0)
+		{
+			// this case is perfectly fine, all agents registered and unregistered before we processed the queue
+			continue;
+		}
+	}
 }
 ```
