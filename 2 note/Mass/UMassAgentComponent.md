@@ -52,7 +52,13 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 		}
 		// SpawnEntity
 		SpawnerSystem->SpawnEntities(EntityTemplate, NewEntityCount, Entities);
-		
+		// 将创建好的EntityHandle设置回AgentComp中
+		for (int AgentIndex = 0; AgentIndex < Entities.Num(); ++AgentIndex)
+		{		
+			AgentComponents[AgentIndex]->SetEntityHandle(Entities[AgentIndex]);
+		}
 	}
+	// 清掉Pending
+	PendingAgentEntities.Reset();
 }
 ```
