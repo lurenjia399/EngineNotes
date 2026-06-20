@@ -67,10 +67,11 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 ```cpp
 void UMassAgentSubsystem::MakePuppet(UMassAgentComponent& AgentComp)
 {
-	// 将我们的TemplateID添加到Puppet
+	// 将我们的TemplateID添加到Puppet的Map中，key是TemplateID,value是Comp数组
 	FMassAgentInitializationQueue& PuppetQueue = PendingPuppets.FindOrAdd(AgentComp.GetTemplateID());
 	PuppetQueue.AgentComponents.Add(&AgentComp);
 
+	// 切换Comp的状态为傀儡初始化态
 	AgentComp.PuppetInitializationPending();
 }
 ```
