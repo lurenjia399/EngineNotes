@@ -67,15 +67,8 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 ```cpp
 void UMassAgentSubsystem::MakePuppet(UMassAgentComponent& AgentComp)
 {
-	if (AgentComp.IsEntityPendingCreation())
-	{
-		FMassAgentInitializationQueue* AgentQueue = 
-			PendingAgentEntities.Find(AgentComp.GetTemplateID());
-	}
-
+	// 将我们的TemplateID添加到Puppet
 	FMassAgentInitializationQueue& PuppetQueue = PendingPuppets.FindOrAdd(AgentComp.GetTemplateID());
-	// Agent already in the queue! Earlier conditions should have failed or data is inconsistent.
-	check(PuppetQueue.AgentComponents.Find(&AgentComp) == INDEX_NONE);
 	PuppetQueue.AgentComponents.Add(&AgentComp);
 
 	AgentComp.PuppetInitializationPending();
