@@ -16,13 +16,14 @@ FMassEntityTemplateID UMassAgentSubsystem::RegisterAgentComponent(
 	AgentComp.EntityCreationPending();
 }
 ```
-3 添加到PendingAgentEntities 这个数组后，处理zhe'ge逻辑
+3 添加到PendingAgentEntities 这个数组后，处理这个数组的操作是在HandlePendingInitialization方法中
 ```cpp
 void UMassAgentSubsystem::OnProcessingPhaseStarted(const float DeltaSeconds, const EMassProcessingPhase Phase)
 {
 	switch (Phase)
 	{
 	case EMassProcessingPhase::PrePhysics:
+		// 是在PrePhysics的ProcessingPhase的tick开始的时候执行
 		if (PendingAgentEntities.Num() > 0 || PendingPuppets.Num() > 0)
 		{
 			HandlePendingInitialization();
@@ -32,4 +33,6 @@ void UMassAgentSubsystem::OnProcessingPhaseStarted(const float DeltaSeconds, con
 		break;
 	}
 }
+
+
 ```
