@@ -1,2 +1,2 @@
 1 entity的代理
-2 
+2 在AgentComponent的Onregister方法中会将
