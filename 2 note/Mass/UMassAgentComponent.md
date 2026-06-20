@@ -62,3 +62,30 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 	PendingAgentEntities.Reset();
 }
 ```
+
+4 也可以设置entity为挂起状态
+```cpp
+void UMassAgentSubsystem::MakePuppet(UMassAgentComponent& AgentComp)
+{
+	if (!ensureMsgf(AgentComp.GetTemplateID().IsValid(), TEXT("%s tried to used %s as puppet but it doesn't have a valid entity template ID"), ANSI_TO_TCHAR(__FUNCTION__), *GetNameSafe(AgentComp.GetOwner())))
+	{
+		return;
+	}
+		
+	if (AgentComp.IsEntityPendingCreation())
+	{
+		FMassAgentInitializationQueue* AgentQueue = PendingAgentEntities.Find(AgentComp.GetTemplateID());
+		if (ensureMsgf(AgentQueue, TEXT("Trying to remove an agent component from initialization queue but there's no such queue")))
+		{
+			ensureMsgf(AgentQueue->AgentComponents.Remove(&AgentComp), TEXT("Trying to remove an agent component from initialization queue it's missing from the queue"));
+		}
+	}
+
+	FMassAgentInitializationQueue& PuppetQueue = PendingPuppets.FindOrAdd(AgentComp.GetTemplateID());
+	// Agent already in the queue! Earlier conditions should have failed or data is inconsistent.
+	check(PuppetQueue.AgentComponents.Find(&AgentComp) == INDEX_NONE);
+	PuppetQueue.AgentComponents.Add(&AgentComp);
+
+	AgentComp.PuppetInitializationPending();
+}
+```
