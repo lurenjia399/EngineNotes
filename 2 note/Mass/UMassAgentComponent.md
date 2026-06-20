@@ -41,12 +41,13 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 	for (TTuple<FMassEntityTemplateID, FMassAgentInitializationQueue>& Data : 
 									PendingAgentEntities)
 	{
+		// 注册好的AgentComp
 		TArray<TObjectPtr<UMassAgentComponent>>& AgentComponents = 
 			Data.Get<1>().AgentComponents;
+		// 有多少AgentComponent就说明要生成多少entity
 		const int32 NewEntityCount = AgentComponents.Num();
 		if (NewEntityCount <= 0)
 		{
-			// this case is perfectly fine, all agents registered and unregistered before we processed the queue
 			continue;
 		}
 	}
