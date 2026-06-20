@@ -80,27 +80,17 @@ void UMassAgentSubsystem::MakePuppet(UMassAgentComponent& AgentComp)
 ```cpp
 void UMassAgentSubsystem::HandlePendingInitialization()
 {
-	for (TTuple<FMassEntityTemplateID, FMassAgentInitializationQueue>& Data : 
-									PendingAgentEntities)
+	// 上边处理了PendingAgentEntities
+	// 下面处理PendingPuppets
+	for (TTuple<FMassEntityTemplateID, FMassAgentInitializationQueue>& Data :
+										 PendingPuppets)
 	{
-		// 注册好的AgentComp
 		TArray<TObjectPtr<UMassAgentComponent>>& AgentComponents = 
 			Data.Get<1>().AgentComponents;
-		// 有多少AgentComponent就说明要生成多少entity
-		const int32 NewEntityCount = AgentComponents.Num();
-		if (NewEntityCount <= 0)
+		for (UMassAgentComponent* AgentComp : AgentComponents)
 		{
-			continue;
-		}
-		// SpawnEntity
-		SpawnerSystem->SpawnEntities(EntityTemplate, NewEntityCount, Entities);
-		// 将创建好的EntityHandle设置回AgentComp中
-		for (int AgentIndex = 0; AgentIndex < Entities.Num(); ++AgentIndex)
-		{		
-			AgentComponents[AgentIndex]->SetEntityHandle(Entities[AgentIndex]);
+			
 		}
 	}
-	// 清掉Pending数组
-	PendingAgentEntities.Reset();
 }
 ```
