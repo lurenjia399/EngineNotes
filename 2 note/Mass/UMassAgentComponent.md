@@ -8,6 +8,9 @@ FMassEntityTemplateID UMassAgentSubsystem::RegisterAgentComponent(
 	const FMassEntityConfig& EntityConfig = AgentComp.GetEntityConfig();
 	const FMassEntityTemplate& EntityTemplate = 
 		EntityConfig.GetOrCreateEntityTemplate(*World);
-	// 
+	// 将TemplateID添加到Pending的Map中，
+	FMassAgentInitializationQueue& AgentQueue = 
+		PendingAgentEntities.FindOrAdd(EntityTemplate.GetTemplateID());
+	AgentQueue.AgentComponents.Add(&AgentComp);
 }
 ```
