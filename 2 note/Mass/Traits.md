@@ -92,25 +92,11 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	ParamsFragment.Get<const FMassRepresentationParameters>().ComputeCachedValues();
 	BuildContext.AddConstSharedFragment(ParamsFragment);
 
-#if HOTTA_ENGINE_MODIFY // add by wujingjing
-	bool bIsMobilePlatform = false;
-	
-#if PLATFORM_IOS || PLATFORM_ANDROID || PLATFORM_OPENHARMONY
-	bIsMobilePlatform = true;
-#endif
-	
-#if WITH_EDITOR
-	// 编辑器下预览移动端配置
-	bool UseMobileConfig = IConsoleManager::Get().FindConsoleVariable(TEXT("HTMassSpawnerBase.GMUseMobileConfig"))->GetBool();
-	bIsMobilePlatform = bIsMobilePlatform && UseMobileConfig;
-#endif
-	
-	FConstSharedStruct LODParamsFragment = EntityManager.GetOrCreateConstSharedFragment(bIsMobilePlatform&&bUseSpecificLODParamsForMoilePlatform ? MobileLODParams : LODParams);
+	// 设置Lod的Fragment，设置成共享的，相同entit
+	FConstSharedStruct LODParamsFragment = 
+		EntityManager.GetOrCreateConstSharedFragment(LODParams);
 	BuildContext.AddConstSharedFragment(LODParamsFragment);
-#else
-	FConstSharedStruct LODParamsFragment = EntityManager.GetOrCreateConstSharedFragment(LODParams);
-	BuildContext.AddConstSharedFragment(LODParamsFragment);
-#endif
+
 
 	FSharedStruct LODSharedFragment = EntityManager.GetOrCreateSharedFragment<FMassVisualizationLODSharedFragment>(FConstStructView::Make(LODParams), LODParams);
 	BuildContext.AddSharedFragment(LODSharedFragment);
