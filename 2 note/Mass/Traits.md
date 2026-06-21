@@ -74,10 +74,6 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 		if (bRegisterStaticMeshDesc && !BuildContext.IsInspectingData())
 		{
 			RepresentationFragment.StaticMeshDescHandle = RepresentationSubsystem->FindOrAddStaticMeshDesc(StaticMeshInstanceDesc);
-			ensureMsgf(RepresentationFragment.StaticMeshDescHandle.IsValid()
-				, TEXT("Expected to get a valid StaticMeshDescHandle since we already checked that StaticMeshInstanceDesc is valid"));
-			// if the unexpected happens and StaticMeshDescHandle is not valid we're going to treat it as if StaticMeshInstanceDesc
-			// was not valid in the first place and handle it accordingly in a moment
 			bStaticMeshDescriptionValid = RepresentationFragment.StaticMeshDescHandle.IsValid();
 		}
 	}
