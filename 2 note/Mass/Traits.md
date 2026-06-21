@@ -97,10 +97,11 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 		EntityManager.GetOrCreateConstSharedFragment(LODParams);
 	BuildContext.AddConstSharedFragment(LODParamsFragment);
 
-
+	// 根据Lod参数，创建出FMassVisualizationLODSharedFragment
 	FSharedStruct LODSharedFragment = 
-	EntityManager.GetOrCreateSharedFragment
-	<FMassVisualizationLODSharedFragment>(FConstStructView::Make(LODParams), LODParams);
+		EntityManager.GetOrCreateSharedFragment
+		<FMassVisualizationLODSharedFragment>(
+		FConstStructView::Make(LODParams), LODParams);
 	BuildContext.AddSharedFragment(LODSharedFragment);
 
 	BuildContext.AddFragment<FMassRepresentationLODFragment>();
