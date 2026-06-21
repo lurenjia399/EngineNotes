@@ -41,7 +41,7 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	FMassEntityManager& EntityManager = 
 		UE::Mass::Utils::GetEntityManagerChecked(World);
 
-	// 获取配置的RepresentationSubSystem
+	// 获取配置的RepresentationSubSystem，并设置为共享的
 	UMassRepresentationSubsystem* RepresentationSubsystem = 
 		Cast<UMassRepresentationSubsystem>(World.
 		GetSubsystemBase(RepresentationSubsystemClass));
@@ -50,16 +50,12 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 		RepresentationSubsystem = UWorld::GetSubsystem<UMassRepresentationSubsystem>(&World);
 		check(RepresentationSubsystem);
 	}
-
 	FMassRepresentationSubsystemSharedFragment SubsystemSharedFragment;
 	SubsystemSharedFragment.RepresentationSubsystem = RepresentationSubsystem;
 	FSharedStruct SubsystemFragment = EntityManager.GetOrCreateSharedFragment(SubsystemSharedFragment);
 	BuildContext.AddSharedFragment(SubsystemFragment);
 
-	if (!Params.RepresentationActorManagementClass)
-	{
-		UE_LOG(LogMassRepresentation, Error, TEXT("Expecting a valid class for the representation actor management"));
-	}
+	
 
 	FMassRepresentationFragment& RepresentationFragment = BuildContext.AddFragment_GetRef<FMassRepresentationFragment>();
 	if (LIKELY(BuildContext.IsInspectingData() == false))
