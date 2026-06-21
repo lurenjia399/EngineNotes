@@ -68,6 +68,7 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 			->FindOrAddTemplateActor(LowResTemplateActor.Get()) : INDEX_NONE;
 	}
 
+	// 补充共享的Fragment
 	bool bStaticMeshDescriptionValid = StaticMeshInstanceDesc.IsValid();
 	if (bStaticMeshDescriptionValid)
 	{
@@ -77,7 +78,6 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 			bStaticMeshDescriptionValid = RepresentationFragment.StaticMeshDescHandle.IsValid();
 		}
 	}
-
 	FConstSharedStruct ParamsFragment;
 	if (bStaticMeshDescriptionValid)
 	{
