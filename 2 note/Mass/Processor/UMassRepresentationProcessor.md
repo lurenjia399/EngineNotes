@@ -1,0 +1,6 @@
+UMassCrowdVisualizationLODProcessor
+
+{
+	UMassLODDistanceCollectorProcessor
+	UMassLODDistanceCollectorProcessor
+}
