@@ -104,5 +104,5 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 }
 ```
 
-6 MassAgentComp能实现两个功能，1 我们创建AgentComp并RegisterComp，他就会根据配置，通过mass系统生成一个entity。2 我们可以通过设置Puppet来将AgentComp上entity的CompositionDescriptor设置到其他entity上。
+6 MassAgentComp能实现两个功能，1 我们创建AgentComp并RegisterComp，他就会根据配置，通过mass系统生成一个entity。2 我们可以通过设置Puppet来将AgentComp上entity的CompositionDescriptor增量设置到其他entity上。
 
