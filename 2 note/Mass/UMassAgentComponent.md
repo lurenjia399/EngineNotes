@@ -85,12 +85,12 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 	for (TTuple<FMassEntityTemplateID, FMassAgentInitializationQueue>& Data :
 										 PendingPuppets)
 	{
-		// 遍历要成为傀儡的AgentComp
+		// 遍历傀儡的AgentComp
 		TArray<TObjectPtr<UMassAgentComponent>>& AgentComponents = 
 			Data.Get<1>().AgentComponents;
 		for (UMassAgentComponent* AgentComp : AgentComponents)
 		{
-			// 更新每一个Puppet的Fragment
+			// 把AgentComp上面的trait信息，填充到Entity身上
 			FMassArchetypeCompositionDescriptor& PuppetDescriptor = 
 				AgentComp->GetMutablePuppetSpecificAddition();
 			PuppetDescriptor = TemplateDescriptor;
