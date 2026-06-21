@@ -68,16 +68,6 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 			->FindOrAddTemplateActor(LowResTemplateActor.Get()) : INDEX_NONE;
 	}
 
-#if HOTTA_ENGINE_MODIFY // add by wujingjing
-	for (auto it= StaticMeshInstanceDesc.Meshes.CreateIterator(); it; ++it)
-	{
-		if (!IsValid(it->Mesh))
-		{
-			it.RemoveCurrent();
-		}
-	}
-#endif
-
 	bool bStaticMeshDescriptionValid = StaticMeshInstanceDesc.IsValid();
 	if (bStaticMeshDescriptionValid)
 	{
