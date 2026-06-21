@@ -104,3 +104,5 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 }
 ```
 
+6 MassAgentComp能实现两个功能，1 我们创建AgentComp并RegisterComp，他就会根据pmass系统生成一个entity
+
