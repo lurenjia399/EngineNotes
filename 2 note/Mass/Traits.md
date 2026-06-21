@@ -21,3 +21,9 @@ void UMassStateTreeTrait::BuildTemplate(
 	BuildContext.AddFragment<FMassStateTreeInstanceFragment>();
 }
 ```
+
+# 2 UMassVisualizationTrait
+
+```cpp
+
+```
