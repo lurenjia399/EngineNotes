@@ -68,7 +68,7 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 			->FindOrAddTemplateActor(LowResTemplateActor.Get()) : INDEX_NONE;
 	}
 
-	// 补充共享的Fragment
+	// 相同entity之间共享的FMassRepresentationParameters
 	bool bStaticMeshDescriptionValid = StaticMeshInstanceDesc.IsValid();
 	if (bStaticMeshDescriptionValid)
 	{
@@ -92,7 +92,7 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	ParamsFragment.Get<const FMassRepresentationParameters>().ComputeCachedValues();
 	BuildContext.AddConstSharedFragment(ParamsFragment);
 
-	// 设置Lod的Fragment，设置成共享的，相同entit
+	// 设置Lod的Fragment，设置成共享的，相同entity之间共享
 	FConstSharedStruct LODParamsFragment = 
 		EntityManager.GetOrCreateConstSharedFragment(LODParams);
 	BuildContext.AddConstSharedFragment(LODParamsFragment);
