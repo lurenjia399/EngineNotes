@@ -96,7 +96,10 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 			PuppetDescriptor = TemplateDescriptor;
 			EntityManager->AddCompositionToEntity_GetDelta(
 				PuppetEntity, PuppetDescriptor);
+			// 切换Comp的状态为傀儡初始化完成态
+			AgentComp->PuppetInitializationDone();
 		}
 	}
+	PendingPuppets.Reset();
 }
 ```
