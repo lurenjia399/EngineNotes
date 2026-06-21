@@ -90,7 +90,12 @@ void UMassAgentSubsystem::HandlePendingInitialization()
 			Data.Get<1>().AgentComponents;
 		for (UMassAgentComponent* AgentComp : AgentComponents)
 		{
-			
+			// 更新每一个Puppet的Fragment
+			FMassArchetypeCompositionDescriptor& PuppetDescriptor = 
+				AgentComp->GetMutablePuppetSpecificAddition();
+			PuppetDescriptor = TemplateDescriptor;
+			EntityManager->AddCompositionToEntity_GetDelta(
+				PuppetEntity, PuppetDescriptor);
 		}
 	}
 }
