@@ -38,12 +38,15 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	BuildContext.RequireFragment<FTransformFragment>();
 	BuildContext.RequireFragment<FMassActorFragment>();
 
-	FMassEntityManager& EntityManager = UE::Mass::Utils::GetEntityManagerChecked(World);
+	FMassEntityManager& EntityManager = 
+		UE::Mass::Utils::GetEntityManagerChecked(World);
 
-	UMassRepresentationSubsystem* RepresentationSubsystem = Cast<UMassRepresentationSubsystem>(World.GetSubsystemBase(RepresentationSubsystemClass));
+	// 获取配置的RepresentationSubSystem
+	UMassRepresentationSubsystem* RepresentationSubsystem = 
+		Cast<UMassRepresentationSubsystem>(World.
+		GetSubsystemBase(RepresentationSubsystemClass));
 	if (RepresentationSubsystem == nullptr && !BuildContext.IsInspectingData())
 	{
-		UE_LOG(LogMassRepresentation, Error, TEXT("Expecting a valid class for the representation subsystem"));
 		RepresentationSubsystem = UWorld::GetSubsystem<UMassRepresentationSubsystem>(&World);
 		check(RepresentationSubsystem);
 	}
