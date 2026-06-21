@@ -92,13 +92,15 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	ParamsFragment.Get<const FMassRepresentationParameters>().ComputeCachedValues();
 	BuildContext.AddConstSharedFragment(ParamsFragment);
 
-	// 设置Lod的Fragment，设置成共享的，相同entity之间共享
+	// 设置Lod的参数Fragment，设置成共享的，相同entity之间共享
 	FConstSharedStruct LODParamsFragment = 
 		EntityManager.GetOrCreateConstSharedFragment(LODParams);
 	BuildContext.AddConstSharedFragment(LODParamsFragment);
 
 
-	FSharedStruct LODSharedFragment = EntityManager.GetOrCreateSharedFragment<FMassVisualizationLODSharedFragment>(FConstStructView::Make(LODParams), LODParams);
+	FSharedStruct LODSharedFragment = 
+	EntityManager.GetOrCreateSharedFragment
+	<FMassVisualizationLODSharedFragment>(FConstStructView::Make(LODParams), LODParams);
 	BuildContext.AddSharedFragment(LODSharedFragment);
 
 	BuildContext.AddFragment<FMassRepresentationLODFragment>();
