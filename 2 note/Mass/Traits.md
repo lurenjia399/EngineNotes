@@ -54,14 +54,18 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	SubsystemSharedFragment.RepresentationSubsystem = RepresentationSubsystem;
 	FSharedStruct SubsystemFragment = EntityManager.GetOrCreateSharedFragment(SubsystemSharedFragment);
 	BuildContext.AddSharedFragment(SubsystemFragment);
-
 	
-
-	FMassRepresentationFragment& RepresentationFragment = BuildContext.AddFragment_GetRef<FMassRepresentationFragment>();
+	// 将引用的Actor的UClass的索引，填充到FMassRepresentationFragment中
+	FMassRepresentationFragment& RepresentationFragment = 
+		BuildContext.AddFragment_GetRef<FMassRepresentationFragment>();
 	if (LIKELY(BuildContext.IsInspectingData() == false))
 	{
-		RepresentationFragment.HighResTemplateActorIndex = HighResTemplateActor.Get() ? RepresentationSubsystem->FindOrAddTemplateActor(HighResTemplateActor.Get()) : INDEX_NONE;
-		RepresentationFragment.LowResTemplateActorIndex = LowResTemplateActor.Get() ? RepresentationSubsystem->FindOrAddTemplateActor(LowResTemplateActor.Get()) : INDEX_NONE;
+		RepresentationFragment.HighResTemplateActorIndex = 
+			HighResTemplateActor.Get() ? RepresentationSubsystem
+			->FindOrAddTemplateActor(HighResTemplateActor.Get()) : INDEX_NONE;
+		RepresentationFragment.LowResTemplateActorIndex = 
+			LowResTemplateActor.Get() ? RepresentationSubsystem
+			->FindOrAddTemplateActor(LowResTemplateActor.Get()) : INDEX_NONE;
 	}
 
 #if HOTTA_ENGINE_MODIFY // add by wujingjing
