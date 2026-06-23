@@ -3,4 +3,6 @@ UMassLODDistanceCollectorProcessor
 UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
 UMassRepresentationProcessor
 
-# 
+# UMassLODDistanceCollectorProcessor
+1 LodCollector实现
+
