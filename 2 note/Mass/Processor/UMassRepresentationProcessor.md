@@ -12,4 +12,5 @@ UMassRepresentationProcessor
 3 void UMassLODSubsystem::AddActorViewer(AActor& ActorViewer)
 4 void UMassLODSubsystem::AddEditorViewer(const int32 HashValue, const int32 ClientIndex)
 ```
-3 在Processor执行的时候会根绝Viewer的位置构建视锥体
+3 在Processor执行的时候会根据Viewer的位置构建视锥体
+4 
