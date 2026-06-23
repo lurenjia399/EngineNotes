@@ -1,8 +1,4 @@
 
-UMassCharacterMovementToMassTranslator
-{
-	UMassLODDistanceCollectorProcessor
-	UMassLODDistanceCollectorProcessor
-}
+UMassLODDistanceCollectorProcessor
 UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
 UMassRepresentationProcessor
