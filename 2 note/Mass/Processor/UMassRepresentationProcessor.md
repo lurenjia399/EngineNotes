@@ -4,5 +4,5 @@ UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
 UMassRepresentationProcessor
 
 # UMassLODDistanceCollectorProcessor
-1 LodCollector实现
-
+1 在游戏线程执行，因为需要读取UMassLODSubsystem
+2 
