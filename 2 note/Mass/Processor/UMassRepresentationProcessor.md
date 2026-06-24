@@ -4,7 +4,7 @@ UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
 UMassRepresentationProcessor
 
 # UMassLODDistanceCollectorProcessor
-1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，
+1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，我们重写了TMassExternalSubsystemTraits方法，改到工作线程了
 2 UMassLODSubsystem的作用就是管理Viewer数组，通过一系列的添加方法填充Viewer数组
 ```cpp
 1 void UMassLODSubsystem::AddPlayerViewer(APlayerController& PlayerController)
@@ -17,5 +17,5 @@ UMassRepresentationProcessor
 5 这也是这个Processor的作用，就是修改FMassViewerInfoFragment这个Fragment。
 
 # UMassCrowdVisualizationLODProcessor
-1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem。
+1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，我们重写了TMassExternalSubsystemTraits方法，改到工作线程了
 2 计算LoD，分为High,Medium,Low,Off四种LoD，分为两个Lod数组（一个是VisibleLodDistance和BaseLodDistance）,如果entity可见就取可见Lod数组，否则取BaseLod数组，
