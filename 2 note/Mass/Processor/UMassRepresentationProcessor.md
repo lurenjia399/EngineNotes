@@ -30,4 +30,5 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 
 # UMassRepresentationProcessor
 1 工作线程执行，因为UMassActorSubsystem设置了
-2 确定WantedRepresentationType，根据entity的Lod来确定，分为
+2 确定WantedRepresentationType，根据entity的Lod来确定，分为HighResSpawnedActor，LowResSpawnedActor，StaticMeshInstance这几种
+3 
