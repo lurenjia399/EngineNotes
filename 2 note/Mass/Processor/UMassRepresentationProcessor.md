@@ -33,7 +33,7 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 2 确定WantedRepresentationType，根据entity的Lod和其他设置来确定，分为HighResSpawnedActor，LowResSpawnedActor，StaticMeshInstance这几种
 ```cpp
 1 首先根据Lod确定一个RepresentationType
-2 然后根据地形是否加载了，如果没加载就设成默认的StaticMeshInstance，地形是否加载用的IsStreamingCompleted方法
+2 如果是需要加载HighRes或这个是LowRes也就是实体Actor的，如果地形没加载好就，地形是否加载用的IsStreamingCompleted方法
 3 
 ```
 3 
