@@ -37,5 +37,5 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 ```
 3 根据WantedRepresentationType类型不同，创建不同Actor
 ```cpp
-1 如果需要创建出实体，就通过RepresentationActorManagement->GetOrSpawnActor方法创建出Actor，
+1 如果需要创建出实体，就通过RepresentationActorManagement->GetOrSpawnActor方法创建出Actor。如果当前是stat
 ```
