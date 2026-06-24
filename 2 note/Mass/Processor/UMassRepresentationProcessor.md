@@ -4,7 +4,7 @@ UMassLODDistanceCollectorProcessor
 	UMassSimulationLODProcessor
 	UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
 }
-UMassRepresentationProcessor
+UMassCrowdVisualizationProcessor : public UMassRepresentationProcessor
 
 # UMassLODDistanceCollectorProcessor
 1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，我们重写了TMassExternalSubsystemTraits方法，改到工作线程了
