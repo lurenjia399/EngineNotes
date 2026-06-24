@@ -32,6 +32,7 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 1 工作线程执行，因为UMassActorSubsystem设置了
 2 确定WantedRepresentationType，根据entity的Lod和其他设置来确定，分为HighResSpawnedActor，LowResSpawnedActor，StaticMeshInstance这几种
 ```cpp
-
+1 首先根据Lod确定一个RepresentationType
+2 然后根据地形是否加载了，如果没加载就设成默认的StaticMeshInstance，地形是否加载用的
 ```
 3 
