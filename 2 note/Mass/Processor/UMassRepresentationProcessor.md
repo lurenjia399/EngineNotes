@@ -1,6 +1,9 @@
 
 UMassLODDistanceCollectorProcessor
-UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
+{
+	UMassSimulationLODProcessor
+	UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
+}
 UMassRepresentationProcessor
 
 # UMassLODDistanceCollectorProcessor
