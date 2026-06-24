@@ -43,4 +43,5 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 ```
 
 # UMassVisualizationProcessor
-1 
+1 继承UMassRepresentationProcessor
+2 
