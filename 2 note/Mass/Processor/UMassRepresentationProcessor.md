@@ -29,8 +29,7 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 2 算出的log，设置到 FMassSimulationLODFragment这个里，还会根据配置把tag设到entity上
 
 # UMassRepresentationProcessor
-1 工作线程执行，因为UMassActorSubsystem设置了
-2 确定WantedRepresentationType，根据entity的Lod和其他设置来确定，分为HighResSpawnedActor，LowResSpawnedActor，StaticMeshInstance这几种
+1 确定WantedRepresentationType，根据entity的Lod和其他设置来确定，分为HighResSpawnedActor，LowResSpawnedActor，StaticMeshInstance这几种
 ```cpp
 1 首先根据Lod确定一个RepresentationType
 2 如果是需要加载HighRes或这个是LowRes也就是实体Actor的，如果地形没加载好就设置成Instance的，地形是否加载用的IsStreamingCompleted方法
