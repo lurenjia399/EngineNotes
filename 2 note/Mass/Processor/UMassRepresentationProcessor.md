@@ -40,7 +40,3 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 2 如果需要创建Instance，就destroy掉生成的actor，如果没有生成就CancelSpawn，destroy也是添加到UMassActorSpawnerSubsystem的延迟数组中
 3 
 ```
-
-# UMassVisualizationProcessor
-1 继承UMassRepresentationProcessor
-2 
