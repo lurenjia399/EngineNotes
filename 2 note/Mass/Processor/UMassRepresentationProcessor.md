@@ -17,4 +17,5 @@ UMassRepresentationProcessor
 5 这也是这个Processor的作用，就是修改FMassViewerInfoFragment这个Fragment。
 
 # UMassCrowdVisualizationLODProcessor
-1 
+1 在游戏线程执行，因为需要读取UMassLODSubsystem。
+2 
