@@ -19,4 +19,4 @@ UMassRepresentationProcessor
 # UMassCrowdVisualizationLODProcessor
 1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，我们重写了TMassExternalSubsystemTraits方法，改到工作线程了
 2 计算Lod，分为High,Medium,Low,Off四种Lod，分为两个Lod数组（一个是VisibleLodDistance和BaseLodDistance）,如果entity可见就取可见Lod数组，否则取BaseLod数组。
-3 zhe
+3 设置可见性，有CanBeSeen，CulledByFrustum，CulledByDistance三种
