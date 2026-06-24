@@ -4,7 +4,7 @@ UMassLODDistanceCollectorProcessor
 	UMassSimulationLODProcessor
 	UMassCrowdVisualizationLODProcessor ：public UMassVisualizationLODProcessor
 }
-UMassCrowdVisualizationProcessor : public UMassRepresentationProcessor
+UMassVisualizationProcessor : public UMassRepresentationProcessor
 
 # UMassLODDistanceCollectorProcessor
 1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，我们重写了TMassExternalSubsystemTraits方法，改到工作线程了
@@ -29,4 +29,4 @@ UMassCrowdVisualizationProcessor : public UMassRepresentationProcessor
 2 算出的log，设置到 FMassSimulationLODFragment这个里，还会根据配置把tag设到entity上
 
 # UMassRepresentationProcessor
-1
+1 工作线程执行，因为UMassActorSubsystemshe'z
