@@ -553,7 +553,10 @@ void RunProcessorsView(
 	}
 }
 ```
-
+# 命令
+```cpp
+1 mass.debug.crowd.VisualizationLOD 
+```
 
 # 基本概念
 FMassEntityTemplateBuildContext
