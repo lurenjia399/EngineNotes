@@ -29,4 +29,5 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 2 算出的log，设置到 FMassSimulationLODFragment这个里，还会根据配置把tag设到entity上
 
 # UMassRepresentationProcessor
-1 工作线程执行，因为UMassActorSubsystemshe'z
+1 工作线程执行，因为UMassActorSubsystem设置了
+2 
