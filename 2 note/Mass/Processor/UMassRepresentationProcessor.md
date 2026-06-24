@@ -38,4 +38,5 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 3 根据WantedRepresentationType类型不同，创建不同Actor
 ```cpp
 1 如果需要创建出实体，就通过RepresentationActorManagement->GetOrSpawnActor方法创建出Actor。如果当前是instance的，就需要通过TeleportActor，把创建出actor通过Command设置transform。然后通过Command命令来开启Actor碰撞，tick。
+2 如果需要创建Instance，
 ```
