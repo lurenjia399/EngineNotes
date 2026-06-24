@@ -555,7 +555,7 @@ void RunProcessorsView(
 ```
 # 命令
 ```cpp
-1 mass.debug.crowd.VisualizationLOD 1。da
+1 mass.debug.crowd.VisualizationLOD 1。打开行人的Lod，红黄绿白的顺序
 ```
 
 # 基本概念
