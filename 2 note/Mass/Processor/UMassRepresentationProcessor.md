@@ -26,5 +26,7 @@ UMassRepresentationProcessor
 
 # UMassSimulationLODProcessor
 1 这个和UMassCrowdVisualizationLODProcessor这个类似
-2 算出的log，设置到 FMassSimulationLODFragment这个里
-3 
+2 算出的log，设置到 FMassSimulationLODFragment这个里，还会根据配置把tag设到entity上
+
+# UMassRepresentationProcessor
+1
