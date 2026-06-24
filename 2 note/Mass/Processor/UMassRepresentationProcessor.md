@@ -18,4 +18,4 @@ UMassRepresentationProcessor
 
 # UMassCrowdVisualizationLODProcessor
 1 在游戏线程执行，因为需要读取UMassLODSubsystem。
-2 
+2 计算LoD，分为High,Medium,Low,Off四种LoD，分为两个Lod数组（一个是VisibleLodDisat）
