@@ -36,3 +36,6 @@ UMassVisualizationProcessor : public UMassRepresentationProcessor
 2 如果是需要加载HighRes或这个是LowRes也就是实体Actor的，如果地形没加载好就设置成Instance的，地形是否加载用的IsStreamingCompleted方法
 ```
 3 根据WantedRepresentationType类型不同，创建不同Actor
+```cpp
+1 如果需要创建出实体，
+```
