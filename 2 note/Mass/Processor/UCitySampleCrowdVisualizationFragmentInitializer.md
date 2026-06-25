@@ -21,4 +21,4 @@ void UMassRepresentationSubsystem::OnProcessingPhaseStarted(const float DeltaSec
 	}
 }
 ```
-6 
+6 BeginVisualChanges这个方法，就会遍历Constructing数组，然后依次创建InstancedStaticMeshComp
