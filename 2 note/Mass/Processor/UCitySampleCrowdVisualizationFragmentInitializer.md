@@ -1,0 +1,2 @@
+1 是一个UMassObserverProcessor，观察的是FCitySampleCrowdVisualizationFragment添加
+2 
