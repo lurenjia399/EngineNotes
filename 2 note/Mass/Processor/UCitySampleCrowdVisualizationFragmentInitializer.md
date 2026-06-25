@@ -1,2 +1,2 @@
 1 是一个UMassObserverProcessor，观察的是FCitySampleCrowdVisualizationFragment添加
-2 在execute里面，获取到高模actor身上的CrowdCharacterData配置，
+2 在execute里面，获取到高模actor身上的CrowdCharacterData配置，通过随机取出配置中的头，身体
