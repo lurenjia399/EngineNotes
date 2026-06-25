@@ -16,7 +16,7 @@ ESpawnRequestStatus UMassActorSpawnerSubsystem::ProcessSpawnRequest(
 	{
 		SpawnRequest.ActorPreSpawnDelegate.Execute(SpawnRequestHandle, SpawnRequestView);
 	}
-	// 真正的Spawn处理，
+	// 真正的Spawn处理，会首先在ActorPool中找，找不到就SpawnActor
 	SpawnRequest.SpawnStatus = SpawnOrRetrieveFromPool(SpawnRequestView, SpawnRequest.SpawnedActor);
 
 	if (SpawnRequest.IsFinished())
