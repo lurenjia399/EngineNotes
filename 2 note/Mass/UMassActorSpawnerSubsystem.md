@@ -1,1 +1,2 @@
-1 在RepresentationProcessor中，通过UMassRepresentationActorManagement来将
+1 在RepresentationProcessor中，通过UMassRepresentationActorManagement来创建FMassActorSpawnRequest一个请求，将请求添加到ActorSpawnerSubsystem中的SpawnRequests请求数组中
+2 
