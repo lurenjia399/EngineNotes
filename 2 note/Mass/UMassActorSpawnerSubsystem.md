@@ -7,16 +7,16 @@ ESpawnRequestStatus UMassActorSpawnerSubsystem::ProcessSpawnRequest(
 	FStructView SpawnRequestView, 
 	FMassActorSpawnRequest& SpawnRequest)
 {
-	// gai
+	// 改变状态，正在Spawn中
 	// Do the spawning
 	SpawnRequest.SpawnStatus = ESpawnRequestStatus::Processing;
-
+	// 广播Spawn前的Delegate
 	// Call the pre spawn delegate on the spawn request
 	if (SpawnRequest.ActorPreSpawnDelegate.IsBound())
 	{
 		SpawnRequest.ActorPreSpawnDelegate.Execute(SpawnRequestHandle, SpawnRequestView);
 	}
-
+	// 真正的Spawn处理，
 	SpawnRequest.SpawnStatus = SpawnOrRetrieveFromPool(SpawnRequestView, SpawnRequest.SpawnedActor);
 
 	if (SpawnRequest.IsFinished())
