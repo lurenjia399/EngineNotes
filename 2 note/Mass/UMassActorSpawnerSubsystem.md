@@ -21,7 +21,7 @@ ESpawnRequestStatus UMassActorSpawnerSubsystem::ProcessSpawnRequest(
 
 	if (SpawnRequest.IsFinished())
 	{
-		// 如果是Spawn成功了，就设置Puppet，用AgentComp上的
+		// 如果是Spawn成功了，就设置Puppet，用AgentComp上的Entity接管当前的行人Entity
 		if (SpawnRequest.SpawnStatus == ESpawnRequestStatus::Succeeded && IsValid(SpawnRequest.SpawnedActor))
 		{
 			if (UMassAgentComponent* AgentComp = SpawnRequest.SpawnedActor->FindComponentByClass<UMassAgentComponent>())
