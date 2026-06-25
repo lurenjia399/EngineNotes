@@ -1,2 +1,3 @@
 1 在RepresentationProcessor中，通过UMassRepresentationActorManagement来创建FMassActorSpawnRequest一个请求，将请求添加到ActorSpawnerSubsystem中的SpawnRequests请求数组中，并返回请求Handle
-2 处理请求是在EMassProcessingPhase::PrePhysics这个阶段tick中，
+2 处理请求是在EMassProcessingPhase::PrePhysics这个阶段tick中
+3 
