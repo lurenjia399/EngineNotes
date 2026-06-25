@@ -30,26 +30,6 @@ ESpawnRequestStatus UMassActorSpawnerSubsystem::ProcessSpawnRequest(
 			}
 		}
 
-		EMassActorSpawnRequestAction PostAction = EMassActorSpawnRequestAction::Remove;
-
-		// Call the post spawn delegate on the spawn request
-		if (SpawnRequest.ActorPostSpawnDelegate.IsBound())
-		{
-			PostAction = SpawnRequest.ActorPostSpawnDelegate.Execute(SpawnRequestHandle, SpawnRequestView);
-		}
-
-		if (PostAction == EMassActorSpawnRequestAction::Remove)
-		{
-			// If notified, remove the spawning request
-			ensureMsgf(SpawnRequestHandleManager.RemoveHandle(SpawnRequestHandle), TEXT("When providing a delegate, the spawn request gets automatically removed, no need to remove it on your side"));
-		}
-	}
-	else
-	{
-		// lower priority
-		SpawnRequest.SpawnStatus = ESpawnRequestStatus::RetryPending;
-	}
-
 	return SpawnRequest.SpawnStatus;
 }
 ```
