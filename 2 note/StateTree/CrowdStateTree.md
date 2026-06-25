@@ -13,7 +13,7 @@
 2 修改FMassZoneGraphAnnotationFragment
 ```cpp
 1 UMassZoneGraphAnnotationTagsInitializer继承了UMassObserverProcessor，来观察FMassZoneGraphAnnotationFragment
-2 如果entity添加了这个Fragment，就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取所在Land的Tag，设置到Fragment中
+2 如果entity添加了这个Fragment，就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取所在Lane的Tag，设置到Fragment中
 ```
 
 3 stateTree更新状态
