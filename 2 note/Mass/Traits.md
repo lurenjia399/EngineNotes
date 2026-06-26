@@ -121,7 +121,8 @@ void UHTMassAgentTransformSyncTrait::BuildTemplate(FMassEntityTemplateBuildConte
 	BuildContext.AddFragment<FMassSceneComponentWrapperFragment>();
 	// 添加TransformFragment,表示mass位置
 	BuildContext.AddFragment<FTransformFragment>();
-
+	
+	// SpawnEntity后的初始化，初始设置mass的位置
 	BuildContext.GetMutableObjectFragmentInitializers().Add(
 		[=](UObject& Owner, FMassEntityView& EntityView, 
 			const EMassTranslationDirection CurrentDirection)
@@ -140,11 +141,14 @@ void UHTMassAgentTransformSyncTrait::BuildTemplate(FMassEntityTemplateBuildConte
 			}
 			else
 			{
-				TransformFragment.GetMutableTransform().SetLocation(Component->GetComponentTransform().GetLocation() - FVector(0.f, 0.f, Component->Bounds.BoxExtent.Z));
+				TransformFragment.GetMutableTransform().SetLocation(
+					Component->GetComponentTransform().GetLocation() 
+						- FVector(0.f, 0.f, Component->Bounds.BoxExtent.Z));
 			}
 		}
 	});
 
+	// 
 	if (EnumHasAnyFlags(SyncDirection, EMassTranslationDirection::ActorToMass))
 	{
 		BuildContext.AddTranslator<UHTCrowdTransformToMassTranslator>();
