@@ -112,3 +112,8 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 	BuildContext.AddTag<FMassVisualizationProcessorTag>();
 }
 ```
+
+# 3 UMassAgentTransformSyncTrait
+```cpp
+
+```
