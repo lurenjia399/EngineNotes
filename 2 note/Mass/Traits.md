@@ -117,7 +117,9 @@ void UMassVisualizationTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bui
 ```cpp
 void UHTMassAgentTransformSyncTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
 {
+	// 添加缓存RootComp的Fragment，表示Actor位置
 	BuildContext.AddFragment<FMassSceneComponentWrapperFragment>();
+	// 添加TransformFragment,表示mass位置
 	BuildContext.AddFragment<FTransformFragment>();
 
 	BuildContext.GetMutableObjectFragmentInitializers().Add(
@@ -131,19 +133,11 @@ void UHTMassAgentTransformSyncTrait::BuildTemplate(FMassEntityTemplateBuildConte
 			FMassSceneComponentWrapperFragment& ComponentFragment = EntityView.GetFragmentData<FMassSceneComponentWrapperFragment>();
 			ComponentFragment.Component = Component;
 
-			FTransformFragment& TransformFragment = EntityView.GetFragmentData<FTransformFragment>();
-
-			REDIRECT_OBJECT_TO_VLOG(Component, &Owner);
-			UE_VLOG_LOCATION(&Owner, LogMass, Log, Component->GetComponentLocation(), 30, FColor::Yellow, TEXT("Initial component location"));
-			UE_VLOG_LOCATION(&Owner, LogMass, Log, TransformFragment.GetTransform().GetLocation(), 30, FColor::Red, TEXT("Initial entity location"));
-
-			// the entity is the authority
+			FTransformFragment& TransformFragment = 
+				EntityView.GetFragmentData<FTransformFragment>();
 			if (CurrentDirection == EMassTranslationDirection::MassToActor)
 			{
-				// Temporary disabling this as it is already done earlier in the MassRepresentation and we needed to do a sweep to find the floor
-				//Component->SetWorldLocation(FeetLocation, /*bSweep*/true, nullptr, ETeleportType::TeleportPhysics);
 			}
-			// actor is the authority
 			else
 			{
 				TransformFragment.GetMutableTransform().SetLocation(Component->GetComponentTransform().GetLocation() - FVector(0.f, 0.f, Component->Bounds.BoxExtent.Z));
