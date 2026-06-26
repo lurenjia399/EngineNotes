@@ -1,2 +1,2 @@
 1 这种Translator会在Trait的BuildTemplate中将自己需要的RequireTag添加到TemplateData中
-2 
+2 就是获取mass的位置，然后将其设到Actor的rootComp上
