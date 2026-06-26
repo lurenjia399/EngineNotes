@@ -1,0 +1,1 @@
+1 这种Translator会在Trait的BuildTemplate中将自己需要的RequireTag添加到
