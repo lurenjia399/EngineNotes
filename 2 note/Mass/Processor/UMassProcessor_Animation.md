@@ -48,7 +48,7 @@ struct FMassCrowdAnimInstanceData
 	float FarLODPlaybackStartTime = 0.0f;
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	float AnimSequenceLength = 0.0f;//FarLODAnimSequence动画序列的长度
+	float AnimSequenceLength = 0.0f;//FarLODAnimSequence动画序列的长度，就是播放多长时间就播放完了
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	float Significance = 0.0f;
