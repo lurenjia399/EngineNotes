@@ -38,32 +38,17 @@ struct FMassCrowdAnimInstanceData
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	UAnimSequence* FarLODAnimSequence = nullptr;//取到FCrowdAnimationFragment中表示的动画序列
-	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	FTransform MassEntityTransform;//MassEntity的位置
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	FVector LookAtDirection = FVector::ForwardVector;// 读取Entity的FMassLookAtFragment中记录的LookAt方向，局部空间下
-	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	float FarLODPlaybackStartTime = 0.0f;//FarLODAnimSequence动画序列，从哪个时间点开始播放
-
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	float AnimSequenceLength = 0.0f;//FarLODAnimSequence动画序列的长度，就是播放多长时间就播放完了
-
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	float Significance = 0.0f;//角色j
-
-	// Default to true to assume we always swapped on init
+	float Significance = 0.0f;//角色计算出的Lod等级
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	bool bSwappedThisFrame = true;
-
-//#if HOTTA_ENGINE_MODIFY // add by wujingjing
-	// Default to true to assume we always swapped on init
-	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	float PlayRate = 1.0f;
-	
-	float fOW_LocomotionAngle = 0.f;
-	float LocalVelocityDirectionAngle = 0.f;
-// #endif
+	bool bSwappedThisFrame = true;//这一帧是否要ISM和Actor之间切换
 };
 ```
