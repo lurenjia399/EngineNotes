@@ -25,4 +25,3 @@ void UMassRepresentationSubsystem::OnProcessingPhaseStarted(const float DeltaSec
 7 在帧期间，会通过其他processor来调用AddBatchedTransform等相关方法，来添加更新信息
 8 帧结束EndVisualChanges这个方法，通过AddInstanceById方法，向ISM中添加更新Instance
 
-# UMassProcessor_CrowdVisualizationCustomData
