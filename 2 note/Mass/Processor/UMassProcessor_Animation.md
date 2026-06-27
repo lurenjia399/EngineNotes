@@ -54,4 +54,5 @@ struct FMassCrowdAnimInstanceData
 3 将FMassCrowdAnimInstanceData设置到UMassCrowdAnimInstance中，让动画蓝图读取
 
 # UMassProcessor_CrowdVisualizationCustomData
-1 游戏线程执行，
+1 游戏线程执行，在UMassProcessor_Animation之后
+2 
