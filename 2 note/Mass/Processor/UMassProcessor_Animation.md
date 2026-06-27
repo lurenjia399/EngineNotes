@@ -45,7 +45,7 @@ struct FMassCrowdAnimInstanceData
 	FVector LookAtDirection = FVector::ForwardVector;// 读取Entity的FMassLookAtFragment中记录的LookAt方向，局部空间下
 	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	float FarLODPlaybackStartTime = 0.0f;
+	float FarLODPlaybackStartTime = 0.0f;//FarLODAnimSequence动画序列，从哪个时间点开始播放
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	float AnimSequenceLength = 0.0f;//FarLODAnimSequence动画序列的长度，就是播放多长时间就播放完了
