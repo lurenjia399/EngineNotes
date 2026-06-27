@@ -10,7 +10,7 @@ struct CITYSAMPLEMASSCROWD_API FCrowdAnimationFragment : public FMassFragment
 
 	float GlobalStartTime = 0.0f;//动画开始播放的时间，（全局累计时间 - 动画开始播放的时间）* 动画播放速率 = 动画播放的位置。
 	float PlayRate = 1.0f;//动画播放速率
-	int32 AnimationStateIndex = 0;
+	int32 AnimationStateIndex = 0;//动画状态索引，ECrowdAnimationType这个枚举的索引
 	bool bSwappedThisFrame = false;//在MassProcessor_Animation中计算，如果PrevRepresentation和CurrentRepresentation不同，有一个是Actor，有一个不是就设置为true，表示这一帧要切换ISM和Actor
 
 	// 新增字段
