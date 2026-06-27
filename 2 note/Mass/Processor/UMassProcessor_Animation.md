@@ -29,7 +29,7 @@ private:
 };
 ```
 
-2 FMassCrowdAnimInstanceData
+2 填充FMassCrowdAnimInstanceData信息
 ```cpp
 USTRUCT(BlueprintType)
 struct FMassCrowdAnimInstanceData
@@ -53,4 +53,4 @@ struct FMassCrowdAnimInstanceData
 };
 ```
 
-3 AHTCrowdCharacterActorBase 上的UmbrellaAccessoryLayer
+3 将FMassCrowdAnimInstanceData
