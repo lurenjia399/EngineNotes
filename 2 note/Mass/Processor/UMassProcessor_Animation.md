@@ -6,7 +6,7 @@ struct CITYSAMPLEMASSCROWD_API FCrowdAnimationFragment : public FMassFragment
 	GENERATED_BODY()
 
 	UPROPERTY()
-	TObjectPtr<UAnimToTextureDataAsset> AnimToTextureData = nullptr;
+	TObjectPtr<UAnimToTextureDataAsset> AnimToTextureData = nullptr;// 在UCitySampleCrowdVisualizationFragmentInitializer这个ObserverProcessor中赋值的，直接取MassCharacter中配置的头资源
 
 	float GlobalStartTime = 0.0f;//动画开始播放的时间，（全局累计时间 - 动画开始播放的时间）* 动画播放速率 = 动画播放的位置。
 	float PlayRate = 1.0f;//动画播放速率
