@@ -37,7 +37,7 @@ struct FMassCrowdAnimInstanceData
 	GENERATED_BODY()
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	UAnimSequence* FarLODAnimSequence = nullptr;
+	UAnimSequence* FarLODAnimSequence = nullptr;//g
 	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	FTransform MassEntityTransform;//MassEntity的位置
