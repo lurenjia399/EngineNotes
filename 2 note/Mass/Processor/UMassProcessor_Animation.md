@@ -29,7 +29,43 @@ private:
 };
 ```
 
-2 
-```
+2 FMassCrowdAnimInstanceData
+```cpp
+USTRUCT(BlueprintType)
+struct FMassCrowdAnimInstanceData
+{
+	GENERATED_BODY()
 
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	UAnimSequence* FarLODAnimSequence = nullptr;
+	
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	FTransform MassEntityTransform;//MassEntity的位置
+
+	// In local/component space
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	FVector LookAtDirection = FVector::ForwardVector;
+	
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	float FarLODPlaybackStartTime = 0.0f;
+
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	float AnimSequenceLength = 0.0f;
+
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	float Significance = 0.0f;
+
+	// Default to true to assume we always swapped on init
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	bool bSwappedThisFrame = true;
+
+//#if HOTTA_ENGINE_MODIFY // add by wujingjing
+	// Default to true to assume we always swapped on init
+	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
+	float PlayRate = 1.0f;
+	
+	float fOW_LocomotionAngle = 0.f;
+	float LocalVelocityDirectionAngle = 0.f;
+// #endif
+};
 ```
