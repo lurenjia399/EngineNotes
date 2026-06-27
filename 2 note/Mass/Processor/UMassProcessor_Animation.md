@@ -41,10 +41,8 @@ struct FMassCrowdAnimInstanceData
 	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	FTransform MassEntityTransform;//MassEntity的位置
-
-	// In local/component space
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	FVector LookAtDirection = FVector::ForwardVector;
+	FVector LookAtDirection = FVector::ForwardVector;// 读取Entity的FMassLookAtFragment中记录的LookAt方向，局部空间下
 	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	float FarLODPlaybackStartTime = 0.0f;
