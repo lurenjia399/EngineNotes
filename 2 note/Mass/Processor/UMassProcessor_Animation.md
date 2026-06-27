@@ -56,4 +56,4 @@ struct FMassCrowdAnimInstanceData
 # UMassProcessor_CrowdVisualizationCustomData
 1 ISM的行人，通过这个来更新动画数据
 2 游戏线程执行，在UMassProcessor_Animation之后
-3 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，向
+3 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，将entity的tra
