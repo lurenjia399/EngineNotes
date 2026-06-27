@@ -53,4 +53,4 @@ struct FMassCrowdAnimInstanceData
 };
 ```
 
-3 将FMassCrowdAnimInstanceData
+3 将FMassCrowdAnimInstanceData设置到UMassCrowdAnimInstance中，让动画蓝图读取
