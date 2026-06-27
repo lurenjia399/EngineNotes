@@ -1,5 +1,5 @@
-
-1 FCrowdAnimationFragment 
+1 MassActor通过这个来更新AnimInstanceData数据，然后动画蓝图读取更新
+2 FCrowdAnimationFragment 
 ```cpp
 struct CITYSAMPLEMASSCROWD_API FCrowdAnimationFragment : public FMassFragment
 {
@@ -28,7 +28,7 @@ private:
 	TSharedPtr<FGCObjectScopeGuard> AnimToTextureDataGuard;
 };
 ```
-2 填充FMassCrowdAnimInstanceData信息
+3 填充FMassCrowdAnimInstanceData信息
 ```cpp
 USTRUCT(BlueprintType)
 struct FMassCrowdAnimInstanceData
@@ -51,8 +51,8 @@ struct FMassCrowdAnimInstanceData
 	bool bSwappedThisFrame = true;//这一帧是否要ISM和Actor之间切换
 };
 ```
-3 将FMassCrowdAnimInstanceData设置到UMassCrowdAnimInstance中，让动画蓝图读取
+4 将FMassCrowdAnimInstanceData设置到UMassCrowdAnimInstance中，让动画蓝图读取
 
 # UMassProcessor_CrowdVisualizationCustomData
-1 游戏线程执行，在UMassProcessor_Animation之后
-2 
+2 游戏线程执行，在UMassProcessor_Animation之后
+3
