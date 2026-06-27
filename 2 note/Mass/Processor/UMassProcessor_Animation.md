@@ -37,7 +37,7 @@ struct FMassCrowdAnimInstanceData
 	GENERATED_BODY()
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	UAnimSequence* FarLODAnimSequence = nullptr;//g
+	UAnimSequence* FarLODAnimSequence = nullptr;//取到FCrowdAnimationFragment中表示的动画序列
 	
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	FTransform MassEntityTransform;//MassEntity的位置
@@ -48,7 +48,7 @@ struct FMassCrowdAnimInstanceData
 	float FarLODPlaybackStartTime = 0.0f;
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
-	float AnimSequenceLength = 0.0f;
+	float AnimSequenceLength = 0.0f;//FarLODAnimSequence动画序列的长度
 
 	UPROPERTY(transient, EditAnywhere, BlueprintReadOnly, Category = MassCrowd)
 	float Significance = 0.0f;
