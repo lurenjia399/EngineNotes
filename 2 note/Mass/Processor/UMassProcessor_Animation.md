@@ -52,3 +52,5 @@ struct FMassCrowdAnimInstanceData
 	bool bSwappedThisFrame = true;//这一帧是否要ISM和Actor之间切换
 };
 ```
+
+3 AHTCrowdCharacterActorBase 上的UmbrellaAccessoryLayer
