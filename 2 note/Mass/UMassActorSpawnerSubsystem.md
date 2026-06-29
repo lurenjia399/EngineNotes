@@ -39,5 +39,7 @@ ESpawnRequestStatus UMassActorSpawnerSubsystem::ProcessSpawnRequest(
 1 
 ```cpp
 TMap<TSubclassOf<AActor>, TArray<TObjectPtr<AActor>>> PooledActors;
-// key是Actor的UCla's's
+// key是Actor的UClass
+// 值就是Actor的数组
 ```
+2 
