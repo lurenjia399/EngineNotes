@@ -82,6 +82,7 @@ FMassLookAtTask，修改的FMassLookAtFragment这个片段，
 3 在UMassStateTreeActivationProcessor执行execute的时候，会首先创建statetree，然后执行StateTreeExecutionContext.Start方法
 4 在start方法中，会执行一遍statetree，如果走到了Wander节点中
 5 首先执行FMassZoneGraphFindWanderTarget这个Task
+6 
 ```
 2 
 ```cpp
@@ -143,6 +144,8 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 					EZoneLaneLinkType::Adjacent;
 			}
 		}
+		// 最终设置NextLane为找到的linklane
+		InstanceData.WanderTargetLocation.NextLaneHandle = LinkedLane.DestLane;
 	}
 }
 ```
