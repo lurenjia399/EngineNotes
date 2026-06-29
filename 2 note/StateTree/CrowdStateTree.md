@@ -105,6 +105,11 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 	InstanceData.WanderTargetLocation.bMoveReverse = false;
 	// 在lane的终点是否还要移动
 	InstanceData.WanderTargetLocation.EndOfPathIntent = EMassMovementAction::Move;
+	// 如果当前想要移动的距离 大于 
+	if (InstanceData.WanderTargetLocation.TargetDistance > LaneLocation.LaneLength)
+	{
+		
+	}
 }
 ```
 
