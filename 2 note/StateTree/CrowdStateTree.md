@@ -117,6 +117,20 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 			EZoneLaneLinkFlags::All, 
 			EZoneLaneLinkFlags::None, 
 			LinkedLanes);
+		// 首先找Outgoing的linklane,找不到就找Adjacent的
+		if (FindCandidates(EZoneLaneLinkType::Outgoing))
+		{
+			InstanceData.WanderTargetLocation.NextExitLinkType = EZoneLaneLinkType::Outgoing;
+		}
+		else
+		{
+			InstanceData.WanderTargetLocation.TargetDistance = LaneLocation.DistanceAlongLane;
+			if (FindCandidates(EZoneLaneLinkType::Adjacent))
+			{
+				InstanceData.WanderTargetLocation.NextExitLinkType = 
+					EZoneLaneLinkType::Adjacent;
+			}
+		}
 	}
 }
 ```
