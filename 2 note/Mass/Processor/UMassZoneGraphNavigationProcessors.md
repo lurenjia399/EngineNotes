@@ -29,10 +29,12 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 ```
 2 
 ```cpp
-1 遍历查询到的entity，FMassZoneGraphShortPathFragment用来记录
+// 遍历查询到的entity，FMassZoneGraphShortPathFragment用来记录entity行走的相关数据
+
+1 ProgressDistance代表走过的距离，<=0就是刚开始走
 if (ShortPath.ProgressDistance <= 0.0f)
 {
-	// Requested time before the start of the path
+	// 
 	LaneLocation.DistanceAlongLane = ShortPath.Points[0].DistanceAlongLane.Get();
 	
 	MoveTarget.Center = ShortPath.Points[0].Position;
