@@ -92,10 +92,14 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 	// 从配置中获取这次移动的距离
 	const float MoveDistance = GetDefault<UMassCrowdSettings>()->GetMoveDistance();
 	
-	// 记录man
+	// 记录漫游的lane
 	InstanceData.WanderTargetLocation.LaneHandle = LaneLocation.LaneHandle;
-	InstanceData.WanderTargetLocation.TargetDistance = LaneLocation.DistanceAlongLane + MoveDistance;
+	// 记录漫游的距离
+	InstanceData.WanderTargetLocation.TargetDistance = 
+		LaneLocation.DistanceAlongLane + MoveDistance;
+	// 记录链接lane的类型
 	InstanceData.WanderTargetLocation.NextExitLinkType = EZoneLaneLinkType::None;
+	// 
 	InstanceData.WanderTargetLocation.NextLaneHandle.Reset();
 	InstanceData.WanderTargetLocation.bMoveReverse = false;
 	InstanceData.WanderTargetLocation.EndOfPathIntent = EMassMovementAction::Move;
