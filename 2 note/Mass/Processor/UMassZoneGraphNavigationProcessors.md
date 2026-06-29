@@ -46,10 +46,12 @@ if (ShortPath.ProgressDistance <= 0.0f)
 else if (ShortPath.ProgressDistance <= 
 		ShortPath.Points[LastPointIndex].Distance.Get())
 {
+	// 计算出当前移动的距离在两个点之间的插值比例T
 	const FMassZoneGraphPathPoint& CurrPoint = ShortPath.Points[PointIndex];
 	const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
-	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) / (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
-	
+	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) 
+					/ (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
+	// 
 	LaneLocation.DistanceAlongLane = FMath::Min(FMath::Lerp(CurrPoint.DistanceAlongLane.Get(), NextPoint.DistanceAlongLane.Get(), T), LaneLocation.LaneLength);
 
 	MoveTarget.Center = FMath::Lerp(CurrPoint.Position, NextPoint.Position, T);
