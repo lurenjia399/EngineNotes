@@ -147,4 +147,20 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 	}
 }
 ```
+### 3 FHTMassZoneGraphPathFollowTask
+```cpp
+EStateTreeRunStatus FHTMassZoneGraphPathFollowTask::EnterState(
+	FStateTreeExecutionContext& Context, 
+	const FStateTreeTransitionResult& Transition) const
+{
+	if (!RequestPath(MassContext, *TargetLocation))
+	{
+		return EStateTreeRunStatus::Failed;
+	}
+
+	return EStateTreeRunStatus::Running;
+}
+
+
+```
 
