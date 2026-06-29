@@ -78,9 +78,12 @@ else
 	// 一条道路走完了，如果还需要走下一条道路
 	if (ShortPath.NextLaneHandle.IsValid())
 	{
-		const FZoneGraphStorage* ZoneGraphStorage = ZoneGraphSubsystem.GetZoneGraphStorage(LaneLocation.LaneHandle.DataHandle);
+		const FZoneGraphStorage* ZoneGraphStorage = 
+				ZoneGraphSubsystem.GetZoneGraphStorage(
+				LaneLocation.LaneHandle.DataHandle);
 		if (ZoneGraphStorage != nullptr)
 		{
+			// r
 			if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Outgoing)
 			{
 				float NewLaneLength = 0.f;
