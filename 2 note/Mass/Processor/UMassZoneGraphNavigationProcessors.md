@@ -51,7 +51,7 @@ else if (ShortPath.ProgressDistance <=
 	const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
 	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) 
 					/ (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
-	// 
+	// 根据插值T，将沿着Lane移动的距离cha'zh
 	LaneLocation.DistanceAlongLane = FMath::Min(FMath::Lerp(CurrPoint.DistanceAlongLane.Get(), NextPoint.DistanceAlongLane.Get(), T), LaneLocation.LaneLength);
 
 	MoveTarget.Center = FMath::Lerp(CurrPoint.Position, NextPoint.Position, T);
