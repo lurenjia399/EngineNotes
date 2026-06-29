@@ -1,4 +1,4 @@
-# 1 
+# 1 UMassZoneGraphLocationInitializer
 1 是ObserverProcessor
 ```cpp
 ObservedType = FMassZoneGraphLaneLocationFragment::StaticStruct();
@@ -20,3 +20,11 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 }
 1 就是通过FindNearestLane接口，将自己手中的QueryBound，根据BVTree查找相交的叶子节点，找到后遍历Zone中的Lanes，找到里QueryCenter最近的Lane，然后返回数据
 ```
+
+# 2 UMassZoneGraphPathFollowProcessor
+1 
+```cpp
+1 UMassSteeringTrait 需要添加这个Trait，来添加FMassMoveTargetFragment这个
+2 UMassZoneGraphNavigationTrait 需要添加这个Trait，来添加FMassZoneGraphShortPathFragment这个和FMassZoneGraphLaneLocationFragment
+```
+2 
