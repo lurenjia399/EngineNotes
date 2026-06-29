@@ -108,15 +108,27 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 	// 如果当前想要移动的距离 大于 当前所在lane的长度
 	if (InstanceData.WanderTargetLocation.TargetDistance > LaneLocation.LaneLength)
 	{
-		// 找LinkLane
-		TArray<FZoneGraphLinkedLane> LinkedLanes;
-		UE::ZoneGraph::Query::GetLinkedLanes(
-			*ZoneGraphStorage, 
-			LaneLocation.LaneHandle, 
-			Type, 
-			EZoneLaneLinkFlags::All, 
-			EZoneLaneLinkFlags::None, 
-			LinkedLanes);
+		
+		auto FindCandidates = [this, 
+			&ZoneGraphAnnotationSubsystem, 
+			&MassCrowdSubsystem, 
+			ZoneGraphStorage, 
+			LaneLocation, 
+			&Candidates, 
+			&CombinedWeight](const EZoneLaneLinkType Type)-> bool
+			{
+				// 找LinkLane
+				TArray<FZoneGraphLinkedLane> LinkedLanes;
+					UE::ZoneGraph::Query::GetLinkedLanes(
+					*ZoneGraphStorage, 
+					LaneLocation.LaneHandle, 
+					Type, 
+					EZoneLaneLinkFlags::All, 
+					EZoneLaneLinkFlags::None, 
+					LinkedLanes);
+			}
+			return !Candidates.IsEmpty();
+		};
 		// 首先找Outgoing的linklane,找不到就找Adjacent的
 		if (FindCandidates(EZoneLaneLinkType::Outgoing))
 		{
