@@ -75,12 +75,7 @@ else
 	MoveTarget.DistanceToGoal = 0.0f;
 	MoveTarget.bOffBoundaries = ShortPath.Points[LastPointIndex].bOffLane;
 
-	if (bDisplayDebug)
-	{
-		UE_VLOG(LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] End of path."), *Entity.DebugGetDescription());
-	}
-
-	// Check to see if need advance to next lane.
+	// 一条道路走完了，如果还需要走下一条道路
 	if (ShortPath.NextLaneHandle.IsValid())
 	{
 		const FZoneGraphStorage* ZoneGraphStorage = ZoneGraphSubsystem.GetZoneGraphStorage(LaneLocation.LaneHandle.DataHandle);
