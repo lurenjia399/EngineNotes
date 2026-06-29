@@ -69,14 +69,11 @@ else
 	LaneLocation.DistanceAlongLane = 
 		FMath::Min(ShortPath.Points[LastPointIndex].DistanceAlongLane.Get(), 
 			LaneLocation.LaneLength);
-	// 赋值MoveTarget一些数据，中心点取最后点的位置，朝向取最后点的切线，距离目标距离为0，
+	// 赋值MoveTarget一些数据，中心点取最后点的位置，朝向取最后点的切线，距离目标距离为0，是否移动到lane之外的点
 	MoveTarget.Center = ShortPath.Points[LastPointIndex].Position;
 	MoveTarget.Forward = ShortPath.Points[LastPointIndex].Tangent.GetVector();
 	MoveTarget.DistanceToGoal = 0.0f;
 	MoveTarget.bOffBoundaries = ShortPath.Points[LastPointIndex].bOffLane;
-
-	UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Finished path follow on lane %s at distance %f. Off Boundaries: %s"),
-		*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), LaneLocation.DistanceAlongLane, *LexToString((bool)MoveTarget.bOffBoundaries));
 
 	if (bDisplayDebug)
 	{
@@ -86,4 +83,73 @@ else
 	// Check to see if need advance to next lane.
 	if (ShortPath.NextLaneHandle.IsValid())
 	{
+		const FZoneGraphStorage* ZoneGraphStorage = ZoneGraphSubsystem.GetZoneGraphStorage(LaneLocation.LaneHandle.DataHandle);
+		if (ZoneGraphStorage != nullptr)
+		{
+			if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Outgoing)
+			{
+				float NewLaneLength = 0.f;
+				UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
+
+				UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Switching to OUTGOING lane %s -> %s, new distance %f."),
+					*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString(), 0.f);
+
+				// update lane location
+				LaneLocation.LaneHandle = ShortPath.NextLaneHandle;
+				LaneLocation.LaneLength = NewLaneLength;
+				LaneLocation.DistanceAlongLane = 0.0f;
+			}
+			else if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Incoming)
+			{
+				float NewLaneLength = 0.f;
+				UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
+
+				UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Switching to INCOMING lane %s -> %s, new distance %f."),
+					*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString(), NewLaneLength);
+
+				// update lane location
+				LaneLocation.LaneHandle = ShortPath.NextLaneHandle;
+				LaneLocation.LaneLength = NewLaneLength;
+				LaneLocation.DistanceAlongLane = NewLaneLength;
+			}
+			else if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Adjacent)
+			{
+				FZoneGraphLaneLocation NewLocation;
+				float DistanceSqr;
+				if (UE::ZoneGraph::Query::FindNearestLocationOnLane(*ZoneGraphStorage, ShortPath.NextLaneHandle, MoveTarget.Center, MAX_flt, NewLocation, DistanceSqr))
+				{
+					float NewLaneLength = 0.f;
+					UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
+
+					UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Switching to ADJACENT lane %s -> %s, new distance %f."),
+						*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString(), NewLocation.DistanceAlongLane);
+
+					// update lane location
+					LaneLocation.LaneHandle = ShortPath.NextLaneHandle;
+					LaneLocation.LaneLength = NewLaneLength;
+					LaneLocation.DistanceAlongLane = NewLocation.DistanceAlongLane;
+
+					MoveTarget.Forward = NewLocation.Tangent;
+				}
+				else
+				{
+					UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Error, TEXT("Entity [%s] Failed to switch to ADJACENT lane %s -> %s."),
+						*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString());
+				}
+			}
+			else
+			{
+				ensureMsgf(false, TEXT("Unhandle NextExitLinkType type %s"), *UEnum::GetValueAsString(ShortPath.NextExitLinkType));
+			}
+
+			// Signal lane changed.
+			EntitiesToSignalLaneChanged.Add(Entity);
+		}
+		else
+		{
+			UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Error, TEXT("Entity [%s] Could not find ZoneGraph storage for lane %s."),
+				*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString());
+		}
+	}
+	ShortPath.bDone = true;
 ```
