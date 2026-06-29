@@ -111,17 +111,16 @@ else
 			{
 				FZoneGraphLaneLocation NewLocation;
 				float DistanceSqr;
-				// 先找到nextlane上距离Curlane最后点的
+				// 先找到Nextlane上距离Curlane最后点最近的点，然后根据点更新位置
 				if (UE::ZoneGraph::Query::FindNearestLocationOnLane(
 					*ZoneGraphStorage, 
 					ShortPath.NextLaneHandle, 
 					MoveTarget.Center, MAX_flt, NewLocation, DistanceSqr))
 				{
 					float NewLaneLength = 0.f;
-					UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
-
-					UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Switching to ADJACENT lane %s -> %s, new distance %f."),
-						*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString(), NewLocation.DistanceAlongLane);
+					UE::ZoneGraph::Query::GetLaneLength(
+						*ZoneGraphStorage, 
+						ShortPath.NextLaneHandle, NewLaneLength);
 
 					// update lane location
 					LaneLocation.LaneHandle = ShortPath.NextLaneHandle;
@@ -130,17 +129,7 @@ else
 
 					MoveTarget.Forward = NewLocation.Tangent;
 				}
-				else
-				{
-					UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Error, TEXT("Entity [%s] Failed to switch to ADJACENT lane %s -> %s."),
-						*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString());
-				}
 			}
-			else
-			{
-				ensureMsgf(false, TEXT("Unhandle NextExitLinkType type %s"), *UEnum::GetValueAsString(ShortPath.NextExitLinkType));
-			}
-
 			// Signal lane changed.
 			EntitiesToSignalLaneChanged.Add(Entity);
 		}
