@@ -51,7 +51,7 @@ else if (ShortPath.ProgressDistance <=
 	const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
 	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) 
 					/ (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
-	// 根据插值T，将沿着Lane移动的距离插值出来赋值
+	// 根据插值T，计算沿着道路移动的ju
 	LaneLocation.DistanceAlongLane = 
 		FMath::Min(FMath::Lerp(CurrPoint.DistanceAlongLane.Get(), 
 			NextPoint.DistanceAlongLane.Get(), T), LaneLocation.LaneLength);
@@ -64,24 +64,26 @@ else if (ShortPath.ProgressDistance <=
 	MoveTarget.bOffBoundaries = CurrPoint.bOffLane || NextPoint.bOffLane;
 }
 else
-					{
-						// Requested time after the end of the path, clamp to lane length in case quantization overshoots.
-						LaneLocation.DistanceAlongLane = FMath::Min(ShortPath.Points[LastPointIndex].DistanceAlongLane.Get(), LaneLocation.LaneLength);
+{
+	// 计算当前移动据
+	LaneLocation.DistanceAlongLane = 
+		FMath::Min(ShortPath.Points[LastPointIndex].DistanceAlongLane.Get(), 
+			LaneLocation.LaneLength);
 
-						MoveTarget.Center = ShortPath.Points[LastPointIndex].Position;
-						MoveTarget.Forward = ShortPath.Points[LastPointIndex].Tangent.GetVector();
-						MoveTarget.DistanceToGoal = 0.0f;
-						MoveTarget.bOffBoundaries = ShortPath.Points[LastPointIndex].bOffLane;
+	MoveTarget.Center = ShortPath.Points[LastPointIndex].Position;
+	MoveTarget.Forward = ShortPath.Points[LastPointIndex].Tangent.GetVector();
+	MoveTarget.DistanceToGoal = 0.0f;
+	MoveTarget.bOffBoundaries = ShortPath.Points[LastPointIndex].bOffLane;
 
-						UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Finished path follow on lane %s at distance %f. Off Boundaries: %s"),
-							*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), LaneLocation.DistanceAlongLane, *LexToString((bool)MoveTarget.bOffBoundaries));
+	UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Finished path follow on lane %s at distance %f. Off Boundaries: %s"),
+		*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), LaneLocation.DistanceAlongLane, *LexToString((bool)MoveTarget.bOffBoundaries));
 
-						if (bDisplayDebug)
-						{
-							UE_VLOG(LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] End of path."), *Entity.DebugGetDescription());
-						}
+	if (bDisplayDebug)
+	{
+		UE_VLOG(LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] End of path."), *Entity.DebugGetDescription());
+	}
 
-						// Check to see if need advance to next lane.
-						if (ShortPath.NextLaneHandle.IsValid())
-						{
+	// Check to see if need advance to next lane.
+	if (ShortPath.NextLaneHandle.IsValid())
+	{
 ```
