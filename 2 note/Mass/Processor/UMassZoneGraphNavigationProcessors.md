@@ -31,7 +31,7 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 ```cpp
 // 遍历查询到的entity，FMassZoneGraphShortPathFragment用来记录entity行走的相关数据
 
-1 ProgressDistance代表走过的距离，<=0就是刚开始走
+// ProgressDistance代表走过的距离，<=0就是刚开始走
 if (ShortPath.ProgressDistance <= 0.0f)
 {
 	// 
@@ -41,5 +41,39 @@ if (ShortPath.ProgressDistance <= 0.0f)
 	MoveTarget.Forward = ShortPath.Points[0].Tangent.GetVector();
 	MoveTarget.DistanceToGoal = ShortPath.Points[LastPointIndex].Distance.Get();
 	MoveTarget.bOffBoundaries = ShortPath.Points[0].bOffLane;
+}
+// 没有走完这段路程
+else if (ShortPath.ProgressDistance <= 
+		ShortPath.Points[LastPointIndex].Distance.Get())
+{
+	// Requested time along the path, interpolate.
+	uint8 PointIndex = 0;
+	while (PointIndex < (ShortPath.NumPoints - 2))
+	{
+		const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
+		if (ShortPath.ProgressDistance <= NextPoint.Distance.Get())
+		{
+			break;
+		}
+		PointIndex++;
+	}
+
+	const FMassZoneGraphPathPoint& CurrPoint = ShortPath.Points[PointIndex];
+	const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
+	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) / (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
+	
+	LaneLocation.DistanceAlongLane = FMath::Min(FMath::Lerp(CurrPoint.DistanceAlongLane.Get(), NextPoint.DistanceAlongLane.Get(), T), LaneLocation.LaneLength);
+
+	MoveTarget.Center = FMath::Lerp(CurrPoint.Position, NextPoint.Position, T);
+	MoveTarget.Forward = FMath::Lerp(CurrPoint.Tangent.GetVector(), NextPoint.Tangent.GetVector(), T).GetSafeNormal();
+	MoveTarget.DistanceToGoal = ShortPath.Points[LastPointIndex].Distance.Get() - FMath::Lerp(CurrPoint.Distance.Get(), NextPoint.Distance.Get(), T);
+	MoveTarget.bOffBoundaries = CurrPoint.bOffLane || NextPoint.bOffLane;
+
+	UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Verbose, TEXT("Entity [%s] along lane %s at distance %.1f. Distance to goal: %.1f. Off Boundaries: %s"),
+		*Entity.DebugGetDescription(),
+		*LaneLocation.LaneHandle.ToString(),
+		LaneLocation.DistanceAlongLane,
+		MoveTarget.DistanceToGoal,
+		*LexToString((bool)MoveTarget.bOffBoundaries));
 }
 ```
