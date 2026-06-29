@@ -59,14 +59,29 @@ else if (ShortPath.ProgressDistance <=
 	MoveTarget.Center = FMath::Lerp(CurrPoint.Position, NextPoint.Position, T);
 	MoveTarget.Forward = FMath::Lerp(CurrPoint.Tangent.GetVector(), 
 		NextPoint.Tangent.GetVector(), T).GetSafeNormal();
-	MoveTarget.DistanceToGoal = ShortPath.Points[LastPointIndex].Distance.Get() - FMath::Lerp(CurrPoint.Distance.Get(), NextPoint.Distance.Get(), T);
+	MoveTarget.DistanceToGoal = ShortPath.Points[LastPointIndex].Distance.Get() 
+		- FMath::Lerp(CurrPoint.Distance.Get(), NextPoint.Distance.Get(), T);
 	MoveTarget.bOffBoundaries = CurrPoint.bOffLane || NextPoint.bOffLane;
-
-	UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Verbose, TEXT("Entity [%s] along lane %s at distance %.1f. Distance to goal: %.1f. Off Boundaries: %s"),
-		*Entity.DebugGetDescription(),
-		*LaneLocation.LaneHandle.ToString(),
-		LaneLocation.DistanceAlongLane,
-		MoveTarget.DistanceToGoal,
-		*LexToString((bool)MoveTarget.bOffBoundaries));
 }
+else
+					{
+						// Requested time after the end of the path, clamp to lane length in case quantization overshoots.
+						LaneLocation.DistanceAlongLane = FMath::Min(ShortPath.Points[LastPointIndex].DistanceAlongLane.Get(), LaneLocation.LaneLength);
+
+						MoveTarget.Center = ShortPath.Points[LastPointIndex].Position;
+						MoveTarget.Forward = ShortPath.Points[LastPointIndex].Tangent.GetVector();
+						MoveTarget.DistanceToGoal = 0.0f;
+						MoveTarget.bOffBoundaries = ShortPath.Points[LastPointIndex].bOffLane;
+
+						UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Finished path follow on lane %s at distance %f. Off Boundaries: %s"),
+							*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), LaneLocation.DistanceAlongLane, *LexToString((bool)MoveTarget.bOffBoundaries));
+
+						if (bDisplayDebug)
+						{
+							UE_VLOG(LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] End of path."), *Entity.DebugGetDescription());
+						}
+
+						// Check to see if need advance to next lane.
+						if (ShortPath.NextLaneHandle.IsValid())
+						{
 ```
