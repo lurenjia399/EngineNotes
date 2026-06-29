@@ -35,4 +35,9 @@ ESpawnRequestStatus UMassActorSpawnerSubsystem::ProcessSpawnRequest(
 ```
 4 AgentComp上面会配置UHTMassAgentTransformSyncTrait这个，用来将mass位置同步到Actor位置
 
-# 
+# PoolActor实现
+1 
+```cpp
+TMap<TSubclassOf<AActor>, TArray<TObjectPtr<AActor>>> PooledActors;
+// key是Actor的UCla's's
+```
