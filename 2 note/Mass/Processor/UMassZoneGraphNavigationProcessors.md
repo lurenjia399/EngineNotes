@@ -98,10 +98,8 @@ else
 			else if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Incoming)
 			{
 				float NewLaneLength = 0.f;
-				UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
-
-				UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Switching to INCOMING lane %s -> %s, new distance %f."),
-					*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString(), NewLaneLength);
+				UE::ZoneGraph::Query::GetLaneLength(
+					*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
 
 				// update lane location
 				LaneLocation.LaneHandle = ShortPath.NextLaneHandle;
