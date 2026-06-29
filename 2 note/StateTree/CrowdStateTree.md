@@ -165,7 +165,25 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	FMassStateTreeExecutionContext& Context, 
 	const FMassZoneGraphTargetLocation& RequestedTargetLocation) const
 {
-	
+	FZoneGraphShortPathRequest& PathRequest = RequestFragment.PathRequest;
+	PathRequest.StartPosition = MoveTarget.Center;
+	PathRequest.bMoveReverse = RequestedTargetLocation.bMoveReverse;
+	PathRequest.TargetDistance = RequestedTargetLocation.TargetDistance;
+	PathRequest.NextLaneHandle = RequestedTargetLocation.NextLaneHandle;
+	PathRequest.NextExitLinkType = RequestedTargetLocation.NextExitLinkType;
+	PathRequest.EndOfPathIntent = RequestedTargetLocation.EndOfPathIntent;
+	PathRequest.bIsEndOfPathPositionSet = 
+		RequestedTargetLocation.EndOfPathPosition.IsSet();
+	PathRequest.EndOfPathPosition = 
+		RequestedTargetLocation.EndOfPathPosition.Get(FVector::ZeroVector);
+	PathRequest.bIsEndOfPathDirectionSet = 
+		RequestedTargetLocation.EndOfPathDirection.IsSet();
+	PathRequest.EndOfPathDirection.Set(
+		RequestedTargetLocation.EndOfPathDirection.Get(FVector::ForwardVector));
+	PathRequest.AnticipationDistance = 
+		RequestedTargetLocation.AnticipationDistance;
+	PathRequest.EndOfPathOffset.Set(
+		FMath::RandRange(-AgentRadius.Radius, AgentRadius.Radius));
 }
 ```
 
