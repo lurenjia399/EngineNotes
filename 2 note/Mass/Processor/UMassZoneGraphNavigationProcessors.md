@@ -87,16 +87,14 @@ else
 			if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Outgoing)
 			{
 				float NewLaneLength = 0.f;
-				UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
-
-				UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Log, TEXT("Entity [%s] Switching to OUTGOING lane %s -> %s, new distance %f."),
-					*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString(), *ShortPath.NextLaneHandle.ToString(), 0.f);
-
+				UE::ZoneGraph::Query::GetLaneLength(
+					*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
 				// update lane location
 				LaneLocation.LaneHandle = ShortPath.NextLaneHandle;
 				LaneLocation.LaneLength = NewLaneLength;
 				LaneLocation.DistanceAlongLane = 0.0f;
 			}
+			// 如果CurLane和NextLane连接关系是Incoming，说明是沿着Curlane车道反方向行驶，进入NextLane车道终点，可能是倒车
 			else if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Incoming)
 			{
 				float NewLaneLength = 0.f;
@@ -110,6 +108,7 @@ else
 				LaneLocation.LaneLength = NewLaneLength;
 				LaneLocation.DistanceAlongLane = NewLaneLength;
 			}
+			// 这个就是相邻的情况
 			else if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Adjacent)
 			{
 				FZoneGraphLaneLocation NewLocation;
