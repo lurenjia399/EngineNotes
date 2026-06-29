@@ -161,6 +161,11 @@ EStateTreeRunStatus FHTMassZoneGraphPathFollowTask::EnterState(
 	return EStateTreeRunStatus::Running;
 }
 
-
+bool FHTMassZoneGraphPathFollowTask::RequestPath(
+	FMassStateTreeExecutionContext& Context, 
+	const FMassZoneGraphTargetLocation& RequestedTargetLocation) const
+{
+	
+}
 ```
 
