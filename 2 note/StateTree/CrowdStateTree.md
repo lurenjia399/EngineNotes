@@ -81,8 +81,8 @@ FMassLookAtTask，修改的FMassLookAtFragment这个片段，
 2 FMassZoneGraphLaneLocationFragment这个被添加到Entity后，UMassZoneGraphLocationInitializer这个ObserverProcrssor就会被触发，执行execute方法，方法中的内容是以entity的transform为中心，配置为半径，按照ZoneGraphSubsystem.FindNearestLane方法查询离中心最近的lane
 3 在UMassStateTreeActivationProcessor执行execute的时候，会首先创建statetree，然后执行StateTreeExecutionContext.Start方法
 4 在start方法中，会执行一遍statetree，如果走到了Wander节点中
-5 首先执行FMassZoneGraphFindWanderTarget这个Task
-6 
+5 首先执行FMassZoneGraphFindWanderTarget这个Task，简单说就是通过entity位置设置WanderTargetLocation供给给其他Task使用
+6 然后执行FHTMassZoneGraphPathFollowTask这个Task，
 ```
 2 
 ```cpp
