@@ -46,18 +46,6 @@ if (ShortPath.ProgressDistance <= 0.0f)
 else if (ShortPath.ProgressDistance <= 
 		ShortPath.Points[LastPointIndex].Distance.Get())
 {
-	// Requested time along the path, interpolate.
-	uint8 PointIndex = 0;
-	while (PointIndex < (ShortPath.NumPoints - 2))
-	{
-		const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
-		if (ShortPath.ProgressDistance <= NextPoint.Distance.Get())
-		{
-			break;
-		}
-		PointIndex++;
-	}
-
 	const FMassZoneGraphPathPoint& CurrPoint = ShortPath.Points[PointIndex];
 	const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
 	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) / (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
