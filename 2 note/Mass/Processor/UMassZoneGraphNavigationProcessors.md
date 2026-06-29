@@ -83,7 +83,7 @@ else
 				LaneLocation.LaneHandle.DataHandle);
 		if (ZoneGraphStorage != nullptr)
 		{
-			// r
+			// 如果CurLane和NextLane连接关系是Outgoing，说明是延着CurLane车道的方向行驶，进入NextLane车道的起点
 			if (ShortPath.NextExitLinkType == EZoneLaneLinkType::Outgoing)
 			{
 				float NewLaneLength = 0.f;
