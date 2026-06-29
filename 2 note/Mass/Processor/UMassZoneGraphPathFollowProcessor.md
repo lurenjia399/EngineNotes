@@ -1,4 +1,6 @@
 1 
 ```cpp
-1 UMassSteeringTrait 需要添加这个Trait，来Add
+1 UMassSteeringTrait 需要添加这个Trait，来添加FMassMoveTargetFragment这个
+2 UMassZoneGraphNavigationTrait 需要添加这个Trait，来添加FMassZoneGraphShortPathFragment这个和FMassZoneGraphLaneLocationFragment
 ```
+2 
