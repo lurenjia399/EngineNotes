@@ -1,0 +1,74 @@
+# 1 Flee
+1 触发
+
+```cpp
+1 通过UZoneGraphDisturbanceAnnotationBPLibrary::TriggerDanger这个往ZoneGraphAnnotationSubSystem的Event数组中添加一个。
+2 ZoneGraphAnnotationSubSystem会把AnnotatonComp记录到数组中，在subsystem的tick中会遍历AnnotationComp数组，每个Comp都执行HandleEvents，和TickAnnotation。
+3 在HandleEvents方法中，会将Danger记录到Comp数组中，在TickAnnotation中会处理这个Danger。
+4 在TickAnnotation中会修改ZoneGraphAnnotationSubSystem中的AnnotationTagContainer成员变量。
+5 结束，通过TriggerDanger触发的最终目的就是修改AnnotationTagContainer这个变量。
+6 UZoneGraphAnnotationComponent这个Comp是挂在AHTMassCrowdSpawner这个上的。
+```
+
+2 修改FMassZoneGraphAnnotationFragment
+```cpp
+1 UMassZoneGraphAnnotationTagsInitializer继承了UMassObserverProcessor，来观察FMassZoneGraphAnnotationFragment
+2 如果entity添加了这个Fragment，首先会找FMassZoneGraphLaneLocationFragment这个，来确定entity在哪条Zone上，然后就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取所在Lane的Tag，设置到Fragment中
+```
+
+3 stateTree更新状态
+```cpp
+1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的来观察FMassZoneGraphAnnotationFragment中的Tag，然后传递到statetree中
+2 stateTree会根据这个Evaluator的Tag来进入Flee状态。
+3 执行FHTMassZoneGraphFindEscapeDanger这个Task，这个计算出逃离路线
+4 然后执行FMassZoneGraphPathFollowTask这个Task，根据上边计算出的的逃跑路线，填充FMassMoveTargetFragment，由MoveTargetProcessor让entity移动
+```
+
+# 受击反应
+
+1 触发
+
+```cpp
+1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
+2 在subsystem的tick中，会遍历HitResults，通过SignalEntity发送HitReceived的信号
+```
+
+2 UMassStateTreeProcessor
+```cpp
+1 UMassStateTreeProcessor继承UMassSignalProcessorBase，在收到Signal回调后会执行SingnalEntities方法
+2 回调方法里会创建ExecuteContext，来执行StateTree
+```
+
+3 stateTree更新状态
+```cpp
+1 FHTMassComponentHitEvaluator 这个从UHTMassComponentHitSubsystem中根据entityhandle来获取HitResult击中信息，并根据信息来设置标志位
+2 stateTree根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
+3 StateTree内部不同状态会执行不同的Task
+```
+
+1 MoveHit（在移动中收到攻击）
+会执行两个StateTask，FHTCrowdCharacterMassStandTask
+```cpp
+{
+	FMassMoveTargetFragment& MoveTarget = 
+		Context.GetExternalData(MoveTargetHandle);
+	MoveTarget.CreateNewAction(EMassMovementAction::Animate, *World);  
+	UE::MassNavigation::ActivateActionAnimate(
+		*World, Context.GetOwner(), 
+		MassContext.GetEntity(), MoveTarget);
+}
+1 修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理把Fragment数据设置到动画蓝图里,UMassSteerToMoveTargetProcessor这个也会读取处理来改变entity运动状态
+2 MassMoveTargetFragment这个Fragment是由UMassSteeringTrait这个Trait添加的
+3 UMassProcessor_Animation 这个里会将MoveTargetFragment里的数据赋值给UMassCrowdAnimInstance的MassMovementInfo变量，
+4 在 UMassProcessor_Animation 之后 才会执行UMassSteerToMoveTargetProcessor
+
+```
+FMassLookAtTask，修改的FMassLookAtFragment这个片段，
+```cpp
+1 这个Task里主要设置FMassLookAtFragment这个Fragment
+2 玩家撞击到行人，就会通过玩家身上的massagentComponent的获取entity，然后设置这个Fragment，让其朝向玩家。玩家身上的massagentComp是配置的BP_MassExperience中在controller上创建出来的
+3 核心处理是通过UMassLookAtProcessor这个来做的
+```
+
+# Wander
+
