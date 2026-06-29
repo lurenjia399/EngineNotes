@@ -17,5 +17,5 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 	MoveTarget.Center = AgentLocation;
 	MoveTarget.Forward = NearestLane.Tangent;
 }
-1 就是通过FindNearestLane接口，将自己手中的QueryBound
+1 就是通过FindNearestLane接口，将自己手中的QueryBound，根据BVTree查找相交的叶子节点，找到后遍历Zone中的Lanes，找到里QueryCenter最近的Lane，然后返回数据
 ```
