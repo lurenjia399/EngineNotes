@@ -130,14 +130,16 @@ else
 					MoveTarget.Forward = NewLocation.Tangent;
 				}
 			}
-			// Signal lane changed.
+			// 添加到变道signal数组中，会通知变道
 			EntitiesToSignalLaneChanged.Add(Entity);
-		}
-		else
-		{
-			UE_CVLOG(bDisplayDebug, LogOwner, LogMassNavigation, Error, TEXT("Entity [%s] Could not find ZoneGraph storage for lane %s."),
-				*Entity.DebugGetDescription(), *LaneLocation.LaneHandle.ToString());
 		}
 	}
 	ShortPath.bDone = true;
+
+// 最后判断是否完成，如果完成添加到弯沉signal数组中
+const bool bIsDone = ShortPath.IsDone();
+if (!bWasDone && bIsDone)
+{
+	EntitiesToSignalPathDone.Add(Entity);
+}
 ```
