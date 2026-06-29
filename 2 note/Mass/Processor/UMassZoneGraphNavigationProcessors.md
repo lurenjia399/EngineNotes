@@ -51,7 +51,7 @@ else if (ShortPath.ProgressDistance <=
 	const FMassZoneGraphPathPoint& NextPoint = ShortPath.Points[PointIndex + 1];
 	const float T = (ShortPath.ProgressDistance - CurrPoint.Distance.Get()) 
 					/ (NextPoint.Distance.Get() - CurrPoint.Distance.Get());
-	// 根据插值T，计算沿着道路移动的ju
+	// 根据插值T，计算沿着道路移动的距离
 	LaneLocation.DistanceAlongLane = 
 		FMath::Min(FMath::Lerp(CurrPoint.DistanceAlongLane.Get(), 
 			NextPoint.DistanceAlongLane.Get(), T), LaneLocation.LaneLength);
@@ -65,11 +65,11 @@ else if (ShortPath.ProgressDistance <=
 }
 else
 {
-	// 计算当前移动据
+	// 计算当前沿着道路移动的距离
 	LaneLocation.DistanceAlongLane = 
 		FMath::Min(ShortPath.Points[LastPointIndex].DistanceAlongLane.Get(), 
 			LaneLocation.LaneLength);
-
+	// 赋值MoveTarget一些数据，中心点取最后点的位置，朝向取最后点的切线，距离目标距离为0，
 	MoveTarget.Center = ShortPath.Points[LastPointIndex].Position;
 	MoveTarget.Forward = ShortPath.Points[LastPointIndex].Tangent.GetVector();
 	MoveTarget.DistanceToGoal = 0.0f;
