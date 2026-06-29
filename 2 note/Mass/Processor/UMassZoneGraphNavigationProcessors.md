@@ -111,7 +111,11 @@ else
 			{
 				FZoneGraphLaneLocation NewLocation;
 				float DistanceSqr;
-				if (UE::ZoneGraph::Query::FindNearestLocationOnLane(*ZoneGraphStorage, ShortPath.NextLaneHandle, MoveTarget.Center, MAX_flt, NewLocation, DistanceSqr))
+				// 先找到nextlane上距离Curlane最后点的
+				if (UE::ZoneGraph::Query::FindNearestLocationOnLane(
+					*ZoneGraphStorage, 
+					ShortPath.NextLaneHandle, 
+					MoveTarget.Center, MAX_flt, NewLocation, DistanceSqr))
 				{
 					float NewLaneLength = 0.f;
 					UE::ZoneGraph::Query::GetLaneLength(*ZoneGraphStorage, ShortPath.NextLaneHandle, NewLaneLength);
