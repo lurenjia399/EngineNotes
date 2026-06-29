@@ -99,9 +99,11 @@ EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
 		LaneLocation.DistanceAlongLane + MoveDistance;
 	// 记录链接lane的类型
 	InstanceData.WanderTargetLocation.NextExitLinkType = EZoneLaneLinkType::None;
-	// chong'x
+	// 重置nextLane
 	InstanceData.WanderTargetLocation.NextLaneHandle.Reset();
+	// 重置是否反向移动
 	InstanceData.WanderTargetLocation.bMoveReverse = false;
+	// 在lane的终点是否还要移动
 	InstanceData.WanderTargetLocation.EndOfPathIntent = EMassMovementAction::Move;
 }
 ```
