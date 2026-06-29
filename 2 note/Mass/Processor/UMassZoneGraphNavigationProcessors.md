@@ -28,3 +28,16 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 2 UMassZoneGraphNavigationTrait 需要添加这个Trait，来添加FMassZoneGraphShortPathFragment这个和FMassZoneGraphLaneLocationFragment
 ```
 2 
+```cpp
+1 遍历查询到的entity，FMassZoneGraphShortPathFragment用来记录
+if (ShortPath.ProgressDistance <= 0.0f)
+{
+	// Requested time before the start of the path
+	LaneLocation.DistanceAlongLane = ShortPath.Points[0].DistanceAlongLane.Get();
+	
+	MoveTarget.Center = ShortPath.Points[0].Position;
+	MoveTarget.Forward = ShortPath.Points[0].Tangent.GetVector();
+	MoveTarget.DistanceToGoal = ShortPath.Points[LastPointIndex].Distance.Get();
+	MoveTarget.bOffBoundaries = ShortPath.Points[0].bOffLane;
+}
+```
