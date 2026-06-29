@@ -76,4 +76,4 @@ FMassLookAtTask，修改的FMassLookAtFragment这个片段，
 ## Wander
 
 1 Crowd中的EntityConfig会配置UMassZoneGraphNavigationTrait这个，这个Trait会添加FMassZoneGraphLaneLocationFragment
-2 FMassZoneGraphLaneLocationFragment这个被tian
+2 FMassZoneGraphLaneLocationFragment这个被添加到Entity后，UMassZoneGraphLocationInitializer这个ObserverProcrssor就会被触发，执行execute方法，
