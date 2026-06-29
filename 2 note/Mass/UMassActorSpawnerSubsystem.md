@@ -42,4 +42,19 @@ TMap<TSubclassOf<AActor>, TArray<TObjectPtr<AActor>>> PooledActors;
 // key是Actor的UClass
 // 值就是Actor的数组
 ```
-2 
+2 防止GC
+```cpp
+void UMassActorSpawnerSubsystem::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UMassActorSpawnerSubsystem* MASS = Cast<UMassActorSpawnerSubsystem>(InThis);
+	if (MASS)
+	{
+		for (auto It = MASS->PooledActors.CreateIterator(); It; ++It)
+		{
+			Collector.AddReferencedObjects<AActor>(It.Value());
+		}
+	}
+
+	Super::AddReferencedObjects(InThis, Collector);
+}
+```
