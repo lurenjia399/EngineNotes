@@ -37,7 +37,7 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	LaneLength = CurrentLaneLength;
 	// 当前lane上点的数量
 	const int32 LaneNumPoints = Lane.PointsEnd - Lane.PointsBegin;
-	// 如果点数量 <= 5，说明可以直接缓存，直接把点的位置，
+	// 如果点数量 <= 5，说明可以直接缓存，直接把点的位置，切线，长度都缓存下来
 	if (LaneNumPoints <= (int32)MaxPoints)
 	{
 		NumPoints = (uint8)LaneNumPoints;
@@ -51,6 +51,36 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 			LanePointProgressions[Index] = FMassInt16Real10(
 				ZoneGraphStorage.LanePointProgressions
 				[Lane.PointsBegin + Index]);
+		}
+	}
+	else
+	{
+		int32 StartSegmentIndex = 0;
+		int32 EndSegmentIndex = 0;
+		UE::ZoneGraph::Query::CalculateLaneSegmentIndexAtDistance(
+			ZoneGraphStorage, CurrentLaneHandle, StartDistance, StartSegmentIndex);
+		UE::ZoneGraph::Query::CalculateLaneSegmentIndexAtDistance(
+			ZoneGraphStorage, CurrentLaneHandle, EndDistance, EndSegmentIndex);
+
+		// Expand if close to start of a segment start.
+		if ((StartSegmentIndex - 1) >= Lane.PointsBegin && (StartDistance - InflateDistance) < ZoneGraphStorage.LanePointProgressions[StartSegmentIndex])
+		{
+			StartSegmentIndex--;
+		}
+		// Expand if close to end segment end.
+		if ((EndSegmentIndex + 1) < (Lane.PointsEnd - 2) && (EndDistance + InflateDistance) > ZoneGraphStorage.LanePointProgressions[EndSegmentIndex + 1])
+		{
+			EndSegmentIndex++;
+		}
+	
+		NumPoints = (uint8)FMath::Min((EndSegmentIndex - StartSegmentIndex) + 2, (int32)MaxPoints);
+
+		for (int32 Index = 0; Index < (int32)NumPoints; Index++)
+		{
+			check((StartSegmentIndex + Index) >= Lane.PointsBegin && (StartSegmentIndex + Index) < Lane.PointsEnd);
+			LanePoints[Index] = ZoneGraphStorage.LanePoints[StartSegmentIndex + Index];
+			LaneTangentVectors[Index] = FMassSnorm8Vector2D(FVector2D(ZoneGraphStorage.LaneTangentVectors[StartSegmentIndex + Index]));
+			LanePointProgressions[Index] = FMassInt16Real10(ZoneGraphStorage.LanePointProgressions[StartSegmentIndex + Index]);
 		}
 	}
 }
