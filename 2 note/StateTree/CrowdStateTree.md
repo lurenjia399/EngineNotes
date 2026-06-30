@@ -190,9 +190,10 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	// 移动终点方向
 	PathRequest.EndOfPathDirection.Set(
 		RequestedTargetLocation.EndOfPathDirection.Get(FVector::ForwardVector));
-	// 如果
+	// 如果起点或者终点在lane外，需要平滑移动的距离
 	PathRequest.AnticipationDistance = 
 		RequestedTargetLocation.AnticipationDistance;
+	// 终点便宜
 	PathRequest.EndOfPathOffset.Set(
 		FMath::RandRange(-AgentRadius.Radius, AgentRadius.Radius));
 }
