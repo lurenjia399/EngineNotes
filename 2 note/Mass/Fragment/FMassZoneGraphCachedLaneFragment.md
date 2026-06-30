@@ -16,7 +16,7 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	// entity结束距离
 	const float EndDistance = FMath::Max(
 		CurrentDistanceAlongLane, TargetDistanceAlongLane);
-	// 
+	// 拿到lane的长度
 	const float CurrentLaneLength = 
 		ZoneGraphStorage.LanePointProgressions[Lane.PointsEnd - 1];
 }
