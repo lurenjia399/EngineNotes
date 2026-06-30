@@ -196,6 +196,10 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	// 终点便宜
 	PathRequest.EndOfPathOffset.Set(
 		FMath::RandRange(-AgentRadius.Radius, AgentRadius.Radius));
+	
+	// 
+	MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
+	
 }
 ```
 
