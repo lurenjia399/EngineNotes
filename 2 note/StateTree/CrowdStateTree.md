@@ -229,10 +229,13 @@ bool ActivateActionMove(const UWorld& World,
 	OutCachedLane.CacheLaneData(*ZoneGraphStorage, LaneLocation.LaneHandle, 
 		LaneLocation.DistanceAlongLane, PathRequest.TargetDistance, 
 		InflateDistance);
-	// 
-	if (OutShortPath.RequestPath(OutCachedLane, PathRequest, LaneLocation.DistanceAlongLane, AgentRadius))
+	// 填充FMassZoneGraphShortPathFragment
+	if (OutShortPath.RequestPath(OutCachedLane, PathRequest, 
+		LaneLocation.DistanceAlongLane, AgentRadius))
 	{
+		// 设置移动到目标后的移动状态
 		InOutMoveTarget.IntentAtGoal = OutShortPath.EndOfPathIntent;
+		// 距离目标的距离
 		InOutMoveTarget.DistanceToGoal = (OutShortPath.NumPoints > 0) ?
 			OutShortPath.Points[OutShortPath.NumPoints - 1].
 				DistanceAlongLane.Get() 
