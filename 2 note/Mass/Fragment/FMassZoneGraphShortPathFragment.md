@@ -22,10 +22,10 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 	float StartLaneForwardOffset = FloatCastChecked<float>
 		(FVector::DotProduct(StartLaneTangent, StartDelta) * TangentSign, 
 			UE::LWC::DefaultFloatPrecision);
-	// The point is off-lane if behind the start, or beyond the boundary.
 	const bool bStartOffLane = 
 		StartLaneForwardOffset < -OffLaneCapSlop
 		|| StartLaneOffset < -(DeflatedLaneRight + OffLaneEdgeSlop)
 		|| StartLaneOffset > (DeflatedLaneLeft + OffLaneEdgeSlop);
+	
 }
 ```
