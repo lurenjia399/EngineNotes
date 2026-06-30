@@ -19,5 +19,16 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	// 拿到lane的长度
 	const float CurrentLaneLength = 
 		ZoneGraphStorage.LanePointProgressions[Lane.PointsEnd - 1];
+	
+	// 如果已经缓存过了，就提前返回
+	if (LaneHandle == CurrentLaneHandle
+		&& NumPoints > 0
+		&& InflatedStartDistance >= LanePointProgressions[0].Get()
+		&& InflatedEndDistance <= LanePointProgressions[NumPoints - 1].Get())
+	{
+		return;
+	}
+
+	Reset();
 }
 ```
