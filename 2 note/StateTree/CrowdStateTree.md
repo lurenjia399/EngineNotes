@@ -199,15 +199,31 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	
 	// 
 	MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
-		return UE::MassNavigation::ActivateActionMove(
-			*World, 
-			Context.GetOwner(), 
-			Context.GetEntity(), 
-			ZoneGraphSubsystem, 
-			LaneLocation, 
-			PathRequest, 
-			AgentRadius.Radius, DesiredSpeed, MoveTarget, ShortPath, CachedLane);
+	// 
+	return UE::MassNavigation::ActivateActionMove(
+		*World, 
+		Context.GetOwner(), 
+		Context.GetEntity(), 
+		ZoneGraphSubsystem, 
+		LaneLocation, 
+		PathRequest, 
+		AgentRadius.Radius, DesiredSpeed, MoveTarget, ShortPath, CachedLane);
 
+}
+
+bool ActivateActionMove(const UWorld& World,
+			const UObject* Requester,
+			const FMassEntityHandle Entity,
+			const UZoneGraphSubsystem& ZoneGraphSubsystem,
+			const FMassZoneGraphLaneLocationFragment& LaneLocation,
+			const FZoneGraphShortPathRequest& PathRequest,
+			const float AgentRadius,
+			const float DesiredSpeed,
+			FMassMoveTargetFragment& InOutMoveTarget,
+			FMassZoneGraphShortPathFragment& OutShortPath,
+			FMassZoneGraphCachedLaneFragment& OutCachedLane)
+{
+	
 }
 ```
 
