@@ -2,10 +2,10 @@
 2 
 ```cpp
 bool FMassZoneGraphShortPathFragment::RequestPath(
-	const FMassZoneGraphCachedLaneFragment& CachedLane, //CacheLand
-	const FZoneGraphShortPathRequest& Request, 
-	const float InCurrentDistanceAlongLane, 
-	const float AgentRadius)
+	const FMassZoneGraphCachedLaneFragment& CachedLane, //CacheLane
+	const FZoneGraphShortPathRequest& Request, // 生成ShortPath的请求
+	const float InCurrentDistanceAlongLane, // 当前已经沿着lane走了多少距离
+	const float AgentRadius)//entity的半径
 {
 	
 }
