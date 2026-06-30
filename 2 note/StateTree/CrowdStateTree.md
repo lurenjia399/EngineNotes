@@ -199,7 +199,15 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	
 	// 
 	MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
-	
+		return UE::MassNavigation::ActivateActionMove(
+			*World, 
+			Context.GetOwner(), 
+			Context.GetEntity(), 
+			ZoneGraphSubsystem, 
+			LaneLocation, 
+			PathRequest, 
+			AgentRadius.Radius, DesiredSpeed, MoveTarget, ShortPath, CachedLane);
+
 }
 ```
 
