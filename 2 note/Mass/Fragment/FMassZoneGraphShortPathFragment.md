@@ -34,7 +34,7 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 				0.0f, Request.AnticipationDistance.Get());
 		StartDistanceAlongPath += StartForwardOffset * TangentSign;
 	}
-	// 如果请求点在lane外部，
+	// 如果请求点在lane外部，赋值Points点集里的第一个点
 	if (bStartOffLane)
 	{
 		FMassZoneGraphPathPoint& StartPoint = Points[NumPoints++];
@@ -43,11 +43,24 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		StartPoint.Tangent = FMassSnorm8Vector2D(StartLaneTangent * TangentSign);
 		StartPoint.bOffLane = true;
 		StartPoint.bIsLaneExtrema = false;
-		CachedLane.GetPointAndTangentAtDistance(StartDistanceAlongPath, StartLanePosition, StartLaneTangent);
-		const FVector LeftDir = FVector::CrossProduct(StartLaneTangent, FVector::UpVector);
+		CachedLane.GetPointAndTangentAtDistance(
+			StartDistanceAlongPath, StartLanePosition, StartLaneTangent);
+		const FVector LeftDir = FVector::CrossProduct(
+			StartLaneTangent, FVector::UpVector);
 		StartPosition = StartLanePosition + LeftDir * StartLaneOffset;
 		const FVector DirToClampedPoint = StartPosition - StartPoint.Position;
-		StartPoint.Tangent = FMassSnorm8Vector2D(DirToClampedPoint.GetSafeNormal());
+		StartPoint.Tangent = MassSnorm8Vector2D(DirToClampedPoint.GetSafeNormal());
+	}
+	// 如果请求点不在lane外部，也需要赋值
+	if (!bStartOffLane || bHasMidPath)
+	{
+		// Add first on-lane point.
+		FMassZoneGraphPathPoint& Point = Points[NumPoints++];
+		Point.DistanceAlongLane = FMassInt16Real10(StartDistanceAlongPath);
+		Point.Position = StartPosition;
+		Point.Tangent = FMassSnorm8Vector2D(StartLaneTangent * TangentSign);
+		Point.bOffLane = false;
+		Point.bIsLaneExtrema = false;
 	}
 }
 ```
