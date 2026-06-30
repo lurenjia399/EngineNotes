@@ -55,20 +55,18 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	}
 	else
 	{
-		// 根据当前位置，终点位置，找到
+		// 根据当前位置，终点位置，找到点的索引
 		int32 StartSegmentIndex = 0;
 		int32 EndSegmentIndex = 0;
 		UE::ZoneGraph::Query::CalculateLaneSegmentIndexAtDistance(
 			ZoneGraphStorage, CurrentLaneHandle, StartDistance, StartSegmentIndex);
 		UE::ZoneGraph::Query::CalculateLaneSegmentIndexAtDistance(
 			ZoneGraphStorage, CurrentLaneHandle, EndDistance, EndSegmentIndex);
-
-		// Expand if close to start of a segment start.
+		// 扩展点的索引
 		if ((StartSegmentIndex - 1) >= Lane.PointsBegin && (StartDistance - InflateDistance) < ZoneGraphStorage.LanePointProgressions[StartSegmentIndex])
 		{
 			StartSegmentIndex--;
 		}
-		// Expand if close to end segment end.
 		if ((EndSegmentIndex + 1) < (Lane.PointsEnd - 2) && (EndDistance + InflateDistance) > ZoneGraphStorage.LanePointProgressions[EndSegmentIndex + 1])
 		{
 			EndSegmentIndex++;
