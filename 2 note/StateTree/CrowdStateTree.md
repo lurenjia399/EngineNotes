@@ -80,7 +80,7 @@ FMassLookAtTask，修改的FMassLookAtFragment这个片段，
 3 在UMassStateTreeActivationProcessor执行execute的时候，会首先创建statetree，然后执行StateTreeExecutionContext.Start方法
 4 在start方法中，会执行一遍statetree，如果走到了Wander节点中
 5 首先执行FMassZoneGraphFindWanderTarget这个Task，简单说就是通过entity位置设置WanderTargetLocation供给给其他Task使用
-6 然后执行FHTMassZoneGraphPathFollowTask这个Task，
+6 然后执行FHTMassZoneGraphPathFollowTask这个Task，这个Task会设置MoveTarget,ShortPath,CacheLane
 ```
 ### 2 FMassZoneGraphFindWanderTarget
 ```cpp
