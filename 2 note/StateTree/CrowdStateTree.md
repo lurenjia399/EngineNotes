@@ -223,7 +223,13 @@ bool ActivateActionMove(const UWorld& World,
 			FMassZoneGraphShortPathFragment& OutShortPath,
 			FMassZoneGraphCachedLaneFragment& OutCachedLane)
 {
-	
+	// 设置参数的速度
+	InOutMoveTarget.DesiredSpeed.Set(DesiredSpeed);
+	// 填充
+	OutCachedLane.CacheLaneData(*ZoneGraphStorage, LaneLocation.LaneHandle, 
+		LaneLocation.DistanceAlongLane, PathRequest.TargetDistance, 
+		InflateDistance);
+
 }
 ```
 
