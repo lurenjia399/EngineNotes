@@ -12,13 +12,20 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 	FVector StartLaneTangent;
 	CachedLane.GetPointAndTangentAtDistance(
 		CurrentDistanceAlongLane, StartLanePosition, StartLaneTangent);
-		const FVector StartDelta = StartPosition - StartLanePosition;
-	const FVector StartLeftDir = FVector::CrossProduct(StartLaneTangent, FVector::UpVector);
-	float StartLaneOffset = FloatCastChecked<float>(FVector::DotProduct(StartLeftDir, StartDelta), UE::LWC::DefaultFloatPrecision);
-	float StartLaneForwardOffset = FloatCastChecked<float>(FVector::DotProduct(StartLaneTangent, StartDelta) * TangentSign, UE::LWC::DefaultFloatPrecision);
+	// 
+	const FVector StartDelta = StartPosition - StartLanePosition;
+	const FVector StartLeftDir = FVector::CrossProduct(
+		StartLaneTangent, FVector::UpVector);
+	float StartLaneOffset = FloatCastChecked<float>
+		(FVector::DotProduct(StartLeftDir, StartDelta), 
+			UE::LWC::DefaultFloatPrecision);
+	float StartLaneForwardOffset = FloatCastChecked<float>
+		(FVector::DotProduct(StartLaneTangent, StartDelta) * TangentSign, 
+			UE::LWC::DefaultFloatPrecision);
 	// The point is off-lane if behind the start, or beyond the boundary.
-	const bool bStartOffLane = StartLaneForwardOffset < -OffLaneCapSlop
-								|| StartLaneOffset < -(DeflatedLaneRight + OffLaneEdgeSlop)
-								|| StartLaneOffset > (DeflatedLaneLeft + OffLaneEdgeSlop);
+	const bool bStartOffLane = 
+		StartLaneForwardOffset < -OffLaneCapSlop
+		|| StartLaneOffset < -(DeflatedLaneRight + OffLaneEdgeSlop)
+		|| StartLaneOffset > (DeflatedLaneLeft + OffLaneEdgeSlop);
 }
 ```
