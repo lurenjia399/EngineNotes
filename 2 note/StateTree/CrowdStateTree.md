@@ -225,11 +225,19 @@ bool ActivateActionMove(const UWorld& World,
 {
 	// 设置参数的速度
 	InOutMoveTarget.DesiredSpeed.Set(DesiredSpeed);
-	// 填充
+	// 填充FMassZoneGraphCachedLaneFragment
 	OutCachedLane.CacheLaneData(*ZoneGraphStorage, LaneLocation.LaneHandle, 
 		LaneLocation.DistanceAlongLane, PathRequest.TargetDistance, 
 		InflateDistance);
-
+	// 
+	if (OutShortPath.RequestPath(OutCachedLane, PathRequest, LaneLocation.DistanceAlongLane, AgentRadius))
+	{
+		InOutMoveTarget.IntentAtGoal = OutShortPath.EndOfPathIntent;
+		InOutMoveTarget.DistanceToGoal = (OutShortPath.NumPoints > 0) ?
+			OutShortPath.Points[OutShortPath.NumPoints - 1].
+				DistanceAlongLane.Get() 
+			: 0.0f;
+	}
 }
 ```
 
