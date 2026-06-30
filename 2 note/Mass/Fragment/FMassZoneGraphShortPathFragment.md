@@ -34,7 +34,7 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 				0.0f, Request.AnticipationDistance.Get());
 		StartDistanceAlongPath += StartForwardOffset * TangentSign;
 	}
-	// 如果请求点在lane外部，赋值Points点集里的第一个点
+	// 如果请求点在lane外部，需要往Points点集里添加一个点
 	if (bStartOffLane)
 	{
 		FMassZoneGraphPathPoint& StartPoint = Points[NumPoints++];
@@ -51,7 +51,7 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		const FVector DirToClampedPoint = StartPosition - StartPoint.Position;
 		StartPoint.Tangent = MassSnorm8Vector2D(DirToClampedPoint.GetSafeNormal());
 	}
-	// 如果请求点不在lane外部，也需要赋值点集里第一个点
+	// 如果请求点不在lane外部，也需要点集里添加一个点
 	if (!bStartOffLane || bHasMidPath)
 	{
 		FMassZoneGraphPathPoint& Point = Points[NumPoints++];
