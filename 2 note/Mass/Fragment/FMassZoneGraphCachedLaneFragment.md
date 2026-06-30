@@ -1,5 +1,5 @@
 1 从完整的 ZoneGraph 数据中，提取并缓存 entity 即将用到的车道片段，避免每次都访问大型全局数据结构。
-2 
+2 会缓存当前车道的数据，5个点，每个点的切线，长度
 ```cpp
 void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	const FZoneGraphStorage& ZoneGraphStorage, // ZoneGraph中的所有数据
