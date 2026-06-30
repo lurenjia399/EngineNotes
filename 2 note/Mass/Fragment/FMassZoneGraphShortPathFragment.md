@@ -26,11 +26,13 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		StartLaneForwardOffset < -OffLaneCapSlop
 		|| StartLaneOffset < -(DeflatedLaneRight + OffLaneEdgeSlop)
 		|| StartLaneOffset > (DeflatedLaneLeft + OffLaneEdgeSlop);
-	// 如果请求点在lane外部，因为不往回倒退，所以如果请求点在lane开始点的前边，这是需要将开始点往前
+	// 如果请求点在lane外部，因为不往回倒退，所以如果请求点在lane开始点的前边，这是需要将开始点往前偏移一段投影距离
 	if (bStartOffLane)
 	{
-		const float StartForwardOffset = FMath::Clamp(Request.AnticipationDistance.Get() + StartLaneForwardOffset, 0.0f, Request.AnticipationDistance.Get());
+		const float StartForwardOffset = FMath::Clamp(
+				Request.AnticipationDistance.Get() + StartLaneForwardOffset, 
+				0.0f, Request.AnticipationDistance.Get());
 		StartDistanceAlongPath += StartForwardOffset * TangentSign;
-	
+	}
 }
 ```
