@@ -12,7 +12,7 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 	FVector StartLaneTangent;
 	CachedLane.GetPointAndTangentAtDistance(
 		CurrentDistanceAlongLane, StartLanePosition, StartLaneTangent);
-	// 做出lane上起始位置到请求起始位置的向量，
+	// 做出lane上起始位置到请求起始位置的向量，将其投影到车道的左向量上，判断投影长度是否在lane的范围里面，如果不在bStartOffLane这个就是false
 	const FVector StartDelta = StartPosition - StartLanePosition;
 	const FVector StartLeftDir = FVector::CrossProduct(
 		StartLaneTangent, FVector::UpVector);
