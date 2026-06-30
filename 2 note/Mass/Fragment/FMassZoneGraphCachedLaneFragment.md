@@ -55,6 +55,7 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	}
 	else
 	{
+		// 根据当前位置，终点位置，找到
 		int32 StartSegmentIndex = 0;
 		int32 EndSegmentIndex = 0;
 		UE::ZoneGraph::Query::CalculateLaneSegmentIndexAtDistance(
