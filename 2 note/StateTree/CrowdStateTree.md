@@ -166,7 +166,9 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	const FMassZoneGraphTargetLocation& RequestedTargetLocation) const
 {
 	FZoneGraphShortPathRequest& PathRequest = RequestFragment.PathRequest;
+	// 开始点是MoveTarget.Center
 	PathRequest.StartPosition = MoveTarget.Center;
+	// 是否是反向移动
 	PathRequest.bMoveReverse = RequestedTargetLocation.bMoveReverse;
 	PathRequest.TargetDistance = RequestedTargetLocation.TargetDistance;
 	PathRequest.NextLaneHandle = RequestedTargetLocation.NextLaneHandle;
