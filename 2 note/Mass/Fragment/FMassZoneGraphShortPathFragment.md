@@ -51,10 +51,9 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		const FVector DirToClampedPoint = StartPosition - StartPoint.Position;
 		StartPoint.Tangent = MassSnorm8Vector2D(DirToClampedPoint.GetSafeNormal());
 	}
-	// 如果请求点不在lane外部，也需要赋值
+	// 如果请求点不在lane外部，也需要赋值点集里第一个点
 	if (!bStartOffLane || bHasMidPath)
 	{
-		// Add first on-lane point.
 		FMassZoneGraphPathPoint& Point = Points[NumPoints++];
 		Point.DistanceAlongLane = FMassInt16Real10(StartDistanceAlongPath);
 		Point.Position = StartPosition;
