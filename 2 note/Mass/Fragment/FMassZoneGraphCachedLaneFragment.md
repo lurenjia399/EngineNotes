@@ -35,15 +35,22 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	LaneHandle = CurrentLaneHandle;
 	LaneWidth = FMassInt16Real(Lane.Width);
 	LaneLength = CurrentLaneLength;
+	// 
+	const int32 LaneNumPoints = Lane.PointsEnd - Lane.PointsBegin;
+	// 
 	if (LaneNumPoints <= (int32)MaxPoints)
 	{
-		// If we can fit all the lane's points, just do a copy.
 		NumPoints = (uint8)LaneNumPoints;
 		for (int32 Index = 0; Index < (int32)NumPoints; Index++)
 		{
-			LanePoints[Index] = ZoneGraphStorage.LanePoints[Lane.PointsBegin + Index];
-			LaneTangentVectors[Index] = FMassSnorm8Vector2D(FVector2D(ZoneGraphStorage.LaneTangentVectors[Lane.PointsBegin + Index]));
-			LanePointProgressions[Index] = FMassInt16Real10(ZoneGraphStorage.LanePointProgressions[Lane.PointsBegin + Index]);
+			LanePoints[Index] = 
+				ZoneGraphStorage.LanePoints[Lane.PointsBegin + Index];
+			LaneTangentVectors[Index] = FMassSnorm8Vector2D(
+				FVector2D(
+				ZoneGraphStorage.LaneTangentVectors[Lane.PointsBegin + Index]));
+			LanePointProgressions[Index] = FMassInt16Real10(
+				ZoneGraphStorage.LanePointProgressions
+				[Lane.PointsBegin + Index]);
 		}
 	}
 }
