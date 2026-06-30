@@ -4,5 +4,6 @@
 void FMassZoneGraphCachedLaneFragment::CacheLaneData(const FZoneGraphStorage& ZoneGraphStorage, const FZoneGraphLaneHandle CurrentLaneHandle,
 													 const float CurrentDistanceAlongLane, const float TargetDistanceAlongLane, const float InflateDistance)
 {
-
+	
+}
 ```
