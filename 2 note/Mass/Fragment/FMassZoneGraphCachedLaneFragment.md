@@ -28,7 +28,12 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	{
 		return;
 	}
-
+	// 没有缓存过，重置数据
 	Reset();
+	// 递增记录缓存
+	CacheID++;
+	LaneHandle = CurrentLaneHandle;
+	LaneWidth = FMassInt16Real(Lane.Width);
+	LaneLength = CurrentLaneLength;
 }
 ```
