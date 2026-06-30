@@ -4,9 +4,9 @@
 void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	const FZoneGraphStorage& ZoneGraphStorage, // ZoneGraph中的所有数据
 	const FZoneGraphLaneHandle CurrentLaneHandle,// entity当前所在的lane
-	const float CurrentDistanceAlongLane, // 
-	const float TargetDistanceAlongLane, 
-	const float InflateDistance)
+	const float CurrentDistanceAlongLane, // entity
+	const float TargetDistanceAlongLane, // entity还需要沿着lane行走多少距离到终点
+	const float InflateDistance)//膨胀距离，0.2m
 {
 	
 }
