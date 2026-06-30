@@ -34,5 +34,20 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 				0.0f, Request.AnticipationDistance.Get());
 		StartDistanceAlongPath += StartForwardOffset * TangentSign;
 	}
+	// 如果请求点在lane外部，
+	if (bStartOffLane)
+	{
+		FMassZoneGraphPathPoint& StartPoint = Points[NumPoints++];
+		StartPoint.DistanceAlongLane = FMassInt16Real10(CurrentDistanceAlongLane);
+		StartPoint.Position = Request.StartPosition;
+		StartPoint.Tangent = FMassSnorm8Vector2D(StartLaneTangent * TangentSign);
+		StartPoint.bOffLane = true;
+		StartPoint.bIsLaneExtrema = false;
+		CachedLane.GetPointAndTangentAtDistance(StartDistanceAlongPath, StartLanePosition, StartLaneTangent);
+		const FVector LeftDir = FVector::CrossProduct(StartLaneTangent, FVector::UpVector);
+		StartPosition = StartLanePosition + LeftDir * StartLaneOffset;
+		const FVector DirToClampedPoint = StartPosition - StartPoint.Position;
+		StartPoint.Tangent = FMassSnorm8Vector2D(DirToClampedPoint.GetSafeNormal());
+	}
 }
 ```
