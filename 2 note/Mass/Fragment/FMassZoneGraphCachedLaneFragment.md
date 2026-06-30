@@ -10,11 +10,13 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 {
 	// 当前lane数据
 	const FZoneLaneData& Lane = ZoneGraphStorage.Lanes[CurrentLaneHandle.Index];
-	// 
+	// entity开始距离
 	const float StartDistance = FMath::Min(
 		CurrentDistanceAlongLane, TargetDistanceAlongLane);
+	// entity结束距离
 	const float EndDistance = FMath::Max(
 		CurrentDistanceAlongLane, TargetDistanceAlongLane);
+	// 
 	const float CurrentLaneLength = 
 		ZoneGraphStorage.LanePointProgressions[Lane.PointsEnd - 1];
 }
