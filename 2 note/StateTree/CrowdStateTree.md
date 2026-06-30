@@ -184,11 +184,13 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	// 移动终点位置
 	PathRequest.EndOfPathPosition = 
 		RequestedTargetLocation.EndOfPathPosition.Get(FVector::ZeroVector);
-	// shi'fo
+	// 是否设置移动终点方向
 	PathRequest.bIsEndOfPathDirectionSet = 
 		RequestedTargetLocation.EndOfPathDirection.IsSet();
+	// 移动终点方向
 	PathRequest.EndOfPathDirection.Set(
 		RequestedTargetLocation.EndOfPathDirection.Get(FVector::ForwardVector));
+	// 如果
 	PathRequest.AnticipationDistance = 
 		RequestedTargetLocation.AnticipationDistance;
 	PathRequest.EndOfPathOffset.Set(
