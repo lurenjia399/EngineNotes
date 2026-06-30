@@ -71,16 +71,21 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 		{
 			EndSegmentIndex++;
 		}
-	
-		NumPoints = (uint8)FMath::Min((EndSegmentIndex - StartSegmentIndex) + 2, (int32)MaxPoints);
-
+		// 找到5个点，直接把点的位置，切线，长度都缓存下来
+		NumPoints = (uint8)FMath::Min(
+			(EndSegmentIndex - StartSegmentIndex) + 2, (int32)MaxPoints);
 		for (int32 Index = 0; Index < (int32)NumPoints; Index++)
 		{
-			check((StartSegmentIndex + Index) >= Lane.PointsBegin && (StartSegmentIndex + Index) < Lane.PointsEnd);
-			LanePoints[Index] = ZoneGraphStorage.LanePoints[StartSegmentIndex + Index];
-			LaneTangentVectors[Index] = FMassSnorm8Vector2D(FVector2D(ZoneGraphStorage.LaneTangentVectors[StartSegmentIndex + Index]));
-			LanePointProgressions[Index] = FMassInt16Real10(ZoneGraphStorage.LanePointProgressions[StartSegmentIndex + Index]);
+			LanePoints[Index] = 
+				ZoneGraphStorage.LanePoints[StartSegmentIndex + Index];
+			LaneTangentVectors[Index] = FMassSnorm8Vector2D(
+				FVector2D(
+				ZoneGraphStorage.LaneTangentVectors[StartSegmentIndex + Index]));
+			LanePointProgressions[Index] = FMassInt16Real10(
+				ZoneGraphStorage.LanePointProgressions
+				[StartSegmentIndex + Index]);
 		}
 	}
+	
 }
 ```
