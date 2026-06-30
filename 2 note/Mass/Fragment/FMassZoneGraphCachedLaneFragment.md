@@ -35,9 +35,9 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 	LaneHandle = CurrentLaneHandle;
 	LaneWidth = FMassInt16Real(Lane.Width);
 	LaneLength = CurrentLaneLength;
-	// 
+	// 当前lane上点的数量
 	const int32 LaneNumPoints = Lane.PointsEnd - Lane.PointsBegin;
-	// 
+	// 如果点数量 <= 5，说明可以直接缓存，直接把点的位置，
 	if (LaneNumPoints <= (int32)MaxPoints)
 	{
 		NumPoints = (uint8)LaneNumPoints;
