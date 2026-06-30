@@ -86,6 +86,32 @@ void FMassZoneGraphCachedLaneFragment::CacheLaneData(
 				[StartSegmentIndex + Index]);
 		}
 	}
-	
+	// 找到当前lane，左右相邻的lane
+	TArray<FZoneGraphLinkedLane> LinkedLanes;
+	UE::ZoneGraph::Query::GetLinkedLanes(
+		ZoneGraphStorage, CurrentLaneHandle, 
+		EZoneLaneLinkType::Adjacent, 
+		EZoneLaneLinkFlags::Left|EZoneLaneLinkFlags::Right, 
+		EZoneLaneLinkFlags::None, LinkedLanes);
+	//
+	float AdjacentLeftWidth = 0.0f;
+	float AdjacentRightWidth = 0.0f;
+	for (const FZoneGraphLinkedLane& LinkedLane : LinkedLanes)
+	{
+		if (LinkedLane.HasFlags(EZoneLaneLinkFlags::Left))
+		{
+			const FZoneLaneData& AdjacentLane = 
+				ZoneGraphStorage.Lanes[LinkedLane.DestLane.Index];
+			AdjacentLeftWidth += AdjacentLane.Width;
+		}
+		else if (LinkedLane.HasFlags(EZoneLaneLinkFlags::Right))
+		{
+			const FZoneLaneData& AdjacentLane = 
+				ZoneGraphStorage.Lanes[LinkedLane.DestLane.Index];
+			AdjacentRightWidth += AdjacentLane.Width;
+		}
+	}
+	LaneLeftSpace = FMassInt16Real(AdjacentLeftWidth);
+	LaneRightSpace = FMassInt16Real(AdjacentRightWidth);
 }
 ```
