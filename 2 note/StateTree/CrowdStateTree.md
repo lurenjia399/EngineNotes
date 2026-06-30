@@ -176,11 +176,15 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	PathRequest.NextLaneHandle = RequestedTargetLocation.NextLaneHandle;
 	// CurLane与NextLane的链接类型
 	PathRequest.NextExitLinkType = RequestedTargetLocation.NextExitLinkType;
+	// 移动到终点的移动行为
 	PathRequest.EndOfPathIntent = RequestedTargetLocation.EndOfPathIntent;
+	// 是否设置了移动终点
 	PathRequest.bIsEndOfPathPositionSet = 
 		RequestedTargetLocation.EndOfPathPosition.IsSet();
+	// 移动终点位置
 	PathRequest.EndOfPathPosition = 
 		RequestedTargetLocation.EndOfPathPosition.Get(FVector::ZeroVector);
+	// shi'fo
 	PathRequest.bIsEndOfPathDirectionSet = 
 		RequestedTargetLocation.EndOfPathDirection.IsSet();
 	PathRequest.EndOfPathDirection.Set(
