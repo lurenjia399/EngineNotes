@@ -170,8 +170,11 @@ bool FHTMassZoneGraphPathFollowTask::RequestPath(
 	PathRequest.StartPosition = MoveTarget.Center;
 	// 是否是反向移动
 	PathRequest.bMoveReverse = RequestedTargetLocation.bMoveReverse;
+	// 沿着lane需要移动的距离
 	PathRequest.TargetDistance = RequestedTargetLocation.TargetDistance;
+	// Nextlane
 	PathRequest.NextLaneHandle = RequestedTargetLocation.NextLaneHandle;
+	// CurLane与NextLane的链接类型
 	PathRequest.NextExitLinkType = RequestedTargetLocation.NextExitLinkType;
 	PathRequest.EndOfPathIntent = RequestedTargetLocation.EndOfPathIntent;
 	PathRequest.bIsEndOfPathPositionSet = 
