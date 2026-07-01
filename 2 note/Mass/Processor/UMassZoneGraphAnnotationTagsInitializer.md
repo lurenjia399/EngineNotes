@@ -9,4 +9,4 @@ key是观察的Fragment，value是processor
 
 # UMassZoneGraphAnnotationTagUpdateProcessor
 1 他是一个SignalProcessor，监听的是道路改变UE::Mass::Signals::CurrentLaneChanged
-2 在这个processor执行的时候，
+2 在这个processor执行的时候，会首先执行父类的，如果有signal就会调用到SignalEntities方法，根据LaneLocation来
