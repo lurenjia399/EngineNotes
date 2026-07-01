@@ -29,7 +29,7 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 ```
 2 
 ```cpp
-// 遍历查询到的entity，FMassZoneGraphShortPathFragment用来记录entity行走的相关数据
+1 根据速度乘时间，计算出zhe'yi'zhe
 
 // 计算ShortPath已经走过的进度，速度 * 时间
 float CustomTimeDilation = 
