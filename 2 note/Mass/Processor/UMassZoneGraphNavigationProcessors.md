@@ -33,7 +33,7 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 2 如果当前ShortPath没走完，如果移动距离为0，说明此时站在shortpath的第一个点上，更新movetarget和LaneLocation上的位置。
 3 如果移动距离在ShortPath之间，就需要计算出移动距离此时位于ShortPath哪两个点之间，计算出插值比例T，更新MoveTarget和Lanelocation上的位置。
 4 如果移动就超过ShortPath了，说明这一次ShortPath走完了，如果ShortPath记录了NextPath，就根据Nextlane更新LaneLocation上的位置。
-5 如果Shortpath走完了，就会SignalEntity，在通知更新StetTree，如果进入了Wanderjie'd
+5 如果Shortpath走完了，就会SignalEntity，在通知更新StetTree，如果进入了Wander节点，又会根据Lanelocation上记录的位置找到WanderTarget，然后CacheLane，生成Shortpath，在进行一遍。
 
 // 计算ShortPath已经走过的进度，速度 * 时间
 float CustomTimeDilation = 
