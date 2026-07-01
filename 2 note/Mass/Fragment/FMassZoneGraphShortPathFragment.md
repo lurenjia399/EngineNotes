@@ -61,7 +61,7 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		Point.bOffLane = false;
 		Point.bIsLaneExtrema = false;
 	}
-	// 
+	// 添加中间的点，直到到达终点
 	UE::MassNavigation::ZoneGraphPath::FCachedLaneSegmentIterator 
 		SegmentIterator(CachedLane, StartDistanceAlongPath, Request.bMoveReverse);
 	while (!SegmentIterator.HasReachedDistance(EndDistanceAlongPath))
@@ -98,5 +98,6 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		
 		SegmentIterator.Next();
 	}
+	
 }
 ```
