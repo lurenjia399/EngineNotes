@@ -8,4 +8,5 @@ key是观察的Fragment，value是processor
 6 观察的是FMassZoneGraphAnnotationFragment这个的添加，如果添加了，会在Execute中读取entity上的LaneLoaction，确定entity当前站在那个lane上，然后在通过ZoneGraphAnnotationSubsystem来确定这个lane上的AnnotationTag是哪个，并将tag记录到ZoneGraphAnnotationFragment中。
 
 # UMassZoneGraphAnnotationTagUpdateProcessor
-1 
+1 他是一个SignalProcessor，监听的是道路改变UE::Mass::Signals::CurrentLaneChanged
+2 
