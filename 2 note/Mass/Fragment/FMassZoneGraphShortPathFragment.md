@@ -61,5 +61,40 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		Point.bOffLane = false;
 		Point.bIsLaneExtrema = false;
 	}
+	// 
+	while (!SegmentIterator.HasReachedDistance(EndDistanceAlongPath))
+	{
+		const int32 CurrentSegmentEndPointIndex = SegmentIterator.CurrentSegment + (SegmentIterator.bMoveReverse ? 0 : 1);
+		const float DistanceAlongLane = CachedLane.LanePointProgressions[CurrentSegmentEndPointIndex].Get();
+
+		if (FMath::IsNearlyEqual(PrevDistanceAlongLane, DistanceAlongLane) == false)
+		{
+			if (NumPoints < MaxPoints)
+			{
+				const FVector& LanePosition = CachedLane.LanePoints[CurrentSegmentEndPointIndex];
+				const FVector LaneTangent = CachedLane.LaneTangentVectors[CurrentSegmentEndPointIndex].GetVector();
+
+				const float LaneOffsetT = (DistanceAlongLane - StartDistanceAlongPath) * InvDistanceRange;
+				const float LaneOffset = FMath::Lerp(StartLaneOffset, EndLaneOffset, LaneOffsetT);
+				const FVector LeftDir = FVector::CrossProduct(LaneTangent, FVector::UpVector);
+
+				FMassZoneGraphPathPoint& Point = Points[NumPoints++];
+				Point.DistanceAlongLane = FMassInt16Real10(DistanceAlongLane);
+				Point.Position = LanePosition + LeftDir * LaneOffset;
+				Point.Tangent = FMassSnorm8Vector2D(LaneTangent * TangentSign);
+				Point.bOffLane = false;
+				Point.bIsLaneExtrema = false;
+
+				PrevDistanceAlongLane = DistanceAlongLane;
+			}
+			else
+			{
+				bPartialResult = true;
+				break;
+			}
+		}
+		
+		SegmentIterator.Next();
+	}
 }
 ```
