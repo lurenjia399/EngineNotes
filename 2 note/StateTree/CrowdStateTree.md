@@ -31,6 +31,7 @@
 
 ```cpp
 1 ACitySampleCrowdCharacter::TakeDamage 和 OnCapsuleBeginOverlap 这个方法中，会将受击信息存储到UHTMassComponentHitSubsystem中的Map里面，key是entity，value是受击信息，然后会发送SignalEntity
+2 然后播放
 ```
 
 2 UMassStateTreeProcessor
