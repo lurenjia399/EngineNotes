@@ -31,6 +31,11 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 ```cpp
 // 遍历查询到的entity，FMassZoneGraphShortPathFragment用来记录entity行走的相关数据
 
+// 计算ShortPath已经走过的进度，速度 * 时间
+float CustomTimeDilation = 
+	Context.GetEntityManagerChecked().GetGlobalCustomTimeDilation();
+ShortPath.ProgressDistance += 
+	MoveTarget.DesiredSpeed.Get() * DeltaTime * CustomTimeDilation;
 // ProgressDistance代表走过的距离，<=0就是刚开始走
 if (ShortPath.ProgressDistance <= 0.0f)
 {
