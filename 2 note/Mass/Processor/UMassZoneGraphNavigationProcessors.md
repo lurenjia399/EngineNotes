@@ -29,8 +29,8 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 ```
 2 
 ```cpp
-1 根据速度乘时间，计算出这一帧移动的距离，累加到Progressdistance中
-2 如果当前ShortPath没走完，就根据
+1 根据速度乘时间，计算出这一帧移动的距离，累加到移动距离中
+2 如果当前ShortPath没走完，如果移动距离为0，说明此时站在shortpath的
 
 // 计算ShortPath已经走过的进度，速度 * 时间
 float CustomTimeDilation = 
@@ -40,9 +40,7 @@ ShortPath.ProgressDistance +=
 // ProgressDistance代表走过的距离，<=0就是刚开始走
 if (ShortPath.ProgressDistance <= 0.0f)
 {
-	// 
 	LaneLocation.DistanceAlongLane = ShortPath.Points[0].DistanceAlongLane.Get();
-	
 	MoveTarget.Center = ShortPath.Points[0].Position;
 	MoveTarget.Forward = ShortPath.Points[0].Tangent.GetVector();
 	MoveTarget.DistanceToGoal = ShortPath.Points[LastPointIndex].Distance.Get();
