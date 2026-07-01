@@ -32,7 +32,7 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 1 根据速度乘时间，计算出这一帧移动的距离，累加到移动距离中
 2 如果当前ShortPath没走完，如果移动距离为0，说明此时站在shortpath的第一个点上，更新movetarget和LaneLocation上的位置。
 3 如果移动距离在ShortPath之间，就需要计算出移动距离此时位于ShortPath哪两个点之间，计算出插值比例T，更新MoveTarget和Lanelocation上的位置。
-4 如果移动就超过ShortPath了，说明这一次ShortPath走完了，如果ShortPath记录了NextPath，jiu
+4 如果移动就超过ShortPath了，说明这一次ShortPath走完了，如果ShortPath记录了NextPath，就根据Nextlane更新LaneLocation上的位置。
 
 // 计算ShortPath已经走过的进度，速度 * 时间
 float CustomTimeDilation = 
