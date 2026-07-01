@@ -560,7 +560,7 @@ void RunProcessorsView(
 3 mass.debug.SimulationLOD 1。查看SimulationLOD的Lod
 4 mass.debug.Representation 查看行人使用的实体，是instance还是actor
 5 mass.debug.DebugEntity 84。开启entity的debug
-6 mass.debug.SetDebugEntityRange 1 100 entity
+6 mass.debug.SetDebugEntityRange 1 100 entity的debug开启范围
 ```
 
 # 基本概念
