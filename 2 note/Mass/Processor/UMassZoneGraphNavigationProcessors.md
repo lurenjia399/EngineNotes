@@ -29,7 +29,8 @@ if (ZoneGraphSubsystem.FindNearestLane(QueryBounds, NavigationParams.LaneFilter,
 ```
 2 
 ```cpp
-1 根据速度乘时间，计算出zhe'yi'zhe
+1 根据速度乘时间，计算出这一帧移动的距离
+2 
 
 // 计算ShortPath已经走过的进度，速度 * 时间
 float CustomTimeDilation = 
