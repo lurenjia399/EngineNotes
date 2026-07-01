@@ -62,6 +62,8 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		Point.bIsLaneExtrema = false;
 	}
 	// 
+	UE::MassNavigation::ZoneGraphPath::FCachedLaneSegmentIterator 
+		SegmentIterator(CachedLane, StartDistanceAlongPath, Request.bMoveReverse);
 	while (!SegmentIterator.HasReachedDistance(EndDistanceAlongPath))
 	{
 		const int32 CurrentSegmentEndPointIndex = SegmentIterator.CurrentSegment + (SegmentIterator.bMoveReverse ? 0 : 1);
