@@ -103,7 +103,6 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 	{
 		if (NumPoints < MaxPoints)
 		{
-			// Interpolate last point on mid path.
 			FVector LanePosition;
 			FVector LaneTangent;
 			CachedLane.InterpolatePointAndTangentOnSegment(
@@ -120,6 +119,28 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 			Point.bOffLane = false;
 			Point.bIsLaneExtrema = !Request.bIsEndOfPathPositionSet 
 				&& CachedLane.IsDistanceAtLaneExtrema(EndDistanceAlongPath);
+		}
+		else
+		{
+			bPartialResult = true;
+		}
+	}
+	// 如果终点在lane外部，就在添加终点到点集
+	if (bHasEndOfPathPoint)
+	{
+		if (NumPoints < MaxPoints)
+		{
+			const FVector EndPosition = Request.EndOfPathPosition;
+			const FVector EndDirection = (Request.bIsEndOfPathDirectionSet) ?
+				Request.EndOfPathDirection.Get() :
+				(EndPosition - Points[NumPoints-1].Position).GetSafeNormal();
+			
+			FMassZoneGraphPathPoint& Point = Points[NumPoints++];
+			Point.DistanceAlongLane = FMassInt16Real10(TargetDistanceAlongLane);
+			Point.Position = EndPosition;
+			Point.Tangent = FMassSnorm8Vector2D(EndDirection);
+			Point.bOffLane = bEndOffLane;
+			Point.bIsLaneExtrema = false;
 		}
 		else
 		{
