@@ -30,7 +30,7 @@
 1 触发
 
 ```cpp
-1 ACitySampleCrowdCharacter::TakeDamage 在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
+1 ACitySampleCrowdCharacter::TakeDamage 和在character中收到伤害，会把自己添加到UHTMassComponentHitSubsystem这个subsystem的HitResults中
 2 AHTCrowdCharacterActorBase::OnCapsuleBeginOverlap 
 2 在subsystem的tick中，会遍历HitResults，通过SignalEntity发送HitReceived的信号
 ```
