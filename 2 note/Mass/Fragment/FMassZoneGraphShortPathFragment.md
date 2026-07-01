@@ -98,6 +98,33 @@ bool FMassZoneGraphShortPathFragment::RequestPath(
 		
 		SegmentIterator.Next();
 	}
-	
+	// 和起始点处理一样，添加倒数第二个点
+	if (!bHasEndOfPathPoint || bHasMidPath)
+	{
+		if (NumPoints < MaxPoints)
+		{
+			// Interpolate last point on mid path.
+			FVector LanePosition;
+			FVector LaneTangent;
+			CachedLane.InterpolatePointAndTangentOnSegment(
+				SegmentIterator.CurrentSegment, 
+				EndDistanceAlongPath, LanePosition, LaneTangent);
+			const float LaneOffset = EndLaneOffset;
+			const FVector LeftDir = FVector::CrossProduct(
+				LaneTangent, FVector::UpVector);
+
+			FMassZoneGraphPathPoint& Point = Points[NumPoints++];
+			Point.DistanceAlongLane = FMassInt16Real10(EndDistanceAlongPath);
+			Point.Position = LanePosition + LeftDir * LaneOffset;
+			Point.Tangent = FMassSnorm8Vector2D(LaneTangent * TangentSign);
+			Point.bOffLane = false;
+			Point.bIsLaneExtrema = !Request.bIsEndOfPathPositionSet 
+				&& CachedLane.IsDistanceAtLaneExtrema(EndDistanceAlongPath);
+		}
+		else
+		{
+			bPartialResult = true;
+		}
+	}
 }
 ```
