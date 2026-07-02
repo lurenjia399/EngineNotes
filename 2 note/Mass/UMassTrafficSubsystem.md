@@ -93,7 +93,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 		TrafficLaneData.bTurnsRight = (LaneTurnType == 
 			UE::MassTraffic::LaneTurnType::RightTurn);
 		TrafficLaneData.bIsRightMostLane = true;
-		// 
+		// 后面省略了
 	}
 }
 ```
