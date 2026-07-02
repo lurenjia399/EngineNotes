@@ -50,16 +50,9 @@
 1 MoveHit（在移动中收到攻击）
 会执行两个StateTask，FHTCrowdCharacterMassStandTask
 ```cpp
-{
-	FMassMoveTargetFragment& MoveTarget = 
-		Context.GetExternalData(MoveTargetHandle);
-	MoveTarget.CreateNewAction(EMassMovementAction::Animate, *World);  
-	UE::MassNavigation::ActivateActionAnimate(
-		*World, Context.GetOwner(), 
-		MassContext.GetEntity(), MoveTarget);
-}
 1 通过这个Task，创建一个新的MoveTarget
 2 在SteerToMoveTargetProcessor中处理MoveTarget，计算出SteerVelocity
+3 在Applymovement里根据Velocity计算位移
 
 ```
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
