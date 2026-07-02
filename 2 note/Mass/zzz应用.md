@@ -30,7 +30,7 @@
 1 触发
 
 ```cpp
-1 ACitySampleCrowdCharacter::TakeDamage 和 OnCapsuleBeginOverlap 这个方法中，会将受击信息存储到UHTMassComponentHitSubsystem中的Map里面，key是entity，value是受击信息，然后会发送SignalEntity
+1 AHTCrowdCharacterActorBase::TakeDamage 和 OnCapsuleBeginOverlap 这个方法中，会将受击信息存储到UHTMassComponentHitSubsystem中的Map里面，key是entity，value是受击信息，然后会发送SignalEntity
 2 然后播放受击montage，通过已经加载动画层，播放不同动画层上的受击montage
 ```
 
