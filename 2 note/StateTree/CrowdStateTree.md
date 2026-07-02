@@ -13,7 +13,7 @@ enum class EStateTreeStateSelectionBehavior : uint8
 	TrySelectChildrenAtRandom UMETA(DisplayName = "Try Select Children At Random"),
 	// 从子节点中选择Utility计算出最高的
 	TrySelectChildrenWithHighestUtility UMETA(DisplayName = "Try Select Children With Highest Utility"),
-	// 
+	// 随即权重并且归一化U
 	TrySelectChildrenAtRandomWeightedByUtility UMETA(DisplayName = "Try Select Children At Random Weighted By Utility"),
 
 	/** When state is considered for selection, try to trigger the transitions instead. */
