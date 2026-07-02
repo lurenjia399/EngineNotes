@@ -259,5 +259,6 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 ```
 # 3 UHTMassTrafficLightRepresentationActorManagement
 ```cpp
-1 
+1 继承了UMassRepresentationActorManagement，只重写了创建完成后的方法OnPostActorSpawn
+2 
 ```
