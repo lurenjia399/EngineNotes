@@ -284,11 +284,14 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 	for (const FZoneGraphTrafficLaneData& TrafficLaneData : 
 		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		if (TrafficLaneData.ConstData.bIsIntersectionLane && !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
+		// 记录交叉车道
+		if (TrafficLaneData.ConstData.bIsIntersectionLane 
+			&& !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
 			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
 			FindOrAddIntersection(OutIntersectionsSpawnData, 
-				IntersectionZoneIndex_To_IntersectionIndex, IntersectionDetails, TrafficZoneGraphData.DataHandle, IntersectionZoneIndex);
+				IntersectionZoneIndex_To_IntersectionIndex, IntersectionDetails,
+				TrafficZoneGraphData.DataHandle, IntersectionZoneIndex);
 		}
 	}
 }
