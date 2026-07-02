@@ -84,5 +84,9 @@ void UMassTrafficSubsystem::BuildLaneData(
 			[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
 	}
 	//
+	for (FZoneGraphTrafficLaneData& TrafficLaneData : TrafficZoneGraphData.TrafficLaneDataArray)
+	{
+		
+	}
 }
 ```
