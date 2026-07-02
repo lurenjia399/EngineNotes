@@ -83,16 +83,17 @@ void UMassTrafficSubsystem::BuildLaneData(
 		TrafficZoneGraphData.TrafficLaneDataLookup
 			[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
 	}
-	// 遍历添加的TrafficLane，继续赋值其信息，包括
+	// 遍历添加的TrafficLane，继续赋值其信息，包括车道的转向，
 	for (FZoneGraphTrafficLaneData& TrafficLaneData : 
 		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		// 
+		// 车道是左转还是右转
 		TrafficLaneData.bTurnsLeft = (LaneTurnType == 
 			UE::MassTraffic::LaneTurnType::LeftTurn);
 		TrafficLaneData.bTurnsRight = (LaneTurnType == 
 			UE::MassTraffic::LaneTurnType::RightTurn);
 		TrafficLaneData.bIsRightMostLane = true;
+		// 
 	}
 }
 ```
