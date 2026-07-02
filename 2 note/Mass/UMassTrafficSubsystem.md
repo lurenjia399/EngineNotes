@@ -23,14 +23,16 @@ void UMassTrafficSubsystem::BuildLaneData(
 	FMassTrafficZoneGraphData& TrafficZoneGraphData, 
 	const FZoneGraphStorage& ZoneGraphStorage)
 {
-	// 遍历
+	// 遍历ZoneGraphStorage中所有车道
 	for (int32 LaneIndex = 0; 
 		LaneIndex < ZoneGraphStorage.Lanes.Num(); ++LaneIndex)
 	{
+		// 1 过滤不是TrafficLane
 		const FZoneLaneData& ZoneLaneData = ZoneGraphStorage.Lanes[LaneIndex];
 		if (!MassTrafficSettings->TrafficLaneFilter.Pass(ZoneLaneData.Tags))
 		{
 			continue;
 		}
+		
 }
 ```

@@ -1,5 +1,4 @@
-# Schema
-
+# 
 # SelectionBehavior
 ```cpp
 enum class EStateTreeStateSelectionBehavior : uint8
