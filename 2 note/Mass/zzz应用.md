@@ -257,8 +257,4 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
-# 3 UHTMassTrafficLightRepresentationActorManagement
-```cpp
-1 继承了UMassRepresentationActorManagement，只重写了创建完成后的方法OnPostActorSpawn
-2 
-```
+# 3 
