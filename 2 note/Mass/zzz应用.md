@@ -274,5 +274,14 @@ void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateB
 ```
 ## 5 UHTMassTrafficIntersectionSpawnDataGenerator
 ```cpp
-
+void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
+	UObject& QueryOwner, 
+	TConstArrayView<FMassSpawnedEntityType> EntityTypes, 
+	int32 Count, 
+	FMassTrafficIntersectionsSpawnData& OutIntersectionsSpawnData) const
+{
+	for (const FZoneGraphTrafficLaneData& TrafficLaneData : TrafficZoneGraphData.TrafficLaneDataArray)
+		{
+		}
+}
 ```
