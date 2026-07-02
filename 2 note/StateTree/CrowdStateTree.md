@@ -66,7 +66,7 @@ FMassLookAtTask，修改的FMassLookAtFragment这个片段，
 ```cpp
 1 这个Task里主要设置FMassLookAtFragment这个Fragment
 2 玩家撞击到行人，就会通过玩家身上的massagentComponent的获取entity，然后设置这个Fragment，让其朝向玩家。玩家身上的massagentComp是配置的BP_MassExperience中在controller上创建出来的
-3 核心处理是通过UMassLookAtProcessor这个来做的
+3 核心处理是通过UMassLookAtProcessor这个来做的，更新LookAt和Lookt
 ```
 
 ## Wander
