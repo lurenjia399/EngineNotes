@@ -1,0 +1,238 @@
+## 1 Flee
+1 触发
+
+```cpp
+1 通过UZoneGraphDisturbanceAnnotationBPLibrary::TriggerDanger这个往ZoneGraphAnnotationSubSystem的Event数组中添加一个。
+2 ZoneGraphAnnotationSubSystem会把AnnotatonComp记录到数组中，在subsystem的tick中会遍历AnnotationComp数组，每个Comp都执行HandleEvents，和TickAnnotation。
+3 在HandleEvents方法中，会将Danger记录到Comp数组中，在TickAnnotation中会处理这个Danger。
+4 在TickAnnotation中会修改ZoneGraphAnnotationSubSystem中的AnnotationTagContainer成员变量。
+5 结束，通过TriggerDanger触发的最终目的就是修改AnnotationTagContainer这个变量。
+6 UZoneGraphAnnotationComponent这个Comp是挂在AHTMassCrowdSpawner这个上的。
+```
+
+2 修改FMassZoneGraphAnnotationFragment
+```cpp
+1 UMassZoneGraphAnnotationTagsInitializer继承了UMassObserverProcessor，来观察FMassZoneGraphAnnotationFragment
+2 如果entity添加了这个Fragment，首先会找FMassZoneGraphLaneLocationFragment这个，来确定entity在哪条Zone上，然后就会从ZoneGraphAnnotationSubSystem的AnnotationTagContainer变量中获取所在Lane的Tag，设置到Fragment中
+```
+
+3 stateTree更新状态
+```cpp
+1 通过FHTMassZoneGraphAnnotationEvaluator这个，来获取entity身上的来观察FMassZoneGraphAnnotationFragment中的Tag，然后传递到statetree中
+2 stateTree会根据这个Evaluator的Tag来进入Flee状态。
+3 执行FHTMassZoneGraphFindEscapeDanger这个Task，这个计算出EscapeTargetLocation
+4 FHTMassZoneGraphFindEscapeDanger
+4 然后执行FMassZoneGraphPathFollowTask这个Task，这个Task会设置MoveTarget,ShortPath,CacheLane这三个
+```
+
+## 受击反应
+
+1 触发
+
+```cpp
+1 ACitySampleCrowdCharacter::TakeDamage 和 OnCapsuleBeginOverlap 这个方法中，会将受击信息存储到UHTMassComponentHitSubsystem中的Map里面，key是entity，value是受击信息，然后会发送SignalEntity
+2 然后播放受击montage，通过已经加载动画层，播放不同动画层上的受击montage
+```
+
+2 UMassStateTreeProcessor
+```cpp
+1 UMassStateTreeProcessor继承UMassSignalProcessorBase，在收到Signal回调后会执行SingnalEntities方法
+2 回调方法里会创建ExecuteContext，来执行StateTree
+```
+
+3 stateTree更新状态
+```cpp
+1 FHTMassComponentHitEvaluator 这个从UHTMassComponentHitSubsystem中根据entityhandle来获取HitResult击中信息，并根据信息来设置标志位
+2 stateTree根据不同的标志位来进入到不同的受击状态（MoveHit还是TakeDamage）
+3 StateTree内部不同状态会执行不同的Task
+```
+
+1 MoveHit（在移动中收到攻击）
+会执行两个StateTask，FHTCrowdCharacterMassStandTask
+```cpp
+1 通过这个Task，创建一个新的MoveTarget
+2 在SteerToMoveTargetProcessor中处理MoveTarget，计算出SteerVelocity
+3 在Applymovement里根据Velocity计算位移
+
+```
+FMassLookAtTask，修改的FMassLookAtFragment这个片段，
+```cpp
+1 这个Task里主要设置FMassLookAtFragment这个Fragment
+2 玩家撞击到行人，就会通过玩家身上的massagentComponent的获取entity，然后设置这个Fragment，让其朝向玩家。玩家身上的massagentComp是配置的BP_MassExperience中在controller上创建出来的
+3 核心处理是通过UMassLookAtProcessor这个来做的，更新LookAt和LookTrajectory
+4 然后通过UMassProcessor_Animation来将LookAt和LookTrajectory记录到AnimInstance里
+5 AnimInstance更新数据，在通过瞄准偏移实现
+```
+
+## Wander
+
+### 1
+```cpp
+1 Crowd中的EntityConfig会配置UMassZoneGraphNavigationTrait这个，这个Trait会添加FMassZoneGraphLaneLocationFragment
+2 FMassZoneGraphLaneLocationFragment这个被添加到Entity后，UMassZoneGraphLocationInitializer这个ObserverProcrssor就会被触发，执行execute方法，方法中的内容是以entity的transform为中心，配置为半径，按照ZoneGraphSubsystem.FindNearestLane方法查询离中心最近的lane，将结果记录到FMassZoneGraphLaneLocationFragment里
+3 在UMassStateTreeActivationProcessor执行execute的时候，会首先创建statetree，然后执行StateTreeExecutionContext.Start方法
+4 在start方法中，会执行一遍statetree，如果走到了Wander节点中
+5 首先执行FMassZoneGraphFindWanderTarget这个Task，简单说就是通过entity位置设置WanderTargetLocation供给给其他Task使用
+6 然后执行FHTMassZoneGraphPathFollowTask这个Task，这个Task会设置MoveTarget,ShortPath,CacheLane这三个
+```
+### 2 FMassZoneGraphFindWanderTarget
+```cpp
+EStateTreeRunStatus FMassZoneGraphFindWanderTarget::EnterState(
+	FStateTreeExecutionContext& Context, 
+	const FStateTreeTransitionResult& Transition) const
+{
+	// 从配置中获取这次移动的距离
+	const float MoveDistance = GetDefault<UMassCrowdSettings>()->GetMoveDistance();
+	
+	// 记录漫游的lane
+	InstanceData.WanderTargetLocation.LaneHandle = LaneLocation.LaneHandle;
+	// 记录漫游的距离
+	InstanceData.WanderTargetLocation.TargetDistance = 
+		LaneLocation.DistanceAlongLane + MoveDistance;
+	// 记录链接lane的类型
+	InstanceData.WanderTargetLocation.NextExitLinkType = EZoneLaneLinkType::None;
+	// 重置nextLane
+	InstanceData.WanderTargetLocation.NextLaneHandle.Reset();
+	// 重置是否反向移动
+	InstanceData.WanderTargetLocation.bMoveReverse = false;
+	// 在lane的终点是否还要移动
+	InstanceData.WanderTargetLocation.EndOfPathIntent = EMassMovementAction::Move;
+	// 如果当前想要移动的距离 大于 当前所在lane的长度
+	if (InstanceData.WanderTargetLocation.TargetDistance > LaneLocation.LaneLength)
+	{
+		
+		auto FindCandidates = [this, 
+			&ZoneGraphAnnotationSubsystem, 
+			&MassCrowdSubsystem, 
+			ZoneGraphStorage, 
+			LaneLocation, 
+			&Candidates, 
+			&CombinedWeight](const EZoneLaneLinkType Type)-> bool
+			{
+				// 找LinkLane
+				TArray<FZoneGraphLinkedLane> LinkedLanes;
+					UE::ZoneGraph::Query::GetLinkedLanes(
+					*ZoneGraphStorage, 
+					LaneLocation.LaneHandle, 
+					Type, 
+					EZoneLaneLinkFlags::All, 
+					EZoneLaneLinkFlags::None, 
+					LinkedLanes);
+			}
+			return !Candidates.IsEmpty();
+		};
+		// 首先找Outgoing的linklane,找不到就找Adjacent的
+		if (FindCandidates(EZoneLaneLinkType::Outgoing))
+		{
+			InstanceData.WanderTargetLocation.NextExitLinkType = EZoneLaneLinkType::Outgoing;
+		}
+		else
+		{
+			InstanceData.WanderTargetLocation.TargetDistance = LaneLocation.DistanceAlongLane;
+			if (FindCandidates(EZoneLaneLinkType::Adjacent))
+			{
+				InstanceData.WanderTargetLocation.NextExitLinkType = 
+					EZoneLaneLinkType::Adjacent;
+			}
+		}
+		// 最终设置NextLane为找到的linklane
+		InstanceData.WanderTargetLocation.NextLaneHandle = LinkedLane.DestLane;
+	}
+}
+```
+### 3 FHTMassZoneGraphPathFollowTask
+```cpp
+EStateTreeRunStatus FHTMassZoneGraphPathFollowTask::EnterState(
+	FStateTreeExecutionContext& Context, 
+	const FStateTreeTransitionResult& Transition) const
+{
+	if (!RequestPath(MassContext, *TargetLocation))
+	{
+		return EStateTreeRunStatus::Failed;
+	}
+
+	return EStateTreeRunStatus::Running;
+}
+
+bool FHTMassZoneGraphPathFollowTask::RequestPath(
+	FMassStateTreeExecutionContext& Context, 
+	const FMassZoneGraphTargetLocation& RequestedTargetLocation) const
+{
+	FZoneGraphShortPathRequest& PathRequest = RequestFragment.PathRequest;
+	// 开始点是MoveTarget.Center
+	PathRequest.StartPosition = MoveTarget.Center;
+	// 是否是反向移动
+	PathRequest.bMoveReverse = RequestedTargetLocation.bMoveReverse;
+	// 沿着lane需要移动的距离
+	PathRequest.TargetDistance = RequestedTargetLocation.TargetDistance;
+	// Nextlane
+	PathRequest.NextLaneHandle = RequestedTargetLocation.NextLaneHandle;
+	// CurLane与NextLane的链接类型
+	PathRequest.NextExitLinkType = RequestedTargetLocation.NextExitLinkType;
+	// 移动到终点的移动行为
+	PathRequest.EndOfPathIntent = RequestedTargetLocation.EndOfPathIntent;
+	// 是否设置了移动终点
+	PathRequest.bIsEndOfPathPositionSet = 
+		RequestedTargetLocation.EndOfPathPosition.IsSet();
+	// 移动终点位置
+	PathRequest.EndOfPathPosition = 
+		RequestedTargetLocation.EndOfPathPosition.Get(FVector::ZeroVector);
+	// 是否设置移动终点方向
+	PathRequest.bIsEndOfPathDirectionSet = 
+		RequestedTargetLocation.EndOfPathDirection.IsSet();
+	// 移动终点方向
+	PathRequest.EndOfPathDirection.Set(
+		RequestedTargetLocation.EndOfPathDirection.Get(FVector::ForwardVector));
+	// 如果起点或者终点在lane外，需要平滑移动的距离
+	PathRequest.AnticipationDistance = 
+		RequestedTargetLocation.AnticipationDistance;
+	// 终点便宜
+	PathRequest.EndOfPathOffset.Set(
+		FMath::RandRange(-AgentRadius.Radius, AgentRadius.Radius));
+	
+	// 
+	MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
+	// 
+	return UE::MassNavigation::ActivateActionMove(
+		*World, 
+		Context.GetOwner(), 
+		Context.GetEntity(), 
+		ZoneGraphSubsystem, 
+		LaneLocation, 
+		PathRequest, 
+		AgentRadius.Radius, DesiredSpeed, MoveTarget, ShortPath, CachedLane);
+
+}
+
+bool ActivateActionMove(const UWorld& World,
+			const UObject* Requester,
+			const FMassEntityHandle Entity,
+			const UZoneGraphSubsystem& ZoneGraphSubsystem,
+			const FMassZoneGraphLaneLocationFragment& LaneLocation,
+			const FZoneGraphShortPathRequest& PathRequest,
+			const float AgentRadius,
+			const float DesiredSpeed,
+			FMassMoveTargetFragment& InOutMoveTarget,
+			FMassZoneGraphShortPathFragment& OutShortPath,
+			FMassZoneGraphCachedLaneFragment& OutCachedLane)
+{
+	// 设置参数的速度
+	InOutMoveTarget.DesiredSpeed.Set(DesiredSpeed);
+	// 填充FMassZoneGraphCachedLaneFragment
+	OutCachedLane.CacheLaneData(*ZoneGraphStorage, LaneLocation.LaneHandle, 
+		LaneLocation.DistanceAlongLane, PathRequest.TargetDistance, 
+		InflateDistance);
+	// 填充FMassZoneGraphShortPathFragment
+	if (OutShortPath.RequestPath(OutCachedLane, PathRequest, 
+		LaneLocation.DistanceAlongLane, AgentRadius))
+	{
+		// 设置移动到目标后的移动状态
+		InOutMoveTarget.IntentAtGoal = OutShortPath.EndOfPathIntent;
+		// 距离目标的距离
+		InOutMoveTarget.DistanceToGoal = (OutShortPath.NumPoints > 0) ?
+			OutShortPath.Points[OutShortPath.NumPoints - 1].
+				DistanceAlongLane.Get() 
+			: 0.0f;
+	}
+}
+```
