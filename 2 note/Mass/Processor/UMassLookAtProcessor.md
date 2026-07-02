@@ -1,2 +1,2 @@
 1 主要处理FMassLookAtFragment，控制entity看向目标
-2 
+2 有几种类型，EMassLookAtMode::LookForward，EMassLookAtMode::LookAlongPath，EMassLookAtMode::LookAtEntity
