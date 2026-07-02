@@ -33,7 +33,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 		{
 			continue;
 		}
-		// 2 不是Intersection车道
+		// 2 不是Intersection车道，如果是之字型车道，就continue，交通系统不模拟
 		if (!MassTrafficSettings->IntersectionLaneFilter.Pass(ZoneLaneData.Tags))
 		{
 			int32 MergingLaneIndex = INDEX_NONE;
