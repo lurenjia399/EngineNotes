@@ -293,6 +293,11 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 				IntersectionZoneIndex_To_IntersectionIndex, IntersectionDetails,
 				TrafficZoneGraphData.DataHandle, IntersectionZoneIndex);
 		}
+		// 最右侧车道
+		else if (TrafficLaneData.bIsRightMostLane)
+		{
+			
+		}
 	}
 }
 ```
