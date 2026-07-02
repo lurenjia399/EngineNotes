@@ -23,7 +23,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 	FMassTrafficZoneGraphData& TrafficZoneGraphData, 
 	const FZoneGraphStorage& ZoneGraphStorage)
 {
-	// 遍历ZoneGraphStorage中所有车道，向TrafficLaneDataArray数组中添加TrafficLane，并记录信息
+	// 遍历ZoneGraphStorage中所有车道，向TrafficLaneDataArray数组中添加TrafficLane，并记录车道基础信息
 	for (int32 LaneIndex = 0; 
 		LaneIndex < ZoneGraphStorage.Lanes.Num(); ++LaneIndex)
 	{
