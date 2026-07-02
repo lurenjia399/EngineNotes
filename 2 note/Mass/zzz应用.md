@@ -239,4 +239,7 @@ bool ActivateActionMove(const UWorld& World,
 
 # 红绿灯
 
-## 1
+## 1UMassTrafficLightVisualizationTrait
+```cpp
+
+```
