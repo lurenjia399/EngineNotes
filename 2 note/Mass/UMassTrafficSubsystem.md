@@ -67,5 +67,8 @@ void UMassTrafficSubsystem::BuildLaneData(
 		// 4 根据Setting，记录是否是交叉车道
 		TrafficLaneData.ConstData.bIsIntersectionLane = 
 			MassTrafficSettings->IntersectionLaneFilter.Pass(ZoneLaneData.Tags);
+		// 5 是否是允许变道的车道
+		TrafficLaneData.ConstData.bIsLaneChangingLane = 
+			MassTrafficSettings->LaneChangingLaneFilter.Pass(ZoneLaneData.Tags)
 }
 ```
