@@ -30,3 +30,15 @@ enum class EStateTreeStateSelectionBehavior : uint8
 };
 ```
 
+```cpp
+bool FStateTreeExecutionContext::SelectStateInternal(
+	const FStateTreeExecutionFrame* CurrentParentFrame,
+	FStateTreeExecutionFrame& CurrentFrame,
+	const FStateTreeExecutionFrame* CurrentFrameInActiveFrames,
+	TConstArrayView<FStateTreeStateHandle> PathToNextState,
+	FStateSelectionResult& OutSelectionResult,
+	const FStateTreeSharedEvent* TransitionEvent)
+{
+	
+}
+```
