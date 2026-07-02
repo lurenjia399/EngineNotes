@@ -83,7 +83,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 		TrafficZoneGraphData.TrafficLaneDataLookup
 			[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
 	}
-	// 遍历添加的TrafficLane，继续赋值其信息，包括车道的转向，车道的相邻车道
+	// 遍历添加的TrafficLane，继续赋值其信息，包括车道的转向，车道的相邻车道，是否是最右侧车道
 	for (FZoneGraphTrafficLaneData& TrafficLaneData : 
 		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
