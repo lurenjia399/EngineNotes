@@ -5,10 +5,10 @@ enum class EStateTreeStateSelectionBehavior : uint8
 	/** The State cannot be directly selected. */
 	None,
 	
-	// 直接进入这个节点，
+	// 直接进入这个节点，不管有没有子节点
 	/** When state is considered for selection, it is selected even if it has child states. */
 	TryEnterState UMETA(DisplayName = "Try Enter"),
-
+	// 按找子节点的顺序ti'a
 	/** When state is considered for selection, try to select the first child state (in order they appear in the child list). If no child states are present, behaves like SelectState. */
 	TrySelectChildrenInOrder UMETA(DisplayName = "Try Select Children In Order"),
 	
