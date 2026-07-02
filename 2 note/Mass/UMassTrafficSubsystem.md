@@ -53,7 +53,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 				continue;
 			}
 		}
-		// 3 往TrafficLaneDataArray数组中添加数据，记录TrafficLane的CenterLocation，Radius
+		// 3 往TrafficLaneDataArray数组中添加数据，记录TrafficLane的CenterLocation，Radius，SpeedLimit
 		FZoneGraphTrafficLaneData& TrafficLaneData = 
 			TrafficZoneGraphData.TrafficLaneDataArray.AddDefaulted_GetRef();
 		TrafficLaneData.LaneHandle = FZoneGraphLaneHandle(
@@ -63,6 +63,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 		TrafficLaneData.CenterLocation = MidPoint; 
 		TrafficLaneData.Radius.Set(FVector::Distance(MidPoint, 
 			UE::MassTraffic::GetLaneBeginPoint(LaneIndex, ZoneGraphStorage)));
+		TrafficLaneData.ConstData.SpeedLimit = Chaos::MPHToCmS(SpeedLimitMPH);
 		// 
 }
 ```
