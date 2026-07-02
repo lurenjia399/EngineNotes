@@ -241,5 +241,10 @@ bool ActivateActionMove(const UWorld& World,
 
 ## 1UMassTrafficLightVisualizationTrait
 ```cpp
-
+void UMassTrafficLightVisualizationTrait::BuildTemplate(
+	FMassEntityTemplateBuildContext& BuildContext, 
+	const UWorld& World) const
+{
+	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM
+}
 ```
