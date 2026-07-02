@@ -74,11 +74,15 @@ void UMassTrafficSubsystem::BuildLaneData(
 		UE::ZoneGraph::Query::GetLaneLength(
 			ZoneGraphStorage, TrafficLaneData.LaneHandle, TrafficLaneData.Length);
 	}
-	// 
-	TrafficZoneGraphData.TrafficLaneDataLookup.SetNumZeroed(ZoneGraphStorage.Lanes.Num());
-	for (FZoneGraphTrafficLaneData& TrafficLaneData : TrafficZoneGraphData.TrafficLaneDataArray)
+	// 构建TrafficLaneDataLookup数组，快速查询，key是LaneIndex，value是TrafficLaneData
+	TrafficZoneGraphData.TrafficLaneDataLookup.SetNumZeroed(
+		ZoneGraphStorage.Lanes.Num());
+	for (FZoneGraphTrafficLaneData& TrafficLaneData : 
+		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		TrafficZoneGraphData.TrafficLaneDataLookup[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
+		TrafficZoneGraphData.TrafficLaneDataLookup
+			[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
 	}
+	//
 }
 ```
