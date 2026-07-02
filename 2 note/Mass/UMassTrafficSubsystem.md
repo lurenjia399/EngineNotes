@@ -33,6 +33,25 @@ void UMassTrafficSubsystem::BuildLaneData(
 		{
 			continue;
 		}
-		
+		// 2 不是Intersection车道
+		if (!MassTrafficSettings->IntersectionLaneFilter.Pass(ZoneLaneData.Tags))
+		{
+			int32 MergingLaneIndex = INDEX_NONE;
+			int32 SplittingLaneIndex = INDEX_NONE;
+			bool bSplittingRight = false;
+			if (IsZigLagLane(ZoneGraphStorage, 
+				LaneIndex, MergingLaneIndex, SplittingLaneIndex, bSplittingRight))
+			{
+				if (bSplittingRight)
+				{
+					LeftLaneOverrides.Add(SplittingLaneIndex, MergingLaneIndex);
+				}
+				else
+				{
+					RightLaneOverrides.Add(SplittingLaneIndex, MergingLaneIndex);
+				}
+				continue;
+			}
+		}
 }
 ```
