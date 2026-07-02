@@ -251,3 +251,7 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 }
 ```
 ## 2 
+```cpp
+1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodColle
+2 
+```
