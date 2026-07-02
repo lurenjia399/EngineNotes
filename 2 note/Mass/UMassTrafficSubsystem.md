@@ -23,7 +23,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 	FMassTrafficZoneGraphData& TrafficZoneGraphData, 
 	const FZoneGraphStorage& ZoneGraphStorage)
 {
-	// 遍历ZoneGraphStorage中所有车道
+	// 遍历ZoneGraphStorage中所有车道，向TrafficLaneDataArray数组zhong
 	for (int32 LaneIndex = 0; 
 		LaneIndex < ZoneGraphStorage.Lanes.Num(); ++LaneIndex)
 	{
@@ -70,5 +70,9 @@ void UMassTrafficSubsystem::BuildLaneData(
 		// 5 是否是允许变道的车道
 		TrafficLaneData.ConstData.bIsLaneChangingLane = 
 			MassTrafficSettings->LaneChangingLaneFilter.Pass(ZoneLaneData.Tags)
+		// 6 记录车道长度
+		UE::ZoneGraph::Query::GetLaneLength(
+			ZoneGraphStorage, TrafficLaneData.LaneHandle, TrafficLaneData.Length);
+	}
 }
 ```
