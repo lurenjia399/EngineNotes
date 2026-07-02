@@ -83,10 +83,16 @@ void UMassTrafficSubsystem::BuildLaneData(
 		TrafficZoneGraphData.TrafficLaneDataLookup
 			[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
 	}
-	//
-	for (FZoneGraphTrafficLaneData& TrafficLaneData : TrafficZoneGraphData.TrafficLaneDataArray)
+	// 遍历添加的TrafficLane，继续赋值其信息，包括
+	for (FZoneGraphTrafficLaneData& TrafficLaneData : 
+		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		
+		// 
+		TrafficLaneData.bTurnsLeft = (LaneTurnType == 
+			UE::MassTraffic::LaneTurnType::LeftTurn);
+		TrafficLaneData.bTurnsRight = (LaneTurnType == 
+			UE::MassTraffic::LaneTurnType::RightTurn);
+		TrafficLaneData.bIsRightMostLane = true;
 	}
 }
 ```
