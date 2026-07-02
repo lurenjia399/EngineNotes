@@ -254,6 +254,6 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 ```cpp
 1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodCollector
 2 UMassTrafficIntersectionVisualizationLODProcessor 用父类计算LOD
-3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯
+3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
