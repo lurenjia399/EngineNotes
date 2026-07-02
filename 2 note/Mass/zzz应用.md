@@ -280,8 +280,16 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 	int32 Count, 
 	FMassTrafficIntersectionsSpawnData& OutIntersectionsSpawnData) const
 {
-	for (const FZoneGraphTrafficLaneData& TrafficLaneData : TrafficZoneGraphData.TrafficLaneDataArray)
+	// 遍历TrafficLane
+	for (const FZoneGraphTrafficLaneData& TrafficLaneData : 
+		TrafficZoneGraphData.TrafficLaneDataArray)
+	{
+		if (TrafficLaneData.ConstData.bIsIntersectionLane && !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
+			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
+			FindOrAddIntersection(OutIntersectionsSpawnData, 
+				IntersectionZoneIndex_To_IntersectionIndex, IntersectionDetails, TrafficZoneGraphData.DataHandle, IntersectionZoneIndex);
 		}
+	}
 }
 ```
