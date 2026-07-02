@@ -268,3 +268,7 @@ void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateB
 	FMassTrafficIntersectionVariableTickChunkFragment>();
 }
 ```
+# 4 UMassTrafficUpdateIntersectionsProcessor
+```cpp
+1 
+```
