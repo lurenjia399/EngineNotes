@@ -1,4 +1,5 @@
-# 
+
+# SelectionBehavior
 ```cpp
 enum class EStateTreeStateSelectionBehavior : uint8
 {
@@ -16,12 +17,8 @@ enum class EStateTreeStateSelectionBehavior : uint8
 	// 根据效用分数加权随机选择子状态
 	TrySelectChildrenAtRandomWeightedByUtility UMETA(DisplayName = "Try Select Children At Random Weighted By Utility"),
 
-	// 触发zhuang
+	// 触发节点切换，而不是选择子节点
 	TryFollowTransitions UMETA(DisplayName = "Try Follow Transitions"),
-
-	// Olds names that needs to be kept forever to ensure asset serialization to work correctly when UENUM() switched from serializing int to names.
-	TrySelectChildrenAtUniformRandom UE_DEPRECATED(5.5, "Use TrySelectChildrenAtRandom Instead") = TrySelectChildrenAtRandom UMETA(Hidden),
-	TrySelectChildrenBasedOnRelativeUtility UE_DEPRECATED(5.5, "Use TrySelectChildrenAtRandomWeightedByUtility Instead") = TrySelectChildrenAtRandomWeightedByUtility UMETA(Hidden)
 };
 ```
 
