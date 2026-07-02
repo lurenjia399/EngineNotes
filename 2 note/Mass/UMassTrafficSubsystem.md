@@ -64,6 +64,8 @@ void UMassTrafficSubsystem::BuildLaneData(
 		TrafficLaneData.Radius.Set(FVector::Distance(MidPoint, 
 			UE::MassTraffic::GetLaneBeginPoint(LaneIndex, ZoneGraphStorage)));
 		TrafficLaneData.ConstData.SpeedLimit = Chaos::MPHToCmS(SpeedLimitMPH);
-		// 
+		// 4 根据Setting，记录是否是交叉车道
+		TrafficLaneData.ConstData.bIsIntersectionLane = 
+			MassTrafficSettings->IntersectionLaneFilter.Pass(ZoneLaneData.Tags);
 }
 ```
