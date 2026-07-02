@@ -23,7 +23,7 @@ void UMassTrafficSubsystem::BuildLaneData(
 	FMassTrafficZoneGraphData& TrafficZoneGraphData, 
 	const FZoneGraphStorage& ZoneGraphStorage)
 {
-	// 遍历ZoneGraphStorage中所有车道，向TrafficLaneDataArray数组zhong
+	// 遍历ZoneGraphStorage中所有车道，向TrafficLaneDataArray数组中添加TrafficLane，并记录信息
 	for (int32 LaneIndex = 0; 
 		LaneIndex < ZoneGraphStorage.Lanes.Num(); ++LaneIndex)
 	{
@@ -73,6 +73,12 @@ void UMassTrafficSubsystem::BuildLaneData(
 		// 6 记录车道长度
 		UE::ZoneGraph::Query::GetLaneLength(
 			ZoneGraphStorage, TrafficLaneData.LaneHandle, TrafficLaneData.Length);
+	}
+	// 
+	TrafficZoneGraphData.TrafficLaneDataLookup.SetNumZeroed(ZoneGraphStorage.Lanes.Num());
+	for (FZoneGraphTrafficLaneData& TrafficLaneData : TrafficZoneGraphData.TrafficLaneDataArray)
+	{
+		TrafficZoneGraphData.TrafficLaneDataLookup[TrafficLaneData.LaneHandle.Index] = &TrafficLaneData;
 	}
 }
 ```
