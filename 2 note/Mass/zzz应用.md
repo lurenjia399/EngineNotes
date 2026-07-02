@@ -246,11 +246,7 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 	const UWorld& World) const
 {
 	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在RepresentationProcessor中创建的
-	2 注册这个FMassTrafficLightsParameters，添加到
-	const FConstSharedStruct TrafficLightsParamsFragment = 
-		EntityManager.GetOrCreateConstSharedFragment(
-			RegisteredTrafficLightsParams);
-	BuildContext.AddConstSharedFragment(TrafficLightsParamsFragment);
-	BuildContext.AddFragment<FMassActorFragment>();
+	2 添加注册这个FMassTrafficLightsParameters和FMassActorFragment
+
 }
 ```
