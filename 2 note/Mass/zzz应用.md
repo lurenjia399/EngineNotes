@@ -245,6 +245,6 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 	FMassEntityTemplateBuildContext& BuildContext, 
 	const UWorld& World) const
 {
-	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM
+	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在RepresentationProcessor中创建的
 }
 ```
