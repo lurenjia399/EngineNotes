@@ -58,14 +58,8 @@
 		*World, Context.GetOwner(), 
 		MassContext.GetEntity(), MoveTarget);
 }
-1 修改MassMoveTargetFragment这个，在UMassProcessor_Animation这个里面读取MassMoveTargetFragment进行处理把Fragment数据设置到动画蓝图里,UMassSteerToMoveTargetProcessor这个也会读取处理来改变entity运动状态
-2 MassMoveTargetFragment这个Fragment是由UMassSteeringTrait这个Trait添加的
-3 UMassProcessor_Animation 这个里会将MoveTargetFragment里的数据赋值给UMassCrowdAnimInstance的MassMovementInfo变量，
-4 在 UMassProcessor_Animation 之后 才会执行UMassSteerToMoveTargetProcessor
-
 1 通过这个Task，创建一个新的MoveTarget
 2 在SteerToMoveTargetProcessor中处理MoveTarget，计算出SteerVelocity
-3 
 
 ```
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
