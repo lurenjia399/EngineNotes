@@ -257,4 +257,14 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
-# 3 
+# 3 UMassTrafficIntersectionSimulationTrait
+```cpp
+void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
+{
+	// 添加Tag
+	BuildContext.AddTag<FMassTrafficIntersectionTag>();
+	// 添加tick时机
+	BuildContext.AddChunkFragment<
+	FMassTrafficIntersectionVariableTickChunkFragment>();
+}
+```
