@@ -64,7 +64,8 @@
 4 在 UMassProcessor_Animation 之后 才会执行UMassSteerToMoveTargetProcessor
 
 1 通过这个Task，创建一个新的MoveTarget
-2 在SteerToMoveTargetProcessor中处理MoveTarget，计算出SteerV
+2 在SteerToMoveTargetProcessor中处理MoveTarget，计算出SteerVelocity
+3 
 
 ```
 FMassLookAtTask，修改的FMassLookAtFragment这个片段，
