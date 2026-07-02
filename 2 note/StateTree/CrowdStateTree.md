@@ -23,7 +23,7 @@
 2 stateTree会根据这个Evaluator的Tag来进入Flee状态。
 3 执行FHTMassZoneGraphFindEscapeDanger这个Task，这个计算出EscapeTargetLocation
 4 FHTMassZoneGraphFindEscapeDanger
-4 然后执行FMassZoneGraphPathFollowTask这个Task，根据上边计算出的的逃跑路线，填充FMassMoveTargetFragment，由MoveTargetProcessor让entity移动
+4 然后执行FMassZoneGraphPathFollowTask这个Task，这个Task会设置MoveTarget,ShortPath,CacheLane这三个
 ```
 
 ## 受击反应
