@@ -272,4 +272,7 @@ void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateB
 ```cpp
 1 
 ```
-## 5 
+## 5 UHTMassTrafficIntersectionSpawnDataGenerator
+```cpp
+
+```
