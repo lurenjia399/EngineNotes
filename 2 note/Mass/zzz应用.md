@@ -421,10 +421,14 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)
 {
 	// 推进到下一周期
 	IntersectionFragment.AdvancePeriod();
-	// 设置l
+	// 设置路口车道，人行道的状态
 	IntersectionFragment.ApplyLanesActionToCurrentPeriod(
 		VehicleLanesAction, PedestrianLanesAction,
 		&MassCrowdSubsystem, false);
+	// 更新红绿灯
+	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
+	// 更新当前周期剩余时间，在前边刚推进到下一周
+	IntersectionFragment.AddTimeRemainingToCurrentPeriod();
 }
 ```
 
