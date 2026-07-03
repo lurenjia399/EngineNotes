@@ -372,21 +372,25 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
-if()
-if(当前交叉路口不会通行行人，车辆)
+if(当前周期的剩余时间 > 0)
 {
-	直接减少这个周期的剩余时间
-}
-else if(有红绿灯)
-{
-	if(当前交叉路口的当前周期上的车道和人行道都没有车没有人
-		&& 没有车在等待使用当前交叉路口
-		&& 当前交叉路口没有放行的人行道
-		&& 当前交叉路口剩余时间 > 黄灯时间)
+	if(当前交叉路口不会通行行人，车辆)
 	{
-		这个周期剩余时间 = 黄灯时间 - 帧长
+		直接减少这个周期的剩余时间
 	}
+	else if(有红绿灯)
+	{
+		if(当前交叉路口的当前周期上的车道和人行道都没有车没有人
+			&& 没有车在等待使用当前交叉路口
+			&& 当前交叉路口没有放行的人行道
+			&& 当前交叉路口剩余时间 > 黄灯时间)
+		{
+			这个周期剩余时间 = 黄灯时间 - 帧长
+		}
+	}
+	UpdateTrafficLightsForCurrentPeriod() // 更新当前周期的红绿灯 
 }
+
 ```
 
 # 征用
