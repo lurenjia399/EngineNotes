@@ -321,7 +321,15 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		{
 			// 构建人行道的cell，key是CrosswalkLane的索引
 		}
-		
+		for (FMassTrafficIntersectionFragment& IntersectionFragment : 
+			OutIntersectionsSpawnData.IntersectionFragments)
+		{
+			IntersectionDetail->Build(
+				IntersectionFragment.ZoneIndex,
+				CrosswalkLaneMidpoint_HGrid, IntersectionSideToCrosswalkSearchDistance,
+				IntersectionSideHGrid, TrafficLightInstanceData ? &TrafficLightInstanceData->TrafficLights : nullptr, TrafficLightSearchDistance,
+				*ZoneGraphStorage, World);
+		}
 	}
 }
 ```
