@@ -339,7 +339,8 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 如果只有这个交叉路口只有两个边，说明是直行的有两个红绿灯
 			if (IntersectionDetail->Sides.Num() == 2 )
 			{
-				// 添加一个周期，让车通过，将两边的车道添加到TrafficPeriod中
+				// 添加一个周期，将两边的车道添加到TrafficPeriod中,表示这个周期能通过的车道
+				// 在添加一个周，将两边的人行道添加到TrafficPeriod中
 			}
 		}
 	}
