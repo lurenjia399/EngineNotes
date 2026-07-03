@@ -239,10 +239,10 @@ bool ActivateActionMove(const UWorld& World,
 
 # 4 红绿灯
 
-##  UHTMassTrafficIntersectionSpawnDataGenerator
+##  UMassTrafficIntersectionSpawnDataGenerator
 ```cpp
 // 每个交叉区域都会创建出一个entity
-void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
+void UMassTrafficIntersectionSpawnDataGenerator::Generate() const
 {
 	FMassEntitySpawnDataGeneratorResult Result;
 	Result.SpawnData.InitializeAs<FMassTrafficIntersectionsSpawnData>();
@@ -262,7 +262,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
 ```
 
 ```cpp
-void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
+void UMassTrafficIntersectionSpawnDataGenerator::Generate(
 	UObject& QueryOwner, 
 	TConstArrayView<FMassSpawnedEntityType> EntityTypes, 
 	int32 Count, 
