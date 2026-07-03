@@ -311,7 +311,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 				}
 			}
 		}
-		// 构建
+		// 构建红绿灯的cell，索引是红绿灯id
 		UE::MassTraffic::FMassTrafficBasicHGrid IntersectionSideHGrid;
 		{
 			if (IsValid(TrafficLightInstanceData))
@@ -325,8 +325,8 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 						TrafficLightInstanceData
 						->TrafficLights[TrafficLightDetailIndex];
 					IntersectionSideHGrid.Add(TrafficLightDetailIndex,
-FBox::BuildAABB(
-				TrafficLightDetail.ControlledIntersectionSideMidpoint,
+						FBox::BuildAABB(
+						TrafficLightDetail.ControlledIntersectionSideMidpoint,
 						 FVector::ZeroVector));
 				}
 			}
