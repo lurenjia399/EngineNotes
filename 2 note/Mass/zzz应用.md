@@ -388,7 +388,7 @@ if(当前周期的剩余时间 > 0)
 			这个周期剩余时间 = 黄灯时间 - 帧长
 		}
 	}
-	UpdateTrafficLightsForCurrentPeriod() // 更新当前周期的红绿灯 
+	UpdateTrafficLightsForCurrentPeriod() // 更新当前周期的红绿灯,设置红绿灯的状态
 }
 
 ```
