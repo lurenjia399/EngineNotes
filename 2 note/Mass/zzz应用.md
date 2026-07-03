@@ -325,6 +325,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		for (FMassTrafficIntersectionFragment& IntersectionFragment : 
 			OutIntersectionsSpawnData.IntersectionFragments)
 		{
+			// 1 
 			IntersectionDetail->Build();
 		}
 	}
