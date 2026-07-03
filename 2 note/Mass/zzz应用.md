@@ -296,7 +296,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		// 最右侧车道
 		else if (TrafficLaneData.bIsRightMostLane)
 		{
-			// 如果相邻车道的下一个c
+			// 如果相邻车道的下一个车道是交叉车道
 			int32 ArrivalIntersectionZoneIndex = INDEX_NONE;
 			bool bIsTrafficLanesplitting = false;
 			bool bIsTrafficLaneDataMerging = false;
@@ -323,6 +323,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 					}
 				}
 			}
+			
 		}
 	}
 }
