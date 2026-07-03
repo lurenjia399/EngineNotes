@@ -284,12 +284,12 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 	for (const FZoneGraphTrafficLaneData& TrafficLaneData : 
 		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		// 记录交叉车道
+		// 如果是交叉车道，创建交叉车道信息，一个zone对应一个IntersectionFragment也对应一个IntersectionDesc
 		if (TrafficLaneData.ConstData.bIsIntersectionLane 
 			&& !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
 			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
-			// 一个zone对应一个IntersectionFragment,也对应一个IntersectionDesc
+			
 			FindOrAddIntersection();
 		}
 		// 最右侧车道
