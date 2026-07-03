@@ -375,4 +375,6 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 1 
 ```
 
-# zheng'yo
+# 征用
+
+1 FMassTrafficExpropriateVehicleFragment
