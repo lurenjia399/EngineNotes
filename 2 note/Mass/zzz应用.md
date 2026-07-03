@@ -372,10 +372,7 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
-void UMassTrafficUpdateIntersectionsProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
-{
-	
-}
+1 检测是否能快速通过这段s
 ```
 
 # 征用
