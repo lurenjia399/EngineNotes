@@ -350,7 +350,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 ```CPP
 1 通过FMemory::Memswap方法将FMassTrafficIntersectionsSpawnData中的数据都交换到FMassTrafficIntersectionFragment中
 2 RestartIntersection 重新开始交叉路口，初始化状态
-3 
+3 RegisteredTrafficIntersections 注册这个map，key是ZoneIndex,value是Intersection这个entity
 ```
 
 ## 1UMassTrafficLightVisualizationTrait
