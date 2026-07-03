@@ -372,13 +372,13 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
-if(如果这个交叉路口不会通行行人，车辆)
+if(当前交叉路口不会通行行人，车辆)
 {
 	直接减少这个周期的剩余时间
 }
 else if(有红绿灯)
 {
-	if(当前)
+	if(当前交叉路口)
 }
 ```
 
