@@ -291,7 +291,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
 			FindOrAddIntersection();
 		}
-		// 如果车道不是交叉车道，但是是最右侧车道。
+		// 如果当前车道不是交叉车道，但是是最右侧车道。
 		else if (TrafficLaneData.bIsRightMostLane)
 		{
 			if(车道的OutgoingLane是交叉车道)
