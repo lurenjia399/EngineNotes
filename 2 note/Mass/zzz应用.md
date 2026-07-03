@@ -342,6 +342,11 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 				// 添加一个周期，将两边的车道添加到TrafficPeriod中,表示这个周期能通过的车道
 				// 在添加一个周，将两边的人行道添加到TrafficPeriod中
 			}
+			// 不止两条边，并且有红绿灯
+			else if (IntersectionDetail->bHasTrafficLights)
+			{
+				
+			}
 		}
 	}
 }
