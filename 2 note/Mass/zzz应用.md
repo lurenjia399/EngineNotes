@@ -301,13 +301,13 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			{
 				if(相邻车道中有Split类型的)
 				{
-					1 把当前车道的所有下一条车道添加到side中
-					2 把当前车道链接的交叉车道的下一条道添加到side中
+					//1 把当前车道的所有下一条车道添加到side中
+					//2 把当前车道链接的交叉车道的下一条道添加到side中
 				}
 				else
 				{
-					1 把当前车道的所有下一条车道添加到side中
-					2 继续遍历当前车道的左车道，把左车道下一条道添加到side中
+					//1 把当前车道的所有下一条车道添加到side中
+					//2 继续遍历当前车道的左车道，把左车道下一条道添加到side中
 				}
 			}
 		}
@@ -339,16 +339,18 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 如果只有这个交叉路口只有两个边，说明是直行的有两个红绿灯
 			if (IntersectionDetail->Sides.Num() == 2 )
 			{
-				// 添加一个周期，将两边的车道添加到TrafficPeriod中,表示这个周期能通过的车道
-				// 在添加一个周期，将两边的人行道添加到TrafficPeriod中
 				// 添加一个周期，让两边的车道通过。就是把边上记录的车道添加到周期中
-				// 在添加一个周期，让两边的人行道
+				// 在添加一个周期，让两边的人行道通过。就是把人行道添加到周期中
 			}
 			// 不止两条边，并且有红绿灯
 			else if (IntersectionDetail->bHasTrafficLights)
 			{
 				// 遍历每天边，为每条边都添加一个车辆通过的周期
 				// 在添加一个周期，让每条边上的人行道通过
+			}
+			// 不止两天边，没有红绿灯
+			else if (!IntersectionDetail->bHasTrafficLights)
+			{
 			}
 		}
 	}
