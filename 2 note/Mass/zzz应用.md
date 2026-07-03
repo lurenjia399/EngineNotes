@@ -312,6 +312,25 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			}
 		}
 		// 构建
+		UE::MassTraffic::FMassTrafficBasicHGrid IntersectionSideHGrid;
+		{
+			if (IsValid(TrafficLightInstanceData))
+			{
+				for (int32 TrafficLightDetailIndex = 0; 
+					TrafficLightDetailIndex < 
+						TrafficLightInstanceData->TrafficLights.Num(); 
+						TrafficLightDetailIndex++)
+				{
+					const FMassTrafficLightInstanceDesc& TrafficLightDetail = 
+						TrafficLightInstanceData
+						->TrafficLights[TrafficLightDetailIndex];
+					IntersectionSideHGrid.Add(TrafficLightDetailIndex,
+FBox::BuildAABB(
+				TrafficLightDetail.ControlledIntersectionSideMidpoint,
+						 FVector::ZeroVector));
+				}
+			}
+		}
 	}
 }
 ```
