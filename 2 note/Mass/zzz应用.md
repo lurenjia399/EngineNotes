@@ -313,7 +313,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		
 		UE::MassTraffic::FMassTrafficBasicHGrid IntersectionSideHGrid;
 		{
-			// 构建红绿灯的cell，key是红绿灯索引
+			// 构建红绿灯的cell，key是红绿灯数组索引
 		}
 		UE::MassTraffic::FMassTrafficBasicHGrid 
 			CrosswalkLaneMidpoint_HGrid(100.0f);
