@@ -329,7 +329,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 2 重新排序交叉路口的side，沿顺时针顺序
 			// 3 遍历交叉路口，找到隐藏出口
 			// 4 找到路口side的人行道，人心道的incoming为CrosswalkWaitingLane
-			// 5 
+			// 5 遍历side，找到hong'lü'den
 			IntersectionDetail->Build();
 		}
 	}
