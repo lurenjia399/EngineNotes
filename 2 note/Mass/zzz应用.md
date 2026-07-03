@@ -348,7 +348,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 				// 遍历每天边，为每条边都添加一个车辆通过的周期
 				// 在添加一个周期，让每条边上的人行道通过
 			}
-			// 不止两天边，没有红绿灯
+			// 不止两条边，没有红绿灯
 			else if (!IntersectionDetail->bHasTrafficLights)
 			{
 				// 遍历每天边，为每条边都添加一个车辆通过的周期
