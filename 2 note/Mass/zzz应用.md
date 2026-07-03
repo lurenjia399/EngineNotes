@@ -326,6 +326,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			OutIntersectionsSpawnData.IntersectionFragments)
 		{
 			// 1 
+			// 2 重新排序交叉路口的side，沿顺时针顺序
 			IntersectionDetail->Build();
 		}
 	}
