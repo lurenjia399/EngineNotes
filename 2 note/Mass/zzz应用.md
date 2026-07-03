@@ -239,8 +239,7 @@ bool ActivateActionMove(const UWorld& World,
 
 # 4 红绿灯
 
-## 1 创建
-### 1 
+## 1 UHTMassTrafficIntersectionSpawnDataGenerator
 ```cpp
 void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
 {
@@ -261,40 +260,6 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
 }
 ```
 
-## 1UMassTrafficLightVisualizationTrait
-```cpp
-void UMassTrafficLightVisualizationTrait::BuildTemplate(
-	FMassEntityTemplateBuildContext& BuildContext, 
-	const UWorld& World) const
-{
-	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在UCitySampleCrowdVisualizationFragmentInitializer中创建的，他是一个Observer，观察的是FCitySampleCrowdVisualizationFragment
-	2 添加注册这个FMassTrafficLightsParameters和FMassActorFragment
-
-}
-```
-## 2 MassTrafficLightVisualizationProcessor.cpp
-```cpp
-1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodCollector
-2 UMassTrafficIntersectionVisualizationLODProcessor 用父类计算LOD
-3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
-4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
-```
-# 3 UMassTrafficIntersectionSimulationTrait
-```cpp
-void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
-{
-	// 添加Tag
-	BuildContext.AddTag<FMassTrafficIntersectionTag>();
-	// 添加tick时机
-	BuildContext.AddChunkFragment<
-	FMassTrafficIntersectionVariableTickChunkFragment>();
-}
-```
-# 4 UMassTrafficUpdateIntersectionsProcessor
-```cpp
-1 
-```
-## 5 UMassTrafficIntersectionSpawnDataGenerator
 ```cpp
 void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 	UObject& QueryOwner, 
@@ -378,4 +343,38 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		}
 	}
 }
+```
+
+## 1UMassTrafficLightVisualizationTrait
+```cpp
+void UMassTrafficLightVisualizationTrait::BuildTemplate(
+	FMassEntityTemplateBuildContext& BuildContext, 
+	const UWorld& World) const
+{
+	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在UCitySampleCrowdVisualizationFragmentInitializer中创建的，他是一个Observer，观察的是FCitySampleCrowdVisualizationFragment
+	2 添加注册这个FMassTrafficLightsParameters和FMassActorFragment
+
+}
+```
+## 2 MassTrafficLightVisualizationProcessor.cpp
+```cpp
+1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodCollector
+2 UMassTrafficIntersectionVisualizationLODProcessor 用父类计算LOD
+3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
+4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
+```
+# 3 UMassTrafficIntersectionSimulationTrait
+```cpp
+void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
+{
+	// 添加Tag
+	BuildContext.AddTag<FMassTrafficIntersectionTag>();
+	// 添加tick时机
+	BuildContext.AddChunkFragment<
+	FMassTrafficIntersectionVariableTickChunkFragment>();
+}
+```
+# 4 UMassTrafficUpdateIntersectionsProcessor
+```cpp
+1 
 ```
