@@ -301,7 +301,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			{
 				if(相邻车道中有Split类型的)
 				{
-					1 把当前车道的下一条车道添加到side中
+					1 把当前车道的所有下一条车道添加到side中
 					2 
 				}
 			}
