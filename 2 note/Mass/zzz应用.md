@@ -374,7 +374,7 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 ```cpp
 void UMassTrafficUpdateIntersectionsProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
-
+	
 }
 ```
 
