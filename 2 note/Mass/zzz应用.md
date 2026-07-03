@@ -306,7 +306,8 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 				}
 				else
 				{
-					1 把当前车道的所有xia'yi'tai
+					1 把当前车道的所有下一条车道添加到side中
+					2 继续遍历当前车道的左车道，把左车道下一条道添加到side中
 				}
 			}
 			
