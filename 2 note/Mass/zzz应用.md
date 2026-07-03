@@ -372,7 +372,7 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
-1 检测是否能快速通过这段s
+1 检测是否能快速通过这段周期时间，如果是没有
 ```
 
 # 征用
