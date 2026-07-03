@@ -296,7 +296,33 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		// 最右侧车道
 		else if (TrafficLaneData.bIsRightMostLane)
 		{
-			
+			// 如果相邻车道的下一个c
+			int32 ArrivalIntersectionZoneIndex = INDEX_NONE;
+			bool bIsTrafficLanesplitting = false;
+			bool bIsTrafficLaneDataMerging = false;
+			for (int32 LinkIndex = LaneData.LinksBegin; LinkIndex < 
+				LaneData.LinksEnd; LinkIndex++)
+			{
+				const FZoneLaneLinkData& LaneLinkData = 
+					ZoneGraphStorage->LaneLinks[LinkIndex];
+				bIsTrafficLanesplitting |= 
+					LaneLinkData.HasFlags(EZoneLaneLinkFlags::Splitting);
+				bIsTrafficLaneDataMerging |= 
+					LaneLinkData.HasFlags(EZoneLaneLinkFlags::Merging);
+				if (LaneLinkData.Type == EZoneLaneLinkType::Outgoing) 
+				{
+					const FZoneLaneData& DestLaneData = 
+						ZoneGraphStorage->Lanes[LaneLinkData.DestLaneIndex];
+					if (MassTrafficSettings
+						->IntersectionLaneFilter.Pass(DestLaneData.Tags) 
+					&& !MassTrafficSettings
+						->CloseTrafficLaneFilter.Pass(DestLaneData.Tags))
+					{
+						ArrivalIntersectionZoneIndex = DestLaneData.ZoneIndex;
+						break;
+					}
+				}
+			}
 		}
 	}
 }
