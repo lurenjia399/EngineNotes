@@ -241,8 +241,7 @@ bool ActivateActionMove(const UWorld& World,
 
 ## 1 UHTMassTrafficIntersectionSpawnDataGenerator
 ```cpp
-1 每个交叉区域都会创建出一个entity
-2 
+// 每个交叉区域都会创建出一个entity
 void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
 {
 	FMassEntitySpawnDataGeneratorResult Result;
