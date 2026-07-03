@@ -394,7 +394,6 @@ if(当前周期的剩余时间 > 0)
 	IntersectionFragment.PeriodTimeRemaining = 
 		IntersectionFragment.PeriodTimeRemaining - CountDownSpeedSeconds;
 }
-
 if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 {
 	// 设置当前路口车道为准备关闭，人行道不管，也就是黄灯
@@ -405,7 +404,7 @@ if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 	// 更新当前红绿灯状态
 	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
 }
-if(当前周期剩余时间 <= 0)
+if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 > 0)
 {
 	// 设置当前路口车道为关闭，人行道关闭
 	IntersectionFragment.ApplyLanesActionToCurrentPeriod(
@@ -415,8 +414,12 @@ if(当前周期剩余时间 <= 0)
 	// 更新红绿灯状态
 	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
 	IntersectionFragment.PedestrianLightsShowStop();
-	// 路口关闭了
+	// 路口关闭了，就遍历下一个路口
 	continue;
+}
+if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)
+{
+``
 }
 ```
 
