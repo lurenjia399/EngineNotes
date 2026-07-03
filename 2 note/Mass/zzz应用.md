@@ -289,9 +289,10 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			&& !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
 			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
-			FindOrAddIntersection(OutIntersectionsSpawnData, 
-				IntersectionZoneIndex_To_IntersectionIndex, IntersectionDetails,
-				TrafficZoneGraphData.DataHandle, IntersectionZoneIndex);
+			/*
+			1 FIntersectionDetailsMap key是jiao'c
+			*/
+			FindOrAddIntersection();
 		}
 		// 最右侧车道
 		else if (TrafficLaneData.bIsRightMostLane)
