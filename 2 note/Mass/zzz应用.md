@@ -345,6 +345,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 }
 ```
 
+
 ## 1UMassTrafficLightVisualizationTrait
 ```cpp
 void UMassTrafficLightVisualizationTrait::BuildTemplate(
