@@ -284,7 +284,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 	for (const FZoneGraphTrafficLaneData& TrafficLaneData : 
 		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		// 一个zone对应一个IntersectionFragment也对应一个IntersectionDesc。如果车道是交叉车道，直接创建Intersection。这一小部分最终的结果是每一个交叉区域都会
+		// 一个zone对应一个IntersectionFragment也对应一个IntersectionDesc。如果车道是交叉车道，直接创建Intersection。
 		if (TrafficLaneData.ConstData.bIsIntersectionLane 
 			&& !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
