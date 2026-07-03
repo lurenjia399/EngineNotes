@@ -402,6 +402,8 @@ if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 		EMassTrafficPeriodLanesAction::SoftPrepareToClose,
 		EMassTrafficPeriodLanesAction::None,
 		&MassCrowdSubsystem, false);
+	// 更新当前红绿灯状态
+	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
 }
 ```
 
