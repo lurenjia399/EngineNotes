@@ -372,7 +372,8 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
-1 检测是否能快速通过这段周期时间，如果是没有
+1 如果这个交叉路口不会同行是没有放行的人行道，车道，则直接减少这个周期的剩余时间
+2 
 ```
 
 # 征用
