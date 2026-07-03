@@ -311,27 +311,17 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 				}
 			}
 		}
-		// 构建红绿灯的cell，索引是红绿灯id
+		
 		UE::MassTraffic::FMassTrafficBasicHGrid IntersectionSideHGrid;
 		{
-			if (IsValid(TrafficLightInstanceData))
-			{
-				for (int32 TrafficLightDetailIndex = 0; 
-					TrafficLightDetailIndex < 
-						TrafficLightInstanceData->TrafficLights.Num(); 
-						TrafficLightDetailIndex++)
-				{
-					const FMassTrafficLightInstanceDesc& TrafficLightDetail = 
-						TrafficLightInstanceData
-						->TrafficLights[TrafficLightDetailIndex];
-					IntersectionSideHGrid.Add(TrafficLightDetailIndex,
-						FBox::BuildAABB(
-						TrafficLightDetail.ControlledIntersectionSideMidpoint,
-						 FVector::ZeroVector));
-				}
-			}
+			// 构建红绿灯的cell，key是红绿灯索引
 		}
-		// 
+		UE::MassTraffic::FMassTrafficBasicHGrid 
+			CrosswalkLaneMidpoint_HGrid(100.0f);
+		{
+			// 构建人行道的cell，key是CrosswalkLane的索引
+		}
+		
 	}
 }
 ```
