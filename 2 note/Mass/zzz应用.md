@@ -397,7 +397,7 @@ if(当前周期的剩余时间 > 0)
 
 if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 {
-	// 设置当前路口车道为准备关闭，也就是黄灯
+	// 设置当前路口车道为准备关闭，人行道不管，也就是黄灯
 	IntersectionFragment.ApplyLanesActionToCurrentPeriod(
 		EMassTrafficPeriodLanesAction::SoftPrepareToClose,
 		EMassTrafficPeriodLanesAction::None,
@@ -407,10 +407,13 @@ if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 }
 if(当前周期剩余时间 <= 0)
 {
+	// 设置当前路口车道为关闭，人行道关闭
 	IntersectionFragment.ApplyLanesActionToCurrentPeriod(
 		EMassTrafficPeriodLanesAction::SoftClose, 
 		EMassTrafficPeriodLanesAction::HardClose,
 		&MassCrowdSubsystem, false);
+	// 更新红绿灯状态
+	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
 }
 ```
 
