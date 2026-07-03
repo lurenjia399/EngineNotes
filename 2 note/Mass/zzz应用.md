@@ -239,7 +239,7 @@ bool ActivateActionMove(const UWorld& World,
 
 # 4 红绿灯
 
-## 1 UHTMassTrafficIntersectionSpawnDataGenerator
+##  UHTMassTrafficIntersectionSpawnDataGenerator
 ```cpp
 // 每个交叉区域都会创建出一个entity
 void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
@@ -355,7 +355,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 
 
 
-## 1UMassTrafficLightVisualizationTrait
+## UMassTrafficLightVisualizationTrait
 ```cpp
 void UMassTrafficLightVisualizationTrait::BuildTemplate(
 	FMassEntityTemplateBuildContext& BuildContext, 
@@ -366,23 +366,12 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 }
 ```
-## 2 MassTrafficLightVisualizationProcessor.cpp
+## MassTrafficLightVisualizationProcessor.cpp
 ```cpp
 1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodCollector
 2 UMassTrafficIntersectionVisualizationLODProcessor 用父类计算LOD
 3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
-```
-# 3 UMassTrafficIntersectionSimulationTrait
-```cpp
-void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
-{
-	// 添加Tag
-	BuildContext.AddTag<FMassTrafficIntersectionTag>();
-	// 添加tick时机
-	BuildContext.AddChunkFragment<
-	FMassTrafficIntersectionVariableTickChunkFragment>();
-}
 ```
 
 # 4 UMassTrafficUpdateIntersectionsProcessor
