@@ -336,7 +336,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		for (FMassTrafficIntersectionFragment& IntersectionFragment : 
 			OutIntersectionsSpawnData.IntersectionFragments)
 		{
-			// 如果只有
+			// 如果只有这个交叉路口只有两个边，说明是直行的有两个红绿灯
 			if (IntersectionDetail->Sides.Num() == 2 )
 			{
 				
