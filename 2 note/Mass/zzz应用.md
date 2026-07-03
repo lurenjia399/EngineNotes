@@ -353,10 +353,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 3 RegisteredTrafficIntersections 注册这个map，key是ZoneIndex,value是Intersection这个entity
 ```
 
-# 4 UMassTrafficUpdateIntersectionsProcessor
-```cpp
-1 
-```
+
 
 ## 1UMassTrafficLightVisualizationTrait
 ```cpp
@@ -388,3 +385,7 @@ void UMassTrafficIntersectionSimulationTrait::BuildTemplate(FMassEntityTemplateB
 }
 ```
 
+# 4 UMassTrafficUpdateIntersectionsProcessor
+```cpp
+1 
+```
