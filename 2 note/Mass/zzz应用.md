@@ -299,7 +299,11 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 如果相邻车道的下一个车道是交叉车道
 			if(当前车道的相邻车道是交叉车道)
 			{
-				if(相邻车道是)
+				if(相邻车道中有Split类型的)
+				{
+					1 把当前车道的下一条车道添加到side中
+					2 
+				}
 			}
 			
 		}
