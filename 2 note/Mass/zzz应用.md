@@ -427,7 +427,7 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)
 		&MassCrowdSubsystem, false);
 	// 更新红绿灯
 	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
-	// 更新当前周期剩余时间，在前边刚推进到下一周
+	// 更新当前周期剩余时间，在前边刚推进到下一周期了
 	IntersectionFragment.AddTimeRemainingToCurrentPeriod();
 }
 ```
