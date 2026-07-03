@@ -376,7 +376,7 @@ if(当前周期的剩余时间 > 0)
 {
 	if(当前交叉路口不会通行行人，车辆)
 	{
-		直接减少这个周期的剩余时间
+		直接设置周期剩余时间为
 	}
 	else if(有红绿灯)
 	{
@@ -388,7 +388,11 @@ if(当前周期的剩余时间 > 0)
 			这个周期剩余时间 = 黄灯时间 - 帧长
 		}
 	}
-	UpdateTrafficLightsForCurrentPeriod() // 更新当前周期的红绿灯,设置红绿灯的状态
+	// 更新当前周期的红绿灯,设置红绿灯的状态
+	UpdateTrafficLightsForCurrentPeriod();
+	// 减少当前周期剩余时间
+	IntersectionFragment.PeriodTimeRemaining = 
+		IntersectionFragment.PeriodTimeRemaining - CountDownSpeedSeconds;
 }
 
 ```
