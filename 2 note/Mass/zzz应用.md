@@ -421,6 +421,9 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)
 {
 	// 推进到下一周期
 	IntersectionFragment.AdvancePeriod();
+	IntersectionFragment.ApplyLanesActionToCurrentPeriod(
+		VehicleLanesAction, PedestrianLanesAction,
+		&MassCrowdSubsystem, false);
 }
 ```
 
