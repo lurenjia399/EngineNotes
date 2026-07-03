@@ -394,8 +394,10 @@ if(当前周期的剩余时间 > 0)
 	IntersectionFragment.PeriodTimeRemaining = 
 		IntersectionFragment.PeriodTimeRemaining - CountDownSpeedSeconds;
 }
-else
+
+if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 {
+	
 }
 ```
 
