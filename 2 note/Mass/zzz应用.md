@@ -239,7 +239,27 @@ bool ActivateActionMove(const UWorld& World,
 
 # 4 红绿灯
 
-# 1 
+## 1 创建
+### 1 
+```cpp
+void UHTMassTrafficIntersectionSpawnDataGenerator::Generate() const
+{
+	FMassEntitySpawnDataGeneratorResult Result;
+	Result.SpawnData.InitializeAs<FMassTrafficIntersectionsSpawnData>();
+	FMassTrafficIntersectionsSpawnData& IntersectionsSpawnData = Result.SpawnData.GetMutable<FMassTrafficIntersectionsSpawnData>();
+	
+	// 实际创建SpawnData方法
+	Generate(QueryOwner, EntityTypes, Count, IntersectionsSpawnData);
+
+	// 创建entity
+	Result.NumEntities = IntersectionsSpawnData.IntersectionFragments.Num();
+	Result.EntityConfigIndex = IntersectionEntityConfigIndex;
+	Result.SpawnDataProcessor = 
+		UMassTrafficInitIntersectionsProcessor::StaticClass();
+	
+	FinishedGeneratingSpawnPointsDelegate.Execute(MakeArrayView(&Result, 1));
+}
+```
 
 ## 1UMassTrafficLightVisualizationTrait
 ```cpp
