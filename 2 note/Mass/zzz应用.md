@@ -294,7 +294,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		// 如果车道不是交叉车道，但是是最右侧车道。
 		else if (TrafficLaneData.bIsRightMostLane)
 		{
-			if(车道的下一个车道是交叉车道)
+			if(车道的Out是交叉车道)
 			{
 				if(相邻车道中有Split类型的)
 				{
