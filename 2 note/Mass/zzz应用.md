@@ -325,7 +325,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		for (FMassTrafficIntersectionFragment& IntersectionFragment : 
 			OutIntersectionsSpawnData.IntersectionFragments)
 		{
-			// 1 确定交叉路口中点，用来找
+			// 1 确定交叉路口中点，用来找人行道
 			// 2 重新排序交叉路口的side，沿顺时针顺序
 			// 3 遍历交叉路口，找到隐藏出口
 			// 4 找到路口side的人行道，人心道的incoming为CrosswalkWaitingLane
