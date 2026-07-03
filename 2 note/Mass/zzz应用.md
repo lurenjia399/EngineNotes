@@ -352,23 +352,6 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 2 RestartIntersection 重新开始交叉路口，初始化状态
 3 RegisteredTrafficIntersections 注册这个map，key是ZoneIndex,value是Intersection这个entity
 ```
-## UMassTrafficLightVisualizationTrait
-```cpp
-void UMassTrafficLightVisualizationTrait::BuildTemplate(
-	FMassEntityTemplateBuildContext& BuildContext, 
-	const UWorld& World) const
-{
-	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在UCitySampleCrowdVisualizationFragmentInitializer中创建的，他是一个Observer，观察的是FCitySampleCrowdVisualizationFragment
-	2 添加注册这个FMassTrafficLightsParameters和FMassActorFragment
-}
-```
-## MassTrafficLightVisualizationProcessor.cpp
-```cpp
-1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodCollector
-2 UMassTrafficIntersectionVisualizationLODProcessor 用父类计算LOD
-3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
-4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
-```
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
@@ -430,6 +413,24 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)//绿灯
 	// 更新当前周期剩余时间，在前边刚推进到下一周期了
 	IntersectionFragment.AddTimeRemainingToCurrentPeriod();
 }
+```
+
+## UMassTrafficLightVisualizationTrait
+```cpp
+void UMassTrafficLightVisualizationTrait::BuildTemplate(
+	FMassEntityTemplateBuildContext& BuildContext, 
+	const UWorld& World) const
+{
+	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在UCitySampleCrowdVisualizationFragmentInitializer中创建的，他是一个Observer，观察的是FCitySampleCrowdVisualizationFragment
+	2 添加注册这个FMassTrafficLightsParameters和FMassActorFragment
+}
+```
+## MassTrafficLightVisualizationProcessor.cpp
+```cpp
+1 UMassTrafficIntersectionLODCollectorProcessor 用父类LodCollector
+2 UMassTrafficIntersectionVisualizationLODProcessor 用父类计算LOD
+3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
+4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
 
 # 征用
