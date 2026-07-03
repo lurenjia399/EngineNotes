@@ -383,9 +383,9 @@ if(当前周期的剩余时间 > 0)
 		if(当前交叉路口的当前周期上的车道和人行道都没有车没有人
 			&& 没有车在等待使用当前交叉路口
 			&& 当前交叉路口没有放行的人行道
-			&& 当前交叉路口剩余时间 > 黄灯时间)
+			&& 当前交叉路口剩余时间 > 路口准备关闭时间)
 		{
-			这个周期剩余时间 = 黄灯时间 - 帧长
+			这个周期剩余时间 = 路口准备关闭时间 - 帧长
 		}
 	}
 	// 更新当前周期的红绿灯,设置红绿灯的状态
@@ -394,7 +394,9 @@ if(当前周期的剩余时间 > 0)
 	IntersectionFragment.PeriodTimeRemaining = 
 		IntersectionFragment.PeriodTimeRemaining - CountDownSpeedSeconds;
 }
-
+else
+{
+}
 ```
 
 # 征用
