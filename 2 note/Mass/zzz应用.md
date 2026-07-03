@@ -290,7 +290,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		{
 			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
 			/*
-			1 FIntersectionDetailsMap key是jiao'c
+			1 FIntersectionDetailsMap key是IntersectionFragments数组索引，
 			*/
 			FindOrAddIntersection();
 		}
