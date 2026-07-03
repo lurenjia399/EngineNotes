@@ -414,6 +414,9 @@ if(当前周期剩余时间 <= 0)
 		&MassCrowdSubsystem, false);
 	// 更新红绿灯状态
 	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
+	IntersectionFragment.PedestrianLightsShowStop();
+	// 路口关闭了
+	continue;
 }
 ```
 
