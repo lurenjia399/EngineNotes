@@ -348,7 +348,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 # UMassTrafficInitIntersectionsProcessor
 
 ```CPP
-
+1 通过FMemory::Memswap方法将FMassTrafficIntersectionsSpawnData中的数据都交换到
 ```
 
 ## 1UMassTrafficLightVisualizationTrait
