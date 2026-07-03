@@ -332,10 +332,16 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 5 遍历side，找到红绿灯记录到side中
 			IntersectionDetail->Build();
 		}
-		// bi
+		// 遍历IntersectionFragments
 		for (FMassTrafficIntersectionFragment& IntersectionFragment : 
 			OutIntersectionsSpawnData.IntersectionFragments)
 		{
+			// 如果只有
+			if (IntersectionDetail->Sides.Num() == 2 )
+			{
+				
+			}
+		}
 	}
 }
 ```
