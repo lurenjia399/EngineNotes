@@ -345,7 +345,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 不止两条边，并且有红绿灯
 			else if (IntersectionDetail->bHasTrafficLights)
 			{
-				
+				// 遍历每天边，为每条边都添加一个车辆通过的Period
 			}
 		}
 	}
