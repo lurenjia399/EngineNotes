@@ -327,7 +327,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 		{
 			// 1 
 			// 2 重新排序交叉路口的side，沿顺时针顺序
-			// 3 遍历交叉路口，zhao'da
+			// 3 遍历交叉路口，找到隐藏出口
 			IntersectionDetail->Build();
 		}
 	}
