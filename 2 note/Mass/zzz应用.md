@@ -352,9 +352,6 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 2 RestartIntersection 重新开始交叉路口，初始化状态
 3 RegisteredTrafficIntersections 注册这个map，key是ZoneIndex,value是Intersection这个entity
 ```
-
-
-
 ## UMassTrafficLightVisualizationTrait
 ```cpp
 void UMassTrafficLightVisualizationTrait::BuildTemplate(
@@ -363,7 +360,6 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 {
 	1 根据FMassTrafficLightsParameters配置，将红绿灯的ISM通过RepresentationSubsystem创建出来。Crowd也会创建，他们是在UCitySampleCrowdVisualizationFragmentInitializer中创建的，他是一个Observer，观察的是FCitySampleCrowdVisualizationFragment
 	2 添加注册这个FMassTrafficLightsParameters和FMassActorFragment
-
 }
 ```
 ## MassTrafficLightVisualizationProcessor.cpp
@@ -374,7 +370,7 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
 
-# 4 UMassTrafficUpdateIntersectionsProcessor
+# UMassTrafficUpdateIntersectionsProcessor
 ```cpp
 1 
 ```
