@@ -372,8 +372,12 @@ void UMassTrafficLightVisualizationTrait::BuildTemplate(
 
 ## UMassTrafficUpdateIntersectionsProcessor
 ```cpp
-1 如果这个交叉路口不会通行行人，车辆，则直接减少这个周期的剩余时间
+1 如果这个交叉路口不会通行行人，车辆，则
 2 如果会通行并且有红绿灯，
+if(如果这个交叉路口不会通行行人，车辆)
+{
+	直接减少这个周期的剩余时间
+}
 ```
 
 # 征用
