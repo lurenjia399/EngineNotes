@@ -405,6 +405,13 @@ if(0 < 当前周期剩余时间 <= 路口准备关闭时间)
 	// 更新当前红绿灯状态
 	IntersectionFragment.UpdateTrafficLightsForCurrentPeriod();
 }
+if(当前周期剩余时间 <= 0)
+{
+	IntersectionFragment.ApplyLanesActionToCurrentPeriod(
+		EMassTrafficPeriodLanesAction::SoftClose, 
+		EMassTrafficPeriodLanesAction::HardClose,
+		&MassCrowdSubsystem, false);
+}
 ```
 
 # 征用
