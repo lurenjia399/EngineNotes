@@ -332,6 +332,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			// 5 遍历side，找到红绿灯记录到side中
 			IntersectionDetail->Build();
 		}
+		
 	}
 }
 ```
