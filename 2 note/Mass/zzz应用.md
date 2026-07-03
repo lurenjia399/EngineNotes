@@ -289,9 +289,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			&& !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
 			const int32 IntersectionZoneIndex = LaneData.ZoneIndex;
-			/*
-			1 FIntersectionDetailsMap key是IntersectionFragments数组索引，
-			*/
+			// 一个zone对应一个IntersectionFragment,也对应一个IntersectionDesc
 			FindOrAddIntersection();
 		}
 		// 最右侧车道
