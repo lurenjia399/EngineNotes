@@ -284,7 +284,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 	for (const FZoneGraphTrafficLaneData& TrafficLaneData : 
 		TrafficZoneGraphData.TrafficLaneDataArray)
 	{
-		// 如果是交叉车道，创建交叉车道信息，一个zone对应一个IntersectionFragment也对应一个IntersectionDesc
+		// 一个zone对应一个IntersectionFragment也对应一个IntersectionDesc。如果车道是交叉车道，直接创建Intersection
 		if (TrafficLaneData.ConstData.bIsIntersectionLane 
 			&& !MassTrafficSettings->CloseTrafficLaneFilter.Pass(LaneData.Tags))
 		{
@@ -292,7 +292,7 @@ void UHTMassTrafficIntersectionSpawnDataGenerator::Generate(
 			
 			FindOrAddIntersection();
 		}
-		// 最右侧车道
+		// 如果车道不是交叉车道，但是是
 		else if (TrafficLaneData.bIsRightMostLane)
 		{
 			// 如果相邻车道的下一个车道是交叉车道
