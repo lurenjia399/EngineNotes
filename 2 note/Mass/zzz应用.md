@@ -425,7 +425,14 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)//绿灯
 
 ## WaitingLane
 ```cpp
-
+void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
+	const EMassTrafficPeriodLanesAction VehicleLanesAction,
+	const EMassTrafficPeriodLanesAction PedestrianLanesAction,
+	UMassCrowdSubsystem* MassCrowdSubsystem,
+	const bool bForce) 
+{
+	
+}
 ```
 # 5 征用
 
