@@ -468,6 +468,7 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 ```cpp
 1 在Idling中直接检测AnnotationTags，如果包含WaitingLane，不包括ClosedLane，就进入WaitatIntersection节点，就是等待交叉路口节点
 2 进入之后，会执行FMassCrowdClaimWaitSlotTask，这里面会更新WaitArea的数量，如果等待的人太过了满了，就会改变LaneTag为Closedlane，退出WaitatIntersection，重新Wander，也就是重新找漫游的位置
+3 会在evaluator中判断IsIntersectionNeedQuickPass，就是在红灯的时候还在人行道上，会通过这个方法
 ```
 # 5 司机反馈
 
