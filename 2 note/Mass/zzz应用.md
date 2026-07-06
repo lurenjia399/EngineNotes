@@ -466,7 +466,8 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 
 # statetree状态更新
 ```cpp
-1 在Idling中直接检测AnnotationTags，如果包含WaitingLane，不包括ClosedLane，就进入WaitatIntersection节点，就是den
+1 在Idling中直接检测AnnotationTags，如果包含WaitingLane，不包括ClosedLane，就进入WaitatIntersection节点，就是等待交叉路口节点
+2 进入之后，会执行FMassCrowdClaimWaitSlotTask，
 ```
 # 5 征用
 
