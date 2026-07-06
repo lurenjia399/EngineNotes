@@ -423,7 +423,7 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)//绿灯
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
 
-## WaitingLane
+## ApplyLanesActionToCurrentPeriod
 ```cpp
 void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
 	const EMassTrafficPeriodLanesAction VehicleLanesAction,
@@ -431,7 +431,18 @@ void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
 	UMassCrowdSubsystem* MassCrowdSubsystem,
 	const bool bForce) 
 {
-	
+	// 
+	if (PedestrianLanesAction == EMassTrafficPeriodLanesAction::Open)
+	{
+		MassCrowdSubsystem->SetLaneState(
+			LaneHandle, ECrowdLaneState::Opened);			
+	}
+	else if (PedestrianLanesAction == EMassTrafficPeriodLanesAction::HardClose 
+		|| PedestrianLanesAction == EMassTrafficPeriodLanesAction::SoftClose)
+	{
+		MassCrowdSubsystem->SetLaneState(
+			LaneHandle, ECrowdLaneState::Closed);			
+	}
 }
 ```
 # 5 征用
