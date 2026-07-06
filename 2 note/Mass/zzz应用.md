@@ -444,8 +444,6 @@ void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
 	}
 }
 
-1 直接设置Annotation
-2 如果等待qu
 bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, ECrowdLaneState NewState)
 {
 	if (!LaneHandle.IsValid())
@@ -464,6 +462,11 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 	}
 	return bSuccess;
 }
+```
+
+# statetree状态更新
+```
+
 ```
 # 5 征用
 
