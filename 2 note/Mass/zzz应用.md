@@ -422,7 +422,6 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)//绿灯
 3 UMassTrafficLightVisualizationProcessor 用父类创建红绿灯Actor
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
-
 ## ApplyLanesActionToCurrentPeriod
 ```cpp
 void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
@@ -431,7 +430,7 @@ void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
 	UMassCrowdSubsystem* MassCrowdSubsystem,
 	const bool bForce) 
 {
-	// 
+	// 在工作线程执行，会根据参数，直接设置LaneState
 	if (PedestrianLanesAction == EMassTrafficPeriodLanesAction::Open)
 	{
 		MassCrowdSubsystem->SetLaneState(
@@ -443,6 +442,24 @@ void FMassTrafficIntersectionFragment::ApplyLanesActionToCurrentPeriod(
 		MassCrowdSubsystem->SetLaneState(
 			LaneHandle, ECrowdLaneState::Closed);			
 	}
+}
+
+bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, ECrowdLaneState NewState)
+{
+	if (!LaneHandle.IsValid())
+	{
+		return false;
+	}
+	
+	FZoneGraphCrowdLaneData* CrowdLaneData = GetMutableCrowdLaneData(LaneHandle);
+	const bool bSuccess = CrowdLaneData != nullptr;
+	if (bSuccess)
+	{
+		CrowdLaneData->SetState(NewState);
+		ZoneGraphAnnotationSubsystem
+			->SendEvent(FZoneGraphCrowdLaneStateChangeEvent(LaneHandle, NewState));
+	}
+	return bSuccess;
 }
 ```
 # 5 征用
