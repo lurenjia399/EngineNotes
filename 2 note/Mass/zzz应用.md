@@ -423,6 +423,10 @@ if(当前周期剩余时间 <= 0 && 老的当前周期剩余时间 <= 0)//绿灯
 4 UMassTrafficLightUpdateCustomVisualizationProcessor 根据actor还是ISM改变外观
 ```
 
+## WaitingLane
+```cpp
+
+```
 # 5 征用
 
 1 FMassTrafficExpropriateVehicleFragment
