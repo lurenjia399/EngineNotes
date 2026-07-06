@@ -477,5 +477,5 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 ```
 # 5 SmartObject
 ```cpp
-1 在StateTree的
+1 在StateTree的FHTMassFindSmartObjectTask::Tick方法中，会通过FindCandidatesAsync方法创建一个entity，通过pushCommond来添加FMassSmartObjectLaneLocationRequestFragment和
 ```
