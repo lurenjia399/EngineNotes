@@ -238,8 +238,8 @@ bool ActivateActionMove(const UWorld& World,
 ```
 
 # 4 红绿灯
-## 创建交叉路口数据
 
+##  UMassTrafficIntersectionSpawnDataGenerator
 ```cpp
 // 每个交叉区域都会创建出一个entity
 void UMassTrafficIntersectionSpawnDataGenerator::Generate() const
@@ -345,7 +345,7 @@ void UMassTrafficIntersectionSpawnDataGenerator::Generate(
 	}
 }
 ```
-## 初始化交叉路口
+## UMassTrafficInitIntersectionsProcessor
 
 ```CPP
 1 通过FMemory::Memswap方法将FMassTrafficIntersectionsSpawnData中的数据都交换到FMassTrafficIntersectionFragment中
