@@ -475,5 +475,7 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 2 进入之后，会执行FMassCrowdClaimWaitSlotTask，这里面会更新WaitArea的数量，如果等待的人太过了满了，就会改变LaneTag为Closedlane，退出WaitatIntersection，重新Wander，也就是重新找漫游的位置
 3 会在evaluator中判断IsIntersectionNeedQuickPass，就是在红灯的时候还在人行道上，会通过这个方法改变SpeedScale，随后在Wander的PathFollowTask中会根据速度跑过去
 ```
-# 5 司机反馈
+# 5 SmartObject
+```cpp
 
+```
