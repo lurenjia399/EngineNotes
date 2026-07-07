@@ -514,5 +514,9 @@ Root
 1 UHTCrowdAdditionalVisualizationTrait
 ```cpp
 1 通过UMassRepresentationSubsystem来创建出ISMComp，并返回Handle
-2 
+2 把FHTCrowdAdditionalParametersSharedFragment通过AddConstSharedFragment添加到ConstShared中
+```
+2 UHTCrowdAdditionalInitializer
+```cpp
+1 是一个ObserveProcessor，
 ```
