@@ -72,7 +72,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		// 8 设置运行状态，上一次tick状态为Unset
 		Exec.TreeRunStatus = EStateTreeRunStatus::Running;
 		Exec.LastTickStatus = EStateTreeRunStatus::Unset;
-		// 9 从根节点开始SelectState，dfs遍历，遍历到叶子节点，激活链ActiveStates
+		// 9 从根节点开始SelectState，dfs遍历，遍历到叶子节点，激活链ActiveStates。
 		FStateSelectionResult StateSelectionResult;
 		if (SelectState(InitFrame, RootState, StateSelectionResult))
 		{
@@ -87,13 +87,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 			// 叶子状态没有完成，就进入叶子状态
 			else
 			{
-				FStateTreeTransitionResult Transition;
-				Transition.TargetState = RootState;
-				Transition.CurrentRunStatus = Exec.LastTickStatus;
-				Transition.NextActiveFrames = 
-					StateSelectionResult.GetSelectedFrames();
-				Transition.NextActiveFrameEvents = 
-					StateSelectionResult.GetFramesStateSelectionEvents();
+				// 执行EnterState，根据状态链依次进入状态
 				const EStateTreeRunStatus LastTickStatus = EnterState(Transition);
 				Exec.LastTickStatus = LastTickStatus;
 				if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
