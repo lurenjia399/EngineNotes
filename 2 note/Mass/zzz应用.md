@@ -506,8 +506,12 @@ Root
 					->WaitForPathReady
 ```
 
-# 6 天气变化
+# 6 大伞
 ```cpp 
 1 在行人entity中添加WeatherFragment，UHTCrowdWeatherProcessor在execute中获取当前天气，如果雨天雪天通过commond的方式让entity播放montage，并给entity身上添加WeatherTag
 2 ISM的打伞表现是通过UHTCrowdAdditionalVisualizationProcessor改变的，这个Processor在WeatherTag添加后执行
+```
+1 UHTCrowdAdditionalVisualizationTrait
+```c'p'p
+
 ```
