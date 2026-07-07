@@ -490,3 +490,12 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 11 找到回到lane的Path后，进入ReachBackToRoadTarget节点，通过FHTMassFollowPathTask移动
 12 移动完成后回到Idling节点，重新SelectState
 ```
+
+```cpp
+ldling
+	->SmartObjects
+		->GetSmartObjectTarget
+			->FindSmartObjectPath
+				->ReachSmartObjectT
+		
+```
