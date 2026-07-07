@@ -50,13 +50,16 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	{
 		Stop();
 	}
-	// 添加一个ActiveFrame
+	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
 	InitFrame.StateTree = &RootStateTree;
 	InitFrame.RootState = FStateTreeStateHandle::Root;
 	InitFrame.ActiveStates = {};
 	InitFrame.bIsGlobalFrame = true;
-	
+	// 4
+	UpdateInstanceData({}, Exec.ActiveFrames);
+	// 5 
+	SetUpdatePhaseInExecutionState(Exec, EStateTreeUpdatePhase::StartTree);
 }
 ```
