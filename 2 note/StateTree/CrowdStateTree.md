@@ -161,7 +161,27 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 					TransitionEvents.Emplace(nullptr);
 				}
 			}
-			
+			for (const FStateTreeSharedEvent* TransitionEvent : TransitionEvents)
+				{
+					bool bPassed = false; 
+					{
+						bPassed = TestAllConditions(CurrentParentFrame, 
+							CurrentFrame, Transition.ConditionsBegin, 
+							Transition.ConditionsNum);
+					}
+					if (bPassed)
+					{
+						if (RequestTransition(
+							CurrentFrame, Transition.State, 
+							Transition.Priority, TransitionEvent,
+							Transition.Fallback))
+						{
+							
+							NextTransitionSource = FStateTreeTransitionSource(CurrentFrame.StateTree, FStateTreeIndex16(TransitionIndex), Transition.State, Transition.Priority);
+							break;
+						}
+					}
+				}
 		}
 	}
 }
