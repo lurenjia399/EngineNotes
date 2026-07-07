@@ -72,6 +72,12 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		// 8 设置运行状态，上一次tick状态为Unset
 		Exec.TreeRunStatus = EStateTreeRunStatus::Running;
 		Exec.LastTickStatus = EStateTreeRunStatus::Unset;
+		// 9 从根节点开始SelectState
+		FStateSelectionResult StateSelectionResult;
+		if (SelectState(InitFrame, RootState, StateSelectionResult))
+		{
+			
+		}
 	}
 }
 ```
