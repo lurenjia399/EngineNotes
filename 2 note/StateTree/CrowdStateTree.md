@@ -126,6 +126,13 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 ```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
-	
+
+	for (const FTransitionHandler& Handler : TransitionHandlers)
+	{
+		for (uint8 TransitionCounter = 0; 
+			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
+		{
+		}
+	}
 }
 ```
