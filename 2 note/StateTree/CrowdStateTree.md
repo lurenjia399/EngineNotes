@@ -64,10 +64,11 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	// 6 Evaluator执行TreeStart，GlobalTask执行EnterState
 	const EStateTreeRunStatus GlobalTasksRunStatus = 
 		StartEvaluatorsAndGlobalTasks(LastInitializedTaskIndex);
-	// 7 statetree是运行态
 	if (GlobalTasksRunStatus == EStateTreeRunStatus::Running)
 	{
-		
+		// 7 执行
+		constexpr bool bTickGlobalTasks = false;
+		TickEvaluatorsAndGlobalTasks(0.0f, bTickGlobalTasks);
 	}
 }
 ```
