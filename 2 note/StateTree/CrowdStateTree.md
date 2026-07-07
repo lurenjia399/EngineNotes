@@ -126,12 +126,39 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 ```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
-
+	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
 	{
 		for (uint8 TransitionCounter = 0; 
 			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 		{
+			if (Transition.Trigger == EStateTreeTransitionTrigger::OnEvent)
+			{
+				TConstArrayView<FStateTreeSharedEvent> EventsQueue = 
+					GetEventsToProcessView();
+				for (const FStateTreeSharedEvent& Event : EventsQueue)
+				{
+					if (Transition.RequiredEvent.DoesEventMatchDesc(*Event))
+					{
+						TransitionEvents.Emplace(&Event);
+					}
+				}
+			}
+			else if (EnumHasAnyFlags(Transition.Trigger, 
+				EStateTreeTransitionTrigger::OnTick))
+			{
+				TransitionEvents.Emplace(nullptr);
+			}
+			else if (EnumHasAnyFlags(Transition.Trigger, 
+				EStateTreeTransitionTrigger::OnDelegate))
+			{
+				if (Storage.
+					IsDelegateBroadcasted(Transition.RequiredDelegateDispatcher))
+				{
+					// Dummy event to make sure we iterate to loop below once.
+					TransitionEvents.Emplace(nullptr);
+				}
+			}
 		}
 	}
 }
