@@ -496,6 +496,12 @@ ldling
 	->SmartObjects
 		->GetSmartObjectTarget
 			->FindSmartObjectPath
-				->ReachSmartObjectT
+				->ReachSmartObjectTarget
+				->WaitForPathReady
+		->UseSmartObject
+		->GetBackToRoadTarget
+			->FindBackToRoadPath
+				->ReachBackToRoadTarget
+				->WaitForPathReady
 		
 ```
