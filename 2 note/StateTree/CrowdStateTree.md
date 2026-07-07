@@ -92,22 +92,11 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 }
 ```
 
-# Tick
+# TickTask
 ```cpp
-EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
+EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 {
-	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
-	const EStateTreeRunStatus PreludeResult = TickPrelude();
-	if (PreludeResult != EStateTreeRunStatus::Running)
-	{
-		return PreludeResult;
-	}
-
-	// 更新
-	TickUpdateTasksInternal(DeltaTime);
-	TickTriggerTransitionsInternal();
-
-	return TickPostlude();
+	
 }
 ```
 
