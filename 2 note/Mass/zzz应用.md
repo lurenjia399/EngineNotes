@@ -523,6 +523,6 @@ Root
 ```
 3 UHTCrowdAdditionalVisualizationProcessor
 ```cpp
-1 这个里面通过给ISM数组的AddBatchedTransform方法，来在既定位置创建出伞的ISM
+1 这个里面通过给ISM数组的AddBatchedTransform方法，来在既定位置创建出伞的ISM，并在伞的ISM中添加动画数据，通过读取AnimToTexture得来的
 2 
 ```
