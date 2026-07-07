@@ -519,5 +519,5 @@ Root
 2 UHTCrowdAdditionalInitializer
 ```cpp
 1 是一个ObserveProcessor，观察的FHTCrowdAdditionalVisualizationFragment的添加
-2 
+2 初始化FHTCrowdAdditionalVisualizationFragment，根据概率选择伞的模型，是否带伞
 ```
