@@ -72,7 +72,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		// 8 设置运行状态，上一次tick状态为Unset
 		Exec.TreeRunStatus = EStateTreeRunStatus::Running;
 		Exec.LastTickStatus = EStateTreeRunStatus::Unset;
-		// 9 从根节点开始SelectState，dfs遍历，遍历到叶子节点，构建选择链，如果是TrySelectChildrenInOrder类型就是每个孩子节点都选择一个
+		// 9 从根节点开始SelectState，dfs遍历，遍历到叶子节点，构建选择链，会调用TestCondition方法，判断能否进入选择链
 		FStateSelectionResult StateSelectionResult;
 		if (SelectState(InitFrame, RootState, StateSelectionResult))
 		{
