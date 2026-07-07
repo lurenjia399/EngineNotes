@@ -509,5 +509,6 @@ Root
 # 6 天气变化
 ```cpp
 1 在行人entity中添加WeatherFragment
-2 UHTCrowdWeatherProcessor在execute中获取当前天气，如果雨天雪天给entity
+2 UHTCrowdWeatherProcessor在execute中获取当前天气，如果雨天雪天通过commond的方式让entity播放montage，并给entity身上添加WeatherTag
+3 
 ```
