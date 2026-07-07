@@ -109,9 +109,15 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 			break;
 		}
 	}
+	// 遍历state链，依次Tick
 	for (int32 StateIndex = 0; StateIndex < 
 		TickArgs.Frame->ActiveStates.Num(); ++StateIndex)
 	{
+		if (bCopyBoundPropertiesOnNonTickedTask || 
+			CurrentState.ShouldTickTasks(bHasEvents))
+		{
+			const FTickTaskResult TickTasksResult = TickTasks(TickArgs);
+		}
 	}
 }
 ```
