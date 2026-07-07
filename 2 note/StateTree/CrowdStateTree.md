@@ -66,7 +66,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		StartEvaluatorsAndGlobalTasks(LastInitializedTaskIndex);
 	if (GlobalTasksRunStatus == EStateTreeRunStatus::Running)
 	{
-		// 7 执行
+		// 7 执行Evaluator的tick
 		constexpr bool bTickGlobalTasks = false;
 		TickEvaluatorsAndGlobalTasks(0.0f, bTickGlobalTasks);
 	}
