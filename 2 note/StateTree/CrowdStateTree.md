@@ -61,5 +61,8 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	UpdateInstanceData({}, Exec.ActiveFrames);
 	// 5 
 	SetUpdatePhaseInExecutionState(Exec, EStateTreeUpdatePhase::StartTree);
+	// 6 Evaluator执行TreeStart，GlobalTask执行EnterState
+	const EStateTreeRunStatus GlobalTasksRunStatus = 
+		StartEvaluatorsAndGlobalTasks(LastInitializedTaskIndex);
 }
 ```
