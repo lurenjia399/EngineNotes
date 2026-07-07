@@ -487,5 +487,5 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 8 移动完成后，进入UseSmartObject，节点里通过FMassUseSmartObjectTask来StartUsingSmartObject
 9 使用SO结束后，进入GetBackToRoadTarget节点，节点里通过FHTMassGetNearestLaneBackTargetTask来执行FindNearestLane方法找到距离Slot位置最近的lane上的最近点
 10 找到lane上最近点后，进入FindBackToRoadPath节点，通过FHTMassNavMeshCalculatePathTask计算回到lane上最近点的Path
-11 
+11 找到回到lane的Path后，进入ReachBackToRoadTarget节点，通过
 ```
