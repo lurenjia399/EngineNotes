@@ -76,28 +76,26 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		FStateSelectionResult StateSelectionResult;
 		if (SelectState(InitFrame, RootState, StateSelectionResult))
 		{
-			if (StateSelectionResult.GetSelectedFrames().Last().ActiveStates.Last().IsCompletionState())
+			// 如果叶子状态完成了，就标记statetree完成
+			if (StateSelectionResult.GetSelectedFrames()
+				.Last().ActiveStates.Last().IsCompletionState())
 			{
-				// Transition to a terminal state (succeeded/failed).
-				STATETREE_LOG(Warning, TEXT("%hs: Tree %s at StateTree start on '%s' using StateTree '%s'."),
-					__FUNCTION__, StateSelectionResult.GetSelectedFrames().Last().ActiveStates.Last() == FStateTreeStateHandle::Succeeded ? TEXT("succeeded") : TEXT("failed"), *GetNameSafe(&Owner), *GetFullNameSafe(&RootStateTree));
 				Exec.TreeRunStatus = 
-				StateSelectionResult.GetSelectedFrames()
-				.Last().ActiveStates.Last().ToCompletionStatus();
+					StateSelectionResult.GetSelectedFrames()
+					.Last().ActiveStates.Last().ToCompletionStatus();
 			}
+			// 叶子状态没有完成，就进入叶子状态
 			else
 			{
-				// Enter state tasks can fail/succeed, treat it same as tick.
 				FStateTreeTransitionResult Transition;
 				Transition.TargetState = RootState;
 				Transition.CurrentRunStatus = Exec.LastTickStatus;
-				Transition.NextActiveFrames = StateSelectionResult.GetSelectedFrames(); // Enter state will update Exec.ActiveFrames.
-				Transition.NextActiveFrameEvents = StateSelectionResult.GetFramesStateSelectionEvents();
+				Transition.NextActiveFrames = 
+					StateSelectionResult.GetSelectedFrames();
+				Transition.NextActiveFrameEvents = 
+					StateSelectionResult.GetFramesStateSelectionEvents();
 				const EStateTreeRunStatus LastTickStatus = EnterState(Transition);
-
 				Exec.LastTickStatus = LastTickStatus;
-
-				// Report state completed immediately.
 				if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
 				{
 					StateCompleted();
