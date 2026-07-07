@@ -90,7 +90,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 				//
 				/*
 				1  执行EnterState，根据选择链依次进入state，如果state有enterConditions就执行Condition的EnterState
-				2 执行state中的Task,
+				2 for循环依次执行state中的Task,执行Task中的EnterState方法
 				*/
 				const EStateTreeRunStatus LastTickStatus = EnterState(Transition);
 				Exec.LastTickStatus = LastTickStatus;
