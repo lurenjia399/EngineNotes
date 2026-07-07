@@ -96,7 +96,23 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 ```cpp
 EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 {
-	
+	if (TickArgs.Frame->bIsGlobalFrame)
+	{
+		constexpr bool bTickGlobalTasks = true;
+		const EStateTreeRunStatus FrameResult = 
+			TickEvaluatorsAndGlobalTasksForFrame(DeltaTime, bTickGlobalTasks,
+				FrameIndex, TickArgs.ParentFrame, TickArgs.Frame);
+		if (FrameResult != EStateTreeRunStatus::Running)
+		{
+			if (ExecutionContext::Private::bGlobalTasksCompleteOwningFrame == false || FrameIndex == 0)
+			{
+				// Stop the tree execution when it's the root frame or if the previous behavior is desired.
+				Exec.RequestedStop = ExecutionContext::GetPriorityRunStatus(Exec.RequestedStop, FrameResult);
+			}
+			TickArgs.bShouldTickTasks = false;
+			break;
+		}
+	}
 }
 ```
 
