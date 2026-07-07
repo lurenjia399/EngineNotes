@@ -132,6 +132,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		for (uint8 TransitionCounter = 0; 
 			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 		{
+			// 如果触发类型是OnEvent，如果队列有suo
 			if (Transition.Trigger == EStateTreeTransitionTrigger::OnEvent)
 			{
 				TConstArrayView<FStateTreeSharedEvent> EventsQueue = 
@@ -155,7 +156,6 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 				if (Storage.
 					IsDelegateBroadcasted(Transition.RequiredDelegateDispatcher))
 				{
-					// Dummy event to make sure we iterate to loop below once.
 					TransitionEvents.Emplace(nullptr);
 				}
 			}
