@@ -124,5 +124,8 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 
 # TriggerTransitions
 ```cpp
-
+bool FStateTreeExecutionContext::TriggerTransitions()
+{
+	
+}
 ```
