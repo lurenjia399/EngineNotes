@@ -94,6 +94,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 				*/
 				const EStateTreeRunStatus LastTickStatus = EnterState(Transition);
 				Exec.LastTickStatus = LastTickStatus;
+				// EnterState后不是Running，就完成statetree
 				if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
 				{
 					StateCompleted();
