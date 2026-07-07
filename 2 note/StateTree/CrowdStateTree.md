@@ -69,6 +69,9 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		// 7 执行Evaluator的tick
 		constexpr bool bTickGlobalTasks = false;
 		TickEvaluatorsAndGlobalTasks(0.0f, bTickGlobalTasks);
+		// 8 设置运行状态，上一次tick状态为Unset
+		Exec.TreeRunStatus = EStateTreeRunStatus::Running;
+		Exec.LastTickStatus = EStateTreeRunStatus::Unset;
 	}
 }
 ```
