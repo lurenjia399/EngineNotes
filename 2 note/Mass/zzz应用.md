@@ -483,4 +483,5 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 4 OUT有值后，就会进入SmartObjects节点，在这个节点里会通过FHTMassClaimSmartObjectTask这个来输出So的Slot
 5 有了SO的Slot后，会进入GetSmartObjectTarget节点，节点里通过FHTMassFindSmartObjectNavTargetTask来找到Slot的位置输出
 6 有了Slot位置后，进入FindSmartObjectPath节点，节点里通过FHTMassNavMeshCalculatePathTask来计算出Path
+7 有了Path后，进入
 ```
