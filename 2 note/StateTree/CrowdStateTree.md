@@ -45,10 +45,18 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	{
 		return EStateTreeRunStatus::Failed;
 	}
-	// 2 
+	// 2 如果之前还在运行就停止
 	if (Exec.TreeRunStatus == EStateTreeRunStatus::Running)
 	{
 		Stop();
 	}
+	// 添加一个ActiveFrame
+	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
+	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
+	InitFrame.StateTree = &RootStateTree;
+	InitFrame.RootState = FStateTreeStateHandle::Root;
+	InitFrame.ActiveStates = {};
+	InitFrame.bIsGlobalFrame = true;
+	
 }
 ```
