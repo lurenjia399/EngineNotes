@@ -132,7 +132,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		for (uint8 TransitionCounter = 0; 
 			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 		{
-			// 如果触发类型是OnEvent，如果队列有suo
+			// 如果触发类型是OnEvent，如果队列有所需的Event，就添加
 			if (Transition.Trigger == EStateTreeTransitionTrigger::OnEvent)
 			{
 				TConstArrayView<FStateTreeSharedEvent> EventsQueue = 
@@ -145,11 +145,13 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 					}
 				}
 			}
+			// Tick触发的，直接添加
 			else if (EnumHasAnyFlags(Transition.Trigger, 
 				EStateTreeTransitionTrigger::OnTick))
 			{
 				TransitionEvents.Emplace(nullptr);
 			}
+			// delegate触发的，如果已经广播了直接添加
 			else if (EnumHasAnyFlags(Transition.Trigger, 
 				EStateTreeTransitionTrigger::OnDelegate))
 			{
@@ -159,6 +161,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 					TransitionEvents.Emplace(nullptr);
 				}
 			}
+			
 		}
 	}
 }
