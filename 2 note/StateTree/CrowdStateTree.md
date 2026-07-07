@@ -87,7 +87,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 			// 叶子状态没有完成，就进入叶子状态
 			else
 			{
-				// 执行EnterState，根据状态链依次进入状态
+				// 执行EnterState，根据状态链依次进入state，如果state有enterConditions就执行Condition的EnterState
 				const EStateTreeRunStatus LastTickStatus = EnterState(Transition);
 				Exec.LastTickStatus = LastTickStatus;
 				if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
