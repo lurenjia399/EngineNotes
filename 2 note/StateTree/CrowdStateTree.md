@@ -39,6 +39,16 @@ bool FStateTreeExecutionContext::SelectStateInternal(
 ```cpp
 EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameters)
 {
-	
+	// 1 获取实例
+	FStateTreeExecutionState& Exec = GetExecState();
+	if (!Exec.CurrentPhase == EStateTreeUpdatePhase::Unset)
+	{
+		return EStateTreeRunStatus::Failed;
+	}
+	// 2 
+	if (Exec.TreeRunStatus == EStateTreeRunStatus::Running)
+	{
+		Stop();
+	}
 }
 ```
