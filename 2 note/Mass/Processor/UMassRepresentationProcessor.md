@@ -23,11 +23,6 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 1 本来是在游戏线程执行，因为需要读取UMassLODSubsystem，我们重写了TMassExternalSubsystemTraits方法，改到工作线程了
 2 计算Lod，分为High,Medium,Low,Off四种Lod，分为两个Lod数组（一个是VisibleLodDistance和BaseLodDistance）,如果entity可见就取可见Lod数组，否则取BaseLod数组。算出Lod后设置到FMassRepresentationLODFragment中
 3 设置可见性，有CanBeSeen，CulledByFrustum，CulledByDistance三种
-
-# UMassSimulationLODProcessor
-1 这个和UMassCrowdVisualizationLODProcessor这个类似
-2 算出的log，设置到 FMassSimulationLODFragment这个里，还会根据配置把tag设到entity上
-
 # UMassRepresentationProcessor
 1 确定WantedRepresentationType，根据entity的Lod和其他设置来确定，分为HighResSpawnedActor，LowResSpawnedActor，StaticMeshInstance这几种
 ```cpp
