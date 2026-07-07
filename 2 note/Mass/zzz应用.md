@@ -507,3 +507,7 @@ Root
 ```
 
 # 6 天气变化
+```cpp
+1 在行人entity中添加WeatherFragment
+2 
+```
