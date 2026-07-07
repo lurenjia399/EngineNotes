@@ -492,16 +492,16 @@ bool UMassCrowdSubsystem::SetLaneState(const FZoneGraphLaneHandle LaneHandle, EC
 ```
 
 ```cpp
-ldling
-	->SmartObjects
-		->GetSmartObjectTarget
-			->FindSmartObjectPath
-				->ReachSmartObjectTarget
-				->WaitForPathReady
-		->UseSmartObject
-		->GetBackToRoadTarget
-			->FindBackToRoadPath
-				->ReachBackToRoadTarget
-				->WaitForPathReady
-		
+Root
+	->ldling
+		->SmartObjects
+			->GetSmartObjectTarget
+				->FindSmartObjectPath
+					->ReachSmartObjectTarget
+					->WaitForPathReady
+			->UseSmartObject
+			->GetBackToRoadTarget
+				->FindBackToRoadPath
+					->ReachBackToRoadTarget
+					->WaitForPathReady
 ```
