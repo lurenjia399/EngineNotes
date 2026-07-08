@@ -145,6 +145,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 			MovingAvoidanceParams.ObstaclePredictiveAvoidanceStiffness *
 			StandingScaling;
 			SteeringForce += AvoidForce;
+		// 限制力的最大值
+		Force.Value = UE::MassNavigation::ClampVector(
+			SteeringForce, MaxSteerAccel);
 	}
 }
 ```
