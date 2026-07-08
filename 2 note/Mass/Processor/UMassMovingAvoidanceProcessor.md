@@ -49,7 +49,10 @@ void UMassMovingAvoidanceProcessor::Execute(
 	// 遍历Colliders数组
 	for (const FCollider& Collider : Colliders)
 	{
-		
+		if (Collider.bCanAvoid == false)
+		{
+			
+		}
 	}
 }
 ```
