@@ -46,5 +46,10 @@ void UMassMovingAvoidanceProcessor::Execute(
 		Collider.bCanAvoid = bCanAvoid;
 		Collider.bIsMoving = bOtherIsMoving;
 	}
+	// 遍历Colliders数组
+	for (const FCollider& Collider : Colliders)
+	{
+		
+	}
 }
 ```
