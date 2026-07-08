@@ -27,15 +27,17 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 		FMath::Min(CurrentSegment + 1, (int32)CachedLane.NumPoints - 2);
 	const int32 NumPoints = (LastSegment - FirstSegment + 1) + 1;
 	
-	// 
+	// 从cacheLane中拿到点的位置
 	for (int32 Index = 0; Index < NumPoints; Index++)
 	{
 		Points[Index] = CachedLane.LanePoints[Index];
-	} 
+	}
+	// 根据点的位置，计算出片段的向量和左向量
 	for (int32 Index = 0; Index < NumPoints - 1; Index++)
 	{
 		SegmentDirections[Index] = (Points[Index + 1] - Points[Index]).GetSafeNormal();
-		SegmentNormals[Index] = UE::MassNavigation::GetLeftDirection(SegmentDirections[Index], FVector::UpVector);
+		SegmentNormals[Index] = UE::MassNavigation::GetLeftDirection(
+			SegmentDirections[Index], FVector::UpVector);
 	}
 	SegmentDirections[NumPoints - 1] = SegmentDirections[NumPoints - 2];
 	SegmentNormals[NumPoints - 1] = SegmentNormals[NumPoints - 2];
