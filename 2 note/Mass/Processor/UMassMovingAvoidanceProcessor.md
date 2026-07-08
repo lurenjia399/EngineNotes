@@ -117,7 +117,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 		const FVector::FReal PenSep = 
 			(SeparationAgentRadius + Collider.Radius + 
 			MovingAvoidanceParams.ObstacleSeparationDistance) - ConDist;
-		// 
+		// 侵入量 / 理想的间距，然后平方，得到一个反比例函数，
 		const FVector::FReal SeparationMag = 
 			FMath::Square(FMath::Clamp(PenSep /
 			MovingAvoidanceParams.ObstacleSeparationDistance, 0., 1.));
