@@ -25,7 +25,12 @@ void UMassMovingAvoidanceProcessor::Execute(
 	// 遍历障碍物数组
 	for (int32 Index = 0; Index < ClosestObstacles.Num(); Index++)
 	{
-		
+		// 获取障碍物的速度
+		const FMassVelocityFragment* OtherVelocityFragment = 
+			OtherEntityView.GetFragmentDataPtr<FMassVelocityFragment>();
+		const FVector OtherVelocity = OtherVelocityFragment != nullptr 
+			? OtherVelocityFragment->Value : FVector::ZeroVector;
+		// 
 	}
 }
 ```
