@@ -1,7 +1,8 @@
 1 
 ```cpp
 1 通过THierarchicalHashGrid2D来空间存储障碍物信息
-2 Execute执行的时候通过查找范围
+2 Execute执行的时候通过查找范围获取到entity附近的障碍物
+3 施加分离力，是由障碍物指向entity方向里的
 ```
 2 
 ```cpp
