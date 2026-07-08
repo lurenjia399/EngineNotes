@@ -129,7 +129,12 @@ void UMassMovingAvoidanceProcessor::Execute(
 			UE::MassAvoidance::ComputeClosestPointOfApproach(
 			RelPos, RelVel, PredictiveAvoidanceAgentRadius 
 			+ Collider.Radius, MovingAvoidanceParams.PredictiveAvoidanceTime);
-
+		// 根据CPA，计算出预测
+		const FVector AvoidRelPos = RelPos + RelVel * CPA;
+		const FVector::FReal AvoidDist = AvoidRelPos.Size();
+		const FVector AvoidConNormal = 
+			AvoidDist > UE_KINDA_SMALL_NUMBER 
+			? (AvoidRelPos / AvoidDist) : FVector::ForwardVector;
 	}
 }
 ```
