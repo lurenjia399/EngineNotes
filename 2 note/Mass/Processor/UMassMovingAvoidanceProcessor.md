@@ -2,7 +2,7 @@
 void UMassMovingAvoidanceProcessor::Execute(
 	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
-	// zhao
+	// 找到entity周围4米的其他entity
 	const FNavigationObstacleHashGrid2D& AvoidanceObstacleGrid = 
 		NavigationSubsystem->GetObstacleGridMutable();
 	UE::MassAvoidance::FindCloseObstacles(
