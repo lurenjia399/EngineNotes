@@ -1,3 +1,4 @@
 ```cpp
-1 用FMassLaneCacheBoundaryFragment来标记此次计算edge的wei'zhi
+1 用FMassLaneCacheBoundaryFragment来标记此次计算edge的位置，就是标记以哪个位置为基准计算的Edge
+2 FMassNavigationEdgesFragment用来缓存计算出的AvoidanceEdge
 ```
