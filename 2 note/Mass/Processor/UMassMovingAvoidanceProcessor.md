@@ -89,6 +89,13 @@ void UMassMovingAvoidanceProcessor::Execute(
 				bHasForcedNormal = true;
 			}
 		}
+		// 障碍物指向entity的向量，在entitie
+		FVector RelPos = AgentLocation - Collider.Location;
+		RelPos.Z = 0.;
+		
+		const FVector RelVel = DesVel - Collider.Velocity;
+		const FVector::FReal ConDist = RelPos.Size();
+		const FVector ConNorm = ConDist > 0. ? RelPos / ConDist : FVector::ForwardVector;
 	}
 }
 ```
