@@ -96,7 +96,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 		const FVector RelVel = DesVel - Collider.Velocity;
 		// 障碍物和entity之间的距离
 		const FVector::FReal ConDist = RelPos.Size();
-		// 障碍物指向entitytx
+		// 障碍物指向entity向量的归一化
 		const FVector ConNorm = ConDist > 0. ? 
 			RelPos / ConDist : FVector::ForwardVector;
 	}
