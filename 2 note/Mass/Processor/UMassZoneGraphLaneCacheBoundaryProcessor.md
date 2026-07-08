@@ -51,7 +51,7 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 			UE::MassNavigation::ComputeMiterNormal(
 			SegmentNormals[Index - 1], SegmentNormals[Index]);
 	}
-	// 计算出zuo'bian'ji
+	// 计算出左边界和有边界，用当前道路的一半
 	const float LeftWidth = HalfWidth + CachedLane.LaneLeftSpace.Get();
 	const float RightWidth = HalfWidth + CachedLane.LaneRightSpace.Get();
 	FVector LeftPositions[MaxPoints];
