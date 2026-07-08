@@ -62,5 +62,28 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 		LeftPositions[Index] = Points[Index] + LeftWidth * MiterDir;
 		RightPositions[Index] = Points[Index] - RightWidth * MiterDir;
 	}
+	// 处理4点3段的情况，如果有两端之间有交叉，则删掉一个点
+	if (NumPoints == 4)
+	{
+		FVector Intersection = FVector::ZeroVector;
+		if (FMath::SegmentIntersection2D(
+			LeftPositions[0], LeftPositions[1], 
+			LeftPositions[2], LeftPositions[3], Intersection))
+		{
+			LeftPositions[1] = Intersection;
+			LeftPositions[2] = LeftPositions[3];
+			NumLeftPositions--;
+		}
+
+		Intersection = FVector::ZeroVector;
+		if (FMath::SegmentIntersection2D(
+			RightPositions[0], RightPositions[1], 
+			RightPositions[2], RightPositions[3], Intersection))
+		{
+			RightPositions[1] = Intersection;
+			RightPositions[2] = RightPositions[3];
+			NumRightPositions--;
+		}
+	}
 }
 ```
