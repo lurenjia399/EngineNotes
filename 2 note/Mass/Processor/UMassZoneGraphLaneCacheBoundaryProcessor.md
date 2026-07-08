@@ -85,5 +85,18 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 			NumRightPositions--;
 		}
 	}
+	// 记录边界
+	for (int32 Index = 0; Index < NumLeftPositions - 1; Index++)
+	{
+		Edges.AvoidanceEdges.Add(
+			FNavigationAvoidanceEdge(
+			LeftPositions[Index + 1], LeftPositions[Index]));
+	}
+	for (int32 Index = 0; Index < NumRightPositions - 1; Index++)
+	{
+		Edges.AvoidanceEdges.Add(
+			FNavigationAvoidanceEdge(
+			RightPositions[Index], RightPositions[Index + 1]));
+	}
 }
 ```
