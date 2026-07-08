@@ -1,6 +1,7 @@
 1 
 ```cpp
-1 通过
+1 通过THierarchicalHashGrid2D来空间存储障碍物信息
+2 Execute执行的时候通过查找范围
 ```
 2 
 ```cpp
