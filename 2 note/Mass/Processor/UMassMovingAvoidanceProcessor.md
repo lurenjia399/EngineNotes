@@ -57,10 +57,12 @@ void UMassMovingAvoidanceProcessor::Execute(
 			// 能安全通过的最小大小，就是entity的直径乘上个系数
 			const FVector::FReal MinClearance = 2. * AgentRadius * 
 				MovingAvoidanceParams.StaticObstacleClearanceScale;
-			// 
+			// 直接遍历Edge
 			for (const FNavigationAvoidanceEdge& Edge : NavEdges.AvoidanceEdges)
 			{
-				const FVector Point = FMath::ClosestPointOnSegment(Collider.Location, Edge.Start, Edge.End);
+				// 根据障碍物位置，找到在Edge上的最近距离
+				const FVector Point = FMath::ClosestPointOnSegment(
+					Collider.Location, Edge.Start, Edge.End);
 				const FVector Offset = Collider.Location - Point;
 				if (FVector::DotProduct(Offset, Edge.LeftDir) < 0.)
 				{
