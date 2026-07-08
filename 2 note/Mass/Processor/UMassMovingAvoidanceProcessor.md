@@ -2,7 +2,8 @@
 ```cpp
 1 通过THierarchicalHashGrid2D来空间存储障碍物信息
 2 Execute执行的时候通过查找范围获取到entity附近的障碍物
-3 施加分离力，是由障碍物指向entity方向里的
+3 施加分离力，是由障碍物指向entity方向里的力，力的大小默认是250N/cm
+4 通过CPA预测分离力，将预测接近点也认为sh
 ```
 2 
 ```cpp
