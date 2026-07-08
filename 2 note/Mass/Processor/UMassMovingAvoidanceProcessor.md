@@ -101,7 +101,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 			RelPos / ConDist : FVector::ForwardVector;
 		// 一般情况下分离力就是障碍物指向entity的向量
 		FVector SeparationNormal = ConNorm;
-		// 但如果有缝隙entity无法通过，就需要计算出
+		// 但如果有缝隙entity无法通过，就需要计算出插值，因为光靠一般分离力是无法让entity避开的，插值的系数就是在障碍物坐标系xi
 		if (bHasForcedNormal)
 		{
 			const FVector RelVelNorm = RelVel.GetSafeNormal();
