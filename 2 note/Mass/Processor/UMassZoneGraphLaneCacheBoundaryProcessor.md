@@ -42,7 +42,7 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 	SegmentDirections[NumPoints - 1] = SegmentDirections[NumPoints - 2];
 	SegmentNormals[NumPoints - 1] = SegmentNormals[NumPoints - 2];
 	
-	// 计算出中间向量，如果是拐角na'zhong
+	// 计算出中间向量，目的是去掉拐角
 	MiterDirections[0] = SegmentNormals[0];
 	MiterDirections[NumPoints - 1] = SegmentNormals[NumPoints - 1];
 	for (int32 Index = 1; Index < NumPoints - 1; Index++)
@@ -50,6 +50,17 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 		MiterDirections[Index] = 
 			UE::MassNavigation::ComputeMiterNormal(
 			SegmentNormals[Index - 1], SegmentNormals[Index]);
+	}
+	// 计算出zuo'bian'ji
+	const float LeftWidth = HalfWidth + CachedLane.LaneLeftSpace.Get();
+	const float RightWidth = HalfWidth + CachedLane.LaneRightSpace.Get();
+	FVector LeftPositions[MaxPoints];
+	FVector RightPositions[MaxPoints];
+	for (int32 Index = 0; Index < NumPoints; Index++)
+	{
+		const FVector MiterDir = MiterDirections[Index];
+		LeftPositions[Index] = Points[Index] + LeftWidth * MiterDir;
+		RightPositions[Index] = Points[Index] - RightWidth * MiterDir;
 	}
 }
 ```
