@@ -49,6 +49,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 	// 遍历Colliders数组
 	for (const FCollider& Collider : Colliders)
 	{
+		/*
+		当对方不会主动避让(比如静止的障碍、玩家、不参与避障的实体)时,它和旁边的导航边界(墙 NavEdges)之间可能形成一条狭窄的缝隙(local minima)。如果 entity 试图从缝里挤过去会卡住,所以要主动绕开这条缝。
+		*/
 		if (Collider.bCanAvoid == false)
 		{
 			
