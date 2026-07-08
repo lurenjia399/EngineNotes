@@ -121,6 +121,8 @@ void UMassMovingAvoidanceProcessor::Execute(
 		const FVector::FReal SeparationMag = 
 			FMath::Square(FMath::Clamp(PenSep /
 			MovingAvoidanceParams.ObstacleSeparationDistance, 0., 1.));
+		// 将分离力添加到SteeringForce中
+		SteeringForce += SeparationForce;
 	}
 }
 ```
