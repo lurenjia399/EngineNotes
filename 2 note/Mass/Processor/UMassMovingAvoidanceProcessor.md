@@ -10,5 +10,11 @@ void UMassMovingAvoidanceProcessor::Execute(
 		MovingAvoidanceParams.ObstacleDetectionDistance,
 		AvoidanceObstacleGrid, CloseEntities, 
 		UE::MassAvoidance::MaxObstacleResults);
+		
+	for (const FNavigationObstacleHashGrid2D::ItemIDType OtherEntity 
+		: CloseEntities)
+	{
+		
+	}
 }
 ```
