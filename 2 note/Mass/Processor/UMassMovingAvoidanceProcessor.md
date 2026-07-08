@@ -123,6 +123,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 			MovingAvoidanceParams.ObstacleSeparationDistance, 0., 1.));
 		// 将分离力添加到SteeringForce中
 		SteeringForce += SeparationForce;
+		
+		const FVector::FReal CPA = UE::MassAvoidance::ComputeClosestPointOfApproach(RelPos, RelVel, PredictiveAvoidanceAgentRadius + Collider.Radius, MovingAvoidanceParams.PredictiveAvoidanceTime);
+
 	}
 }
 ```
