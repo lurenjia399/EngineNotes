@@ -10,11 +10,17 @@ void UMassMovingAvoidanceProcessor::Execute(
 		MovingAvoidanceParams.ObstacleDetectionDistance,
 		AvoidanceObstacleGrid, CloseEntities, 
 		UE::MassAvoidance::MaxObstacleResults);
-		
+	// 遍历找到的CloseEntity
 	for (const FNavigationObstacleHashGrid2D::ItemIDType OtherEntity 
 		: CloseEntities)
 	{
-		
+		// 被认为是障碍物，添加到障碍物数组中
+		FSortedObstacle Obstacle;
+		Obstacle.LocationCached = OtherLocation;
+		Obstacle.Forward = Transform.GetRotation().GetForwardVector();
+		Obstacle.ObstacleItem = OtherEntity;
+		Obstacle.SqDist = SqDist;
+		ClosestObstacles.Add(Obstacle);
 	}
 }
 ```
