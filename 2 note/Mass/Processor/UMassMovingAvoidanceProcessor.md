@@ -113,10 +113,11 @@ void UMassMovingAvoidanceProcessor::Execute(
 		// 对静止的障碍物，施加的分离力可以更小
 		const FVector::FReal StandingScaling = Collider.bIsMoving 
 			? 1. : MovingAvoidanceParams.StandingObstacleAvoidanceScale;
-		// 标记entity和障碍物之间的侵入量，就是当前的距离和理想之间
+		// 标记entity和障碍物之间的侵入量，就是理想的间距 - 当前的实际的间距
 		const FVector::FReal PenSep = 
 			(SeparationAgentRadius + Collider.Radius + 
 			MovingAvoidanceParams.ObstacleSeparationDistance) - ConDist;
+		// 
 		const FVector::FReal SeparationMag = 
 			FMath::Square(FMath::Clamp(PenSep /
 			MovingAvoidanceParams.ObstacleSeparationDistance, 0., 1.));
