@@ -110,7 +110,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 			SeparationNormal = FMath::Lerp
 				(ConNorm, ForcedNormal, Blend).GetSafeNormal();
 		}
-		
+		// 
+		const FVector::FReal StandingScaling = Collider.bIsMoving 
+			? 1. : MovingAvoidanceParams.StandingObstacleAvoidanceScale;
 	}
 }
 ```
