@@ -37,6 +37,14 @@ void UMassMovingAvoidanceProcessor::Execute(
 		const bool bOtherIsMoving = OtherMoveTarget ? 
 			OtherMoveTarget->GetCurrentAction() == EMassMovementAction::Move 
 			: true;
+		// 添加Collider数组
+		FCollider& Collider = Colliders.Add_GetRef(FCollider{});
+		Collider.Location = Obstacle.LocationCached;
+		Collider.Velocity = OtherVelocity;
+		Collider.Radius = 
+			OtherEntityView.GetFragmentData<FAgentRadiusFragment>().Radius;
+		Collider.bCanAvoid = bCanAvoid;
+		Collider.bIsMoving = bOtherIsMoving;
 	}
 }
 ```
