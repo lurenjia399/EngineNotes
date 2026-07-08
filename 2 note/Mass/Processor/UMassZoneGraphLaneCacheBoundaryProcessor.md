@@ -14,7 +14,7 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 	LaneCacheBoundary.LastUpdateCacheID = CachedLane.CacheID;
 	const float HalfWidth = 0.5f * CachedLane.LaneWidth.Get();
 
-	// 找到点的数量，
+	// 确定要找多少个点，首先找到entity位于那个片段中，结合片段的前一个和后一个计算出di
 	static const int32 MaxPoints = 4;
 	FVector Points[MaxPoints];
 	FVector SegmentDirections[MaxPoints];
