@@ -99,6 +99,15 @@ void UMassMovingAvoidanceProcessor::Execute(
 		// 障碍物指向entity向量的归一化
 		const FVector ConNorm = ConDist > 0. ? 
 			RelPos / ConDist : FVector::ForwardVector;
+		// 一般情况下分离力就是障碍物指向entity的向量
+		FVector SeparationNormal = ConNorm;
+		// 但如果有缝隙entity无法通过，就需要计算出
+		if (bHasForcedNormal)
+		{
+			const FVector RelVelNorm = RelVel.GetSafeNormal();
+			const FVector::FReal Blend = FMath::Max(0., -FVector::DotProduct(ConNorm, RelVelNorm));
+			SeparationNormal = FMath::Lerp(ConNorm, ForcedNormal, Blend).GetSafeNormal();
+		}
 	}
 }
 ```
