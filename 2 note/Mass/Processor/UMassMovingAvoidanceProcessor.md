@@ -22,5 +22,10 @@ void UMassMovingAvoidanceProcessor::Execute(
 		Obstacle.SqDist = SqDist;
 		ClosestObstacles.Add(Obstacle);
 	}
+	// 遍历障碍物数组
+	for (int32 Index = 0; Index < ClosestObstacles.Num(); Index++)
+	{
+		
+	}
 }
 ```
