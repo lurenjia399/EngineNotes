@@ -135,7 +135,11 @@ void UMassMovingAvoidanceProcessor::Execute(
 		const FVector AvoidConNormal = 
 			AvoidDist > UE_KINDA_SMALL_NUMBER 
 			? (AvoidRelPos / AvoidDist) : FVector::ForwardVector;
-		// 
+		
+		/*
+		 1. AvoidMag:未来最接近点的侵入深度(越深越强,平方曲线)。
+		  2. AvoidMagDist:碰撞发生得越早(CPA越小),力越大;越晚越弱。给近在眼前的威胁更高优先级。
+		*/
 		const FVector AvoidForce = 
 			AvoidNormal * AvoidMag * AvoidMagDist * 
 			MovingAvoidanceParams.ObstaclePredictiveAvoidanceStiffness *
