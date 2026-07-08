@@ -54,6 +54,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 		*/
 		if (Collider.bCanAvoid == false)
 		{
+			// 能安全通过的最小大小，就是entity的直径乘上个系数
+			const FVector::FReal MinClearance = 2. * AgentRadius * 
+				MovingAvoidanceParams.StaticObstacleClearanceScale;
 			
 		}
 	}
