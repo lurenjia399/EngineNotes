@@ -124,7 +124,11 @@ void UMassMovingAvoidanceProcessor::Execute(
 		// 将分离力添加到SteeringForce中
 		SteeringForce += SeparationForce;
 		
-		const FVector::FReal CPA = UE::MassAvoidance::ComputeClosestPointOfApproach(RelPos, RelVel, PredictiveAvoidanceAgentRadius + Collider.Radius, MovingAvoidanceParams.PredictiveAvoidanceTime);
+		// 计算CPA，根据双方相对位置和相对速度,预测在未来PredictiveAvoidanceTime 时间窗口内最接近的那个时刻(一个 0 到  PredictiveAvoidanceTime 之间的时间值)。
+		const FVector::FReal CPA =
+			UE::MassAvoidance::ComputeClosestPointOfApproach(
+			RelPos, RelVel, PredictiveAvoidanceAgentRadius 
+			+ Collider.Radius, MovingAvoidanceParams.PredictiveAvoidanceTime);
 
 	}
 }
