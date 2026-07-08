@@ -12,6 +12,19 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 	// 记录此次计算Edge的基准
 	LaneCacheBoundary.LastUpdatePosition = MovementTarget.Center;
 	LaneCacheBoundary.LastUpdateCacheID = CachedLane.CacheID;
-	
+	const float HalfWidth = 0.5f * CachedLane.LaneWidth.Get();
+
+	// 
+	static const int32 MaxPoints = 4;
+	FVector Points[MaxPoints];
+	FVector SegmentDirections[MaxPoints];
+	FVector SegmentNormals[MaxPoints];
+	FVector MiterDirections[MaxPoints];
+	const int32 CurrentSegment = 
+		CachedLane.FindSegmentIndexAtDistance(LaneLocation.DistanceAlongLane);
+	const int32 FirstSegment = FMath::Max(0, CurrentSegment - 1);
+	const int32 LastSegment = 
+		FMath::Min(CurrentSegment + 1, (int32)CachedLane.NumPoints - 2);
+	const int32 NumPoints = (LastSegment - FirstSegment + 1) + 1;
 }
 ```
