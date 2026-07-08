@@ -69,7 +69,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 				{
 					continue;
 				}
-				// 障碍物和Edge之间缝隙的长度，如果太窄不能通过，就记录缝隙的长度和构成缝隙的点
+				// 障碍物和Edge之间缝隙的长度，如果太窄不能通过，就记录最大缝隙长度和构成缝隙的点
 				const FVector::FReal OffsetLength = Offset.Length();
 				const bool bTooNarrow = 
 					(OffsetLength - Collider.Radius) < MinClearance; 
@@ -82,10 +82,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 					}
 				}
 			}
-
+			// 如果有缝隙通过不了，就改变力的fang'xiang
 			if (MaxDist != -1.)
 			{
-				// Set up forced normal to avoid the gap between collider and edge.
 				ForcedNormal = (Collider.Location - ClosestPoint).GetSafeNormal();
 				bHasForcedNormal = true;
 			}
