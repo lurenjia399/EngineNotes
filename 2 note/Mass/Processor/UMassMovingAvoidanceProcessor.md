@@ -135,6 +135,12 @@ void UMassMovingAvoidanceProcessor::Execute(
 		const FVector AvoidConNormal = 
 			AvoidDist > UE_KINDA_SMALL_NUMBER 
 			? (AvoidRelPos / AvoidDist) : FVector::ForwardVector;
+		// 
+		const FVector AvoidForce = 
+			AvoidNormal * AvoidMag * AvoidMagDist * 
+			MovingAvoidanceParams.ObstaclePredictiveAvoidanceStiffness *
+			StandingScaling;
+			SteeringForce += AvoidForce;
 	}
 }
 ```
