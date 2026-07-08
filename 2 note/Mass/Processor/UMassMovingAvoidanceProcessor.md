@@ -30,7 +30,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 			OtherEntityView.GetFragmentDataPtr<FMassVelocityFragment>();
 		const FVector OtherVelocity = OtherVelocityFragment != nullptr 
 			? OtherVelocityFragment->Value : FVector::ZeroVector;
-		// 如果障碍物有MoveTargetFragment
+		// 如果障碍物有MoveTargetFragment，bCanAvoid为true
 		const FMassMoveTargetFragment* OtherMoveTarget = 
 			OtherEntityView.GetFragmentDataPtr<FMassMoveTargetFragment>();
 		const bool bCanAvoid = OtherMoveTarget != nullptr;
