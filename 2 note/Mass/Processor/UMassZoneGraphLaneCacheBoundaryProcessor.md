@@ -41,5 +41,15 @@ void UMassZoneGraphLaneCacheBoundaryProcessor::Execute(
 	}
 	SegmentDirections[NumPoints - 1] = SegmentDirections[NumPoints - 2];
 	SegmentNormals[NumPoints - 1] = SegmentNormals[NumPoints - 2];
+	
+	// 计算出中间向量，如果是拐角na'zhong
+	MiterDirections[0] = SegmentNormals[0];
+	MiterDirections[NumPoints - 1] = SegmentNormals[NumPoints - 1];
+	for (int32 Index = 1; Index < NumPoints - 1; Index++)
+	{
+		MiterDirections[Index] = 
+			UE::MassNavigation::ComputeMiterNormal(
+			SegmentNormals[Index - 1], SegmentNormals[Index]);
+	}
 }
 ```
