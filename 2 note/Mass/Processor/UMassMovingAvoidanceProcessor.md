@@ -110,7 +110,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 			SeparationNormal = FMath::Lerp
 				(ConNorm, ForcedNormal, Blend).GetSafeNormal();
 		}
-		// 
+		// 对静止的障碍物，施加的分离力可以更小
 		const FVector::FReal StandingScaling = Collider.bIsMoving 
 			? 1. : MovingAvoidanceParams.StandingObstacleAvoidanceScale;
 	}
