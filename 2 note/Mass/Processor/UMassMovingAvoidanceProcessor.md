@@ -63,7 +63,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 				// 根据障碍物位置，找到在Edge上的最近点
 				const FVector Point = FMath::ClosestPointOnSegment(
 					Collider.Location, Edge.Start, Edge.End);
-				// 如果Edge最近点 指向 障碍物的向量和Edges
+				// 如果Edge最近点 指向 障碍物的向量和Edge指向内部的向量
 				const FVector Offset = Collider.Location - Point;
 				if (FVector::DotProduct(Offset, Edge.LeftDir) < 0.)
 				{
