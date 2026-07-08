@@ -82,7 +82,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 					}
 				}
 			}
-			// 如果有缝隙通过不了，就改变力的fang'xiang
+			// 如果有缝隙通过不了，就改变力的方向
 			if (MaxDist != -1.)
 			{
 				ForcedNormal = (Collider.Location - ClosestPoint).GetSafeNormal();
