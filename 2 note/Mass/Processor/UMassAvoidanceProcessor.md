@@ -217,6 +217,16 @@ void UMassStandingAvoidanceProcessor::Execute(
 		const FVector SeparationForce = ConNorm * SeparationStiffness * SeparationMag;
 		GhostSteeringForce += SeparationForce;
 	}
-
+	// 积分速度
+	Ghost.Velocity += GhostSteeringForce * DeltaTime;
+	Ghost.Velocity.Z = 0.;
+	Ghost.Location += Ghost.Velocity * DeltaTime;
+	// 
+	const FVector DirToCenter = Ghost.Location - MoveTarget.Center;
+	const FVector::FReal DistToCenter = DirToCenter.Length();
+	if (DistToCenter > StandingParams.GhostToTargetMaxDeviation)
+	{
+		Ghost.Location = MoveTarget.Center + DirToCenter * (StandingParams.GhostToTargetMaxDeviation / DistToCenter);
+	}
 }
 ```
