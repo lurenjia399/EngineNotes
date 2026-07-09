@@ -170,7 +170,9 @@ void UMassMovingAvoidanceProcessor::Execute(
 3 计算分离力，这里有两类:
   - 对方也是站立、也有有效Ghost:→ 做 ghost-vs-ghost 分离。施加一个OtherGhost指向当前Ghost的力
   - 对方在移动 / 没 Ghost:→ 把对方当成一个朝前突出的 2D 胶囊(OtherPersonalSpacePosition 沿其 forward 延伸),ghost躲这个胶囊。
-4 j
+4 积分Ghost速度，位置等信息
+```
+2
 ```cpp
 void UMassStandingAvoidanceProcessor::Execute(
 	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
