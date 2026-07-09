@@ -168,10 +168,8 @@ void UMassMovingAvoidanceProcessor::Execute(
 1 初始化Ghost是在UMassSteerToMoveTargetProcessor中，如果moveTarget是Stand的，才会初始化Ghost
 2 计算目标力，把 ghost 拉回MoveTarget ghost 朝 MoveTarget.Center 转向,离得越近速度衰减(GhostStandSlowdownRadius)
 3 计算分离力，这里有两类:
-  - 对方也是站立、也有有效 ghost(1332):→ 做 ghost-vs-ghost 分离。而且对
-  方离它自己的目标越远,越把它当"移动物"用更强的刚度躲(OtherSteerFade 在
-  GhostSeparationStiffness↔MovingSeparationStiffness 间插值)。
-  - 对方在移动 / 没 ghost(1360):→ 把对方当成一个朝前突出的 2D
+  - 对方也是站立、也有有效Ghost:→ 做 ghost-vs-ghost 分离。施加一个OtherGhost指向当前Ghost的力
+  - 对方在移动 / 没 Ghost:→ 把对方当成一个朝前突出的 2D
   胶囊(OtherPersonalSpacePosition 沿其 forward 延伸),ghost
   躲这个胶囊。正前方的障碍权重更高(DirectionalFade)。
 ```
