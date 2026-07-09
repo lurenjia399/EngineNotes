@@ -9,7 +9,14 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	const float NoiseValue = UE::MassTraffic::CalculateNoiseValue(
 		VehicleControlFragment.NoiseInput, MassTrafficSettings->NoisePeriod);
 	LaneOffsetFragment.LateralOffset = GetLateralOffset(NoiseValue);
-	
-	
+	// 2 
+	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(
+			LaneLocationFragment.LaneLength,//车suo'z
+			VehicleControlFragment.CurrentLaneConstData.SpeedLimit,
+			VehicleControlFragment.CurrentLaneConstData.AverageNextLanesSpeedLimit,
+			LaneLocationFragment.DistanceAlongLane, 
+			VehicleControlFragment.Speed,
+			MassTrafficSettings->SpeedLimitBlendTime
+	);
 }
 ```
