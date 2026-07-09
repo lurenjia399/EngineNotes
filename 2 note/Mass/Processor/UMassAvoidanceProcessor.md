@@ -164,3 +164,26 @@ void UMassMovingAvoidanceProcessor::Execute(
 
 # UMassStandingAvoidanceProcessor
 
+2
+```cpp
+void UMassStandingAvoidanceProcessor::Execute(
+	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
+{
+	const FVector::FReal SteerK = 1. / StandingParams.GhostSteeringReactionTime;
+	constexpr FVector::FReal SteeringMinDistance = 1.; // Do not bother to steer if the distance is less than this.
+
+	FVector SteerDirection = FVector::ZeroVector;
+	FVector Delta = MoveTarget.Center - Ghost.Location;
+	Delta.Z = 0.;
+	const FVector::FReal Distance = Delta.Size();
+	FVector::FReal SpeedFade = 0.;
+	if (Distance > SteeringMinDistance)
+	{
+		SteerDirection = Delta / Distance;
+		SpeedFade = FMath::Clamp(Distance / FMath::Max(KINDA_SMALL_NUMBER, StandingParams.GhostStandSlowdownRadius), 0., 1.);
+	}
+
+	const FVector GhostDesiredVelocity = SteerDirection * StandingParams.GhostMaxSpeed * SpeedFade;
+	FVector GhostSteeringForce = SteerK * (GhostDesiredVelocity - Ghost.Velocity);
+}
+```
