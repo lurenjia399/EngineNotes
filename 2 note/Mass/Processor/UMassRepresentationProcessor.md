@@ -36,9 +36,12 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 ```
 # Visualization Processor
 ```cpp
+0 ISM的创建通过UCitySampleCrowdVisualizationFragmentInitializer来Observe这个FCitySampleCrowdVisualizationFragment的添加，根据配置创建出ISMComp
+
 1 在UE::Mass::ProcessorGroupNames::LODCollector在这个组，会执行UMassLODDistanceCollectorProcessor这个，来收集Lod信息填充FMassViewerInfoFragment，记录entity距离view的最短距离
 2 紧接着是UE::Mass::ProcessorGroupNames::LOD这个组，这个组通过UMassCrowdVisualizationLODProcessor来计算出entity的LOD
 3 然后是UE::Mass::ProcessorGroupNames::Representation这个组，通过UMassCrowdVisualizationProcessor来执行父类的UMassRepresentationProcessor，根据entity的LOD，请求创建出Actor，如果是ISM的就请求移除Actor
-4 ISM的创建通过UCitySampleCrowdVisualizationFragmentInitializer来Observe这个FCitySampleCrowdVisualizationFragment的添加，根据配置创建出ISMComp
+
+5 UE::Mass::ProcessorGroupNames::Representation
 5 在CrowdVisualization组，他是在Representation，MassProcessor_Animation之后，执行UMassProcessor_CrowdVisualizationCustomData，来更新ISM位置和外观
 ```
