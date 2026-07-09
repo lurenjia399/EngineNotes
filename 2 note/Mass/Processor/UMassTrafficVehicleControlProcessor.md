@@ -29,7 +29,6 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	1 如果没有NextLane，或者没有Nextlane的Nextlane就应该停止
 	2 如果NextLane是交叉路口，已经在交叉路口的车辆都能通过交叉路口，但自己在交叉路口的NextLane已经容纳不下了，就需要停止，如果CurrLane的剩余长度能容纳3倍半径，就可以变道
 	3 如果下一条车道关闭了，但是Entity已经超过CurrLane的Exit了，就不能被停下来
-	4 
 	*/
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit();
 
