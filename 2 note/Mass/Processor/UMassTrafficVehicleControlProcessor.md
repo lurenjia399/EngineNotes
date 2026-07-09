@@ -9,7 +9,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	const float NoiseValue = UE::MassTraffic::CalculateNoiseValue(
 		VehicleControlFragment.NoiseInput, MassTrafficSettings->NoisePeriod);
 	LaneOffsetFragment.LateralOffset = GetLateralOffset(NoiseValue);
-	// 2 
+	// 2 计算SpeedLimit，
 	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(
 			LaneLocationFragment.LaneLength,//车所在车道的长度
 			VehicleControlFragment.CurrentLaneConstData.SpeedLimit,// 当前车道的限速
@@ -18,5 +18,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 			VehicleControlFragment.Speed,//当前车的速度
 			MassTrafficSettings->SpeedLimitBlendTime
 	);
+	const float VariedSpeedLimit =  FMath::Min(
+		SpeedLimitOverride, 
+		GetVariedSpeedLimit(SpeedLimit, 
+			RandomFractionFragment, BusInfoFragment, 
+			VehicleControlFragment, AppendixFragment, NoiseValue));
+
 }
 ```
