@@ -36,5 +36,5 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 ```
 # Visualization Processor
 ```cpp
-1 在UE::Mass::ProcessorGroupNames::LODCollector
+1 在UE::Mass::ProcessorGroupNames::LODCollector在这个组，会执行UMassLODDistanceCollectorProcessor这个，来受击Lod信息填充FMassViewerInfoFragment，记录entityju'li
 ```
