@@ -59,7 +59,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	}
 	// 4 计算车的TargetSpeed
 	/*
-	1 
+	1 如果
 	*/
 	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
