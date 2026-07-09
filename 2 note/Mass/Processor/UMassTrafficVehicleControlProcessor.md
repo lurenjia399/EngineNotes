@@ -88,26 +88,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	// 7 如果停的超过了LaneExit，需要重新设置DistanceAlongLane
 	if (bIsVehicleStoppingOverLaneExit)
 	{
-		const float MaxDistanceAlongLaneIfStopped = LaneLocationFragment.LaneLength - AgentRadiusFragment.Radius; 
-		if (bIsOffLOD ||
-			(bIsLowLOD && (LaneLocationFragment.DistanceAlongLane - MaxDistanceAlongLaneIfStopped <= 10.0f))) 
-		{
-			LaneLocationFragment.DistanceAlongLane = 
-				MaxDistanceAlongLaneIfStopped - 1.0f;
-		}
-		else
-		{
-			if (VehicleControlFragment.NextLane)
-			{
-				VehicleControlFragment.NextLane
-					->bIsStoppedVehicleInPreviousLaneOverlappingThisLane 
-					= true;			
-			}
-			if (LaneLocationFragment.DistanceAlongLane >= LaneLocationFragment.LaneLength)
-			{
-				LaneLocationFragment.DistanceAlongLane = LaneLocationFragment.LaneLength;
-			}
-		}
+		
 	}
 }
 ```
