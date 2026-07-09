@@ -165,7 +165,8 @@ void UMassMovingAvoidanceProcessor::Execute(
 # UMassStandingAvoidanceProcessor
 1
 ```cpp
-1 初始化Ghost
+1 初始化Ghost是在UMassSteerToMoveTargetProcessor中，如果moveTarget是Stand的，才会初始化Ghost
+2 
 ```
 2
 ```cpp
