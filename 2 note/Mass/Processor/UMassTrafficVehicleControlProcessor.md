@@ -76,5 +76,12 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		VehicleLightsFragment.bBrakeLights = false;
 		VehicleControlFragment.BrakeLightHysteresis = 0.0f;
 	}
+	const float MaxDistanceDelta = FMath::Max(AvoidanceFragment.DistanceToNext - MassTrafficSettings->MinimumDistanceToObstacleRange.X, 0.0f); 
+		const float DistanceDelta = FMath::Min(VariableTickFragment.DeltaTime * VehicleControlFragment.Speed, MaxDistanceDelta);
+
+		LaneLocationFragment.DistanceAlongLane += DistanceDelta;
+	
+		// Advance distance based noise
+		VehicleControlFragment.NoiseInput += DistanceDelta;
 }
 ```
