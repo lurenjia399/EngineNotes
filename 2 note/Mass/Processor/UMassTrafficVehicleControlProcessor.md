@@ -91,9 +91,33 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		//就是和人行道相交了，需要设置
 		//	bIsStoppedVehicleInPreviousLaneOverlappingThisLane
 	}
-	else
+	else if (LaneLocationFragment.DistanceAlongLane 
+		>= LaneLocationFragment.LaneLength)
 	{
-		
+		// 如果you
+		if (VehicleControlFragment.NextLane)
+		{
+			const FMassEntityHandle VehicleEntity = Context.GetEntity(EntityIndex); 
+			bool bIsVehicleStuck = false; // (See all RECYCLESTUCK.)
+			
+			UE::MassTraffic::MoveVehicleToNextLane(
+				EntityManager,
+				MassTrafficSubsystem,
+				VehicleEntity,
+				AgentRadiusFragment,
+				RandomFractionFragment,
+				VehicleControlFragment,
+				VehicleLightsFragment,
+				LaneLocationFragment,
+				Context.GetMutableFragmentView<FMassTrafficNextVehicleFragment>()[EntityIndex],
+				LaneChangeFragment,
+				bIsVehicleStuck/*out*/);
+		}
+		// No next lane yet, at least clamp to current lane length
+		else
+		{
+			LaneLocationFragment.DistanceAlongLane = LaneLocationFragment.LaneLength;
+		}
 	}
 }
 ```
