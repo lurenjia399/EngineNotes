@@ -1,3 +1,0 @@
-1 读取FMassDesiredMovementFragment中的DesiredVelocity，设置到Velocity上
-2 根据Velocity * DeltaTime 来计算出位移
-3 设置到FTransformFragment上边
