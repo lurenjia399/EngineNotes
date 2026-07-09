@@ -37,5 +37,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		SetVehicleCantStopAtLaneExit(VehicleControlFragment, 
 			LaneLocationFragment, NextVehicleFragment, EntityManager);
 	}
+	// 5 如果必须刹车，撤销刹不住
+	if (bMustStopAtLaneExit && VehicleControlFragment.bCantStopAtLaneExit) 
+	{
+		UnsetVehicleCantStopAtLaneExit(VehicleControlFragment);
+		bVehicleCantStopAtLaneExit = false;
+	}
 }
 ```
