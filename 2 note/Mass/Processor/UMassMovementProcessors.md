@@ -33,5 +33,5 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move
 ```
 # 4 movement process
 ```cpp
-1 
+1 在UE::Mass::ProcessorGroupNames::Tasks组，会通过UMassNavMeshPathFollowProcessor这个来处理
 ```
