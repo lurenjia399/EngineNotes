@@ -63,7 +63,32 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	2 如果距离障碍物碰撞时间小于理想碰撞时间，距离越近速度应该越小
 	3 如果必须在LaneExit停下，如果剩余的长度小于理想的停止位置，差距越大与应该减速
 	4 最后限制不允许速度为负值
+	5 通过加速度逼近TargetSpeed，不直接
 	*/
 	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
+	if (!FMath::IsNearlyEqual(VehicleControlFragment.Speed, TargetSpeed, 1.0f)) 
+	{
+		if (TargetSpeed > VehicleControlFragment.Speed)
+		{
+			const float VariedAcceleration = GetAccelerationVal(AppendixFragment) * (1.0f + MassTrafficSettings->AccelerationVariancePct * (RandomFractionFragment.RandomFraction * 2.0f - 1.0f));
+			
+			VehicleControlFragment.Speed = FMath::Min(TargetSpeed, VehicleControlFragment.Speed + VariableTickFragment.DeltaTime * VariedAcceleration);
+			VehicleControlFragment.BrakeLightHysteresis = VehicleControlFragment.BrakeLightHysteresis - VariableTickFragment.DeltaTime;
+		}
+		// Decelerate down to TargetSpeed
+		else
+		{
+			const float VariedDeceleration = GetDecelerationVal(AppendixFragment) * (1.0f + MassTrafficSettings->DecelerationVariancePct * (RandomFractionFragment.RandomFraction * 2.0f - 1.0f));
+			if (VehicleControlFragment.Speed - TargetSpeed > MassTrafficSettings->SpeedDeltaBrakingThreshold)
+			{
+				VehicleControlFragment.BrakeLightHysteresis = 1.0f + RandomFractionFragment.RandomFraction * 0.25;
+			}
+			VehicleControlFragment.Speed = FMath::Max(TargetSpeed, VehicleControlFragment.Speed - VariableTickFragment.DeltaTime * VariedDeceleration);
+		}
+	}
+	else
+	{
+		VehicleControlFragment.Speed = TargetSpeed;
+	}
 }
 ```
