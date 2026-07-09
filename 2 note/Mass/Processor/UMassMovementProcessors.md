@@ -13,8 +13,10 @@ Force.Value = FVector::ZeroVector;
 
 # 2 UMassApplyMovementProcessor
 ```cpp
-// huo'qu
+// 获取entity的Desired速度
 Velocity.Value = MovementList[EntityIt].DesiredVelocity;
+// 积分entity当前位置
 CurrentLocation += Velocity.Value * DeltaTime;
 CurrentTransform.SetTranslation(CurrentLocation);
 ```
+# 3
