@@ -19,3 +19,15 @@ Velocity.Value = MovementList[EntityIt].DesiredVelocity;
 CurrentLocation += Velocity.Value * DeltaTime;
 CurrentTransform.SetTranslation(CurrentLocation);
 ```
+
+# 3 UMassNavigationSmoothHeightProcessor
+```cpp
+// 单独处理entity的高度平滑
+if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move 
+	|| MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
+{
+	FVector CurrentLocation = CurrentTransform.GetLocation();
+	FMath::ExponentialSmoothingApprox(CurrentLocation.Z, MoveTarget.Center.Z, DeltaTime, MovementParams.HeightSmoothingTime);
+	CurrentTransform.SetLocation(CurrentLocation);
+}
+```
