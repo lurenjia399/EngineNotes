@@ -49,5 +49,14 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		UnsetVehicleCantStopAtLaneExit(VehicleControlFragment);
 		bVehicleCantStopAtLaneExit = false;
 	}
+	// 3.4 如果车速本身就快停了，撤销刹不住
+	if (VehicleControlFragment.Speed < 0.1f 
+		&& !bIsFrontOfVehicleBeyondEndOfLane 
+		&& VehicleControlFragment.bCantStopAtLaneExit)
+	{
+		UnsetVehicleCantStopAtLaneExit(VehicleControlFragment);
+		bVehicleCantStopAtLaneExit = false;		
+	}
+	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
 ```
