@@ -23,6 +23,9 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		GetVariedSpeedLimit(SpeedLimit, 
 			RandomFractionFragment, BusInfoFragment, 
 			VehicleControlFragment, AppendixFragment, NoiseValue));
+			
+	// 3 计算车应不应该停在道路末端（1 ）
+	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit();
 
 }
 ```
