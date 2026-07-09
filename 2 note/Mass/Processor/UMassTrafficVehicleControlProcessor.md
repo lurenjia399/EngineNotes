@@ -31,6 +31,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	3 如果下一条车道关闭了，但是Entity已经超过CurrLane的Exit了，就不能被停下来
 	*/
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit();
-
+	// 4 如果是刹不住车了，就不刹了
+	if (!bIsOffLOD && bVehicleCantStopAtLaneExit) 
+	{
+		SetVehicleCantStopAtLaneExit(VehicleControlFragment, 
+			LaneLocationFragment, NextVehicleFragment, EntityManager);
+	}
 }
 ```
