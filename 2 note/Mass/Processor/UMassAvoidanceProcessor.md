@@ -163,7 +163,10 @@ void UMassMovingAvoidanceProcessor::Execute(
 ```
 
 # UMassStandingAvoidanceProcessor
-
+1
+```cpp
+1 初始化Ghost
+```
 2
 ```cpp
 void UMassStandingAvoidanceProcessor::Execute(
@@ -221,12 +224,13 @@ void UMassStandingAvoidanceProcessor::Execute(
 	Ghost.Velocity += GhostSteeringForce * DeltaTime;
 	Ghost.Velocity.Z = 0.;
 	Ghost.Location += Ghost.Velocity * DeltaTime;
-	// 
+	// 范围限制，不能离MoveTarget点太远
 	const FVector DirToCenter = Ghost.Location - MoveTarget.Center;
 	const FVector::FReal DistToCenter = DirToCenter.Length();
 	if (DistToCenter > StandingParams.GhostToTargetMaxDeviation)
 	{
-		Ghost.Location = MoveTarget.Center + DirToCenter * (StandingParams.GhostToTargetMaxDeviation / DistToCenter);
+		Ghost.Location = MoveTarget.Center + DirToCenter 
+			* (StandingParams.GhostToTargetMaxDeviation / DistToCenter);
 	}
 }
 ```
