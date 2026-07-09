@@ -76,12 +76,14 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		VehicleLightsFragment.bBrakeLights = false;
 		VehicleControlFragment.BrakeLightHysteresis = 0.0f;
 	}
-	const float MaxDistanceDelta = FMath::Max(AvoidanceFragment.DistanceToNext - MassTrafficSettings->MinimumDistanceToObstacleRange.X, 0.0f); 
-		const float DistanceDelta = FMath::Min(VariableTickFragment.DeltaTime * VehicleControlFragment.Speed, MaxDistanceDelta);
-
-		LaneLocationFragment.DistanceAlongLane += DistanceDelta;
-	
-		// Advance distance based noise
-		VehicleControlFragment.NoiseInput += DistanceDelta;
+	// 把这一阵移动的距离积起来，j
+	const float MaxDistanceDelta = FMath::Max(
+		AvoidanceFragment.DistanceToNext - 
+		MassTrafficSettings->MinimumDistanceToObstacleRange.X, 0.0f); 
+	const float DistanceDelta = FMath::Min(
+		VariableTickFragment.DeltaTime * 
+		VehicleControlFragment.Speed, MaxDistanceDelta);
+	LaneLocationFragment.DistanceAlongLane += DistanceDelta;
+	VehicleControlFragment.NoiseInput += DistanceDelta;
 }
 ```
