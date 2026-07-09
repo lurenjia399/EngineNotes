@@ -76,7 +76,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		VehicleLightsFragment.bBrakeLights = false;
 		VehicleControlFragment.BrakeLightHysteresis = 0.0f;
 	}
-	// 把这一阵移动的距离积起来，j
+	// 把这一阵移动的距离积起来
 	const float MaxDistanceDelta = FMath::Max(
 		AvoidanceFragment.DistanceToNext - 
 		MassTrafficSettings->MinimumDistanceToObstacleRange.X, 0.0f); 
