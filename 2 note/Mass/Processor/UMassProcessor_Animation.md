@@ -58,3 +58,8 @@ struct FMassCrowdAnimInstanceData
 2 游戏线程执行，在UMassProcessor_Animation之后
 3 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，将entity的transformg更新到ISM中记录，等待之后AddInstance执行
 4 UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation，通过材质读取纹理，设置顶点位置
+
+# Anim Processor
+```cpp
+1 
+```
