@@ -19,4 +19,3 @@ Velocity.Value = MovementList[EntityIt].DesiredVelocity;
 CurrentLocation += Velocity.Value * DeltaTime;
 CurrentTransform.SetTranslation(CurrentLocation);
 ```
-# 3
