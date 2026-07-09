@@ -175,10 +175,9 @@ void UMassStandingAvoidanceProcessor::Execute(
 	{
 		continue;
 	}
-	
+	// 计算目标力，把Ghost拉回MoveTarget.Center
 	const FVector::FReal SteerK = 1. / StandingParams.GhostSteeringReactionTime;
-	constexpr FVector::FReal SteeringMinDistance = 1.; // Do not bother to steer if the distance is less than this.
-
+	constexpr FVector::FReal SteeringMinDistance = 1.;
 	FVector SteerDirection = FVector::ZeroVector;
 	FVector Delta = MoveTarget.Center - Ghost.Location;
 	Delta.Z = 0.;
@@ -187,10 +186,12 @@ void UMassStandingAvoidanceProcessor::Execute(
 	if (Distance > SteeringMinDistance)
 	{
 		SteerDirection = Delta / Distance;
-		SpeedFade = FMath::Clamp(Distance / FMath::Max(KINDA_SMALL_NUMBER, StandingParams.GhostStandSlowdownRadius), 0., 1.);
+		SpeedFade = FMath::Clamp(
+			Distance / FMath::Max(KINDA_SMALL_NUMBER, 
+			StandingParams.GhostStandSlowdownRadius), 0., 1.);
 	}
-
-	const FVector GhostDesiredVelocity = SteerDirection * StandingParams.GhostMaxSpeed * SpeedFade;
+	const FVector GhostDesiredVelocity = SteerDirection 
+		* StandingParams.GhostMaxSpeed * SpeedFade;
 	FVector GhostSteeringForce = SteerK * (GhostDesiredVelocity - Ghost.Velocity);
 }
 ```
