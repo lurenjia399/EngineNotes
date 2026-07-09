@@ -94,12 +94,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	else if (LaneLocationFragment.DistanceAlongLane 
 		>= LaneLocationFragment.LaneLength)
 	{
-		// 如果you
+		// 如果有下一条车道，就向下一条车道移动
 		if (VehicleControlFragment.NextLane)
 		{
 			const FMassEntityHandle VehicleEntity = Context.GetEntity(EntityIndex); 
-			bool bIsVehicleStuck = false; // (See all RECYCLESTUCK.)
-			
+			bool bIsVehicleStuck = false;
 			UE::MassTraffic::MoveVehicleToNextLane(
 				EntityManager,
 				MassTrafficSubsystem,
@@ -109,11 +108,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 				VehicleControlFragment,
 				VehicleLightsFragment,
 				LaneLocationFragment,
-				Context.GetMutableFragmentView<FMassTrafficNextVehicleFragment>()[EntityIndex],
+				Context.GetMutableFragmentView<
+					FMassTrafficNextVehicleFragment>()[EntityIndex],
 				LaneChangeFragment,
-				bIsVehicleStuck/*out*/);
+				bIsVehicleStuck);
 		}
-		// No next lane yet, at least clamp to current lane length
 		else
 		{
 			LaneLocationFragment.DistanceAlongLane = LaneLocationFragment.LaneLength;
