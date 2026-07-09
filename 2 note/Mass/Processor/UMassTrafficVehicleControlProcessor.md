@@ -61,6 +61,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	/*
 	1 如果实际的跟车距离小于理想的跟车距离，距离越近速度应该越小
 	2 如果距离障碍物碰撞时间小于理想碰撞时间，距离越近速度应该越小
+	3 如果必须在LaneExit停下，
 	*/
 	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
