@@ -38,5 +38,6 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 ```cpp
 1 在UE::Mass::ProcessorGroupNames::LODCollector在这个组，会执行UMassLODDistanceCollectorProcessor这个，来收集Lod信息填充FMassViewerInfoFragment，记录entity距离view的最短距离
 2 紧接着是UE::Mass::ProcessorGroupNames::LOD这个组，这个组通过UMassCrowdVisualizationLODProcessor来计算出entity的LOD
-3 然后是UMassCrowdVisualizationProcessor这个，这个processor在LOD组之后，就是通过父类UMassRepresentationProcessor来根据LOD，创建出Actor
+3 然后是UE::Mass::ProcessorGroupNames::Representation这个组，通过UMassCrowdVisualizationProcessor这个，这个processor在LOD组之后，就是通过父类UMassRepresentationProcessor来根据LOD，请求创建出Actor
+4 
 ```
