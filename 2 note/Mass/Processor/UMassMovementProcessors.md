@@ -34,5 +34,5 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move
 # 4 movement process
 ```cpp
 1 在UE::Mass::ProcessorGroupNames::Tasks组，会通过UMassNavMeshPathFollowProcessor这个来更新MoveTarget中的数据，是根据CacheLane，Shortpath等信息
-2 紧接着在UE::Mass::ProcessorGroupNames::Avoidance组，
+2 紧接着在UE::Mass::ProcessorGroupNames::Avoidance组，会通过MovingAvoidance，StandAvoidance等避障Processor，来给FMassForceFragment中添加避障力
 ```
