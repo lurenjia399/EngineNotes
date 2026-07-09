@@ -61,5 +61,6 @@ struct FMassCrowdAnimInstanceData
 
 # Anim Processor
 ```cpp
-1 在UE::Mass::ProcessorGroupNames::Tasks组，更新Actor身上AnimInstance上的数据
+1 在UE::Mass::ProcessorGroupNames::Tasks组，执行MassProcessor_Animation 这个Processor，来更新Actor身上AnimInstance上的数据
+2 然后是CrowdVisualization这个组，在MassProcessor_Animation之后，同
 ```
