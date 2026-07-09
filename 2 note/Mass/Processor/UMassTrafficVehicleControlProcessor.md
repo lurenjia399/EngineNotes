@@ -57,7 +57,10 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		UnsetVehicleCantStopAtLaneExit(VehicleControlFragment);
 		bVehicleCantStopAtLaneExit = false;		
 	}
-	// 4 
+	// 4 计算车的TargetSpeed
+	/*
+	1 
+	*/
 	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
 ```
