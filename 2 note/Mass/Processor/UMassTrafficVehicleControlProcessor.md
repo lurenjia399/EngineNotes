@@ -9,7 +9,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	const float NoiseValue = UE::MassTraffic::CalculateNoiseValue(
 		VehicleControlFragment.NoiseInput, MassTrafficSettings->NoisePeriod);
 	LaneOffsetFragment.LateralOffset = GetLateralOffset(NoiseValue);
-	// 2 计算SpeedLimit，
+	// 2 计算最小的SpeedLimit，
 	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(
 			LaneLocationFragment.LaneLength,//车所在车道的长度
 			VehicleControlFragment.CurrentLaneConstData.SpeedLimit,// 当前车道的限速
