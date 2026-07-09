@@ -38,5 +38,5 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move
 2 紧接着在UE::Mass::ProcessorGroupNames::Avoidance组，会通过MovingAvoidance，StandAvoidance等避障Processor，来给FMassForceFragment中添加分离力
 3 然后在UE::Mass::ProcessorGroupNames::ApplyForces组，通过UMassApplyForceProcessor来将这一帧产生的MassForceFragment力，积分到FMassDesiredMovementFragment速度中，就是力乘时间
 4 然后在UE::Mass::ProcessorGroupNames::Movement组，通过UMassApplyMovementProcessor来积分速度，得到位移设置到FTransformFragment中
-5 最后在UE::Mass::ProcessorGroupNames::UpdateWorldFromMass组
+5 然后在UE::Mass::ProcessorGroupNames::UpdateWorldFromMass组，通过UHTMassTransformToActorTranslator来根据entity的transform来更新Actor的信息
 ```
