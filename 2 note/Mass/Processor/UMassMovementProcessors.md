@@ -35,5 +35,6 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move
 ```cpp
 1 在UE::Mass::ProcessorGroupNames::Tasks组，会通过UMassNavMeshPathFollowProcessor这个来更新MoveTarget中的数据，是根据CacheLane，Shortpath等信息
 2 紧接着在UE::Mass::ProcessorGroupNames::Avoidance组，会通过MovingAvoidance，StandAvoidance等避障Processor，来给FMassForceFragment中添加分离力
-3 然后在UE::Mass::ProcessorGroupNames::ApplyForces组，通过UMassApplyForceProcessor来将这一帧产生的MassForceFragment力，积分到FMassDesiredMovementFragment速度中，jiu's
+3 然后在UE::Mass::ProcessorGroupNames::ApplyForces组，通过UMassApplyForceProcessor来将这一帧产生的MassForceFragment力，积分到FMassDesiredMovementFragment速度中，就是力乘时间
+4 然后在UE::Mass::ProcessorGroupNames::Movement组，通过UMassApplyMovementProcessor来积分速度，得到位移设置到
 ```
