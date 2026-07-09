@@ -91,10 +91,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		//就是和人行道相交了，需要设置
 		//	bIsStoppedVehicleInPreviousLaneOverlappingThisLane
 	}
+	// 8 如果移动超过了CurrLane，如果有下一条车道就变道，如果没有就停下来等
 	else if (LaneLocationFragment.DistanceAlongLane 
 		>= LaneLocationFragment.LaneLength)
 	{
-		// 如果有下一条车道，就向下一条车道移动
+		
 		if (VehicleControlFragment.NextLane)
 		{
 			const FMassEntityHandle VehicleEntity = Context.GetEntity(EntityIndex); 
