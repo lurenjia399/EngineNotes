@@ -76,7 +76,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		VehicleLightsFragment.bBrakeLights = false;
 		VehicleControlFragment.BrakeLightHysteresis = 0.0f;
 	}
-	// 把这一阵移动的距离积起来
+	// 6 把这一帧移动的距离积起来
 	const float MaxDistanceDelta = FMath::Max(
 		AvoidanceFragment.DistanceToNext - 
 		MassTrafficSettings->MinimumDistanceToObstacleRange.X, 0.0f); 
@@ -85,5 +85,29 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		VehicleControlFragment.Speed, MaxDistanceDelta);
 	LaneLocationFragment.DistanceAlongLane += DistanceDelta;
 	VehicleControlFragment.NoiseInput += DistanceDelta;
+	// 7 如果ting
+	if (bIsVehicleStoppingOverLaneExit)
+	{
+		const float MaxDistanceAlongLaneIfStopped = LaneLocationFragment.LaneLength - AgentRadiusFragment.Radius; 
+
+		if (bIsOffLOD ||
+			(bIsLowLOD && (LaneLocationFragment.DistanceAlongLane - MaxDistanceAlongLaneIfStopped <= 10.0f))) 
+		{
+			// (See all CROSSWALKOVERLAP.)
+			LaneLocationFragment.DistanceAlongLane = MaxDistanceAlongLaneIfStopped - 1.0f/*cm*/;
+		}
+		else
+		{
+			// (See all CROSSWALKOVERLAP.)
+			if (VehicleControlFragment.NextLane)
+			{
+				VehicleControlFragment.NextLane->bIsStoppedVehicleInPreviousLaneOverlappingThisLane = true;			
+			}
+			if (LaneLocationFragment.DistanceAlongLane >= LaneLocationFragment.LaneLength)
+			{
+				LaneLocationFragment.DistanceAlongLane = LaneLocationFragment.LaneLength;
+			}
+		}
+	}
 }
 ```
