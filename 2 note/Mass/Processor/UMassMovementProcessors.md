@@ -22,7 +22,7 @@ CurrentTransform.SetTranslation(CurrentLocation);
 
 # 3 UMassNavigationSmoothHeightProcessor
 ```cpp
-// 单独处理entity的高度平滑
+// 单独处理entity的高度平滑，负责 entity 高度(Z轴)的平滑跟随:因为 Mass 的避障/运动是纯 2D(XY)的,Z被单独用一个指数平滑滤波器逐帧逼近移动目标的高度,从而让 agent在坡道、台阶、地形高度变化处平顺地上下起伏,而不是高度瞬间跳变。
 if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move 
 	|| MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 {
