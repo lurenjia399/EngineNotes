@@ -61,5 +61,5 @@ struct FMassCrowdAnimInstanceData
 
 # Anim Processor
 ```cpp
-1 在UE::Mass::ProcessorGroupNames::Tasks组，
+1 在UE::Mass::ProcessorGroupNames::Tasks组，更新Actor身上AnimInstance上的数据
 ```
