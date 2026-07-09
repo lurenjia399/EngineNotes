@@ -57,6 +57,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		UnsetVehicleCantStopAtLaneExit(VehicleControlFragment);
 		bVehicleCantStopAtLaneExit = false;		
 	}
+	// 4 
 	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
 ```
