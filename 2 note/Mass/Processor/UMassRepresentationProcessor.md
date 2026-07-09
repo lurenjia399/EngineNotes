@@ -34,3 +34,4 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 1 如果需要创建出实体，就通过RepresentationActorManagement->GetOrSpawnActor方法创建出Actor。如果当前是instance的，就需要通过TeleportActor，把创建出actor通过Command设置transform。然后通过Command命令来开启Actor碰撞，tick。（注意TeleportActor和设置碰撞必须通过Command延后执行，因为会改变物理状态，得在游戏线程或者物理线程执行）
 2 如果需要创建Instance，就destroy掉生成的actor，如果没有生成就CancelSpawn，destroy也是添加到UMassActorSpawnerSubsystem的延迟数组中
 ```
+# Visuali
