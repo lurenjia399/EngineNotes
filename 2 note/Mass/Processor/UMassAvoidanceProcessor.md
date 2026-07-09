@@ -193,5 +193,21 @@ void UMassStandingAvoidanceProcessor::Execute(
 	const FVector GhostDesiredVelocity = SteerDirection 
 		* StandingParams.GhostMaxSpeed * SpeedFade;
 	FVector GhostSteeringForce = SteerK * (GhostDesiredVelocity - Ghost.Velocity);
+	
+	// 找到entity周围的其他entity
+	const FNavigationObstacleHashGrid2D& AvoidanceObstacleGrid = 
+		NavigationSubsystem->GetObstacleGridMutable();
+	UE::MassAvoidance::FindCloseObstacles(
+		AgentLocation, 
+		MovingAvoidanceParams.ObstacleDetectionDistance,
+		AvoidanceObstacleGrid, CloseEntities, 
+		UE::MassAvoidance::MaxObstacleResults);
+	// 遍历找到的CloseEntity
+	for (const FNavigationObstacleHashGrid2D::ItemIDType OtherEntity 
+		: CloseEntities)
+	{
+		
+	}
+
 }
 ```
