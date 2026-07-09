@@ -59,7 +59,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	}
 	// 4 计算车的TargetSpeed
 	/*
-	1 如果
+	1 如果实际的跟车距离小于理想的跟车距离，
 	*/
 	const float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
