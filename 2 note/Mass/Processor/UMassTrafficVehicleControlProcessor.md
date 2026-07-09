@@ -11,11 +11,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	LaneOffsetFragment.LateralOffset = GetLateralOffset(NoiseValue);
 	// 2 
 	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(
-			LaneLocationFragment.LaneLength,//车suo'z
-			VehicleControlFragment.CurrentLaneConstData.SpeedLimit,
+			LaneLocationFragment.LaneLength,//车所在车道的长度
+			VehicleControlFragment.CurrentLaneConstData.SpeedLimit,// 当前车道的限速
 			VehicleControlFragment.CurrentLaneConstData.AverageNextLanesSpeedLimit,
-			LaneLocationFragment.DistanceAlongLane, 
-			VehicleControlFragment.Speed,
+			LaneLocationFragment.DistanceAlongLane, //当前车道已经走了的距离
+			VehicleControlFragment.Speed,//当前车的速度
 			MassTrafficSettings->SpeedLimitBlendTime
 	);
 }
