@@ -42,6 +42,4 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 2 紧接着是UE::Mass::ProcessorGroupNames::LOD这个组，这个组通过UMassCrowdVisualizationLODProcessor来计算出entity的LOD
 3 然后是UE::Mass::ProcessorGroupNames::Representation这个组，通过UMassCrowdVisualizationProcessor来执行父类的UMassRepresentationProcessor，根据entity的LOD，请求创建出Actor，如果是ISM的就请求移除Actor。
 4 然后是UMassUpdateISMProcessor在Representation这个组后，来执行UpdateISMTransform方法，来改变ISM的位置，进而创建出ISM
-
-5 在CrowdVisualization组，他是在Representation，MassProcessor_Animation之后，执行UMassProcessor_CrowdVisualizationCustomData，来更新ISM位置和外观
 ```
