@@ -85,23 +85,23 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 		VehicleControlFragment.Speed, MaxDistanceDelta);
 	LaneLocationFragment.DistanceAlongLane += DistanceDelta;
 	VehicleControlFragment.NoiseInput += DistanceDelta;
-	// 7 如果ting
+	// 7 如果停的超过了LaneExit，需要重新设置DistanceAlongLane
 	if (bIsVehicleStoppingOverLaneExit)
 	{
 		const float MaxDistanceAlongLaneIfStopped = LaneLocationFragment.LaneLength - AgentRadiusFragment.Radius; 
-
 		if (bIsOffLOD ||
 			(bIsLowLOD && (LaneLocationFragment.DistanceAlongLane - MaxDistanceAlongLaneIfStopped <= 10.0f))) 
 		{
-			// (See all CROSSWALKOVERLAP.)
-			LaneLocationFragment.DistanceAlongLane = MaxDistanceAlongLaneIfStopped - 1.0f/*cm*/;
+			LaneLocationFragment.DistanceAlongLane = 
+				MaxDistanceAlongLaneIfStopped - 1.0f;
 		}
 		else
 		{
-			// (See all CROSSWALKOVERLAP.)
 			if (VehicleControlFragment.NextLane)
 			{
-				VehicleControlFragment.NextLane->bIsStoppedVehicleInPreviousLaneOverlappingThisLane = true;			
+				VehicleControlFragment.NextLane
+					->bIsStoppedVehicleInPreviousLaneOverlappingThisLane 
+					= true;			
 			}
 			if (LaneLocationFragment.DistanceAlongLane >= LaneLocationFragment.LaneLength)
 			{
