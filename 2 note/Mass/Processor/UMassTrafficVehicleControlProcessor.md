@@ -88,6 +88,11 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	// 7 如果停的超过了LaneExit，需要重新设置DistanceAlongLane
 	if (bIsVehicleStoppingOverLaneExit)
 	{
+		//就是和人行道相交了，需要设置
+		//	bIsStoppedVehicleInPreviousLaneOverlappingThisLane
+	}
+	else
+	{
 		
 	}
 }
