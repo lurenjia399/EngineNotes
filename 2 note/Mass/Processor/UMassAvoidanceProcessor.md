@@ -169,6 +169,13 @@ void UMassMovingAvoidanceProcessor::Execute(
 void UMassStandingAvoidanceProcessor::Execute(
 	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
+	// 只考虑Stand状态的
+	const FMassMoveTargetFragment& MoveTarget = MoveTargetList[EntityIt];
+	if (MoveTarget.GetCurrentAction() != EMassMovementAction::Stand)
+	{
+		continue;
+	}
+	
 	const FVector::FReal SteerK = 1. / StandingParams.GhostSteeringReactionTime;
 	constexpr FVector::FReal SteeringMinDistance = 1.; // Do not bother to steer if the distance is less than this.
 
