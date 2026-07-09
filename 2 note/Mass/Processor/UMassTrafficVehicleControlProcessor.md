@@ -27,7 +27,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	// 3 计算车应不应该停在道路末端
 	/*
 	1 如果没有NextLane，或者没有Nextlane的Nextlane就应该停止
-	2 如果NextLane是交叉路口，
+	2 如果NextLane是交叉路口，已经在交叉路口的车辆都能通过交叉路口，但自己在交叉路口的NextLane已经容纳不下了e
 	*/
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit();
 
