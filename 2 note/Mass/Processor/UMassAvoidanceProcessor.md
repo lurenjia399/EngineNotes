@@ -202,24 +202,19 @@ void UMassStandingAvoidanceProcessor::Execute(
 		MovingAvoidanceParams.ObstacleDetectionDistance,
 		AvoidanceObstacleGrid, CloseEntities, 
 		UE::MassAvoidance::MaxObstacleResults);
-	// 遍历找到的CloseGhose,计算
+	// 遍历找到的CloseGhose,计算分离力，就是其他Ghost指向当前Ghost的力
 	for (int32 Index = 0; Index < NumCloseObstacles; Index++)
 	{
 		const FVector::FReal OtherDistanceToGoal = FVector::Distance(OtherGhost->Location, OtherMoveTarget->Center);
 		const FVector::FReal OtherSteerFade = FMath::Clamp(OtherDistanceToGoal / StandingParams.GhostToTargetMaxDeviation, 0., 1.);
 		const FVector::FReal SeparationStiffness = FMath::Lerp(GhostSeparationStiffness, MovingSeparationStiffness, OtherSteerFade);
-
-		// Ghost separation
 		FVector RelPos = Ghost.Location - OtherGhost->Location;
 		RelPos.Z = 0.; // we assume we work on a flat plane for now
 		const FVector::FReal ConDist = RelPos.Size();
 		const FVector ConNorm = ConDist > 0. ? RelPos / ConDist : FVector::ForwardVector;
-
-		// Separation force (stay away from obstacles if possible)
 		const FVector::FReal PenSep = (TotalRadius + GhostSeparationDistance) - ConDist;
 		const FVector::FReal SeparationMag = UE::MassNavigation::Smooth(FMath::Clamp(PenSep / GhostSeparationDistance, 0., 1.));
 		const FVector SeparationForce = ConNorm * SeparationStiffness * SeparationMag;
-
 		GhostSteeringForce += SeparationForce;
 	}
 
