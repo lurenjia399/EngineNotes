@@ -10,3 +10,11 @@ DesiredMovement.DesiredVelocity += Force.Value * DeltaTime;
 // 清空力
 Force.Value = FVector::ZeroVector;
 ```
+
+# 2 UMassApplyMovementProcessor
+```cpp
+// huo'qu
+Velocity.Value = MovementList[EntityIt].DesiredVelocity;
+CurrentLocation += Velocity.Value * DeltaTime;
+CurrentTransform.SetTranslation(CurrentLocation);
+```
