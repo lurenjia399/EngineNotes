@@ -24,7 +24,10 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 			RandomFractionFragment, BusInfoFragment, 
 			VehicleControlFragment, AppendixFragment, NoiseValue));
 			
-	// 3 计算车应不应该停在道路末端（1 ）
+	// 3 计算车应不应该停在道路末端
+	/*
+	1 如果没有NextLane，或者me
+	*/
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit();
 
 }
