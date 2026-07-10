@@ -198,7 +198,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	// 11 处理由Split和Merge的Ghost车
 	{
 		1 如果新车道上有GhostVehicle_FromSplit，就把GhostVehicle转移到NextVehicleFragment中，并清掉新车道上的GhostVehicle。MergeVehicle同理
-		2 
+		2 将自己作为Ghost登记到新车道的Splitlane上
 	}
 }
 ```
