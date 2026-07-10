@@ -106,7 +106,7 @@ void TryStartingNewLaneChange()
 			RandomStream);
 		return; 
 	}
-	// 改变Fragment数据，从当前车道移除，za
+	// 改变Fragment数据，从当前车道移除，在目标车道添加
 	if (!TeleportVehicleToAnotherLane()
 	{
 		// 设置变道冷却时间
@@ -115,6 +115,11 @@ void TryStartingNewLaneChange()
 			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
 			RandomStream);
 		return;		
+	}
+	// ru'g
+	if (UE::MassLOD::GetLODFromArchetype(Context) == EMassLOD::Off)
+	{
+		
 	}
 }
 ```
