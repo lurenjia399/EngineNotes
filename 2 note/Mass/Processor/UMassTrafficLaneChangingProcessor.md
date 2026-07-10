@@ -46,12 +46,50 @@ void ChooseLaneForLaneChange()
 		OutRecommendation.Level = NormalLaneChange;			
 		return;
 	}
+	// 如果没有左车道，有右车道，就选择右车道
 	else if (!CandidateTrafficLaneData_Left && CandidateTrafficLaneData_Right)
 	{
 		OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Right;
 		OutRecommendation.bChoseLaneOnRight = true;
 		OutRecommendation.Level = NormalLaneChange;			
 		return;
+	}
+	// 如果都有，挑选密度小的，
+	else if (CandidateTrafficLaneData_Left && CandidateTrafficLaneData_Right)
+	{
+		// Choose the one with less density, or random if equal.
+		
+		if (DownstreamFlowDensity_Candidate_Left < DownstreamFlowDensity_Candidate_Right)
+		{
+			OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Left;
+			OutRecommendation.bChoseLaneOnLeft = true;
+			OutRecommendation.Level = NormalLaneChange;
+			return;				
+		}
+		else if (DownstreamFlowDensity_Candidate_Right < DownstreamFlowDensity_Candidate_Left) 
+		{
+			OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Right;
+			OutRecommendation.bChoseLaneOnRight = true;
+			OutRecommendation.Level = NormalLaneChange;
+			return;
+		}
+		else
+		{
+			if (RandomStream.FRand() < 0.5f)
+			{
+				OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Left;
+				OutRecommendation.bChoseLaneOnLeft = true;
+				OutRecommendation.Level = NormalLaneChange;
+				return;
+			}
+			else
+			{
+				OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Right;
+				OutRecommendation.bChoseLaneOnRight = true;
+				OutRecommendation.Level = NormalLaneChange;
+				return;
+			}
+		}
 	}
 }
 ```
