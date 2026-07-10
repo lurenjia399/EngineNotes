@@ -173,5 +173,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	}
 	// 7 向新车道记录车的信息，增加车的数量，减少空余长度
 	NewCurrentLane.AddVehicleOccupancy(SpaceTakenByVehicleOnLane);
+	// 8 在新车道了，重置停不下来的标志位
+	VehicleControlFragment.bCantStopAtLaneExit = false;
 }
 ```
