@@ -80,7 +80,7 @@ void TryStartingNewLaneChange()
 	{
 		//省略了
 	}
-	// 根据变道上的位置，找到位置前的车和位置后的车，如果
+	// 根据变道上的位置，找到位置前的车和位置后的车，如果找了两百次都找不到位置前的车
 	if (!FindNearbyVehiclesOnLane_RelativeToDistanceAlongLane(
 		Lane_Chosen, DistanceAlongLane_Chosen, /*out*/Entity_Chosen_Behind,
 		 /*out*/Entity_Chosen_Ahead, /*Coordinator,*/ EntityManager))
