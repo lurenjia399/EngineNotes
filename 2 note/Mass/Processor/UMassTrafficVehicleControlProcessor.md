@@ -135,5 +135,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	{
 		CurrentLane.RemoveVehicleOccupancy(SpaceTakenByVehicleOnLane);
 	}
+	// 2 更细车辆的位置，减去车道长度
+	LaneLocationFragment.DistanceAlongLane -= LaneLocationFragment.LaneLength;
 }
 ```
