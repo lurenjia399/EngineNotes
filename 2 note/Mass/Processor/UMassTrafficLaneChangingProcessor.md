@@ -229,5 +229,33 @@ bool TeleportVehicleToAnotherLane()
 			TrafficLaneData_Current.TailVehicle = FMassEntityHandle();
 		}
 	}
+	// 在变道的车道上添加需要变道的车
+	{
+		if (Entity_Chosen_Behind.IsSet() && Entity_Chosen_Ahead.IsSet())
+		{
+			NextVehicleFragment_Current.SetNextVehicle(
+				Entity_Current, Entity_Chosen_Ahead);
+
+			NextVehicleFragment_Chosen_Behind->SetNextVehicle(
+				Entity_Chosen_Behind, Entity_Current);				
+		}
+		else if (Entity_Chosen_Behind.IsSet() && !Entity_Chosen_Ahead.IsSet())
+		{
+			NextVehicleFragment_Current.UnsetNextVehicle();
+			NextVehicleFragment_Chosen_Behind->SetNextVehicle(
+				Entity_Chosen_Behind, Entity_Current);				
+		}
+		else if (!Entity_Chosen_Behind.IsSet() && Entity_Chosen_Ahead.IsSet())
+		{
+			NextVehicleFragment_Current.SetNextVehicle(
+				Entity_Current, Entity_Chosen_Ahead);
+			Lane_Chosen.TailVehicle = Entity_Current;
+		}
+		else if (!Entity_Chosen_Behind.IsSet() && !Entity_Chosen_Ahead.IsSet())
+		{
+			NextVehicleFragment_Current.UnsetNextVehicle();
+			Lane_Chosen.TailVehicle = Entity_Current;
+		}
+	}
 }
 ```
