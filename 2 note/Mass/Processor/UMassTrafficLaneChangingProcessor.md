@@ -38,7 +38,7 @@ void TryStartingNewLaneChange()
 	else if (LaneChangeRecommendation.Level == TransversingLaneChange)
 	{
 	}
-	// 如果当前NextVehicleFragment的遍
+	// 如果当前车前边堆满了要变道过来的车辆，当前车就不能变道走
 	if (NextVehicleFragment_Current.NextVehicles_LaneChange.IsFull())
 	{
 		// 设置变道冷却时间
