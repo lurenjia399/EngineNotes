@@ -1,4 +1,4 @@
-1 TryStartingNewLaneChange
+# 1 TryStartingNewLaneChange
 ```cpp
 void TryStartingNewLaneChange()
 {
@@ -119,7 +119,7 @@ void TryStartingNewLaneChange()
 }
 ```
 
-2 ChooseLaneForLaneChange
+# 2 ChooseLaneForLaneChange
 ```cpp
 void ChooseLaneForLaneChange()
 {
@@ -202,5 +202,13 @@ void ChooseLaneForLaneChange()
 			}
 		}
 	}
+}
+```
+
+# 3 TeleportVehicleToAnotherLane
+```cpp
+bool TeleportVehicleToAnotherLane()
+{
+	
 }
 ```
