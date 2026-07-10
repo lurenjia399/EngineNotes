@@ -5,6 +5,16 @@ void TryStartingNewLaneChange()
 	// 选择一个变道
 	FMassTrafficLaneChangeRecommendation LaneChangeRecommendation;
 	ChooseLaneForLaneChange();
+	// 如果是不能变道
+	if (LaneChangeRecommendation.Level == StayOnCurrentLane_RetryNormal)
+	{
+		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
+			(MassTrafficSettings, 
+			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
+			RandomStream);
+		LaneChangeFragment_Current.bBlockAllLaneChangesUntilNextLane = LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
+		return;
+	}
 }
 ```
 
