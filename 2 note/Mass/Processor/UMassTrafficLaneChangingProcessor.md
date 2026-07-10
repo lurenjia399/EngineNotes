@@ -119,29 +119,23 @@ void TryStartingNewLaneChange()
 	// 如果数据设置完了，但是变成OFF了
 	if (UE::MassLOD::GetLODFromArchetype(Context) == EMassLOD::Off)
 	{
-		
+		// 设置变道冷却时间
+		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
+			(MassTrafficSettings, 
+			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
+			RandomStream);
+		//
+		InterpolatePositionAndOrientationAlongLane();
 	}
 	else
 	{
-		EMassTrafficLaneChangeSide LaneChangeSide = EMassTrafficLaneChangeSide::IsNotLaneChanging;
-		if (LaneChangeRecommendation.bChoseLaneOnLeft && !LaneChangeRecommendation.bChoseLaneOnRight)
-		{
-			LaneChangeSide = EMassTrafficLaneChangeSide::IsLaneChangingToTheLeft;
-		}
-		else if (!LaneChangeRecommendation.bChoseLaneOnLeft && LaneChangeRecommendation.bChoseLaneOnRight)
-		{
-			LaneChangeSide = EMassTrafficLaneChangeSide::IsLaneChangingToTheRight;
-		}
-		else
-		{
-			UE_LOG(LogMassTraffic, Error, TEXT("%s - LaneChangeRecommendation says go left:%d right:%d"), ANSI_TO_TCHAR(__FUNCTION__),
-				LaneChangeRecommendation.bChoseLaneOnLeft, LaneChangeRecommendation.bChoseLaneOnRight);
-		}
-
-		const bool bDidStartLaneChangeProgression = LaneChangeFragment_Current.BeginLaneChangeProgression(
+		// 开始变道
+		const bool bDidStartLaneChangeProgression = 
+			LaneChangeFragment_Current.BeginLaneChangeProgression(
 			//DebugLabel,
 			LaneChangeSide,
-			BeginDistanceAlongLaneForLaneChange_Chosen, EndDistanceAlongLaneForLaneChange_Chosen,
+			BeginDistanceAlongLaneForLaneChange_Chosen, 
+			EndDistanceAlongLaneForLaneChange_Chosen,
 			DistanceBetweenLanes,
 			// Fragments..
 			TransformFragment_Current,
