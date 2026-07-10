@@ -171,6 +171,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 		NextVehicleFragment.SetNextVehicle(
 			VehicleEntity, NewCurrentLane.TailVehicle);
 	}
-	// 7 
+	// 7 向新车道记录车的信息，增加车的数量，减少空余长度
+	NewCurrentLane.AddVehicleOccupancy(SpaceTakenByVehicleOnLane);
 }
 ```
