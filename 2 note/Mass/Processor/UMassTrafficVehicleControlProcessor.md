@@ -177,5 +177,17 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	VehicleControlFragment.bCantStopAtLaneExit = false;
 	// 9 记录当前是新车道最后一辆车
 	NewCurrentLane.TailVehicle = VehicleEntity;
+	// 10 
+	if (NewCurrentLane.GhostTailVehicle_FromLaneChangingVehicle.IsSet())
+	{
+		FMassTrafficVehicleLaneChangeFragment* LaneChangeFragment_GhostTailEntity =
+			EntityManager.GetFragmentDataPtr<FMassTrafficVehicleLaneChangeFragment>
+			(NewCurrentLane.GhostTailVehicle_FromLaneChangingVehicle);
+		if (LaneChangeFragment_GhostTailEntity && LaneChangeFragment_GhostTailEntity->IsLaneChangeInProgress())
+		{
+			LaneChangeFragment_GhostTailEntity->AddOtherLaneChangeNextVehicle_ForVehicleBehind(VehicleEntity, EntityManager);
+		}
+		NewCurrentLane.GhostTailVehicle_FromLaneChangingVehicle = FMassEntityHandle();
+	}
 }
 ```
