@@ -273,6 +273,19 @@ bool TeleportVehicleToAnotherLane()
 	LaneLocationFragment_Current.LaneHandle = Lane_Chosen.LaneHandle;
 	LaneLocationFragment_Current.DistanceAlongLane = DistanceAlongLane_Chosen;
 	LaneLocationFragment_Current.LaneLength = Lane_Chosen.Length;
-	
+	// 设置Nextlane，和MoveVehicleToNextLane的从左
+	if (Lane_Chosen.NextLanes.Num() == 1)
+	{
+		VehicleControlFragment_Current.NextLane = Lane_Chosen.NextLanes[0];
+		++VehicleControlFragment_Current.NextLane->NumVehiclesApproachingLane;
+		if (!NextVehicleFragment_Current.HasNextVehicle())
+		{
+			NextVehicleFragment_Current.SetNextVehicle(Entity_Current, VehicleControlFragment_Current.NextLane->TailVehicle);
+		}
+	}
+	else
+	{
+		VehicleControlFragment_Current.NextLane = nullptr;
+	}
 }
 ```
