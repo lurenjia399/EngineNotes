@@ -257,7 +257,7 @@ bool TeleportVehicleToAnotherLane()
 			Lane_Chosen.TailVehicle = Entity_Current;
 		}
 	}
-	// 给当前车到上移除车，向变道che
+	// 给当前车到上移除车，向变道车道上添加车
 	{
 		const float SpaceTakenByVehicle_Current = GetSpaceTakenByVehicleOnLane(
 			RadiusFragment_Current.Radius, 
@@ -267,5 +267,11 @@ bool TeleportVehicleToAnotherLane()
 			SpaceTakenByVehicle_Current);
 		Lane_Chosen.AddVehicleOccupancy(SpaceTakenByVehicle_Current);
 	}
+	// 重新设置当前车身上的Fragemtn
+	VehicleControlFragment_Current.CurrentLaneConstData = Lane_Chosen.ConstData;
+	VehicleControlFragment_Current.PreviousLaneIndex = INDEX_NONE; 
+	LaneLocationFragment_Current.LaneHandle = Lane_Chosen.LaneHandle;
+	LaneLocationFragment_Current.DistanceAlongLane = DistanceAlongLane_Chosen;
+	LaneLocationFragment_Current.LaneLength = Lane_Chosen.Length;
 }
 ```
