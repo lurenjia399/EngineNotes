@@ -152,5 +152,15 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	LaneLocationFragment.LaneLength = NewCurrentLane.Length;
 	VehicleControlFragment.CurrentLaneConstData = NewCurrentLane.ConstData;
 	--NewCurrentLane.NumVehiclesApproachingLane;
+	// 4 重置NextLane，如果只有一条就直接设，如果超过一条了就等着ChooseNextLaneProcessor设置
+	if (NewCurrentLane.NextLanes.Num() == 1)
+	{
+		VehicleControlFragment.NextLane = NewCurrentLane.NextLanes[0];
+		++VehicleControlFragment.NextLane->NumVehiclesApproachingLane;
+	}
+	else
+	{
+		VehicleControlFragment.NextLane = nullptr;
+	}
 }
 ```
