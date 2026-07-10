@@ -177,7 +177,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	VehicleControlFragment.bCantStopAtLaneExit = false;
 	// 9 记录当前是新车道最后一辆车
 	NewCurrentLane.TailVehicle = VehicleEntity;
-	// 10 
+	// 10 检查目标车道是否有幽灵尾车：1 有一辆车正在变道并入这条车道，且它抢先占了"队尾"的逻辑位置。 2. 建立避碰关系：既然当前车辆（VehicleEntity）马上要成为这条车道的真正尾车（排在最后面），那它前面实际上还挤着这辆正在变道的"幽灵车"。为了不让当前车辆因为看不到这辆变道车而加速追尾，需要把这辆变道车设为当前车辆的"前车"（Next）。3. 但不是直接设置，而是委托：因为变道过程本身会动态更新它自己的"跟随者列表"（可能中途取消变道、完成变道等），所以不能直接写死VehicleEntity 的 NextVehicleFragment，而是调用变道车自己的LaneChangeFragment->AddOtherLaneChangeNextVehicle_ForVehicleBehind(VehicleEntity, ...)，把 VehicleEntity登记为"变道车后面新出现的跟随者"。这样变道车的 LaneChangeFragment 就接管了这个关系的生命周期——等它变道完成或取消时，会负责去清理/更新 VehicleEntity 的 NextVehicleFragment。
 	if (NewCurrentLane.GhostTailVehicle_FromLaneChangingVehicle.IsSet())
 	{
 		FMassTrafficVehicleLaneChangeFragment* LaneChangeFragment_GhostTailEntity =
