@@ -162,5 +162,8 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	{
 		VehicleControlFragment.NextLane = nullptr;
 	}
+	// 5 更新转向灯
+	VehicleLightsFragment.bLeftTurnSignalLights = NewCurrentLane.bTurnsLeft;
+	VehicleLightsFragment.bRightTurnSignalLights = NewCurrentLane.bTurnsRight;
 }
 ```
