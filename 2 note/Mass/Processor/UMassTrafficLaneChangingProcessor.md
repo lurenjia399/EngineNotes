@@ -22,6 +22,17 @@ void ChooseLaneForLaneChange()
 		return;
 	}
 	
-	// 根据密度，选择一个左车道，
+	// 根据密度，选择一个左车道，右车道
+	FZoneGraphTrafficLaneData* CandidateTrafficLaneData_Left = 
+		TrafficLaneData_Initial->LeftLane;
+	FZoneGraphTrafficLaneData* CandidateTrafficLaneData_Right = 
+		TrafficLaneData_Initial->RightLane;
+	CandidateTrafficLaneData_Left = FilterLaneForLaneChangeSuitability(
+		CandidateTrafficLaneData_Left, *TrafficLaneData_Initial, 
+		VehicleControlFragment, SpaceTakenByVehicleOnLane);
+	CandidateTrafficLaneData_Right = FilterLaneForLaneChangeSuitability(
+		CandidateTrafficLaneData_Right, *TrafficLaneData_Initial, 
+		VehicleControlFragment, SpaceTakenByVehicleOnLane);
+	// 
 }
 ```
