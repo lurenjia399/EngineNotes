@@ -2,7 +2,9 @@
 ```cpp
 void TryStartingNewLaneChange()
 {
-	
+	// 选择一个变道
+	FMassTrafficLaneChangeRecommendation LaneChangeRecommendation;
+	ChooseLaneForLaneChange();
 }
 ```
 
@@ -54,11 +56,9 @@ void ChooseLaneForLaneChange()
 		OutRecommendation.Level = NormalLaneChange;			
 		return;
 	}
-	// 如果都有，挑选密度小的，
+	// 如果都有，挑选密度小的
 	else if (CandidateTrafficLaneData_Left && CandidateTrafficLaneData_Right)
 	{
-		// Choose the one with less density, or random if equal.
-		
 		if (DownstreamFlowDensity_Candidate_Left < DownstreamFlowDensity_Candidate_Right)
 		{
 			OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Left;
