@@ -175,5 +175,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	NewCurrentLane.AddVehicleOccupancy(SpaceTakenByVehicleOnLane);
 	// 8 在新车道了，重置停不下来的标志位
 	VehicleControlFragment.bCantStopAtLaneExit = false;
+	// 9 记录当前是新车道最后一辆车
+	NewCurrentLane.TailVehicle = VehicleEntity;
 }
 ```
