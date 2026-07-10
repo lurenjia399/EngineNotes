@@ -267,11 +267,12 @@ bool TeleportVehicleToAnotherLane()
 			SpaceTakenByVehicle_Current);
 		Lane_Chosen.AddVehicleOccupancy(SpaceTakenByVehicle_Current);
 	}
-	// 重新设置当前车身上的Fragemtn
+	// 重新设置当前车身上的Fragemtn信息
 	VehicleControlFragment_Current.CurrentLaneConstData = Lane_Chosen.ConstData;
 	VehicleControlFragment_Current.PreviousLaneIndex = INDEX_NONE; 
 	LaneLocationFragment_Current.LaneHandle = Lane_Chosen.LaneHandle;
 	LaneLocationFragment_Current.DistanceAlongLane = DistanceAlongLane_Chosen;
 	LaneLocationFragment_Current.LaneLength = Lane_Chosen.Length;
+	
 }
 ```
