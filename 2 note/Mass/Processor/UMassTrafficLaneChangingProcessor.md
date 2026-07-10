@@ -48,6 +48,34 @@ void TryStartingNewLaneChange()
 			RandomStream);
 		return; 
 	}
+	// 根据
+	{
+		FZoneGraphLaneLocation ZoneGraphLocationOnLane_Current;
+		UE::ZoneGraph::Query::CalculateLocationAlongLane(ZoneGraphStorage, Lane_Current->LaneHandle, DistanceAlongLane_Current, ZoneGraphLocationOnLane_Current);
+		if (!ZoneGraphLocationOnLane_Current.IsValid())
+		{
+			// Should never happen.
+			UE_LOG(LogMassTraffic, Error, TEXT("%s - Could not get locaton on current lane %d given distance along lane %f. Lane length is %f."), ANSI_TO_TCHAR(__FUNCTION__),
+				LaneIndex_Current, DistanceAlongLane_Current, LaneLength_Current);
+			return;
+		}
+
+		Position_Current = ZoneGraphLocationOnLane_Current.Position;
+
+		const float ZoneGraphLaneSearchDistance = MassTrafficSettings.LaneChangeSearchDistanceScale * GetMaxDistanceBetweenLanes(Lane_Current->LaneHandle.Index, Lane_Chosen->LaneHandle.Index, ZoneGraphStorage); 
+		float DistanceSquared;
+		const FZoneGraphLaneLocation ZoneGraphLocationOnLane_Chosen = GetClosestLocationOnLane(Position_Current, Lane_Chosen->LaneHandle.Index, ZoneGraphLaneSearchDistance, ZoneGraphStorage, &DistanceSquared);
+		if (!ZoneGraphLocationOnLane_Chosen.IsValid())
+		{
+			UE_LOG(LogMassTraffic, Error, TEXT("%s - Could not get closest location on chosen lane %d. Search location is %s."), ANSI_TO_TCHAR(__FUNCTION__),
+				LaneIndex_Chosen, *Position_Current.ToString());
+			return;
+		}
+
+		Position_Chosen = ZoneGraphLocationOnLane_Chosen.Position;
+		DistanceAlongLane_Chosen = ZoneGraphLocationOnLane_Chosen.DistanceAlongLane;
+		DistanceBetweenLanes = FMath::Sqrt(DistanceSquared);
+	}
 }
 ```
 
