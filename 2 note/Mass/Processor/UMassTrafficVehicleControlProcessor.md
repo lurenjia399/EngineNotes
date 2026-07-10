@@ -123,5 +123,16 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 ```
 2 MoveVehicleToNextLane
 ```cpp
-
+void MoveVehicleToNextLane(/*省略了参数*/)
+{
+	if (CurrentLane.TailVehicle == VehicleEntity)
+	{
+		CurrentLane.TailVehicle.Reset();
+		CurrentLane.ClearVehicleOccupancy();
+	}
+	else
+	{
+		CurrentLane.RemoveVehicleOccupancy(SpaceTakenByVehicleOnLane);
+	}
+}
 ```
