@@ -8,11 +8,12 @@ void TryStartingNewLaneChange()
 	// 如果是不能变道
 	if (LaneChangeRecommendation.Level == StayOnCurrentLane_RetryNormal)
 	{
-		// 设置变道leng'que'shi
+		// 设置变道冷却时间
 		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
 			(MassTrafficSettings, 
 			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
 			RandomStream);
+		// 看情况设置，这条车道上不能变道
 		LaneChangeFragment_Current.bBlockAllLaneChangesUntilNextLane = 
 			LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
 		return;
