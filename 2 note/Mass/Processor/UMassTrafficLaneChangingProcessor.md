@@ -10,14 +10,18 @@ void TryStartingNewLaneChange()
 ```cpp
 void ChooseLaneForLaneChange()
 {
-	// 如果当前车道不能变道，就是没有左右split,mergexiang'lin'che
+	// 如果当前车道不能变道，就是没有左右相邻车道
 	if (!TrafficLaneData_Initial->ConstData.bIsLaneChangingLane)
 	{
 		return;		
 	}
-	else if (!TrafficLaneData_Initial->SplittingLanes.IsEmpty() || !TrafficLaneData_Initial->MergingLanes.IsEmpty())
+	// 如果当前车道有split，merge车道就不能变道
+	else if (!TrafficLaneData_Initial->SplittingLanes.IsEmpty() 
+		|| !TrafficLaneData_Initial->MergingLanes.IsEmpty())
 	{
 		return;
 	}
+	
+	
 }
 ```
