@@ -8,11 +8,13 @@ void TryStartingNewLaneChange()
 	// 如果是不能变道
 	if (LaneChangeRecommendation.Level == StayOnCurrentLane_RetryNormal)
 	{
+		// 设置变道leng'que'shi
 		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
 			(MassTrafficSettings, 
 			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
 			RandomStream);
-		LaneChangeFragment_Current.bBlockAllLaneChangesUntilNextLane = LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
+		LaneChangeFragment_Current.bBlockAllLaneChangesUntilNextLane = 
+			LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
 		return;
 	}
 }
