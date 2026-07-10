@@ -8,29 +8,3 @@
 	如果下一条车道是交叉路口，就检查路口下一条车道能否容纳，能容纳就选择这一条
 6 如果找到了下一条车道，就设置下一条车道的转向灯
 ```
-2 
-```cpp
-// 
-/**/
-void UMassTrafficChooseNextLaneProcessor::Execute(
-	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
-{
-	// 1 第一步，判断是否到达了计算NextLane的距离
-	{
-		float ChooseNextLaneDistanceFromLaneEnd = FMath::Max(VehicleControlFragment.Speed * ChooseNextLaneTime, ChooseNextLaneMinDistance);
-		const float AssumedVehicleSpeed = FMath::Max(VehicleControlFragment.Speed, VehicleControlFragment.CurrentLaneConstData.SpeedLimit * 0.25);
-		ChooseNextLaneDistanceFromLaneEnd = FMath::Max(
-			MassTrafficSettings->StopSignBrakingTime * AssumedVehicleSpeed,
-			ChooseNextLaneDistanceFromLaneEnd);
-		const float VehicleLength = 2.0f * AgentRadiusFragment.Radius;
-		if (ChooseNextLaneDistanceFromLaneEnd < VehicleLength)
-		{
-			ChooseNextLaneDistanceFromLaneEnd = VehicleLength;
-		}
-		if (LaneLocationFragment.DistanceAlongLane < (LaneLocationFragment.LaneLength - ChooseNextLaneDistanceFromLaneEnd))
-		{
-			continue;
-		}
-	}
-}
-```
