@@ -137,7 +137,7 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	}
 	// 2 更细车辆的位置，减去车道长度
 	LaneLocationFragment.DistanceAlongLane -= LaneLocationFragment.LaneLength;
-	// 3 改变新车道的信息，重置准备使用标志位，
+	// 3 改变新车道的信息，重置准备使用标志位，如果是停不住车就改变计数，记录前一条车道信息，
 	FZoneGraphTrafficLaneData& NewCurrentLane = *VehicleControlFragment.NextLane;
 	NewCurrentLane.bIsVehicleReadyToUseLane = false;
 }
