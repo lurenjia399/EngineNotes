@@ -48,21 +48,20 @@ void TryStartingNewLaneChange()
 			RandomStream);
 		return; 
 	}
-	// 根据
+	// 根据当前车的位置，通过FindNearestLocationOnLane方法，找到变道上的位置
 	{
 		FZoneGraphLaneLocation ZoneGraphLocationOnLane_Current;
-		UE::ZoneGraph::Query::CalculateLocationAlongLane(ZoneGraphStorage, Lane_Current->LaneHandle, DistanceAlongLane_Current, ZoneGraphLocationOnLane_Current);
+		UE::ZoneGraph::Query::CalculateLocationAlongLane(
+			ZoneGraphStorage, Lane_Current->LaneHandle, 
+			DistanceAlongLane_Current, ZoneGraphLocationOnLane_Current);
 		if (!ZoneGraphLocationOnLane_Current.IsValid())
 		{
-			// Should never happen.
-			UE_LOG(LogMassTraffic, Error, TEXT("%s - Could not get locaton on current lane %d given distance along lane %f. Lane length is %f."), ANSI_TO_TCHAR(__FUNCTION__),
-				LaneIndex_Current, DistanceAlongLane_Current, LaneLength_Current);
 			return;
 		}
-
 		Position_Current = ZoneGraphLocationOnLane_Current.Position;
-
-		const float ZoneGraphLaneSearchDistance = MassTrafficSettings.LaneChangeSearchDistanceScale * GetMaxDistanceBetweenLanes(Lane_Current->LaneHandle.Index, Lane_Chosen->LaneHandle.Index, ZoneGraphStorage); 
+		const float ZoneGraphLaneSearchDistance = 
+		MassTrafficSettings.LaneChangeSearchDistanceScale * 
+		GetMaxDistanceBetweenLanes(Lane_Current->LaneHandle.Index, Lane_Chosen->LaneHandle.Index, ZoneGraphStorage); 
 		float DistanceSquared;
 		const FZoneGraphLaneLocation ZoneGraphLocationOnLane_Chosen = GetClosestLocationOnLane(Position_Current, Lane_Chosen->LaneHandle.Index, ZoneGraphLaneSearchDistance, ZoneGraphStorage, &DistanceSquared);
 		if (!ZoneGraphLocationOnLane_Chosen.IsValid())
