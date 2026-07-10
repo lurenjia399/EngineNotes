@@ -145,5 +145,12 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 		--NewCurrentLane.NumReservedVehiclesOnLane;
 		VehicleControlFragment.bCantStopAtLaneExit = false;
 	}
+	VehicleControlFragment.PreviousLaneIndex = 
+		LaneLocationFragment.LaneHandle.Index;
+	VehicleControlFragment.PreviousLaneLength = LaneLocationFragment.LaneLength;
+	LaneLocationFragment.LaneHandle = NewCurrentLane.LaneHandle;
+	LaneLocationFragment.LaneLength = NewCurrentLane.Length;
+	VehicleControlFragment.CurrentLaneConstData = NewCurrentLane.ConstData;
+	--NewCurrentLane.NumVehiclesApproachingLane;
 }
 ```
