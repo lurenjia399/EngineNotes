@@ -257,5 +257,15 @@ bool TeleportVehicleToAnotherLane()
 			Lane_Chosen.TailVehicle = Entity_Current;
 		}
 	}
+	// 给当前车到上移除车，向变道che
+	{
+		const float SpaceTakenByVehicle_Current = GetSpaceTakenByVehicleOnLane(
+			RadiusFragment_Current.Radius, 
+			RandomFractionFragment_Current.RandomFraction, 
+			MassTrafficSettings.MinimumDistanceToNextVehicleRange);
+		TrafficLaneData_Current.RemoveVehicleOccupancy(
+			SpaceTakenByVehicle_Current);
+		Lane_Chosen.AddVehicleOccupancy(SpaceTakenByVehicle_Current);
+	}
 }
 ```
