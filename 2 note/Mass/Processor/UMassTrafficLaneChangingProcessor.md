@@ -76,6 +76,10 @@ void TryStartingNewLaneChange()
 			ZoneGraphLocationOnLane_Chosen.DistanceAlongLane;
 		DistanceBetweenLanes = FMath::Sqrt(DistanceSquared);
 	}
+	// 计算变道开始时在变道上的位置，和变道结束在变道上的位置
+	{
+		//省略了
+	}
 }
 ```
 
