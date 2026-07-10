@@ -33,6 +33,25 @@ void ChooseLaneForLaneChange()
 	CandidateTrafficLaneData_Right = FilterLaneForLaneChangeSuitability(
 		CandidateTrafficLaneData_Right, *TrafficLaneData_Initial, 
 		VehicleControlFragment, SpaceTakenByVehicleOnLane);
-	// 
+	// 左车道，右车道都没有，就返回
+	if (!CandidateTrafficLaneData_Left && !CandidateTrafficLaneData_Right)
+	{
+		return;
+	}
+	// 如果有左车道，没有右车道，就选择左车道
+	else if (CandidateTrafficLaneData_Left && !CandidateTrafficLaneData_Right)
+	{
+		OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Left;
+		OutRecommendation.bChoseLaneOnLeft = true;
+		OutRecommendation.Level = NormalLaneChange;			
+		return;
+	}
+	else if (!CandidateTrafficLaneData_Left && CandidateTrafficLaneData_Right)
+	{
+		OutRecommendation.Lane_Chosen = CandidateTrafficLaneData_Right;
+		OutRecommendation.bChoseLaneOnRight = true;
+		OutRecommendation.Level = NormalLaneChange;			
+		return;
+	}
 }
 ```
