@@ -116,10 +116,46 @@ void TryStartingNewLaneChange()
 			RandomStream);
 		return;		
 	}
-	// ru'g
+	// 如果数据设置完了，但是变成OFF了
 	if (UE::MassLOD::GetLODFromArchetype(Context) == EMassLOD::Off)
 	{
 		
+	}
+	else
+	{
+		EMassTrafficLaneChangeSide LaneChangeSide = EMassTrafficLaneChangeSide::IsNotLaneChanging;
+		if (LaneChangeRecommendation.bChoseLaneOnLeft && !LaneChangeRecommendation.bChoseLaneOnRight)
+		{
+			LaneChangeSide = EMassTrafficLaneChangeSide::IsLaneChangingToTheLeft;
+		}
+		else if (!LaneChangeRecommendation.bChoseLaneOnLeft && LaneChangeRecommendation.bChoseLaneOnRight)
+		{
+			LaneChangeSide = EMassTrafficLaneChangeSide::IsLaneChangingToTheRight;
+		}
+		else
+		{
+			UE_LOG(LogMassTraffic, Error, TEXT("%s - LaneChangeRecommendation says go left:%d right:%d"), ANSI_TO_TCHAR(__FUNCTION__),
+				LaneChangeRecommendation.bChoseLaneOnLeft, LaneChangeRecommendation.bChoseLaneOnRight);
+		}
+
+		const bool bDidStartLaneChangeProgression = LaneChangeFragment_Current.BeginLaneChangeProgression(
+			//DebugLabel,
+			LaneChangeSide,
+			BeginDistanceAlongLaneForLaneChange_Chosen, EndDistanceAlongLaneForLaneChange_Chosen,
+			DistanceBetweenLanes,
+			// Fragments..
+			TransformFragment_Current,
+			VehicleLightsFragment_Current,
+			NextVehicleFragment_Current,
+			ZoneGraphLaneLocationFragment_Current,
+			Lane_Current/*initial*/, Lane_Chosen,
+			// Other vehicles involved in lane change..
+			Entity_Current,
+			Entity_Current_Behind, Entity_Current_Ahead,
+			Entity_Chosen_Behind, Entity_Chosen_Ahead,
+			// Other..
+			EntityManager);
+		}
 	}
 }
 ```
