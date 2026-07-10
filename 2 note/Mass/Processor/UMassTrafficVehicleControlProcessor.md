@@ -165,5 +165,12 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	// 5 更新转向灯
 	VehicleLightsFragment.bLeftTurnSignalLights = NewCurrentLane.bTurnsLeft;
 	VehicleLightsFragment.bRightTurnSignalLights = NewCurrentLane.bTurnsRight;
+	// 6 设置NextVehicle,就是当前车的前一辆车
+	if (NewCurrentLane.TailVehicle.IsSet())
+	{
+		NextVehicleFragment.SetNextVehicle(
+			VehicleEntity, NewCurrentLane.TailVehicle);
+	}
+	// 7 
 }
 ```
