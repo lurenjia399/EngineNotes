@@ -38,6 +38,16 @@ void TryStartingNewLaneChange()
 	else if (LaneChangeRecommendation.Level == TransversingLaneChange)
 	{
 	}
+	// 如果当前NextVehicleFragment的遍
+	if (NextVehicleFragment_Current.NextVehicles_LaneChange.IsFull())
+	{
+		// 设置变道冷却时间
+		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
+			(MassTrafficSettings, 
+			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
+			RandomStream);
+		return; 
+	}
 }
 ```
 
