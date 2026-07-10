@@ -209,6 +209,25 @@ void ChooseLaneForLaneChange()
 ```cpp
 bool TeleportVehicleToAnotherLane()
 {
-	
+	// 从当前车道上移除需要变道的车
+	{
+		if (Entity_Current_Behind.IsSet() && Entity_Current_Ahead.IsSet())
+		{
+			NextVehicleFragment_Current_Behind->SetNextVehicle(
+				Entity_Current_Behind, Entity_Current_Ahead);
+		}
+		else if (Entity_Current_Behind.IsSet() && !Entity_Current_Ahead.IsSet())
+		{
+			NextVehicleFragment_Current_Behind->UnsetNextVehicle();
+		}
+		else if (!Entity_Current_Behind.IsSet() && Entity_Current_Ahead.IsSet())
+		{
+			TrafficLaneData_Current.TailVehicle = Entity_Current_Ahead;
+		}
+		else if (!Entity_Current_Behind.IsSet() && !Entity_Current_Ahead.IsSet())
+		{
+			TrafficLaneData_Current.TailVehicle = FMassEntityHandle();
+		}
+	}
 }
 ```
