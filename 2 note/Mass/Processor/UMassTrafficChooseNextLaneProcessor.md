@@ -1,7 +1,9 @@
 1 
 ```cpp
 1 如果车已经停不下来了，说明已经在NextLane了，不用重新选择NextLane
-1 判断是否到达了计算NextLane的距离，这个距离至少是两倍ban
+2 判断是否到达了计算NextLane的距离，这个距离至少是两倍半径
+3 如果NextLane有值，说明已经选择了，不用重新选择
+4 如果CurrentLane.NextLanes.Num() == 1，shuo'min
 ```
 2 
 ```cpp
