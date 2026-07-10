@@ -106,6 +106,16 @@ void TryStartingNewLaneChange()
 			RandomStream);
 		return; 
 	}
+	// 
+	if (!TeleportVehicleToAnotherLane()
+	{
+		// 设置变道冷却时间
+		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
+			(MassTrafficSettings, 
+			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
+			RandomStream);
+		return;		
+	}
 }
 ```
 
