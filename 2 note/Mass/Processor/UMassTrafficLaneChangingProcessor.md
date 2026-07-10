@@ -85,7 +85,20 @@ void TryStartingNewLaneChange()
 		Lane_Chosen, DistanceAlongLane_Chosen, /*out*/Entity_Chosen_Behind,
 		 /*out*/Entity_Chosen_Ahead, /*Coordinator,*/ EntityManager))
 	{
-	// 设置变道冷却时间
+		// 设置变道冷却时间
+		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
+			(MassTrafficSettings, 
+			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
+			RandomStream);
+		return; 
+	}
+	if ((LaneChangeFragment_Chosen_Ahead 
+		&& LaneChangeFragment_Chosen_Ahead->IsLaneChangeInProgress()) 
+		||
+		(LaneChangeFragment_Chosen_Behind 
+		&& LaneChangeFragment_Chosen_Behind->IsLaneChangeInProgress()))
+	{
+		// 设置变道冷却时间
 		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
 			(MassTrafficSettings, 
 			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
