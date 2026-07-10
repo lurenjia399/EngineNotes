@@ -1,11 +1,16 @@
 1 
 ```cpp
+1 如果车已经停不下来了，
+1 判断是否到达了计算NextLane的距离
+```
+2 
+```cpp
 // 
 /**/
 void UMassTrafficChooseNextLaneProcessor::Execute(
 	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
-	// 1 第一步，判断是否到计算NextLane的距离，用
+	// 1 第一步，判断是否到达了计算NextLane的距离
 	{
 		float ChooseNextLaneDistanceFromLaneEnd = FMath::Max(VehicleControlFragment.Speed * ChooseNextLaneTime, ChooseNextLaneMinDistance);
 		const float AssumedVehicleSpeed = FMath::Max(VehicleControlFragment.Speed, VehicleControlFragment.CurrentLaneConstData.SpeedLimit * 0.25);
