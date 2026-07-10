@@ -189,5 +189,6 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 		}
 		NewCurrentLane.GhostTailVehicle_FromLaneChangingVehicle = FMassEntityHandle();
 	}
+	// 11
 }
 ```
