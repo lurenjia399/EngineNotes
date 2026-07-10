@@ -106,7 +106,7 @@ void TryStartingNewLaneChange()
 			RandomStream);
 		return; 
 	}
-	// 
+	// 改变Fragment数据，从当前车道移除，za
 	if (!TeleportVehicleToAnotherLane()
 	{
 		// 设置变道冷却时间
@@ -273,7 +273,7 @@ bool TeleportVehicleToAnotherLane()
 	LaneLocationFragment_Current.LaneHandle = Lane_Chosen.LaneHandle;
 	LaneLocationFragment_Current.DistanceAlongLane = DistanceAlongLane_Chosen;
 	LaneLocationFragment_Current.LaneLength = Lane_Chosen.Length;
-	// 设置Nextlane，和MoveVehicleToNextLane的从左
+	// 设置Nextlane，和MoveVehicleToNextLane的操作保持一致
 	if (Lane_Chosen.NextLanes.Num() == 1)
 	{
 		VehicleControlFragment_Current.NextLane = Lane_Chosen.NextLanes[0];
