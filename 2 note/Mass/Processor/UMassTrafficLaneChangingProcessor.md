@@ -18,6 +18,19 @@ void TryStartingNewLaneChange()
 			LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
 		return;
 	}
+	// 添加少量变道cd，
+	else if (LaneChangeRecommendation.Level == StayOnCurrentLane_RetrySoon)
+	{
+		// 设置变道冷却时间
+		LaneChangeFragment_Current.SetLaneChangeCountdownSecondsToBeAtLeast
+			(MassTrafficSettings, 
+			EMassTrafficLaneChangeCountdownSeconds::AsRetryUsingSettings, 
+			RandomStream);
+		// 看情况设置，这条车道上不能变道
+		LaneChangeFragment_Current.bBlockAllLaneChangesUntilNextLane = 
+			LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
+		return;
+	}
 }
 ```
 
