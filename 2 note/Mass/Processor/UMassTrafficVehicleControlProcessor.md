@@ -121,3 +121,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 	}
 }
 ```
+2 MoveVehicleToNextLane
+```cpp
+
+```
