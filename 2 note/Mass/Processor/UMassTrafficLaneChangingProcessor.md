@@ -18,7 +18,7 @@ void TryStartingNewLaneChange()
 			LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
 		return;
 	}
-	// 添加少量变道cd，
+	// 添加少量变道cd，快速在次请求变道
 	else if (LaneChangeRecommendation.Level == StayOnCurrentLane_RetrySoon)
 	{
 		// 设置变道冷却时间
@@ -30,6 +30,13 @@ void TryStartingNewLaneChange()
 		LaneChangeFragment_Current.bBlockAllLaneChangesUntilNextLane = 
 			LaneChangeRecommendation.bNoLaneChangesUntilNextLane;
 		return;
+	}
+	// 剩下这些类型就是可以变道
+	else if (LaneChangeRecommendation.Level == NormalLaneChange)
+	{
+	}
+	else if (LaneChangeRecommendation.Level == TransversingLaneChange)
+	{
 	}
 }
 ```
