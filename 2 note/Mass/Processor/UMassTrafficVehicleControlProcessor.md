@@ -125,7 +125,7 @@ void UMassTrafficVehicleControlProcessor::SimpleVehicleControl
 ```cpp
 void MoveVehicleToNextLane(/*省略了参数*/)
 {
-	// 如果是当前车道的末尾车，就移除末尾车记录并清空车道数据（车道上的车辆，车道上空余长度0
+	// 1 如果是当前车道的末尾车，就移除末尾车记录并清空车道数据（车道上的车辆，车道上空余长度），如果不是末尾车，根据车的长度更新车道数据
 	if (CurrentLane.TailVehicle == VehicleEntity)
 	{
 		CurrentLane.TailVehicle.Reset();
