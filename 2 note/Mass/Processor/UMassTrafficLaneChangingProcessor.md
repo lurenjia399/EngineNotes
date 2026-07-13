@@ -1,6 +1,7 @@
 
 ```cpp
-1 选择要变道的mu'biao
+1 选择要变道的目标车道
+2 
 ```
 
 # 1 TryStartingNewLaneChange
