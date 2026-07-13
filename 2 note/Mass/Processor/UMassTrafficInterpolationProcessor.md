@@ -10,7 +10,7 @@ void InterpolatePositionAndOrientationAlongLane()
 		InitLaneSegment(ZoneGraphStorage, LaneIndex, 
 			DistanceAlongLane, InOutLaneSegment);
 	}
-	// 2 计算当前车在片段中的插值xi'shu
+	// 2 计算当前车在片段中的插值系数
 	const float Alpha = FMath::GetRangePct(
 		InOutLaneSegment.StartProgression, 
 		InOutLaneSegment.EndProgression, 
