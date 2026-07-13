@@ -25,12 +25,16 @@ void InterpolatePositionAndOrientationAlongLane()
 			InterpolatedForwardVector = InOutLaneSegment.EndPoint 
 				- InOutLaneSegment.StartPoint;
 			break;
-		// 3.2 ru
+		// 3.2 如果是3次贝塞尔曲线，位置和方向都由控制点插值过来
 		case ETrafficVehicleMovementInterpolationMethod::CubicBezier:
-
-			InterpolatedLocation = UE::CubicBezier::Eval(InOutLaneSegment.StartPoint, InOutLaneSegment.StartControlPoint, InOutLaneSegment.EndControlPoint, InOutLaneSegment.EndPoint, Alpha);
-			InterpolatedForwardVector = UE::CubicBezier::EvalDerivate(InOutLaneSegment.StartPoint, InOutLaneSegment.StartControlPoint, InOutLaneSegment.EndControlPoint, InOutLaneSegment.EndPoint, Alpha);
-			
+			InterpolatedLocation = UE::CubicBezier::Eval(
+				InOutLaneSegment.StartPoint, InOutLaneSegment.StartControlPoint,
+				InOutLaneSegment.EndControlPoint, 
+				InOutLaneSegment.EndPoint, Alpha);
+			InterpolatedForwardVector = UE::CubicBezier::EvalDerivate(
+				InOutLaneSegment.StartPoint, InOutLaneSegment.StartControlPoint,
+				InOutLaneSegment.EndControlPoint, 
+				InOutLaneSegment.EndPoint, Alpha);
 			break;
 	}
 }
