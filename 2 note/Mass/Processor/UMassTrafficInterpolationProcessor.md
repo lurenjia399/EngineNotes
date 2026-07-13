@@ -15,5 +15,23 @@ void InterpolatePositionAndOrientationAlongLane()
 		InOutLaneSegment.StartProgression, 
 		InOutLaneSegment.EndProgression, 
 		DistanceAlongLane);
+	// 3 根据类型，插值计算出当前车位置，
+	switch (InterpolationMethod)
+	{
+		case ETrafficVehicleMovementInterpolationMethod::Linear:
+			InterpolatedLocation = FMath::Lerp(
+				InOutLaneSegment.StartPoint, InOutLaneSegment.EndPoint, Alpha);			
+			InterpolatedForwardVector = InOutLaneSegment.EndPoint - InOutLaneSegment.StartPoint;
+			
+			break;
+		
+		// Cubic Centripetal Catmull-Rom interpolation from P1 to P2 for position and Slerp for orientation
+		case ETrafficVehicleMovementInterpolationMethod::CubicBezier:
+
+			InterpolatedLocation = UE::CubicBezier::Eval(InOutLaneSegment.StartPoint, InOutLaneSegment.StartControlPoint, InOutLaneSegment.EndControlPoint, InOutLaneSegment.EndPoint, Alpha);
+			InterpolatedForwardVector = UE::CubicBezier::EvalDerivate(InOutLaneSegment.StartPoint, InOutLaneSegment.StartControlPoint, InOutLaneSegment.EndControlPoint, InOutLaneSegment.EndPoint, Alpha);
+			
+			break;
+	}
 }
 ```
