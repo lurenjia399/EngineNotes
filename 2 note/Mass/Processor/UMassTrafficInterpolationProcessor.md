@@ -37,5 +37,13 @@ void InterpolatePositionAndOrientationAlongLane()
 				InOutLaneSegment.EndPoint, Alpha);
 			break;
 	}
+	// 4 插值处Up向量，根据插值出的Forward
+	const FVector InterpolatedUpVector = FMath::Lerp(
+		InOutLaneSegment.LaneSegmentStartUp, 
+		InOutLaneSegment.LaneSegmentEndUp, 
+		Alpha); 
+	const FQuat InterpolatedOrientation = FRotationMatrix::MakeFromXZ(
+		InterpolatedForwardVector, 
+		InterpolatedUpVector).ToQuat();
 }
 ```
