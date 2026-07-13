@@ -8,6 +8,7 @@
 	1 移除当前车道的信息（占用空间和车道上车的数量）
 	2 添加跟车信息，NextVehicleFragment中记录的
 	3 添加目标车道的信息（占用空间和车道上车的数量）
+	4 目标车道有GhostVehicle，将当前车添加到Ghost的数组中
 ```
 2 SimpleVehicleControl
 ```cpp
