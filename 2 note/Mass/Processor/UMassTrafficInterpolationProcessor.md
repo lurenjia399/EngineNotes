@@ -37,7 +37,7 @@ void InterpolatePositionAndOrientationAlongLane()
 				InOutLaneSegment.EndPoint, Alpha);
 			break;
 	}
-	// 4 插值处Up向量，根据插值出的Forward
+	// 4 插值处Up向量，根据插值出的Forward方向和Up向量合成矩阵，得出矩阵的四元数
 	const FVector InterpolatedUpVector = FMath::Lerp(
 		InOutLaneSegment.LaneSegmentStartUp, 
 		InOutLaneSegment.LaneSegmentEndUp, 
@@ -45,5 +45,8 @@ void InterpolatePositionAndOrientationAlongLane()
 	const FQuat InterpolatedOrientation = FRotationMatrix::MakeFromXZ(
 		InterpolatedForwardVector, 
 		InterpolatedUpVector).ToQuat();
+	// 传出去
+	OutPosition = InterpolatedLocation;
+	OutOrientation = InterpolatedOrientation;
 }
 ```
