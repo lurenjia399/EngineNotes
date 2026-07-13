@@ -2,7 +2,8 @@
 ```cpp
 1 选择要变道的目标车道，左右的相邻车道
 2 以自己在当前车道的位置，去通过FindNearestLocationOnLane找目标车道的目标位置
-3 TeleportVehicleToAnotherLane，从当前车道中把自己移除（就是让自己后车的NextVehicle指向自己前车，增加当前车道的空余长度，减少当前车道的数量），相应的把自己添加进目标车道。改变FMassZoneGraphLaneLocationFragment
+3 TeleportVehicleToAnotherLane，从当前车道中把自己移除（就是让自己后车的NextVehicle指向自己前车，增加当前车道的空余长度，减少当前车道的数量），相应的把自己添加进目标车道。
+4 BeginLaneChangeProgression，
 ```
 
 # 1 TryStartingNewLaneChange
