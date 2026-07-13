@@ -1,7 +1,7 @@
 1 
 ```cpp
 1 计算当前车道的速度限制
-2 计算在当前车道Exit是否需要停下来。（如果没有NextLane了，如果NextLane是jiao'cha）
+2 计算在当前车道Exit是否需要停下来。（如果没有NextLane了。如果NextLane是交叉路口，交叉路口的下一条车道已经容纳不了当前Entity车了。）
 ```
 2 SimpleVehicleControl
 ```cpp
