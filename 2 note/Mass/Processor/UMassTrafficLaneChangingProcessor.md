@@ -324,3 +324,7 @@ bool TeleportVehicleToAnotherLane()
 	}
 }
 ```
+# 4 BeginLaneChangeProgression
+```cpp
+
+```
