@@ -1,7 +1,7 @@
 
 ```cpp
 1 选择要变道的目标车道，左右的相邻车道
-2 根据自己在dan
+2 以自己在当前车道的位置，去通过FindNearestLocationOnLane找目标车道的目标位置
 ```
 
 # 1 TryStartingNewLaneChange
