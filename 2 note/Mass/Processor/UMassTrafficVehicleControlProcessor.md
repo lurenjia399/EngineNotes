@@ -4,7 +4,7 @@
 2 计算在当前车道Exit是否需要停下来。（如果没有NextLane了需要停下来。如果NextLane是交叉路口，交叉路口的下一条车道已经容纳不了当前Entity车了需要停下来。如果下一条车道要因为周期改变关闭需要停下来。）
 3 重新计算停不下来状态。（如果当前车已经超过车道的Exit了，就停不下来了。如果Lod变成Off了，就去掉停不下来状态。如果速度本身就很小了，去掉停不下来状态）
 4 计算目标速度。（如果当前跟车距离小于理想跟车距离，就减少速度。如果有障碍物，还得在调整速度。如果要在车道Exit停下来，还需要更新速度）
-5 MoveVehicleToNextLane，如果车已经进入NextLane了，
+5 MoveVehicleToNextLane，如果车已经进入NextLane了，就需要移除当前车道的信息（），
 ```
 2 SimpleVehicleControl
 ```cpp
