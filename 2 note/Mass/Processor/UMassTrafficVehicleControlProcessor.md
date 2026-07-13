@@ -1,6 +1,7 @@
 1 
 ```cpp
-1 
+1 计算当前车道的速度限制
+2 计算在当前车道Exit是否需要停下来
 ```
 2 SimpleVehicleControl
 ```cpp
