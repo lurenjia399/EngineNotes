@@ -50,3 +50,15 @@ void InterpolatePositionAndOrientationAlongLane()
 	OutOrientation = InterpolatedOrientation;
 }
 ```
+3 void AdjustVehicleTransformDuringLaneChange
+```cpp
+void AdjustVehicleTransformDuringLaneChange()
+{
+	// 如果不在变道中，不需要执行
+	if (!LaneChangeFragment.IsLaneChangeInProgress())
+	{
+		return;
+	}
+	
+}
+```
