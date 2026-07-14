@@ -88,7 +88,10 @@ void AdjustVehicleTransformDuringLaneChange()
 		{
 			FinalYaw += 360.0f;
 		}
-		const float DeltaLaneChangeDistance = LaneChangeFragment.DistanceAlongLane_Final_End - LaneChangeFragment.DistanceAlongLane_Final_Begin;
+		// 
+		const float DeltaLaneChangeDistance = 
+			LaneChangeFragment.DistanceAlongLane_Final_End - 
+			LaneChangeFragment.DistanceAlongLane_Final_Begin;
 		const float MaxYawDelta = FMath::RadiansToDegrees(FMath::Atan2(LaneChangeFragment.DistanceBetweenLanes_Begin, DeltaLaneChangeDistance));
 
 		const float Yaw = FMath::Lerp(0.0f, InitialYaw - FinalYaw, Alpha_Cubic)  +  (-Sign * Alpha_CubicDerivative * MaxYawDelta);
