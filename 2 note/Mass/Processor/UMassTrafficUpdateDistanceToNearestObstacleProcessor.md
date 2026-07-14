@@ -11,3 +11,9 @@ struct MASSTRAFFIC_API FMassTrafficObstacleAvoidanceFragment : public FMassFragm
 	FMassEntityHandle Obstacle;
 };
 ```
+3 
+```cpp
+void UMassTrafficUpdateDistanceToNearestObstacleProcessor()
+{
+}
+```
