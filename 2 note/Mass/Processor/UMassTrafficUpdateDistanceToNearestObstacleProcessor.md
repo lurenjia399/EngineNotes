@@ -85,7 +85,11 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 	// 如果障碍物列表中有障碍物
 	if (!OptionalObstacleListFragments.IsEmpty())
 	{
-		
+		// 计算理想速度 = 当前Forward * 当前车道的速度限制
+		FVector IdealVelocity = 
+			TransformFragment.GetTransform().GetRotation().GetForwardVector() 
+			* VehicleControlFragment.CurrentLaneConstData.SpeedLimit.GetFloat();  
+				
 	}
 }
 ```
