@@ -15,14 +15,14 @@ struct MASSTRAFFIC_API FMassTrafficObstacleAvoidanceFragment : public FMassFragm
 ```cpp
 void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 {
-	// 如果有跟车对象，就计算到跟车的最短距离
+	// 如果有跟车对象，就计算DistanceToNext，是到跟车的距离
 	if (NextVehicleFragment.HasNextVehicle())
 	{
 		CombineDistanceToNext(
 			EMassTrafficCombineDistanceToNextType::Next, 
 			NextTransformFragment, NextRadiusFragment);
 	}
-	// 遍历跟车后即将因为变道来的车，如果
+	// 遍历跟车后即将因为变道来的车，计算DistanceToNext，是到变道车的距离
 	for (FMassEntityHandle NextVehicle_LaneChange : 
 		NextVehicleFragment.NextVehicles_LaneChange)
 	{
