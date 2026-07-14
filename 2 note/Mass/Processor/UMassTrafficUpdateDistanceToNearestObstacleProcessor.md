@@ -47,18 +47,24 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			(NextVehicleFragment.NextVehicle_SplittingLaneGhost))
 		{
 			
-			if (CanNextVehicleBeForgotten(NextSimulationParams, NextTransformFragment, NextRadiusFragment, NextLaneChangeFragment))
+			if (CanNextVehicleBeForgotten(
+				NextSimulationParams, NextTransformFragment, 
+				NextRadiusFragment, NextLaneChangeFragment))
 			{
-				NextVehicleFragment.NextVehicle_SplittingLaneGhost = FMassEntityHandle();
+				NextVehicleFragment.NextVehicle_SplittingLaneGhost = 
+					FMassEntityHandle();
 			}
 			else
 			{
-				CombineDistanceToNext(EMassTrafficCombineDistanceToNextType::SpittingLaneGhostNext, NextTransformFragment, NextRadiusFragment);
+				CombineDistanceToNext(
+					EMassTrafficCombineDistanceToNextType::LaneChangeNext,
+					 NextTransformFragment, NextRadiusFragment);
 			}
 		}
 		else
 		{
-			NextVehicleFragment.NextVehicle_SplittingLaneGhost = FMassEntityHandle();
+			NextVehicleFragment.NextVehicle_SplittingLaneGhost = 
+				FMassEntityHandle();
 		}
 	}
 	if (NextVehicleFragment.NextVehicle_MergingLaneGhost.IsSet())
