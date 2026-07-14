@@ -82,5 +82,10 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			NextVehicleFragment.NextVehicle_MergingLaneGhost = FMassEntityHandle();
 		}
 	}
+	// 如果zhang'ai
+	if (!OptionalObstacleListFragments.IsEmpty())
+	{
+		
+	}
 }
 ```
