@@ -4,3 +4,19 @@
 2 遍历找到的Lane，
 ```
 2 
+```cpp
+{
+	// 1 通过BVTree来查询障碍物铺盖de
+	TArray<FZoneGraphLaneHandle> NearbyLanes;
+	FBox SearchBox = FBox::BuildAABB(
+		TransformFragment.GetTransform().GetLocation(), 
+		FVector(FVector2D(MassTrafficSettings->ObstacleSearchRadius),
+		 MassTrafficSettings->ObstacleSearchHeight));
+	{
+		ZoneGraphSubsystem.FindOverlappingLanes(
+			SearchBox, 
+			GetDefault<UMassTrafficSettings>()->TrafficLaneFilter, 
+			NearbyLanes);
+	}
+}
+```
