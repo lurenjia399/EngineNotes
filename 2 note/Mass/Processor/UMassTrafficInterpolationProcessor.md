@@ -66,9 +66,9 @@ void AdjustVehicleTransformDuringLaneChange()
 	const float Alpha_Linear = FMath::Abs(LaneChangeProgressionScale);
 	// 计算出向左还是向右变道，向左是1，向右是-1
 	const float Sign = (LaneChangeProgressionScale >= 0.0f ? 1.0f : -1.0f);
-	// 将比例带入 3x^2 - 2x^3 函数，计算出平滑值
+	// 将比例带入 3x^2 - 2x^3 函数，计算出变道进度
 	const float Alpha_Cubic = SimpleNormalizedCubicSpline(Alpha_Linear);
-	// 将比例带入 6x - 6x^2 函数，上边的导数，计算出平滑值
+	// 将比例带入 6x - 6x^2 函数，上边的导数，计算出变道进度
 	const float Alpha_CubicDerivative = SimpleNormalizedCubicSplineDerivative(
 		Alpha_Linear);
 	// 根据变道进度计算沿y轴偏移
