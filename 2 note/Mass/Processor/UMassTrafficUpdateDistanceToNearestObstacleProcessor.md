@@ -26,7 +26,19 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 	for (FMassEntityHandle NextVehicle_LaneChange : 
 		NextVehicleFragment.NextVehicles_LaneChange)
 	{
-		
+		if (CanNextVehicleBeForgotten(
+			NextSimulationParams, NextTransformFragment, 
+			NextRadiusFragment, NextLaneChangeFragment))
+		{
+			NextVehicleFragment.RemoveLaneChangeNextVehicle(
+				NextVehicle_LaneChange);
+		}
+		else
+		{
+			CombineDistanceToNext(
+				EMassTrafficCombineDistanceToNextType::LaneChangeNext,
+				 NextTransformFragment, NextRadiusFragment);
+		}
 	}
 }
 ```
