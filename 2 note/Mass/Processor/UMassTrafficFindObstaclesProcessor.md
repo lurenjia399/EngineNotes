@@ -41,10 +41,21 @@
 					PreviousVehicle, 
 					NextVehicle);
 			}
-			// 如果点前车不是障碍物
+			// 如果点前车不是障碍物，就把障碍物添加到点前车的ObstacleList中
 			if (PreviousVehicle.IsSet() && PreviousVehicle != ObstacleEntity)
 			{
-				
+				FMassTrafficObstacleListFragment* ExistingObstacleListFragment = 
+					EntityManager.GetFragmentDataPtr
+						<FMassTrafficObstacleListFragment>(PreviousVehicle);
+				if (ExistingObstacleListFragment)
+				{
+					ExistingObstacleListFragment->Obstacles.Add(ObstacleEntity);
+				}
+				else
+				{
+					ObstacleListsToAdd.
+						FindOrAdd(PreviousVehicle).Add(ObstacleEntity);
+				}
 			}
 		}
 	}
