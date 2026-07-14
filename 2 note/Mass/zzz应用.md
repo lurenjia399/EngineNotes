@@ -529,5 +529,6 @@ Root
 1 
 ```cpp
 1 UMassTrafficLaneChangingProcessor在ProcessorGroupNames::FrameStart组，找到变道的目标车道，用TeleportVehicleToAnotherLane方法填充FMassZoneGraphLaneLocationFragment，用BeginLaneChangeProgression方法填充FMassTrafficVehicleLaneChangeFragment
-2 UMassTrafficVehicleControlProcessor在ProcessorGroupNames::VehicleBehavior组，
+2 UMassTrafficVehicleControlProcessor在ProcessorGroupNames::VehicleBehavior组，计算出TargetSpeed
+3 
 ```
