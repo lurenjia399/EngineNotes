@@ -41,6 +41,7 @@
 					PreviousVehicle, 
 					NextVehicle);
 			}
+			// 如果点前车不是障碍物
 			if (PreviousVehicle.IsSet() && PreviousVehicle != ObstacleEntity)
 			{
 				
