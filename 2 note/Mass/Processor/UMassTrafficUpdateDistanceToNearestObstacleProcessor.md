@@ -1,6 +1,7 @@
 1 
 ```cpp
-1 如果有跟车对象，
+1 如果有跟车对象，计算当前车车头距离跟车车尾的距离
+2 如果有变道来的车，ji
 ```
 2 FMassTrafficObstacleAvoidanceFragment
 ```cpp
