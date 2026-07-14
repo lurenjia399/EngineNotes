@@ -98,7 +98,7 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			ObstacleTransformFragment.GetTransform().GetLocation(),
 			ObstacleVelocityFragment.Value, 
 			ObstacleAgentRadiusFragment.Radius);
-		// 设置距离障碍物最短时间和距离，时间就是通过相对位置，相对速度，半径和，建立一元二次方程，通过求根公式ji'su
+		// 设置距离障碍物最短时间和距离，时间就是通过相对位置，相对速度，半径和，建立一元二次方程，通过求根公式计算出的。(相对位置 + 相对速度 * t)^2 = 半径和^2
 		if (TimeToCollidingObstacle < AvoidanceFragment.TimeToCollidingObstacle)
 		{
 			AvoidanceFragment.TimeToCollidingObstacle = TimeToCollidingObstacle;
