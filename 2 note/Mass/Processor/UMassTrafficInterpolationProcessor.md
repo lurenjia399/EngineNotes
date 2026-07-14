@@ -71,9 +71,10 @@ void AdjustVehicleTransformDuringLaneChange()
 	// 将比例带入 6x - 6x^2 函数，上边的导数，计算出平滑值
 	const float Alpha_CubicDerivative = SimpleNormalizedCubicSplineDerivative(
 		Alpha_Linear);
+	// （）
 	const FVector OffsetVector = 
-	
-		Sign * LaneChangeFragment.DistanceBetweenLanes_Begin * Alpha_Cubic) * Transform.GetUnitAxis(EAxis::Y);
+		(Sign * LaneChangeFragment.DistanceBetweenLanes_Begin * Alpha_Cubic) 
+		* Transform.GetUnitAxis(EAxis::Y);
 
 }
 ```
