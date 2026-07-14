@@ -22,7 +22,7 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			EMassTrafficCombineDistanceToNextType::Next, 
 			NextTransformFragment, NextRadiusFragment);
 	}
-	// 遍历跟车
+	// 遍历跟车后即将因为变道来的车
 	for (FMassEntityHandle NextVehicle_LaneChange : 
 		NextVehicleFragment.NextVehicles_LaneChange)
 	{
