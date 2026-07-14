@@ -4,13 +4,14 @@
 2 如果有变道来的车，同样计算当前车车头距离变道车车尾的距离
 3 如果有split的幽灵车，同样计算当前车车头距离幽灵车车尾的距离
 4 如果有merge的幽灵车，同样计算当前车车头距离幽灵车车尾的距离
-5 取上述所有距离的最小
+5 取上述所有距离的最小值记录在FMassTrafficObstacleAvoidanceFragment的DistanceToNext
+6 遍历FMassTrafficObstacleListFragment障碍物列表，计算出到障碍物的最短时间和最短距离，以及障碍物，并记录到
 ```
 2 FMassTrafficObstacleAvoidanceFragment
 ```cpp
 struct MASSTRAFFIC_API FMassTrafficObstacleAvoidanceFragment : public FMassFragment
 {
-	// 到跟车的最短距离，就是当前车的车头到前一辆车的屁股，还有多少距离就要跟前车撞上了
+	// 到障碍物的最短距离
 	float DistanceToNext = TNumericLimits<float>::Max();
 	
 	float TimeToCollidingObstacle = TNumericLimits<float>::Max();
