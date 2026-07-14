@@ -98,6 +98,18 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			ObstacleTransformFragment.GetTransform().GetLocation(),
 			ObstacleVelocityFragment.Value, 
 			ObstacleAgentRadiusFragment.Radius);
+		// 设置最短时间和距离
+		if (TimeToCollidingObstacle < AvoidanceFragment.TimeToCollidingObstacle)
+		{
+			AvoidanceFragment.TimeToCollidingObstacle = TimeToCollidingObstacle;
+			AvoidanceFragment.DistanceToCollidingObstacle = 
+				Math::Max(FVector::Distance(
+				TransformFragment.GetTransform().GetLocation(),
+				ObstacleTransformFragment.GetTransform().GetLocation()) 
+				- ObstacleAgentRadiusFragment.Radius 
+				- AgentRadiusFragment.Radius, 0.0f);
+			AvoidanceFragment.Obstacle = Obstacle;
+		}
 	}
 }
 ```
