@@ -59,9 +59,14 @@ void AdjustVehicleTransformDuringLaneChange()
 	{
 		return;
 	}
-	// 计算出变道剩余，向右变是负数，zuo'bian
+	// 计算出剩余变道比例LaneChangeProgressionScale，向右变是负数左变是正数
 	const float LaneChangeProgressionScale = LaneChangeFragment.
 		GetLaneChangeProgressionScale(DistanceAlongLane);
+	// 取变剩余变道比例绝对值
+	const float Alpha_Linear = FMath::Abs(LaneChangeProgressionScale);
+	const float Sign = (LaneChangeProgressionScale >= 0.0f ? 1.0f : -1.0f);
 
+	const float Alpha_Cubic = SimpleNormalizedCubicSpline(Alpha_Linear);
+	const float Alpha_CubicDerivative = SimpleNormalizedCubicSplineDerivative(Alpha_Linear); 
 }
 ```
