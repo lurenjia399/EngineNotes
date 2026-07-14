@@ -92,13 +92,14 @@ void AdjustVehicleTransformDuringLaneChange()
 		const float DeltaLaneChangeDistance = 
 			LaneChangeFragment.DistanceAlongLane_Final_End - 
 			LaneChangeFragment.DistanceAlongLane_Final_Begin;
-		// Yaw的g
+		// Yaw的改变量，tan角度
 		const float MaxYawDelta = FMath::RadiansToDegrees(
 			FMath::Atan2(
 			LaneChangeFragment.DistanceBetweenLanes_Begin, 
 			DeltaLaneChangeDistance));
 
-		const float Yaw = FMath::Lerp(0.0f, InitialYaw - FinalYaw, Alpha_Cubic)  +  (-Sign * Alpha_CubicDerivative * MaxYawDelta);
+		const float Yaw = FMath::Lerp(0.0f, InitialYaw - FinalYaw, Alpha_Cubic)  
+			+  (-Sign * Alpha_CubicDerivative * MaxYawDelta);
 
 		LocalRotationToApply = FQuat::MakeFromEuler(FVector(0.0f, 0.0f, Yaw));
 	}
