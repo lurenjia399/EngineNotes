@@ -30,7 +30,14 @@
 		}
 		if (NearestLocationOnLane.IsValid())
 		{
-			
+			FMassEntityHandle PreviousVehicle;
+			FMassEntityHandle NextVehicle;
+			{
+				UE::MassTraffic::FindNearestVehiclesInLane(
+					EntityManager, 
+					*NearbyTrafficLane, 
+					NearestLocationOnLane.DistanceAlongLane, PreviousVehicle, NextVehicle);
+			}
 		}
 	}
 }
