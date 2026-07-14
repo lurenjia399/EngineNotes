@@ -6,7 +6,7 @@
 2 
 ```cpp
 {
-	// 1 通过BVTree来查询障碍物铺盖de
+	// 1 通过BVTree来查询障碍物覆盖的Lanes
 	TArray<FZoneGraphLaneHandle> NearbyLanes;
 	FBox SearchBox = FBox::BuildAABB(
 		TransformFragment.GetTransform().GetLocation(), 
@@ -17,6 +17,21 @@
 			SearchBox, 
 			GetDefault<UMassTrafficSettings>()->TrafficLaneFilter, 
 			NearbyLanes);
+	}
+	// 2 遍历找到的Lane
+	for (const FZoneGraphLaneHandle NearbyLane : NearbyLanes)
+	{
+		// 2.1 找到Lane上距离障碍物最近的点
+		FZoneGraphLaneLocation NearestLocationOnLane;
+		float DistanceSq;
+		{
+			ZoneGraphSubsystem.FindNearestLocationOnLane(
+				NearbyLane, SearchBox, NearestLocationOnLane, DistanceSq);
+		}
+		if (NearestLocationOnLane.IsValid())
+		{
+			
+		}
 	}
 }
 ```
