@@ -75,6 +75,25 @@ void AdjustVehicleTransformDuringLaneChange()
 	const FVector OffsetVector = 
 		(Sign * LaneChangeFragment.DistanceBetweenLanes_Begin * Alpha_Cubic) 
 		* Transform.GetUnitAxis(EAxis::Y);
+	
+	FQuat LocalRotationToApply;
+	{
+		const float InitialYaw = LaneChangeFragment.Yaw_Initial;
+		float FinalYaw = Transform.GetRotation().Euler().Z;
+		if (InitialYaw - FinalYaw < -180.0f)
+		{
+			FinalYaw -= 360.0f;
+		}
+		if (InitialYaw - FinalYaw > 180.0f)
+		{
+			FinalYaw += 360.0f;
+		}
+		const float DeltaLaneChangeDistance = LaneChangeFragment.DistanceAlongLane_Final_End - LaneChangeFragment.DistanceAlongLane_Final_Begin;
+		const float MaxYawDelta = FMath::RadiansToDegrees(FMath::Atan2(LaneChangeFragment.DistanceBetweenLanes_Begin, DeltaLaneChangeDistance));
 
+		const float Yaw = FMath::Lerp(0.0f, InitialYaw - FinalYaw, Alpha_Cubic)  +  (-Sign * Alpha_CubicDerivative * MaxYawDelta);
+
+		LocalRotationToApply = FQuat::MakeFromEuler(FVector(0.0f, 0.0f, Yaw));
+	}
 }
 ```
