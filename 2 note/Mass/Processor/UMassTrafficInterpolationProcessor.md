@@ -100,7 +100,7 @@ void AdjustVehicleTransformDuringLaneChange()
 		// 并线该有的最大偏角 乘导数,使车头在变道中途偏得最多、两端回正——这就是真实打方向盘再回正的动作。
 		const float Yaw = FMath::Lerp(0.0f, InitialYaw - FinalYaw, Alpha_Cubic)  
 			+  (-Sign * Alpha_CubicDerivative * MaxYawDelta);
-
+		// 得出局部空间下需要旋转的角度
 		LocalRotationToApply = FQuat::MakeFromEuler(FVector(0.0f, 0.0f, Yaw));
 	}
 }
