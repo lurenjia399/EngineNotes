@@ -89,7 +89,7 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 		FVector IdealVelocity = 
 			TransformFragment.GetTransform().GetRotation().GetForwardVector() 
 			* VehicleControlFragment.CurrentLaneConstData.SpeedLimit.GetFloat();
-		// 通过当前车位置，当前车速度，当前车半径，合障碍物位置， 
+		// 通过当前车位置，当前车速度，当前车半径，和障碍物位置，障碍物速度，障碍物半径，计算出碰撞时间
 		float TimeToCollidingObstacle = 0.f;
 		TimeToCollidingObstacle = UE::MassTraffic::TimeToCollision(
 			TransformFragment.GetTransform().GetLocation(), 
