@@ -1,4 +1,7 @@
 1 
+```cpp
+1 如果有跟车对象，
+```
 2 FMassTrafficObstacleAvoidanceFragment
 ```cpp
 struct MASSTRAFFIC_API FMassTrafficObstacleAvoidanceFragment : public FMassFragment
