@@ -59,6 +59,9 @@ void AdjustVehicleTransformDuringLaneChange()
 	{
 		return;
 	}
-	
+	// 根据
+	const float LaneChangeProgressionScale = LaneChangeFragment.
+		GetLaneChangeProgressionScale(DistanceAlongLane);
+
 }
 ```
