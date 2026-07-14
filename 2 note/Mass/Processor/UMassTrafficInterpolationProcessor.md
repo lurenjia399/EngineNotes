@@ -59,7 +59,7 @@ void AdjustVehicleTransformDuringLaneChange()
 	{
 		return;
 	}
-	// 根据
+	// 计算出变道剩余，向右变是负数，zuo'bian
 	const float LaneChangeProgressionScale = LaneChangeFragment.
 		GetLaneChangeProgressionScale(DistanceAlongLane);
 
