@@ -68,6 +68,8 @@ void AdjustVehicleTransformDuringLaneChange()
 	const float Sign = (LaneChangeProgressionScale >= 0.0f ? 1.0f : -1.0f);
 	// 将比例带入 3x^2 - 2x^3 函数，计算出平滑值
 	const float Alpha_Cubic = SimpleNormalizedCubicSpline(Alpha_Linear);
-	const float Alpha_CubicDerivative = SimpleNormalizedCubicSplineDerivative(Alpha_Linear); 
+	// 将比例带入 6x - 6x^2 函数，上边的导数，计算出平滑值
+	const float Alpha_CubicDerivative = SimpleNormalizedCubicSplineDerivative(
+		Alpha_Linear); 
 }
 ```
