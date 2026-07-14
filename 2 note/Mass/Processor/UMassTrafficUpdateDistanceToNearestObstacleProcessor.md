@@ -88,8 +88,16 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 		// 计算理想速度 = 当前Forward * 当前车道的速度限制
 		FVector IdealVelocity = 
 			TransformFragment.GetTransform().GetRotation().GetForwardVector() 
-			* VehicleControlFragment.CurrentLaneConstData.SpeedLimit.GetFloat();  
-				
+			* VehicleControlFragment.CurrentLaneConstData.SpeedLimit.GetFloat();
+		// 通过当前车位置，当前车速度，当前车半径，合障碍物位置， 
+		float TimeToCollidingObstacle = 0.f;
+		TimeToCollidingObstacle = UE::MassTraffic::TimeToCollision(
+			TransformFragment.GetTransform().GetLocation(), 
+			IdealVelocity, 
+			AgentRadiusFragment.Radius,
+			ObstacleTransformFragment.GetTransform().GetLocation(),
+			ObstacleVelocityFragment.Value, 
+			ObstacleAgentRadiusFragment.Radius);
 	}
 }
 ```
