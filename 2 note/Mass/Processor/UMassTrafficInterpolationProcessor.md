@@ -103,5 +103,8 @@ void AdjustVehicleTransformDuringLaneChange()
 		// 得出局部空间下需要旋转的角度
 		LocalRotationToApply = FQuat::MakeFromEuler(FVector(0.0f, 0.0f, Yaw));
 	}
+	// 先旋转，在平移
+	Transform.ConcatenateRotation(LocalRotationToApply);
+	Transform.AddToTranslation(OffsetVector);
 }
 ```
