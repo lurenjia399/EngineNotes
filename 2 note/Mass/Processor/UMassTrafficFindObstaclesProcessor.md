@@ -3,7 +3,7 @@
 1 障碍物的应该带有FMassTrafficObstacleTag的Tag，以障碍物为中心，构建一个查询Box，通过ZoneGraph的OverlapLane接口查询覆盖的lane都有哪些，通过遍历BVTree找到相交的叶子节点
 2 遍历找到的Lane，通过FindNearestLocationOnLane方法，找到Lane上离障碍物最近的点
 3 根据最近的点，找到Lane上位于点前点后的两辆车
-4 
+4 找到前车了，并且前车不是当前障碍物
 ```
 2 
 ```cpp
