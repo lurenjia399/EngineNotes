@@ -5,7 +5,8 @@
 3 如果有split的幽灵车，同样计算当前车车头距离幽灵车车尾的距离
 4 如果有merge的幽灵车，同样计算当前车车头距离幽灵车车尾的距离
 5 取上述所有距离的最小值记录在FMassTrafficObstacleAvoidanceFragment的DistanceToNext
-6 遍历FMassTrafficObstacleListFragment障碍物列表，计算出到障碍物的最短时间和最短距离，以及障碍物，并记录到
+6 遍历FMassTrafficObstacleListFragment障碍物列表，计算出到障碍物的最短时间和最短距离，以及障碍物，并记录到FMassTrafficObstacleAvoidanceFragment中。
+7 最短时间的算法就是(相对位置 + 相对速度 * t)^2 = 半径和^2，通过求根公式计算出t
 ```
 2 FMassTrafficObstacleAvoidanceFragment
 ```cpp
