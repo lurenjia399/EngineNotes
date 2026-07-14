@@ -59,10 +59,10 @@ void AdjustVehicleTransformDuringLaneChange()
 	{
 		return;
 	}
-	// 计算出剩余变道比例LaneChangeProgressionScale，也就是变道进度，向右变是负数左变是正数
+	// 计算出剩余变道比例LaneChangeProgressionScale，也就是变道进度[-1,1]，向右变是负数左变是正数
 	const float LaneChangeProgressionScale = LaneChangeFragment.
 		GetLaneChangeProgressionScale(DistanceAlongLane);
-	// 取变变道进度绝对值，[0,1]
+	// 取变变道进度绝对值[0,1]
 	const float Alpha_Linear = FMath::Abs(LaneChangeProgressionScale);
 	// 计算出向左还是向右变道，向左是1，向右是-1
 	const float Sign = (LaneChangeProgressionScale >= 0.0f ? 1.0f : -1.0f);
