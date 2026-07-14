@@ -43,9 +43,37 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 	// 如果有因为Splitt的幽灵占位车，也是一样，计算DistanceToNext，是到幽灵车的距离
 	if (NextVehicleFragment.NextVehicle_SplittingLaneGhost.IsSet())
 	{
-		
+		if (EntityManager.IsEntityActive
+			(NextVehicleFragment.NextVehicle_SplittingLaneGhost))
+		{
+			
+			if (CanNextVehicleBeForgotten(NextSimulationParams, NextTransformFragment, NextRadiusFragment, NextLaneChangeFragment))
+			{
+				NextVehicleFragment.NextVehicle_SplittingLaneGhost = FMassEntityHandle();
+			}
+			else
+			{
+				CombineDistanceToNext(EMassTrafficCombineDistanceToNextType::SpittingLaneGhostNext, NextTransformFragment, NextRadiusFragment);
+			}
+		}
+		else
+		{
+			NextVehicleFragment.NextVehicle_SplittingLaneGhost = FMassEntityHandle();
+		}
 	}
 	if (NextVehicleFragment.NextVehicle_MergingLaneGhost.IsSet())
-				{
+	{
+		if (EntityManager.IsEntityActive(
+			NextVehicleFragment.NextVehicle_MergingLaneGhost))
+		{
+			CombineDistanceToNext(
+				EMassTrafficCombineDistanceToNextType::LaneChangeNext,
+				 NextTransformFragment, NextRadiusFragment);
+		}
+		else
+		{
+			NextVehicleFragment.NextVehicle_MergingLaneGhost = FMassEntityHandle();
+		}
+	}
 }
 ```
