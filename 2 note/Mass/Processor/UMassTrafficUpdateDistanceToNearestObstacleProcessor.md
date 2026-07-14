@@ -22,5 +22,11 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			EMassTrafficCombineDistanceToNextType::Next, 
 			NextTransformFragment, NextRadiusFragment);
 	}
+	// 遍历跟车
+	for (FMassEntityHandle NextVehicle_LaneChange : 
+		NextVehicleFragment.NextVehicles_LaneChange)
+	{
+		
+	}
 }
 ```
