@@ -28,9 +28,9 @@
 			ZoneGraphSubsystem.FindNearestLocationOnLane(
 				NearbyLane, SearchBox, NearestLocationOnLane, DistanceSq);
 		}
-		// 2.2 根据最近点找到Lane上在点前后的两辆车
 		if (NearestLocationOnLane.IsValid())
 		{
+			// 2.2 根据最近点找到Lane上在点前后的两辆车
 			FMassEntityHandle PreviousVehicle;
 			FMassEntityHandle NextVehicle;
 			{
@@ -40,6 +40,10 @@
 					NearestLocationOnLane.DistanceAlongLane, 
 					PreviousVehicle, 
 					NextVehicle);
+			}
+			if (PreviousVehicle.IsSet() && PreviousVehicle != ObstacleEntity)
+			{
+				
 			}
 		}
 	}
