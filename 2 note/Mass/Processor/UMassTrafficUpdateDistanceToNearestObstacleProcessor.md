@@ -98,7 +98,7 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 			ObstacleTransformFragment.GetTransform().GetLocation(),
 			ObstacleVelocityFragment.Value, 
 			ObstacleAgentRadiusFragment.Radius);
-		// 设置最短时间和距离
+		// 设置距离障碍物最短时间和距离
 		if (TimeToCollidingObstacle < AvoidanceFragment.TimeToCollidingObstacle)
 		{
 			AvoidanceFragment.TimeToCollidingObstacle = TimeToCollidingObstacle;
@@ -108,7 +108,7 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 				ObstacleTransformFragment.GetTransform().GetLocation()) 
 				- ObstacleAgentRadiusFragment.Radius 
 				- AgentRadiusFragment.Radius, 0.0f);
-			AvoidanceFragment.Obstacle = Obstacle;
+				AvoidanceFragment.Obstacle = Obstacle;
 		}
 	}
 }
