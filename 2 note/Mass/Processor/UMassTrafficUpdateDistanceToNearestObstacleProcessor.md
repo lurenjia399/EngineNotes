@@ -67,6 +67,7 @@ void UMassTrafficUpdateDistanceToNearestObstacleProcessor::Execute()
 				FMassEntityHandle();
 		}
 	}
+	// 如果有因为Merge的幽灵占位车，也是一样，计算DistanceToNext，是到幽灵车的距离
 	if (NextVehicleFragment.NextVehicle_MergingLaneGhost.IsSet())
 	{
 		if (EntityManager.IsEntityActive(
