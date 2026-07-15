@@ -59,7 +59,16 @@ struct FMassCrowdAnimInstanceData
 3 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，将entity的transformg更新到ISM中记录，等待之后AddInstance执行
 4 UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation，通过材质读取纹理，设置顶点位置
 
-# Anim Processor
+# 流程
+
+## Actor
+
+## ISM
+
+```cpp
+1 UCitySampleCrowdVisualizationFragmentInitializer 这个是Over来观察FCitySampleCrowdVisualizationFragment这个的添加，
+```
+
 ```cpp
 1 在UE::Mass::ProcessorGroupNames::Tasks组，执行MassProcessor_Animation 这个Processor，来更新Actor身上AnimInstance上的数据
 2 然后是CrowdVisualization这个组，在MassProcessor_Animation之后，执行UMassProcessor_CrowdVisualizationCustomData这个，通过UpdateISMVertexAnimation方法更新ISM动画
