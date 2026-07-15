@@ -61,12 +61,10 @@ struct FMassCrowdAnimInstanceData
 
 # 流程
 
-## Actor
 
-## ISM
 
 ```cpp
-1 UCitySampleCrowdVisualizationFragmentInitializer 这个是Over来观察FCitySampleCrowdVisualizationFragment这个的添加，
+1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head,Top
 ```
 
 ```cpp
