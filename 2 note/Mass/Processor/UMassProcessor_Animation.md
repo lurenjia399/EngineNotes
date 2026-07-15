@@ -64,7 +64,7 @@ struct FMassCrowdAnimInstanceData
 
 
 ```cpp
-1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head，Top，Buttom，Held，头发颜色
+1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head，Top，Buttom，Held，HairColor,ClothingColor等数据
 ```
 
 
