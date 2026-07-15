@@ -24,6 +24,5 @@ void UMassRepresentationSubsystem::OnProcessingPhaseStarted(const float DeltaSec
 6 帧开始的时候执行BeginVisualChanges这个方法，就会遍历Constructing数组，然后依次创建InstancedStaticMeshComp
 7 在帧期间，会通过其他processor来调用AddBatchedTransform等相关方法，来添加更新信息
 8 帧结束EndVisualChanges这个方法，通过AddInstanceById方法，向ISM中添加更新Instance
-# 2 
 
 
