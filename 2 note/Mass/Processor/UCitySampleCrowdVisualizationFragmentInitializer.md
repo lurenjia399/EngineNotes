@@ -1,3 +1,9 @@
+# 1 
+```cpp
+1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head，Top，Buttom，Held，HairColor,ClothingColor等数据。按照头+Top+Buttom组成一个InstanceStaticMeshDesc
+```
+# 2 
+
 1 是一个UMassObserverProcessor，观察的是FCitySampleCrowdVisualizationFragment添加
 2 在execute里面，获取到高模actor身上的CrowdCharacterData配置，通过随机取出配置中的头，身体等信息，组装成FStaticMeshInstanceVisualizationDesc
 3 然后将FStaticMeshInstanceVisualizationDesc添加到RepresentationSubSystem中，并返回Handle保存到FMassRepresentationFragment这个里
