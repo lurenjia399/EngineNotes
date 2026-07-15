@@ -54,11 +54,6 @@ struct FMassCrowdAnimInstanceData
 4 将FMassCrowdAnimInstanceData设置到UMassCrowdAnimInstance中，让动画蓝图读取
 
 # UMassProcessor_CrowdVisualizationCustomData
-1 ISM的行人，通过这个来更新动画数据
-2 游戏线程执行，在UMassProcessor_Animation之后
-3 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，将entity的transformg更新到ISM中记录，等待之后AddInstance执行
-4 UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation，通过材质读取纹理，设置顶点位置
-
 ```cpp
 1 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，会将当前entityhandle，transform添加到SharedData数组中。一个ISMComp会有一个SharedData，SharedData里会记录这个ISMComp中不同Instance上的数据。
 2 执行UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation方法，将entity的动画数据（5个float类型的）添加到SharedData中的CustomData里。
