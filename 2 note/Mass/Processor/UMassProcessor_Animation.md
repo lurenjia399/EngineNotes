@@ -61,7 +61,7 @@ struct FMassCrowdAnimInstanceData
 
 ```cpp
 1 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，将entity的transformg更新到ISM中记录，等待RepresentationSubsystem在PostPhysics阶段的PhaseStart中执行UpdateInstanceTransformById改变ISM的位置
-2 执行UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation方法，
+2 执行UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation方法，将entity的动画数据更新到ISM中记录AddBatchedCustomData
 ```
 
 # 流程
