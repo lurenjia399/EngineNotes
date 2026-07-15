@@ -64,8 +64,10 @@ struct FMassCrowdAnimInstanceData
 
 
 ```cpp
-1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head,Top
+1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head，Top，Buttom，Held等配置
 ```
+
+
 
 ```cpp
 1 在UE::Mass::ProcessorGroupNames::Tasks组，执行MassProcessor_Animation 这个Processor，来更新Actor身上AnimInstance上的数据
