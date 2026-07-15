@@ -64,18 +64,3 @@ struct FMassCrowdAnimInstanceData
 2 执行UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation方法，将entity的动画数据（5个float类型的）添加到SharedData中的CustomData里。
 3 执行WriteCustomDataFloatsAtStartIndex方法，指定将颜色数据添加到entity身上的头所在的SharedData中的CustomData里。
 ```
-
-# 流程
-
-
-
-```cpp
-1 UCitySampleCrowdVisualizationFragmentInitializer 这个是ObserverProcessor来观察FCitySampleCrowdVisualizationFragment这个的添加。具体执行就是在CrowdCharacterData中随机出Head，Top，Buttom，Held，HairColor,ClothingColor等数据。按照头+Top+Buttom组成一个InstanceStaticMeshDesc
-```
-
-
-
-```cpp
-1 在UE::Mass::ProcessorGroupNames::Tasks组，执行MassProcessor_Animation 这个Processor，来更新Actor身上AnimInstance上的数据
-2 然后是CrowdVisualization这个组，在MassProcessor_Animation之后，执行UMassProcessor_CrowdVisualizationCustomData这个，通过UpdateISMVertexAnimation方法更新ISM动画
-```
