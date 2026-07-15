@@ -61,8 +61,8 @@ struct FMassCrowdAnimInstanceData
 
 ```cpp
 1 执行UMassUpdateISMProcessor::UpdateISMTransform这个方法，会将当前entityhandle，transform添加到SharedData数组中。一个ISMComp会有一个SharedData，SharedData里会记录这个ISMComp中不同Instance上的数据。
-2 执行UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation方法，将entity的动画数据（5个float类型的）添加到SharedData中的CustomData中。
-3 执行WriteCustomDataFloatsAtStartIndex方法，指定将颜色数据添加到entity身上的头所在的SharedData中的CustomData。
+2 执行UMassCrowdUpdateISMVertexAnimationProcessor::UpdateISMVertexAnimation方法，将entity的动画数据（5个float类型的）添加到SharedData中的CustomData里。
+3 执行WriteCustomDataFloatsAtStartIndex方法，指定将颜色数据添加到entity身上的头所在的SharedData中的CustomData里。
 ```
 
 # 流程
