@@ -219,8 +219,10 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 ```cpp
 void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 {
+	// 速度控制前瞻的最小距离(厘米)。即使车速为0,也至少往前看这么远。 
 	float SpeedControlMinLookAheadDistance = 
 		MassTrafficSettings->SpeedControlMinLookAheadDistance;
+	// 速度控制前瞻的时间(秒)。乘以当前车速得到"按时间算的前瞻距离"。
 	float SpeedControlLaneLookAheadTime = 
 		MassTrafficSettings->SpeedControlLaneLookAheadTime;
 	float SteeringControlMinLookAheadDistance = 
