@@ -219,6 +219,14 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 ```cpp
 void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 {
-	
+	float SpeedControlMinLookAheadDistance = 
+		MassTrafficSettings->SpeedControlMinLookAheadDistance;
+	float SpeedControlLaneLookAheadTime = 
+		MassTrafficSettings->SpeedControlLaneLookAheadTime;
+	float SteeringControlMinLookAheadDistance = 
+		MassTrafficSettings->SteeringControlMinLookAheadDistance;
+	float SteeringControlLaneLookAheadTime = 
+		MassTrafficSettings->SteeringControlLaneLookAheadTime;
+	float TurnSpeedScale = MassTrafficSettings->TurnSpeedScale;
 }
 ```
