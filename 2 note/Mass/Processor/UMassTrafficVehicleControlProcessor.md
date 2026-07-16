@@ -14,7 +14,8 @@ SimpleVehicleControl
 }
 PIDVehicleControl
 {
-	1 通过前瞻点的配置，计算出点
+	1 通过SpeedControlAheadDistane的配置，计算出前瞻点的location和Orientation
+	2 
 }
 
 ```
