@@ -237,11 +237,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	const float SpeedControlLookAheadDistance = 
 		FMath::Max(SpeedControlMinLookAheadDistance, 
 		SpeedControlLaneLookAheadTime * VehicleControlFragment.Speed);
-	// 计算ChasePoint，就是DistanceAlongLane + LookAheadDistance这个值，只不过通过3次贝塞尔曲线插值出来一个结果。跨越车道边界连续地取前瞻点。如果前瞻距离把点推过了当前车道尽头,它会自动滚到 NextLan
-  上,而不是被截断在车道末端。这样车在接近路口/车道衔接处时,
-  追逐目标能平滑地"拐过去",速度控制才能提前对下一段路做出反
-  应(比如下一段是弯道就提前减速)。
-
+	// 计算ChasePoint，就是DistanceAlongLane + LookAheadDistance这个值，只不过通过3次贝塞尔曲线插值出来一个结果。
 	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
 }
 ```
