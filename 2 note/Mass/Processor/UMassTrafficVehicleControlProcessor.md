@@ -215,9 +215,10 @@ void MoveVehicleToNextLane(/*省略了参数*/)
 	}
 }
 ```
-2 
+3 PIDVehicleControl
 ```cpp
-1 UMassTrafficLaneChangingProcessor，变道的Processor时在FrameStart组
-2 UMassTrafficVehicleControlProcessor，车辆控制的Processor是在VehicleBehavior组
-
+void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
+{
+	
+}
 ```
