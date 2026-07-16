@@ -299,7 +299,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 		PIDVehicleControlFragment.Brake = FMath::Abs(ThrottleOrBrake) 
 			* MassTrafficSettings->SpeedPIDBrakeMultiplier;
 	}
-	// 也通过 PID计算出zhuan'xiang
+	// 也通过 PID计算出转向值
 	PIDVehicleControlFragment.Steering = IDVehicleControlFragment
 		.SteeringController.Tick()
 }
