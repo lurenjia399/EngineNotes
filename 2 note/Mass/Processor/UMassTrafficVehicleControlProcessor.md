@@ -233,5 +233,9 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 		MassTrafficSettings->SteeringControlLaneLookAheadTime;
 	// 转弯时的速度缩放系数。弯道曲率越大,用这个  系数把目标速度按比例压低,让车过弯时减速,避免高速过弯"飘出去"。
 	float TurnSpeedScale = MassTrafficSettings->TurnSpeedScale;
+	// 计算速度控制的LookAhead距离，速度 * LookAheadTime
+	const float SpeedControlLookAheadDistance = 
+		FMath::Max(SpeedControlMinLookAheadDistance, 
+		SpeedControlLaneLookAheadTime * VehicleControlFragment.Speed);
 }
 ```
