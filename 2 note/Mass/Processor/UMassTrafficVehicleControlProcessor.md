@@ -282,5 +282,22 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	PIDVehicleControlFragment.bHandbrake = false;
 	PIDVehicleControlFragment.Brake = 0.0f;
 	PIDVehicleControlFragment.Throttle = 0.0f;
+	if (ThrottleOrBrake > MassTrafficSettings->SpeedCoastThreshold)
+	{
+		// 仅处理上坡的情况
+		float Angle = HALF_PI - FMath::Acos(
+			FMath::Max(0.f, LaneLocationTransform.GetRotation()
+			.RotateVector(FVector::ForwardVector).Dot(FVector::UpVector)));
+		float ThrottleMultiplier = FMath::Clamp(Angle / 0.785, 0.f, 1.0f) 
+			* MassTrafficSettings->SpeedPIDSlopAssistMultiplier + 1.0f;
+		PIDVehicleControlFragment.Throttle = 
+			FMath::Clamp(ThrottleMultiplier * ThrottleOrBrake, 0.0f, 1.0f);
+	}
+	else if (ThrottleOrBrake < -MassTrafficSettings->SpeedCoastThreshold)
+	{
+		// We are messing with the returned PID value here as we have one PID for the throttle
+		// and brake.
+		PIDVehicleControlFragment.Brake = FMath::Abs(ThrottleOrBrake) * MassTrafficSettings->SpeedPIDBrakeMultiplier;
+	}
 }
 ```
