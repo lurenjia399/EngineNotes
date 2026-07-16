@@ -14,8 +14,8 @@ SimpleVehicleControl
 }
 PIDVehicleControl
 {
-	1 通过SpeedControlAheadDistane的配置，计算出前瞻点的location和Orientation
-	2 
+	1 通过SpeedControlAheadDistane的配置，根据插值，计算出前瞻点的location和Orientation
+	2 同样的根据DistanceAlongLane，插值计算出当前车所在的Tr
 }
 
 ```
