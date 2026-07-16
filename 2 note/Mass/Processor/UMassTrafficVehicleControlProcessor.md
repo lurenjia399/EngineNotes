@@ -261,7 +261,14 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(...);
 	// 计算是否在路口停下
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit(...);
-	// 计算车的速度
+	// 计算车的速度，根据速度qian'zhan'd
 	float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
+	const float TurnAngle = TransformFragment.GetTransform().
+		InverseTransformVectorNoScale(
+			SpeedControlChaseTargetOrientation.GetForwardVector()).HeadingAngle();
+	const float TurnSpeedFactor = FMath::GetMappedRangeValueClamped<>(
+		TRange<float>(0.0f, HALF_PI), TRange<float>(1.0f, TurnSpeedScale), 
+		FMath::Abs(TurnAngle));
+	TargetSpeed *= TurnSpeedFactor; 
 }
 ```
