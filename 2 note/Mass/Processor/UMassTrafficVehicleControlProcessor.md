@@ -16,7 +16,7 @@ PIDVehicleControl
 {
 	1 通过SpeedControlAheadDistane的配置，根据插值，计算出前瞻点的location和Orientation
 	2 同样的根据DistanceAlongLane，插值计算出当前车所在的Transform
-	3 同样的通过SteerControlAheadDistance的配置，根据插值，计算出前瞻点的Location和Orientation，如果此时在变道过程中，就将转向前瞻点设到变道
+	3 同样的通过SteerControlAheadDistance的配置，根据插值，计算出前瞻点的Location和Orientation，如果此时在变道过程中，就将转向前瞻点赋值为变道位置
 	4 
 }
 
