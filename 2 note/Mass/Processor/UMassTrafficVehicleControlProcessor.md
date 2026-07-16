@@ -22,6 +22,7 @@ PIDVehicleControl
 	6 重新计算停不下来状态。
 	7 计算目标速度
 	8 通过PID算法计算出，刹车，油门的值，更新PIDVehicleControlFragment中数据，刹车，油门，转向，是否有手刹
+	9 在物理计算后，UMassTrafficPostPhysicsUpdateTrafficVehiclesProcessor中，将PIDc
 }
 
 ```
