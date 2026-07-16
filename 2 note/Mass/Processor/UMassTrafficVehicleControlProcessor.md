@@ -9,7 +9,7 @@ SimpleVehicleControl
 	5 MoveVehicleToNextLane，如果车已经进入NextLane了
 		1 移除当前车道的信息（占用空间和车道上车的数量），添加目标车道的信息（占用空间和车道上车的数量）
 		2 设置当前车的跟车信息，跟目标车道的Tailvehicle
-		3 如果目标车道有即将变道走的GhostVehicle
+		3 如果目标车道有即将变道走的GhostVehicle，
 		4 目标车道有GhostVehicle，将当前车添加到Ghost的数组中
 		5 目标车道由split或者merge相邻车道，把当前车添加到相邻车道的GhostTailVehicle中
 }
