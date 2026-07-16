@@ -14,7 +14,7 @@ SimpleVehicleControl
 }
 PIDVehicleControl
 {
-	
+	1 通过前瞻点的配置，计算出点
 }
 
 ```
