@@ -237,7 +237,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	const float SpeedControlLookAheadDistance = 
 		FMath::Max(SpeedControlMinLookAheadDistance, 
 		SpeedControlLaneLookAheadTime * VehicleControlFragment.Speed);
-	// 计算ChasePoint，通过当前
+	// 计算ChasePoint，就是DistanceAlongLane + LookAheadDistance这个值，只不过通过3次贝塞尔曲线插值出来一个结果
 	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
 }
 ```
