@@ -284,7 +284,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	PIDVehicleControlFragment.Throttle = 0.0f;
 	if (ThrottleOrBrake > MassTrafficSettings->SpeedCoastThreshold)
 	{
-		// 仅处理上坡的情况
+		// 仅处理上坡的情况，上坡的角度越大，you
 		float Angle = HALF_PI - FMath::Acos(
 			FMath::Max(0.f, LaneLocationTransform.GetRotation()
 			.RotateVector(FVector::ForwardVector).Dot(FVector::UpVector)));
