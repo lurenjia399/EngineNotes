@@ -1,8 +1,9 @@
 1
 2 
 ```cpp
-void UMassTrafficDriverCustomVisualizationProcessor::Execute(
-	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
+// 生成
+void UMassTrafficDriverCustomVisualizationProcessor::SpawnPendingRealDrivers(
+	FMassEntityManager& EntityManager, float GlobalStartTime)
 {
 	
 }
