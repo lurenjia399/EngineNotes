@@ -225,11 +225,13 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	// 速度控制前瞻的时间(秒)。乘以当前车速得到"按时间算的前瞻距离"。
 	float SpeedControlLaneLookAheadTime = 
 		MassTrafficSettings->SpeedControlLaneLookAheadTime;
-	// 转向前瞻的最小距离(厘米
+	// 转向前瞻的最小距离(厘米）。
 	float SteeringControlMinLookAheadDistance = 
 		MassTrafficSettings->SteeringControlMinLookAheadDistance;
+	// 转向前瞻的时间(秒),同样乘以车速。
 	float SteeringControlLaneLookAheadTime = 
 		MassTrafficSettings->SteeringControlLaneLookAheadTime;
+	// 转弯时的速度缩放系数。弯道曲率越大,用这个  系数把目标速度按比例压低,让车过弯时减速,避免高速过弯"飘出去"。
 	float TurnSpeedScale = MassTrafficSettings->TurnSpeedScale;
 }
 ```
