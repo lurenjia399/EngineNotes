@@ -270,7 +270,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 		TRange<float>(0.0f, HALF_PI), TRange<float>(1.0f, TurnSpeedScale), 
 		FMath::Abs(TurnAngle));
 	TargetSpeed *= TurnSpeedFactor; 
-	// 通过PID处理速度误差，计算出比例项+积分项+微分项，算出是需要踩油门还是刹车
+	// 通过PID处理速度误差，计算出比例项+积分项+微分项，算出是需要踩油门还是刹车，踩的程度是多少
 	float ThrottleOrBrake = PIDVehicleControlFragment.ThrottleAndBrakeController
 		.Tick(
 			TargetSpeed,
@@ -278,5 +278,9 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 			VariableTickFragment.DeltaTime,
 			MassTrafficSettings->SpeedPIDControllerParams);
 	ThrottleOrBrake = FMath::Clamp(ThrottleOrBrake, -1.0f, 1.0f);
+	// 初始化载具手刹，刹车，油门状态
+	PIDVehicleControlFragment.bHandbrake = false;
+	PIDVehicleControlFragment.Brake = 0.0f;
+	PIDVehicleControlFragment.Throttle = 0.0f;
 }
 ```
