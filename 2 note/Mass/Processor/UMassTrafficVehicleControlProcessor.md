@@ -237,5 +237,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	const float SpeedControlLookAheadDistance = 
 		FMath::Max(SpeedControlMinLookAheadDistance, 
 		SpeedControlLaneLookAheadTime * VehicleControlFragment.Speed);
+	// 
+	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
 }
 ```
