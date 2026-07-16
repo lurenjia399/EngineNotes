@@ -270,6 +270,13 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 		TRange<float>(0.0f, HALF_PI), TRange<float>(1.0f, TurnSpeedScale), 
 		FMath::Abs(TurnAngle));
 	TargetSpeed *= TurnSpeedFactor; 
-	// 
+	// 通过PID处理
+	float ThrottleOrBrake = PIDVehicleControlFragment.ThrottleAndBrakeController
+		.Tick(
+			TargetSpeed,
+			VehicleControlFragment.Speed,
+			VariableTickFragment.DeltaTime,
+			MassTrafficSettings->SpeedPIDControllerParams);
+	ThrottleOrBrake = FMath::Clamp(ThrottleOrBrake, -1.0f, 1.0f);
 }
 ```
