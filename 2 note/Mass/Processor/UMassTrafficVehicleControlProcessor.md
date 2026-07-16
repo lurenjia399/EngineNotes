@@ -258,6 +258,8 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 			SteeringControlChaseTargetTransform.GetRotation();
 	}
 	// 计算速度限制
-	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(...)
+	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(...);
+	// 计算是否在lu'k
+	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit(...);
 }
 ```
