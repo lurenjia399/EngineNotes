@@ -261,7 +261,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(...);
 	// 计算是否在路口停下
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit(...);
-	// 计算车的速度，根据速度前瞻点算出车是否要转向，如果转向需要减速
+	// 计算车的速度，根据速度前瞻点算出车是否要转向，如果转向需要减速。
 	float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 	const float TurnAngle = TransformFragment.GetTransform().
 		InverseTransformVectorNoScale(
