@@ -257,5 +257,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 		SteeringControlChaseTargetOrientation = 
 			SteeringControlChaseTargetTransform.GetRotation();
 	}
+	// 计算速度限制
+	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(...)
 }
 ```
