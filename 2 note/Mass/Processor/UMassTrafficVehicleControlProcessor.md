@@ -259,7 +259,9 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	}
 	// 计算速度限制
 	const float SpeedLimit = UE::MassTraffic::GetSpeedLimitAlongLane(...);
-	// 计算是否在lu'k
+	// 计算是否在路口停下
 	const bool bMustStopAtLaneExit = UE::MassTraffic::ShouldStopAtLaneExit(...);
+	// 计算车的速度
+	float TargetSpeed = UE::MassTraffic::CalculateTargetSpeed();
 }
 ```
