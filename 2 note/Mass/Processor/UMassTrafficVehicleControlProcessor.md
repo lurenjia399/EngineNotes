@@ -240,6 +240,21 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	// 计算速度控制的前瞻点，就是DistanceAlongLane + LookAheadDistance这个值，只不过通过3次贝塞尔曲线插值出来一个结果。
 	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
 	// 相同的方式，计算转向控制的前瞻点
-	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...)
+	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
+	if (LaneChangeFragment && LaneChangeFragment->IsLaneChangeInProgress())
+	{
+		FTransform SteeringControlChaseTargetTransform
+			(SteeringControlChaseTargetOrientation, 
+			SteeringControlChaseTargetLocation);
+		UE::MassTraffic::AdjustVehicleTransformDuringLaneChange(
+			*LaneChangeFragment, LaneLocationFragment.DistanceAlongLane 
+			+ SteeringControlLookAheadDistance, 
+			  SteeringControlChaseTargetTransform, 
+			  EntityManager.GetWorld());
+		SteeringControlChaseTargetLocation = 
+			SteeringControlChaseTargetTransform.GetLocation();
+		SteeringControlChaseTargetOrientation = 
+			SteeringControlChaseTargetTransform.GetRotation();
+	}
 }
 ```
