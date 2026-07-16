@@ -295,7 +295,9 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	}
 	else if (ThrottleOrBrake < -MassTrafficSettings->SpeedCoastThreshold)
 	{
-		PIDVehicleControlFragment.Brake = FMath::Abs(ThrottleOrBrake) * MassTrafficSettings->SpeedPIDBrakeMultiplier;
+		// 刹车值
+		PIDVehicleControlFragment.Brake = FMath::Abs(ThrottleOrBrake) 
+			* MassTrafficSettings->SpeedPIDBrakeMultiplier;
 	}
 }
 ```
