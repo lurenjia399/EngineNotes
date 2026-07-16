@@ -225,6 +225,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	// 速度控制前瞻的时间(秒)。乘以当前车速得到"按时间算的前瞻距离"。
 	float SpeedControlLaneLookAheadTime = 
 		MassTrafficSettings->SpeedControlLaneLookAheadTime;
+	// 转向前瞻的最小距离(厘米
 	float SteeringControlMinLookAheadDistance = 
 		MassTrafficSettings->SteeringControlMinLookAheadDistance;
 	float SteeringControlLaneLookAheadTime = 
