@@ -270,7 +270,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 		TRange<float>(0.0f, HALF_PI), TRange<float>(1.0f, TurnSpeedScale), 
 		FMath::Abs(TurnAngle));
 	TargetSpeed *= TurnSpeedFactor; 
-	// 通过PID处理
+	// 通过PID处理速度误差，计算出比例项+积分项+微分项，算出是需要踩油门还是刹车
 	float ThrottleOrBrake = PIDVehicleControlFragment.ThrottleAndBrakeController
 		.Tick(
 			TargetSpeed,
