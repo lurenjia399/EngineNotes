@@ -241,6 +241,7 @@ void UMassTrafficVehicleControlProcessor::PIDVehicleControl()
 	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
 	// 相同的方式，计算转向控制的前瞻点
 	UE::MassTraffic::InterpolatePositionAndOrientationAlongContinuousLanes(...);
+	// 如果当前在变道，就需要根据前瞻点来计算出现在应该设置的位置
 	if (LaneChangeFragment && LaneChangeFragment->IsLaneChangeInProgress())
 	{
 		FTransform SteeringControlChaseTargetTransform
