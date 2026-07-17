@@ -282,7 +282,7 @@ void FMassEntityQuery::ForEachEntityChunk(
 	}
 	else
 	{
-		// 遍历所有的ArcheTypeData，从中找出符合Query的，填充到
+		// 遍历所有的ArcheTypeData，从中找出符合Query的，填充到ValidArchetypes数组中
 		CacheArchetypes();
 		if (ExecutionContext.GetEntityCollection().IsEmpty() == false)
 		{
@@ -290,7 +290,7 @@ void FMassEntityQuery::ForEachEntityChunk(
 		else
 		{
 			ExecutionContext.ApplyFragmentRequirements(*this);
-			// 遍历所有符合要求的ArcheTypeData，对每一个ArcheTypeData都执行ExecuteFunction方法
+			// 遍历ValidArchetypes数组，对每一个ArcheTypeData都执行ExecuteFunction方法
 			for (const int32 ArchetypeIndex : OrderedArchetypeIndices)
 			{
 				const FMassArchetypeHandle& ArchetypeHandle = 
