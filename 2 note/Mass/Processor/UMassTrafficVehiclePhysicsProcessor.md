@@ -15,7 +15,7 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	RawLaneLocationTransform.AddToTranslation(
 		RawLaneLocationTransform.GetRotation().GetRightVector() * 
 		LaneOffsetFragment.LateralOffset);
-	// 穿透修正
+	// 穿透修正，简单来说就是遍历lu'ni
 	if (SolvePositionCorrect(VehicleWorldTransform, 
 		RawLaneLocationTransform, SimplePhysicsVehicleFragment))
 	{
