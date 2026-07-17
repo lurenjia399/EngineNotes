@@ -299,6 +299,8 @@ void FMassEntityQuery::CacheArchetypes()
 		FMassArchetypeData& ArchetypeData = FMassArchetypeHelper::ArchetypeDataFromHandleChecked(ValidArchetypes[i]);
 		ArchetypeData.GetRequirementsFragmentMapping(LocalRequirements, ArchetypeFragmentMapping[i].EntityFragments);
 	}
+	// 填充OrderedArchetypeIndices数组，元素是ValidArchetypes中的索引
+	BuildOrderedArchetypeIndices(FirstNewArchetype);
 }
 ```
 
