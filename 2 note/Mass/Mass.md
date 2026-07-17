@@ -282,8 +282,15 @@ void FMassEntityQuery::ForEachEntityChunk(
 	}
 	else
 	{
-	
+		CacheArchetypes();
 	}
+}
+
+
+void FMassEntityQuery::CacheArchetypes()
+{
+	CachedEntityManager->GetMatchingArchetypes(*this, NewValidArchetypes, LastUpdatedArchetypeDataVersion);
+	
 }
 ```
 
