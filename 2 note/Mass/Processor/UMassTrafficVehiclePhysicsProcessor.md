@@ -21,7 +21,7 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	{
 		TransformFragment.SetTransform(VehicleWorldTransform);
 	}
-	// 
+	// 悬挂射线检测，类似射线检测，从
 	PerformSuspensionTraces(
 		SimplePhysicsVehicleFragment,
 		VehicleWorldTransform,
