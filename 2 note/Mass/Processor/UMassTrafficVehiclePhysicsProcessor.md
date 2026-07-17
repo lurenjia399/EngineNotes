@@ -15,7 +15,7 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	RawLaneLocationTransform.AddToTranslation(
 		RawLaneLocationTransform.GetRotation().GetRightVector() * 
 		LaneOffsetFragment.LateralOffset);
-	// 穿透修正，简单来说就是遍历lu'ni
+	// 穿透修正，简单来说就是遍历轮子，找到轮子陷在地下的距离（理想地面位置 - 轮子触碰地面wei'zh）
 	if (SolvePositionCorrect(VehicleWorldTransform, 
 		RawLaneLocationTransform, SimplePhysicsVehicleFragment))
 	{
