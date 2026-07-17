@@ -50,5 +50,8 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	SolveSuspensionConstraintsIteration(DeltaTime, SimplePhysicsVehicleFragment, VelocityFragment, AngularVelocityFragment, TransformFragment, VehicleWorldTransform, RawLaneLocationTransform, VehicleVelocity, SuspensionTargets, bVisLog);
 	// 把车的位置转到车道本地坐标系,对横向 Y 和垂直 Z做软阈值渐进钳制(近处放任、远处强拉、绝不越界),既保留自然晃动又保证车不脱离车道;
 	ClampLateralDeviation(TransformFragment, VehicleWorldTransform, RawLaneLocationTransform);
+	// 最后更新
+	UpdateCoMVelocity(DeltaTime, SimplePhysicsVehicleFragment, TransformFragment, VelocityFragment, AngularVelocityFragment, VehicleWorldTransform);
+
 }
 ```
