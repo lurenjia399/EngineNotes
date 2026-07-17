@@ -10,5 +10,20 @@ void UMassTrafficActorVehiclePhysicsProcessor::Execute(
 	{
 		continue;
 	}
+	
+	AActor* Actor = ActorFragment.GetMutable();
+	if (Actor != nullptr 
+		&& Actor->Implements<UMassTrafficVehicleControlInterface>())
+	{
+		if (VehicleDamageFragments[EntityIt].VehicleDamageState 
+		>	= EMassTrafficVehicleDamageState::Totaled)
+		{
+			Context.Defer().PushCommand<FMassDeferredSetCommand>(
+				[Actor](FMassEntityManager&)
+				{
+			IMassTrafficVehicleControlInterface::
+	Execute_SetVehicleInputs(Actor, 0.0f, 1.0f, false, 0.0f, false);
+				});
+		}
 }
 ```
