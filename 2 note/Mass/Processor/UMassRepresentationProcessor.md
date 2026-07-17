@@ -1,4 +1,13 @@
 
+1
+```cpp
+0 ISM的创建通过UCitySampleCrowdVisualizationFragmentInitializer来Observe这个FCitySampleCrowdVisualizationFragment的添加，根据配置创建出ISMComp
+1 在UE::Mass::ProcessorGroupNames::LODCollector在这个组，会执行UMassLODDistanceCollectorProcessor这个，来收集Lod信息填充FMassViewerInfoFragment，记录entity距离view的最短距离
+2 紧接着是UE::Mass::ProcessorGroupNames::LOD这个组，这个组通过UMassCrowdVisualizationLODProcessor来计算出entity的LOD
+3 然后是UE::Mass::ProcessorGroupNames::Representation这个组，通过UMassCrowdVisualizationProcessor来执行父类的UMassRepresentationProcessor，根据entity的LOD，请求创建出Actor，如果是ISM的就请求移除Actor。
+4 然后是UMassUpdateISMProcessor在Representation这个组后，来执行UpdateISMTransform方法，来改变ISM的位置，进而创建出ISM
+```
+
 UMassLODDistanceCollectorProcessor
 {
 	UMassSimulationLODProcessor
@@ -34,12 +43,4 @@ UMassCrowdVisualizationProcessor : public UMassVisualizationProcessor
 1 如果需要创建出实体，就通过RepresentationActorManagement->GetOrSpawnActor方法创建出Actor。如果当前是instance的，就需要通过TeleportActor，把创建出actor通过Command设置transform。然后通过Command命令来开启Actor碰撞，tick。（注意TeleportActor和设置碰撞必须通过Command延后执行，因为会改变物理状态，得在游戏线程或者物理线程执行）
 2 如果需要创建Instance，就destroy掉生成的actor，如果没有生成就CancelSpawn，destroy也是添加到UMassActorSpawnerSubsystem的延迟数组中
 ```
-# Visualization Processor
-```cpp
-0 ISM的创建通过UCitySampleCrowdVisualizationFragmentInitializer来Observe这个FCitySampleCrowdVisualizationFragment的添加，根据配置创建出ISMComp
 
-1 在UE::Mass::ProcessorGroupNames::LODCollector在这个组，会执行UMassLODDistanceCollectorProcessor这个，来收集Lod信息填充FMassViewerInfoFragment，记录entity距离view的最短距离
-2 紧接着是UE::Mass::ProcessorGroupNames::LOD这个组，这个组通过UMassCrowdVisualizationLODProcessor来计算出entity的LOD
-3 然后是UE::Mass::ProcessorGroupNames::Representation这个组，通过UMassCrowdVisualizationProcessor来执行父类的UMassRepresentationProcessor，根据entity的LOD，请求创建出Actor，如果是ISM的就请求移除Actor。
-4 然后是UMassUpdateISMProcessor在Representation这个组后，来执行UpdateISMTransform方法，来改变ISM的位置，进而创建出ISM
-```
