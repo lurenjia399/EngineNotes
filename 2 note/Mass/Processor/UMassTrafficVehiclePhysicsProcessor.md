@@ -21,7 +21,7 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	{
 		TransformFragment.SetTransform(VehicleWorldTransform);
 	}
-	// 计算每个轮子的悬挂约束，类似射线检测，从悬挂
+	// 计算每个轮子的悬挂约束，类似射线检测。根据车身位姿和悬挂配置,算出该轮子悬挂射线的世界空间  Start(悬挂顶端)和 End(悬挂完全伸展、轮子最低点)，用线段 vs 平面求交(纯数学,不碰物理)。如果这段悬挂射线穿过了车道平面,ImpactPoint 就是交点——即"轮子踩到地面的点",bBlockingHit = true。
 	PerformSuspensionTraces(
 		SimplePhysicsVehicleFragment,
 		VehicleWorldTransform,
