@@ -30,18 +30,21 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 		SuspensionTargets,
 		bVisLog,
 		UE::MassTraffic::EntityToColor(QueryContext.GetEntity(Index)));
-	// 	
+	// 求解车的线速度，角速度等各种信息
 	SimulateDriveForces(
-					DeltaTime,
-					GravityZ,
-					PIDVehicleControlFragment,
-					SimplePhysicsVehicleFragment,
-					VelocityFragment,
-					AngularVelocityFragment,
-					TransformFragment,
-					VehicleWorldTransform,
-					RawLaneLocationTransform,
-					SuspensionTraceHitResults,
-					bVisLog);
+		DeltaTime,
+		GravityZ,
+		PIDVehicleControlFragment,
+		SimplePhysicsVehicleFragment,
+		VelocityFragment,
+		AngularVelocityFragment,
+		TransformFragment,
+		VehicleWorldTransform,
+		RawLaneLocationTransform,
+		SuspensionTraceHitResults,
+		bVisLog);
+	// 再次穿透修正
+	SolvePositionCorrect(TransformFragment.GetMutableTransform(),
+		RawLaneLocationTransform, SimplePhysicsVehicleFragment);
 }
 ```
