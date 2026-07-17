@@ -1,4 +1,6 @@
 1
 ```cpp
-1 High 和 Medium 的LOD会开启PID，
+// Hight和Medium会开启PID
+bool bPIDEnable = SimulationLODFragment.LOD <= EMassLOD::Medium;
+
 ```
