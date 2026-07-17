@@ -26,5 +26,20 @@ void UMassTrafficActorVehiclePhysicsProcessor::Execute(
 						Actor, 0.0f, 1.0f, false, 0.0f, false);
 				});
 		}
+		else
+		// 如果Actor没有报废
+		{
+			Context.Defer().PushCommand<FMassDeferredSetCommand>(
+				[Actor, PIDVehicleControlFragment](FMassEntityManager&)
+			{
+				IMassTrafficVehicleControlInterface::
+					Execute_SetVehicleInputs(Actor,
+						PIDVehicleControlFragment.Throttle,
+						PIDVehicleControlFragment.Brake,
+						PIDVehicleControlFragment.bHandbrake,
+						PIDVehicleControlFragment.Steering,
+						/*bSetSteering*/ true);
+			});
+		}
 }
 ```
