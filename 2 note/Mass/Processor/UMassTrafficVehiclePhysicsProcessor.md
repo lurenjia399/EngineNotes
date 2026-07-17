@@ -11,6 +11,10 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 		LaneLocationFragment.DistanceAlongLane, 
 		ETrafficVehicleMovementInterpolationMethod::CubicBezier, 
 		InterpolationFragment.LaneLocationLaneSegment, RawLaneLocationTransform);
+	// 在位置上添加横向偏移
+	RawLaneLocationTransform.AddToTranslation(
+		RawLaneLocationTransform.GetRotation().GetRightVector() * 
+		LaneOffsetFragment.LateralOffset);
 
 }
 ```
