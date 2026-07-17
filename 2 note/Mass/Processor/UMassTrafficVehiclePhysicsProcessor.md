@@ -15,6 +15,11 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	RawLaneLocationTransform.AddToTranslation(
 		RawLaneLocationTransform.GetRotation().GetRightVector() * 
 		LaneOffsetFragment.LateralOffset);
-
+	// 穿透修正
+	if (SolvePositionCorrect(VehicleWorldTransform, 
+		RawLaneLocationTransform, SimplePhysicsVehicleFragment))
+	{
+		TransformFragment.SetTransform(VehicleWorldTransform);
+	}
 }
 ```
