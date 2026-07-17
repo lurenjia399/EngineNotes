@@ -21,5 +21,14 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	{
 		TransformFragment.SetTransform(VehicleWorldTransform);
 	}
+	// 
+	PerformSuspensionTraces(
+		SimplePhysicsVehicleFragment,
+		VehicleWorldTransform,
+		RawLaneLocationTransform,
+		SuspensionTraceHitResults,
+		SuspensionTargets,
+		bVisLog,
+		UE::MassTraffic::EntityToColor(QueryContext.GetEntity(Index)));
 }
 ```
