@@ -11,7 +11,7 @@ void UMassTrafficActorVehiclePhysicsProcessor::Execute(
 		continue;
 	}
 	
-	// 如果Actor已经报废
+	// 如果Actor已经Totaled报废，Repairing修理，Irreparable损坏无法修，就设置油门为0，刹车为1，没有手刹，转向为0
 	AActor* Actor = ActorFragment.GetMutable();
 	if (Actor != nullptr && Actor->Implements<UMassTrafficVehicleControlInterface>())
 	{
