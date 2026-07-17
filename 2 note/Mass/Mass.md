@@ -283,6 +283,13 @@ void FMassEntityQuery::ForEachEntityChunk(
 	else
 	{
 		CacheArchetypes();
+		if (ExecutionContext.GetEntityCollection().IsEmpty() == false)
+		{
+		}
+		else
+		{
+			
+		}
 	}
 }
 
