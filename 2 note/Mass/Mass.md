@@ -276,7 +276,14 @@ void FMassEntityQuery::ForEachEntityChunk(
 	FScopedEntityQueryContext ScopedQueryContext(
 												*this, ExecutionContext);
 	//
+	if (FMassFragmentRequirements::IsEmpty())
+	{
+		
+	}
+	else
+	{
 	
+	}
 }
 ```
 
