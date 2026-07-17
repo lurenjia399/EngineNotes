@@ -645,7 +645,7 @@ FArchetypeData：
 	8 TArray<FInstancedStruct> ChunkFragmentsTemplate;//这个就是ChunkFragments里的数据，按照Fragment从大到小排序后，赋值到ChunkFragmentsTemplate成员变量里。
 	9 int32 EntityListOffsetWithinChunk;//这个属性在初始化的时候为0。正常来说会在Chunk的开头存放所有的EntityHanle，但是这个属性就是一个偏移，可以把所有的EntityHandle不放在开头放在这个偏移的后边。
 //**************以上9个都在 FMassArchetypeData::Initialize 方法中赋值***********
-	10 TArray<FMassArchetypeChunk> Chunks;//这个就是Archetype里的Chunk数组，会在生成Entity的时候创建一个Chunk，chunk的组成是，多个EntityHandle挨着存放 + 每个EntityHandle的FragmentA挨着存放 + 每个EntityHandle的FragmentB挨着存放。每个Chunk都有相同的ChunkFragment，具有不同的SharedFragment的entity会存在不同的Chunk里
+	10 TArray<FMassArchetypeChunk> Chunks;//这个就是Archetype里的Chunk数组，会在生成Entity的时候创建一个Chunk，chunk的组成是，多个EntityHandle挨着存放 + 每个EntityHandle的FragmentA挨着存放 + 每个EntityHandle的FragmentB挨着存放。每个Chunk都有各自的ChunkFragment，具有不同的SharedFragment的entity会存在不同的Chunk里
 	11 TMap<int32, int32> EntityMap;//缓存个索引，key是EntityHandle的index，value是Archetype中Entity的绝对索引。
 //**************以上2个都在生成 Entity 的里面赋值***********
 	12 uint32 EntityOrderVersion = 0;//当Archetype中的Entity数据顺序改变的时候会增加。
