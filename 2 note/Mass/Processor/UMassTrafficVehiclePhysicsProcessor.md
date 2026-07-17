@@ -30,5 +30,18 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 		SuspensionTargets,
 		bVisLog,
 		UE::MassTraffic::EntityToColor(QueryContext.GetEntity(Index)));
+	// 	
+	SimulateDriveForces(
+					DeltaTime,
+					GravityZ,
+					PIDVehicleControlFragment,
+					SimplePhysicsVehicleFragment,
+					VelocityFragment,
+					AngularVelocityFragment,
+					TransformFragment,
+					VehicleWorldTransform,
+					RawLaneLocationTransform,
+					SuspensionTraceHitResults,
+					bVisLog);
 }
 ```
