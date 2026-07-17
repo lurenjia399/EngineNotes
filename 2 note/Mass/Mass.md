@@ -291,7 +291,14 @@ void FMassEntityQuery::CacheArchetypes()
 {
 	// 遍历所有的ArcheTypeData，找到符合this的ArcheType，放到NewValidArchetypes数组中
 	CachedEntityManager->GetMatchingArchetypes(*this, NewValidArchetypes, LastUpdatedArchetypeDataVersion);
-	
+	// 获取Qurey中需要的Fragment在ArchetypeDat中的索引，记录下来
+	const TConstArrayView<FMassFragmentRequirementDescription> LocalRequirements = GetFragmentRequirements();
+	ArchetypeFragmentMapping.AddDefaulted(NewValidArchetypes.Num());
+	for (int i = FirstNewArchetype; i < ValidArchetypes.Num(); ++i)
+	{
+		FMassArchetypeData& ArchetypeData = FMassArchetypeHelper::ArchetypeDataFromHandleChecked(ValidArchetypes[i]);
+		ArchetypeData.GetRequirementsFragmentMapping(LocalRequirements, ArchetypeFragmentMapping[i].EntityFragments);
+	}
 }
 ```
 
