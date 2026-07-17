@@ -46,7 +46,7 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	// 再次穿透修正
 	SolvePositionCorrect(TransformFragment.GetMutableTransform(),
 		RawLaneLocationTransform, SimplePhysicsVehicleFragment);
-	// 悬挂约束
+	// 悬挂约束，这是一次 PBD悬挂约束迭代——对每个触地轮,用弹簧-阻尼公式算出把挂点拉向贴地目标所需的位置/旋转修正,直接微调车身的 Transform,多次迭代后收敛出真实的车身高度与俯仰/侧倾姿态。
 	SolveSuspensionConstraintsIteration(DeltaTime, SimplePhysicsVehicleFragment, VelocityFragment, AngularVelocityFragment, TransformFragment, VehicleWorldTransform, RawLaneLocationTransform, VehicleVelocity, SuspensionTargets, bVisLog);
 
 }
