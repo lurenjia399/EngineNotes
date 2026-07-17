@@ -288,7 +288,17 @@ void FMassEntityQuery::ForEachEntityChunk(
 		}
 		else
 		{
-			
+			ExecutionContext.ApplyFragmentRequirements(*this);
+			// 遍历所有符合要求的ArcheTypeData
+			for (const int32 ArchetypeIndex : OrderedArchetypeIndices)
+			{
+				const FMassArchetypeHandle& ArchetypeHandle = 
+					ValidArchetypes[ArchetypeIndex];
+				FMassArchetypeData& ArchetypeData = FMassArchetypeHelper::
+					ArchetypeDataFromHandleChecked(ArchetypeHandle);
+				ArchetypeData.ExecuteFunction(ExecutionContext, ExecuteFunction, ArchetypeFragmentMapping[ArchetypeIndex], ChunkCondition);
+				ExecutionContext.ClearFragmentViews(*this);
+			}
 		}
 	}
 }
