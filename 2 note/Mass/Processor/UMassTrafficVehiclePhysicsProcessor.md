@@ -46,5 +46,8 @@ void UMassTrafficVehiclePhysicsProcessor::Execute(
 	// 再次穿透修正
 	SolvePositionCorrect(TransformFragment.GetMutableTransform(),
 		RawLaneLocationTransform, SimplePhysicsVehicleFragment);
+	// 悬挂约束
+	SolveSuspensionConstraintsIteration(DeltaTime, SimplePhysicsVehicleFragment, VelocityFragment, AngularVelocityFragment, TransformFragment, VehicleWorldTransform, RawLaneLocationTransform, VehicleVelocity, SuspensionTargets, bVisLog);
+
 }
 ```
