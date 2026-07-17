@@ -27,7 +27,7 @@ void UMassTrafficActorVehiclePhysicsProcessor::Execute(
 				});
 		}
 		else
-		// 如果Actor没有报废
+		// 如果Actor没有报废损坏啥的，就把PIDVehicleControl中算出的油门，刹车，手刹，转向设置到VehicleMovementComp中，让物理那边计算
 		{
 			Context.Defer().PushCommand<FMassDeferredSetCommand>(
 				[Actor, PIDVehicleControlFragment](FMassEntityManager&)
