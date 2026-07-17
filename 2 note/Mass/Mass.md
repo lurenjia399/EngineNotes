@@ -289,6 +289,7 @@ void FMassEntityQuery::ForEachEntityChunk(
 
 void FMassEntityQuery::CacheArchetypes()
 {
+	// 遍历所有的ArcheTypeData，找到符合this的ArcheType，放到NewValidArchetypes数组中
 	CachedEntityManager->GetMatchingArchetypes(*this, NewValidArchetypes, LastUpdatedArchetypeDataVersion);
 	
 }
