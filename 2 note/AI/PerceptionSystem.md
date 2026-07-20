@@ -65,7 +65,8 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
 		// 有sense需要更新或者有可以触发的延迟刺激或者有Listnner刺激时间到了，就遍历所有的Listener来执行刺激
 		/*
-		1 如果有Sense需要更新或者有延迟刺激xu'yao
+		1 如果有Sense需要更新或者有延迟刺激需要触发或者有刺激老化需要更新
+		2 
 		*/
 		if (bNeedsUpdate || bStimuliDelivered || 
 			bSomeListenersNeedUpdateDueToStimuliAging)
