@@ -44,11 +44,12 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		// 处理延迟刺激，并返回是否有可以触发的延迟刺激
 		const bool bStimuliDelivered = DeliverDelayedStimuli(
 			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
-		// 有sense需要更新或者有可以触发的延迟刺激或者有Listnner刺激时间到了
+		// 有sense需要更新或者有可以触发的延迟刺激或者有Listnner刺激时间到了，就遍历所有的Listener来执行刺激
 		if (bNeedsUpdate || bStimuliDelivered || 
 			bSomeListenersNeedUpdateDueToStimuliAging)
 		{
-			for (AIPerception::FListenerMap::TIterator ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
+			for (AIPerception::FListenerMap::TIterator
+				 ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
 			{
 				check(ListenerIt->Value.Listener.IsValid());
 
