@@ -25,7 +25,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		NextStimuliAgingTick = CurrentTime + PerceptionAgingRate;
 	}
 	/*
-	1 遍历所有Sense，Advance时间
+	1 遍历所有Sense，Advance时间，这个时间是最大值FLT_MAX
 	2 如果有到时间需要更新Sense了，bNeedsUpdate标志位为true
 	3 如果bNeedsUpdate标志位为true，遍历所有的Listener，更新Listenr信息。执行Sense的tick方法
 	*/
@@ -64,7 +64,9 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		const bool bStimuliDelivered = DeliverDelayedStimuli(
 			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
 		// 有sense需要更新或者有可以触发的延迟刺激或者有Listnner刺激时间到了，就遍历所有的Listener来执行刺激
-		
+		/*
+		1 如果有Sense需要更新，
+		*/
 		if (bNeedsUpdate || bStimuliDelivered || 
 			bSomeListenersNeedUpdateDueToStimuliAging)
 		{
