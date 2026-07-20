@@ -58,3 +58,8 @@ void UAIPerceptionComponent::CleanUp()
 	}
 }
 ```
+
+# ProcessStimuli
+```cpp
+
+```
