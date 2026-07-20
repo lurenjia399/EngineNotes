@@ -12,7 +12,13 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 }
 ```
 
-# 
+# RegisterSource
+```cpp
+void UAIPerceptionSystem::RegisterSource(AActor& SourceActor)
+{
+	
+}
+```
 # 2 UAIPerceptionComponent
 
 
