@@ -92,12 +92,12 @@ void UAIPerceptionComponent::ProcessStimuli()
 				{
 					continue;
 				}
+				// 添加新的感知数据
 				PerceptualInfo = &PerceptualData.Add(SourceKey, FActorPerceptionInfo(SourceActor));
 				PerceptualInfo->DominantSense = DominantSenseID;
 				// 标记是否是敌对的
-				PerceptualInfo->bIsHostile = 
-					(FGenericTeamId::GetAttitude(GetOwner(), SourceActor) 
-					== ETeamAttitude::Hostile);
+				PerceptualInfo->bIsHostile = (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Hostile);
+				// 标记是否是友好的
 				PerceptualInfo->bIsFriendly = PerceptualInfo->bIsHostile ? false : (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Friendly);
 			}
 		}
