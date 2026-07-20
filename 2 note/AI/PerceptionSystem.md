@@ -26,6 +26,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	}
 	/*
 	1 遍历所有Sense，Advance时间
+	2 如果有到时间需要更新Sense了，bNeedsUpdatebiao'zhi'wei
 	*/
 	bool bNeedsUpdate = false;
 	for (UAISense* const SenseInstance : Senses)
