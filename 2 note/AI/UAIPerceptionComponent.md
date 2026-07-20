@@ -87,11 +87,6 @@ void UAIPerceptionComponent::ProcessStimuli()
 			}
 			else
 			{
-				SourceActor = CastChecked<AActor>(SourceKey.ResolveObjectPtr(), ECastCheckedType::NullAllowed);
-				if (SourceActor == nullptr)
-				{
-					continue;
-				}
 				// 添加新的感知数据
 				PerceptualInfo = &PerceptualData.Add(SourceKey, FActorPerceptionInfo(SourceActor));
 				PerceptualInfo->DominantSense = DominantSenseID;
@@ -99,6 +94,14 @@ void UAIPerceptionComponent::ProcessStimuli()
 				PerceptualInfo->bIsHostile = (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Hostile);
 				// 标记是否是友好的
 				PerceptualInfo->bIsFriendly = PerceptualInfo->bIsHostile ? false : (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Friendly);
+			}
+			// 把这次的刺激添加到LastSensedStimuli中
+			FAIStimulus& StimulusStore = PerceptualInfo
+				->LastSensedStimuli[SourcedStimulus.Stimulus.Type];
+			if (SourcedStimulus.Stimulus.WasSuccessfullySensed())
+			{
+				bRequiresUpdate |= ConditionallyStoreSuccessfulStimulus(
+					StimulusStore, SourcedStimulus.Stimulus);
 			}
 		}
 	}
