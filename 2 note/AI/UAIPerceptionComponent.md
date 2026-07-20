@@ -72,11 +72,31 @@ void UAIPerceptionComponent::ProcessStimuli()
 	const bool bBroadcastEveryTargetUpdate = OnTargetPerceptionUpdated.IsBound();
 	const bool bBroadcastEveryTargetInfoUpdate = 
 		OnTargetPerceptionInfoUpdated.IsBound();
+	// 遍历所有的刺激
 	for (FStimulusToProcess& SourcedStimulus : ProcessingStimuli)
 	{
 		const TObjectKey<AActor>& SourceKey = SourcedStimulus.Source;
 		FActorPerceptionInfo* PerceptualInfo = PerceptualData.Find(SourceKey);
 		AActor* SourceActor = nullptr;
+		if (PerceptualInfo == nullptr)
+		{
+			if (SourcedStimulus.Stimulus.WasSuccessfullySensed() == false)
+			{
+				continue;
+			}
+			else
+			{
+				SourceActor = CastChecked<AActor>(SourceKey.ResolveObjectPtr(), ECastCheckedType::NullAllowed);
+				if (SourceActor == nullptr)
+				{
+					continue;
+				}
+				PerceptualInfo = &PerceptualData.Add(SourceKey, FActorPerceptionInfo(SourceActor));
+				PerceptualInfo->DominantSense = DominantSenseID;
+				PerceptualInfo->bIsHostile = (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Hostile);
+				PerceptualInfo->bIsFriendly = PerceptualInfo->bIsHostile ? false : (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Friendly);
+			}
+		}
 	}
 }
 ```
