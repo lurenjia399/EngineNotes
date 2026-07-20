@@ -61,5 +61,16 @@ void UAIPerceptionComponent::CleanUp()
 
 # ProcessStimuli
 ```cpp
-
+void UAIPerceptionComponent::ProcessStimuli()
+{
+	// 没有需要处理的刺激
+	if(StimuliToProcess.Num() == 0)
+	{
+		return;
+	}
+	// 提前保存是否需要
+	const bool bBroadcastEveryTargetUpdate = OnTargetPerceptionUpdated.IsBound();
+	const bool bBroadcastEveryTargetInfoUpdate = 
+		OnTargetPerceptionInfoUpdated.IsBound();
+}
 ```
