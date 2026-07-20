@@ -3,7 +3,7 @@
 ```cpp
 void UAIPerceptionSystem::Tick(float DeltaSeconds)
 {
-	
+	CurrentTime = World->GetTimeSeconds();
 }
 ```
 
