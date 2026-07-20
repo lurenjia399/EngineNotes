@@ -9,6 +9,13 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	{
 		PerformSourceRegistration();
 	}
+	// 遍历所有Sense，
+	bool bNeedsUpdate = false;
+	for (UAISense* const SenseInstance : Senses)
+	{
+		bNeedsUpdate |= SenseInstance != nullptr && 
+			SenseInstance->ProgressTime(DeltaSeconds);
+	}
 }
 ```
 
