@@ -19,8 +19,9 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	// 如果有需要更新的Sense
 	if (bNeedsUpdate)
 	{
-		// first update cached location of all listener, and remove invalid listeners
-		for (AIPerception::FListenerMap::TIterator ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
+		// 遍历所有的Listener，就是PerceptionComp缓存位置信息，如果没用了就移除掉
+		for (AIPerception::FListenerMap::TIterator 
+			ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
 		{
 			if (ListenerIt->Value.Listener.IsValid())
 			{
@@ -32,7 +33,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 				ListenerIt.RemoveCurrent();
 			}
 		}
-
+		// 遍历s
 		for (UAISense* const SenseInstance : Senses)
 		{
 			if (SenseInstance != nullptr)
