@@ -42,7 +42,7 @@ void UAIPerceptionComponent::CleanUp()
 	{
 		/*
 		1 从PerceptionSystem中移除Listener，就是从ListenerContainer数组中移除
-		2 
+		2 获取PerceptionComp的Outer控制的Pawn，
 		*/
 		UAIPerceptionSystem* AIPerceptionSys = 
 			UAIPerceptionSystem::GetCurrent(GetWorld());
