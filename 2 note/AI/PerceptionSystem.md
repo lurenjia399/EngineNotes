@@ -59,7 +59,8 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		}
 		/*
 		1 处理延迟刺激，并返回是否有可以触发的延迟刺激
-		2 遍历DelayedStimuli数组，
+		2 遍历DelayedStimuli数组，找到到达触发时间的刺激，把刺激添加到PerceptionComp中的StimuliToProcess数组中
+		
 		*/
 		const bool bStimuliDelivered = DeliverDelayedStimuli(
 			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
