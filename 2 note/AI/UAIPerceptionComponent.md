@@ -5,7 +5,8 @@ void UAIPerceptionComponent::OnRegister()
 	// 
 	/*
 	1 根据SensesConfig配置，向PerceptionSystem中注册Sense，会给每个不同的Sense分配一个SenseID，然后通过NewObject创建出Sense，添加到System中的Senses数组中
-	2 会将SenseID按照位的偏移，添加到PerceptionFilter中记录在Int32类型的成员变量中
+	2 会将SenseID按照位的偏移，添加到PerceptionFilter中记录在Int32类型的成员变量中。表示这个PerceptionComp会对哪些Sense做出反应，也就是监听了哪些Sense
+	3 
 	*/
 	UAIPerceptionSystem* AIPerceptionSys = 
 		UAIPerceptionSystem::GetCurrent(GetWorld());
