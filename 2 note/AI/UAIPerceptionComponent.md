@@ -120,7 +120,18 @@ void UAIPerceptionComponent::ProcessStimuli()
 							StimulusStore));
 				}
 			}
-		}
-	}
+			// 处理需要忘记的Actor，之后不在
+			for (AActor* ActorToForget : ActorsToForget)
+			{
+				ForgetActor(ActorToForget);
+			}
+		
+			// remove perceptual info related to stale actors
+			for (const TObjectKey<AActor>& SourceKey : DataToRemove)
+			{
+				PerceptualData.Remove(SourceKey);
+			}
+				}
+			}
 }
 ```
