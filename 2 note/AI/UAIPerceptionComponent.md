@@ -103,6 +103,14 @@ void UAIPerceptionComponent::ProcessStimuli()
 				bRequiresUpdate |= ConditionallyStoreSuccessfulStimulus(
 					StimulusStore, SourcedStimulus.Stimulus);
 			}
+			if (bRequiresUpdate)
+			{
+				if (bBroadcastEveryTargetUpdate)
+				{
+					OnTargetPerceptionUpdated.Broadcast(
+						SourceActor, StimulusStore);
+				}
+			}
 		}
 	}
 }
