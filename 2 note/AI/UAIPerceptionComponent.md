@@ -5,7 +5,7 @@ void UAIPerceptionComponent::OnRegister()
 	// 
 	/*
 	1 根据SensesConfig配置，向PerceptionSystem中注册Sense，会给每个不同的Sense分配一个SenseID，然后通过NewObject创建出Sense，添加到System中的Senses数组中
-	2 
+	2 会将SenseID添加到
 	*/
 	UAIPerceptionSystem* AIPerceptionSys = 
 		UAIPerceptionSystem::GetCurrent(GetWorld());
