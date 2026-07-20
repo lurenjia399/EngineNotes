@@ -19,6 +19,6 @@ void UAIPerceptionSystem::RegisterSource(AActor& SourceActor)
 	
 }
 ```
-# 2 UAIPerceptionComponent
+# 2 
 
 
