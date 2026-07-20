@@ -68,9 +68,15 @@ void UAIPerceptionComponent::ProcessStimuli()
 	{
 		return;
 	}
-	// 提前保存是否需要
+	// 提前保存是否需要Boradcast
 	const bool bBroadcastEveryTargetUpdate = OnTargetPerceptionUpdated.IsBound();
 	const bool bBroadcastEveryTargetInfoUpdate = 
 		OnTargetPerceptionInfoUpdated.IsBound();
+	for (FStimulusToProcess& SourcedStimulus : ProcessingStimuli)
+	{
+		const TObjectKey<AActor>& SourceKey = SourcedStimulus.Source;
+		FActorPerceptionInfo* PerceptualInfo = PerceptualData.Find(SourceKey);
+		AActor* SourceActor = nullptr;
+	}
 }
 ```
