@@ -16,6 +16,31 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		bNeedsUpdate |= SenseInstance != nullptr && 
 			SenseInstance->ProgressTime(DeltaSeconds);
 	}
+	// 如果有需要更新的Sense
+	if (bNeedsUpdate)
+	{
+		// first update cached location of all listener, and remove invalid listeners
+		for (AIPerception::FListenerMap::TIterator ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
+		{
+			if (ListenerIt->Value.Listener.IsValid())
+			{
+				ListenerIt->Value.CacheLocation();
+			}
+			else
+			{
+				OnListenerRemoved(ListenerIt->Value);
+				ListenerIt.RemoveCurrent();
+			}
+		}
+
+		for (UAISense* const SenseInstance : Senses)
+		{
+			if (SenseInstance != nullptr)
+			{
+				SenseInstance->Tick();
+			}
+		}
+	}
 }
 ```
 
