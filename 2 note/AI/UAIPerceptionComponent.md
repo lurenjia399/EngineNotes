@@ -76,6 +76,7 @@ void UAIPerceptionComponent::ProcessStimuli()
 	for (FStimulusToProcess& SourcedStimulus : ProcessingStimuli)
 	{
 		const TObjectKey<AActor>& SourceKey = SourcedStimulus.Source;
+		// 判断运行时感知数据是否存在，如果不存在就添加一个新的
 		FActorPerceptionInfo* PerceptualInfo = PerceptualData.Find(SourceKey);
 		AActor* SourceActor = nullptr;
 		if (PerceptualInfo == nullptr)
