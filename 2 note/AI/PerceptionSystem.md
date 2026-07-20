@@ -9,6 +9,18 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	{
 		PerformSourceRegistration();
 	}
+	/*
+	1 执行刺激老化的逻辑，每隔PerceptionAgingRate时间会计算一次，默认是0.3s
+	2 
+	*/
+	bool bSomeListenersNeedUpdateDueToStimuliAging = false;
+	if (NextStimuliAgingTick <= CurrentTime)
+	{
+		constexpr double Precision = 1./64.;
+		const float AgingDt = FloatCastChecked<float>(CurrentTime - NextStimuliAgingTick, Precision);
+		bSomeListenersNeedUpdateDueToStimuliAging = AgeStimuli(PerceptionAgingRate + AgingDt);
+		NextStimuliAgingTick = CurrentTime + PerceptionAgingRate;
+	}
 	// 遍历所有Sense，Advance时间
 	bool bNeedsUpdate = false;
 	for (UAISense* const SenseInstance : Senses)
