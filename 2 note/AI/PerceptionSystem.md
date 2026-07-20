@@ -13,7 +13,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	1 执行老化刺激的逻辑，每隔PerceptionAgingRate时间会计算一次，默认是0.3s
 	2 计算误差值AgingDt，CurrentTime - NextStimuliAgingTick
 	3 推进老化刺激的时间，时间为老化间隔PerceptionAgingRate + 误差值，添加误差值的原因是有可能因为掉帧导致帧长变长，所以推进老化时间也需要变长
-	4 
+	4 如果有过期的刺激，bSomeListenersNeedUpdateDueToStimuliAging标志位就为true
 	*/
 	bool bSomeListenersNeedUpdateDueToStimuliAging = false;
 	if (NextStimuliAgingTick <= CurrentTime)
@@ -24,7 +24,9 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		bSomeListenersNeedUpdateDueToStimuliAging = AgeStimuli(PerceptionAgingRate + AgingDt);
 		NextStimuliAgingTick = CurrentTime + PerceptionAgingRate;
 	}
-	// 遍历所有Sense，Advance时间
+	/*
+	1 遍历所有Sense，Advance时间
+	*/
 	bool bNeedsUpdate = false;
 	for (UAISense* const SenseInstance : Senses)
 	{
