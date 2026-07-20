@@ -93,7 +93,10 @@ void UAIPerceptionComponent::ProcessStimuli()
 				}
 				PerceptualInfo = &PerceptualData.Add(SourceKey, FActorPerceptionInfo(SourceActor));
 				PerceptualInfo->DominantSense = DominantSenseID;
-				PerceptualInfo->bIsHostile = (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Hostile);
+				// 标记是否是敌对的
+				PerceptualInfo->bIsHostile = 
+					(FGenericTeamId::GetAttitude(GetOwner(), SourceActor) 
+					== ETeamAttitude::Hostile);
 				PerceptualInfo->bIsFriendly = PerceptualInfo->bIsHostile ? false : (FGenericTeamId::GetAttitude(GetOwner(), SourceActor) == ETeamAttitude::Friendly);
 			}
 		}
