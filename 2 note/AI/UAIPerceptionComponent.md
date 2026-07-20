@@ -40,8 +40,10 @@ void UAIPerceptionComponent::CleanUp()
 {
 	if (bCleanedUp == false)
 	{
-		ForgetAll();
-
+		/*
+		1 从PerceptionSystem中移除Listener，就是从ListenerContainer数组中移除
+		2 
+		*/
 		UAIPerceptionSystem* AIPerceptionSys = 
 			UAIPerceptionSystem::GetCurrent(GetWorld());
 		if (AIPerceptionSys != nullptr)
@@ -53,17 +55,6 @@ void UAIPerceptionComponent::CleanUp()
 				AIPerceptionSys->UnregisterSource(*MutableBodyActor);
 			}
 		}
-
-		if (HasAnyFlags(RF_BeginDestroyed) == false)
-		{
-			AActor* Owner = GetOwner();
-			if (Owner != nullptr)
-			{
-				Owner->OnEndPlay.RemoveDynamic(this, &UAIPerceptionComponent::OnOwnerEndPlay);
-			}
-		}
-
-		bCleanedUp = true;
 	}
 }
 ```
