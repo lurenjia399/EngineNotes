@@ -44,7 +44,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		// 处理延迟刺激，并返回是否有可以触发的延迟刺激
 		const bool bStimuliDelivered = DeliverDelayedStimuli(
 			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
-		// 有sense需要更新或者有可以触发的延迟刺激或者
+		// 有sense需要更新或者有可以触发的延迟刺激或者有Listnner刺激时间到了
 		if (bNeedsUpdate || bStimuliDelivered || 
 			bSomeListenersNeedUpdateDueToStimuliAging)
 		{
