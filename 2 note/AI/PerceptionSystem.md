@@ -34,7 +34,6 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		bNeedsUpdate |= SenseInstance != nullptr && 
 			SenseInstance->ProgressTime(DeltaSeconds);
 	}
-	// 如果有需要更新的Sense
 	if (bNeedsUpdate)
 	{
 		// 遍历所有的Listener，就是PerceptionComp缓存位置信息，如果没用了就移除掉
