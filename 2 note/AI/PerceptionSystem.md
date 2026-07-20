@@ -41,10 +41,12 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 				SenseInstance->Tick();
 			}
 		}
+		// 处理延迟刺激，并返回是否有可以触发的延迟刺激
 		const bool bStimuliDelivered = DeliverDelayedStimuli(
 			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
-
-		if (bNeedsUpdate || bStimuliDelivered || bSomeListenersNeedUpdateDueToStimuliAging)
+		// 有sense需要更新或者有可以触发的延迟刺激或者
+		if (bNeedsUpdate || bStimuliDelivered || 
+			bSomeListenersNeedUpdateDueToStimuliAging)
 		{
 			for (AIPerception::FListenerMap::TIterator ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
 			{
