@@ -27,6 +27,8 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	/*
 	1 遍历所有Sense，Advance时间
 	2 如果有到时间需要更新Sense了，bNeedsUpdate标志位为true
+	3 如果bNeedsUpdate标志位为true，遍历所有的Listener，更新Listenr信息
+	4 
 	*/
 	bool bNeedsUpdate = false;
 	for (UAISense* const SenseInstance : Senses)
@@ -36,7 +38,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	}
 	if (bNeedsUpdate)
 	{
-		// 遍历所有的Listener，就是PerceptionComp缓存位置信息，如果没用了就移除掉
+		// 
 		for (AIPerception::FListenerMap::TIterator 
 			ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
 		{
