@@ -12,7 +12,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	/*
 	1 执行老化刺激的逻辑，每隔PerceptionAgingRate时间会计算一次，默认是0.3s
 	2 计算误差值AgingDt，CurrentTime - NextStimuliAgingTick
-	3 推进老化刺激的时间，
+	3 推进老化刺激的时间，时间为老化间隔PerceptionAgingRate + 误差值，添加误差值的原因是有可能因为掉帧导致帧长变长，
 	*/
 	bool bSomeListenersNeedUpdateDueToStimuliAging = false;
 	if (NextStimuliAgingTick <= CurrentTime)
