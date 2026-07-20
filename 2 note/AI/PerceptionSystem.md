@@ -33,12 +33,27 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 				ListenerIt.RemoveCurrent();
 			}
 		}
-		// 遍历s
+		// 遍历所有的Sense，执行Sense的Tick
 		for (UAISense* const SenseInstance : Senses)
 		{
 			if (SenseInstance != nullptr)
 			{
 				SenseInstance->Tick();
+			}
+		}
+		const bool bStimuliDelivered = DeliverDelayedStimuli(
+			bNeedsUpdate ? RequiresSorting : NoNeedToSort);
+
+		if (bNeedsUpdate || bStimuliDelivered || bSomeListenersNeedUpdateDueToStimuliAging)
+		{
+			for (AIPerception::FListenerMap::TIterator ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
+			{
+				check(ListenerIt->Value.Listener.IsValid());
+
+				if (ListenerIt->Value.HasAnyNewStimuli())
+				{
+					ListenerIt->Value.ProcessStimuli();
+				}
 			}
 		}
 	}
