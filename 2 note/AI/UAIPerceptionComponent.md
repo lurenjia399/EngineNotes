@@ -27,3 +27,43 @@ void UAIPerceptionComponent::OnRegister()
 	}
 }
 ```
+
+# OnUnregister
+```cpp
+void UAIPerceptionComponent::OnUnregister()
+{
+	CleanUp();
+	Super::OnUnregister();
+}
+
+void UAIPerceptionComponent::CleanUp()
+{
+	if (bCleanedUp == false)
+	{
+		ForgetAll();
+
+		UAIPerceptionSystem* AIPerceptionSys = 
+			UAIPerceptionSystem::GetCurrent(GetWorld());
+		if (AIPerceptionSys != nullptr)
+		{
+			AIPerceptionSys->UnregisterListener(*this);
+			AActor* MutableBodyActor = GetMutableBodyActor();
+			if (MutableBodyActor)
+			{
+				AIPerceptionSys->UnregisterSource(*MutableBodyActor);
+			}
+		}
+
+		if (HasAnyFlags(RF_BeginDestroyed) == false)
+		{
+			AActor* Owner = GetOwner();
+			if (Owner != nullptr)
+			{
+				Owner->OnEndPlay.RemoveDynamic(this, &UAIPerceptionComponent::OnOwnerEndPlay);
+			}
+		}
+
+		bCleanedUp = true;
+	}
+}
+```
