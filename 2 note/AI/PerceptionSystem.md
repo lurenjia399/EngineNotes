@@ -1,4 +1,4 @@
-# 1 UAIPerceptionSystem
+# Tick
 
 ```cpp
 void UAIPerceptionSystem::Tick(float DeltaSeconds)
@@ -12,6 +12,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 }
 ```
 
+# 
 # 2 UAIPerceptionComponent
 
 
