@@ -236,7 +236,6 @@ bool UAISense_Sight::RegisterTarget(
 {
 	/*
 	1 向视觉频道中GetOrAdd，获取SightTarget视觉目标，补充视觉目标的信息
-	2 
 	*/
 	FAISightTarget* SightTarget = ObservedTargets.Find(TargetActor.GetUniqueID());
 	if (SightTarget == nullptr || SightTarget->GetTargetActor() != &TargetActor)
@@ -256,5 +255,25 @@ bool UAISense_Sight::RegisterTarget(
 		}
 	}
 	SightTarget->TeamId = FGenericTeamId::GetTeamIdentifier(&TargetActor);
+	/*
+	1 
+	*/
+	bool bNewQueriesAdded = false;
+	AIPerception::FListenerMap& ListenersMap = *GetListeners();
+	const FVector TargetLocation = TargetActor.GetActorLocation();
+	for (AIPerception::FListenerMap::TConstIterator ItListener(ListenersMap); ItListener; ++ItListener)
+	{
+		const FPerceptionListener& Listener = ItListener->Value;
+		if (!Listener.HasSense(GetSenseID()) || Listener.GetBodyActor() == &TargetActor)
+		{
+			continue;
+		}
+		const FDigestedSightProperties& PropDigest = DigestedProperties[Listener.GetListenerID()];
+		const IGenericTeamAgentInterface* ListenersTeamAgent = Listener.GetTeamAgent();
+		if (RegisterNewQuery(Listener, ListenersTeamAgent, TargetActor, SightTarget->TargetId, TargetLocation, PropDigest, OnAddedFunc))
+		{
+			bNewQueriesAdded = true;
+		}
+	}
 }
 ```
