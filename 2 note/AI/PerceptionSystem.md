@@ -90,7 +90,8 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 ## OnNewPawn
 ```cpp
 /*
-1 在pawnchuang
+1 在pawn创建的时候会遍历感知频道，如果有符合要求的就会向感知频道中添加感知源
+2 
 */
 void UAIPerceptionSystem::OnNewPawn(APawn& Pawn)
 {
