@@ -309,6 +309,16 @@ float UAISense_Sight::Update()
 		{
 			break;
 		}
+		/*
+		1 
+		*/
+		if (TargetActor && ListenerPtr)
+		{
+			const EVisibilityResult VisibilityResult = 
+				ComputeVisibility(
+					World, *SightQuery, Listener, ListenerBodyActor, Target, TargetActor, PropDigest, StimulusStrength, SeenLocation, NumberOfLoSChecksPerformed, NumberOfAsyncLosCheckRequested);
+
+		}
 	}
 }
 ```
