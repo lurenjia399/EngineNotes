@@ -279,4 +279,10 @@ bool UAISense_Sight::RegisterTarget(
 	}
 }
 ```
-## 
+## Update
+```cpp
+float UAISense_Sight::Update()
+{
+	
+}
+```
