@@ -320,8 +320,8 @@ float UAISense_Sight::Update()
 					*SightQuery, // Query
 					Listener, // PerceptionComp所代表的Listener
 					ListenerBodyActor, // PerCeptionComp的Outer上PC控制的Pawn
-					Target, 
-					TargetActor, 
+					Target, //SightTarget,感知源构成的目标带有阵营，
+					TargetActor, // 感知源，其他Pawn
 					PropDigest, 
 					StimulusStrength, 
 					SeenLocation, 
