@@ -256,7 +256,8 @@ bool UAISense_Sight::RegisterTarget(
 	}
 	SightTarget->TeamId = FGenericTeamId::GetTeamIdentifier(&TargetActor);
 	/*
-	1 遍历所有的Listener，找到
+	1 遍历所有的Listener，找到具有听觉的Listener
+	2 
 	*/
 	bool bNewQueriesAdded = false;
 	AIPerception::FListenerMap& ListenersMap = *GetListeners();
