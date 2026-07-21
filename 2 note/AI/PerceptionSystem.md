@@ -320,10 +320,10 @@ float UAISense_Sight::Update()
 					*SightQuery, // Query
 					Listener, // PerceptionComp所代表的Listener
 					ListenerBodyActor, // PerCeptionComp的Outer上PC控制的Pawn
-					Target, //SightTarget,感知源构成的目标带有阵营，
+					Target, //SightTarget,感知源构成的目标带有阵营等其他信息
 					TargetActor, // 感知源，其他Pawn
-					PropDigest, 
-					StimulusStrength, 
+					PropDigest, // 配置的视觉参数
+					StimulusStrength, // 刺激强度，一个比例默认是1
 					SeenLocation, 
 					NumberOfLoSChecksPerformed, 
 					NumberOfAsyncLosCheckRequested);
