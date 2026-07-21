@@ -228,3 +228,7 @@ void UAIPerceptionComponent::ProcessStimuli()
 
 # UAISense_Sight
 
+## RegisterTarget
+```cpp
+
+```
