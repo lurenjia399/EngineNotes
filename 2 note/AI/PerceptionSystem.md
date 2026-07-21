@@ -295,7 +295,7 @@ float UAISense_Sight::Update()
 		SightQueriesInRange.Num() + SightQueriesOutOfRange.Num(); ++QueryIndex)
 	{
 		/*
-		1 遍历在视野内的Query和视野外的Query
+		1 如果处理40个Query超过0.05s就退出遍历，如果Trace
 		*/
 		NumQueriesProcessed++;
 		if ((NumQueriesProcessed % MinQueriesPerTimeSliceCheck) == 0 
