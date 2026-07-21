@@ -38,7 +38,6 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
   和这棵树需要的总内存大小 InstanceMemorySize（所有节点 NodeMemory
   之和）。
 	*/
-
 	const bool bLoaded = BTManager->LoadTree(TreeAsset, RootNode, InstanceMemorySize);
 	if (bLoaded)
 	{
