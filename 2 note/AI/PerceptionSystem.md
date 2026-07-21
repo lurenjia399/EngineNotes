@@ -355,7 +355,6 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 	}
 	/*
 	1 如果感知源配置了SightInterface，就需要额外执行Interface逻辑
-	2 
 	*/
 	if (IAISightTargetInterface* SightTargetInterface = Target.WeakSightTargetInterface.Get())
 	{
@@ -369,10 +368,16 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 		const EVisibilityResult Result = SightTargetInterface->CanBeSeenFrom(Context, OutSeenLocation, OutNumberOfLoSChecksPerformed, OutNumberOfAsyncLosCheckRequested, OutStimulusStrength, &SightQuery.UserData, &OnPendingCanBeSeenQueryProcessedDelegate);
 		if (Result == EVisibilityResult::Pending)
 		{
-			// we need to clear the trace info value in order to avoid interfering with the engine processed asynchronous queries
 			SightQuery.SetTraceInfo(FTraceHandle());
 		}
 		return Result;
+	}
+	/*
+	1 没有继承SightInterface
+	*/
+	else
+	{
+		
 	}
 }
 ```
