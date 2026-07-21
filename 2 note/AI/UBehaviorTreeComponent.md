@@ -43,6 +43,40 @@ void UBehaviorTreeComponent::TickComponent(float DeltaTime, const ELevelTick Tic
 				});
 		}
 	}
-	
+	/**/
+	const bool bJustFinishedLatentAborts = TrackPendingLatentAborts();
+	if (bJustFinishedLatentAborts)
+	{
+		if (bRequestedStop)
+		{
+			StopTree(EBTStopMode::Safe);
+		}
+		else
+		{
+			if (ExecutionRequest.ExecuteNode)
+			{
+				PendingExecution.Lock();
+
+				if (ExecutionRequest.SearchEnd.IsSet())
+				{
+					ExecutionRequest.SearchEnd = FBTNodeIndex();
+				}
+			}
+
+			ScheduleExecutionUpdate();
+		}
+	}
+	/*
+	*/
+	bool bActiveAuxiliaryNodeDTDirty = false;
+	if (bRequestedFlowUpdate)
+	{
+		ProcessExecutionRequest();
+		bDoneSomething = true;
+
+        // Since hierarchy might changed in the ProcessExecutionRequest, we need to go through all the active auxiliary nodes again to fetch new next DeltaTime
+		bActiveAuxiliaryNodeDTDirty = true;
+		NextNeededDeltaTime = UE::BehaviorTree::DisableTick;
+	}
 }
 ```
