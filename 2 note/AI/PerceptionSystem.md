@@ -258,7 +258,7 @@ bool UAISense_Sight::RegisterTarget(
 	/*
 	1 遍历所有的Listener，找到具有听觉的Listener
 	2 给Listener注册一个SightQuery，这个视觉查询的OserverId是listener，targetId是感知源Actor
-	3 如果新添加了视觉chaun
+	3 如果新添加了视觉查询，就立即清空下次更新时间，下一次tick执行Update方法
 	*/
 	bool bNewQueriesAdded = false;
 	AIPerception::FListenerMap& ListenersMap = *GetListeners();
