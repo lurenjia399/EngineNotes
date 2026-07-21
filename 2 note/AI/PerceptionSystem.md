@@ -5,6 +5,10 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 {
 	CurrentTime = World->GetTimeSeconds();
 	// 有注册的感知原，就先处理
+	/*
+	1 有需要注册的感知源就先处理
+	2 给
+	*/
 	if (SourcesToRegister.Num() > 0)
 	{
 		PerformSourceRegistration();
