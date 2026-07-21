@@ -13,12 +13,14 @@ void UBehaviorTreeComponent::TickComponent(float DeltaTime, const ELevelTick Tic
 		return;
 	}
 	/*
-	1 累计tick的间隔，
+	1 累计tick的间隔，就是距离上次tick经过的时间
+	2 每次执行完tick，就清零这个时间
 	*/
 	AccumulatedTickDeltaTime += DeltaTime;
 	ON_SCOPE_EXIT
 	{
 		AccumulatedTickDeltaTime = 0.0f;
 	};
+	DeltaTime = AccumulatedTickDeltaTime;
 }
 ```
