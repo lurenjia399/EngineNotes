@@ -53,7 +53,7 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 		NewInstance.ActiveNode = NULL;
 		NewInstance.ActiveNodeType = EBTActiveNode::Composite;
 		/*
-		1 每个AI单独存储
+		1 每个AI单独存储的行为树实例，赋值实例独有的内存空间
 		*/
 		FBehaviorTreeInstanceId& InstanceInfo = 
 			KnownInstances[NewInstance.InstanceIdIndex];
