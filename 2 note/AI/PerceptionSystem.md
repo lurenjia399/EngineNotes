@@ -345,6 +345,7 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 	}
 	/*
 	1 判断是否在视野内，首先判断Target是否在近平面和原平面中间，然后在判断指向Target向量和Listener朝向的夹角，如果夹角满足配置就算在视野内。
+	2 如果不在视锥内，就提前返回
 	*/
 	const FVector TargetLocation = TargetActor->GetActorLocation();
 	const float SightRadiusSq = SightQuery.GetLastResult() ? PropDigest.LoseSightRadiusSq : PropDigest.SightRadiusSq;
