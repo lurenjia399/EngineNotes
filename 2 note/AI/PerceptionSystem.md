@@ -314,7 +314,9 @@ float UAISense_Sight::Update()
 		{
 			/*
 			1 计算Visibility
-			2 如果位置不在sh
+			2 如果位置不在视口中，就直接返回NotVisible
+			3 如果在视口中，就打一条射线，如果射线打到target，就算visible
+			4 如果采用异步打一条射线，就算Pending
 			*/
 			const EVisibilityResult VisibilityResult = 
 				ComputeVisibility(
