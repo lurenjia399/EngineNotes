@@ -338,7 +338,7 @@ float UAISense_Sight::Update()
 			}
 			/*
 			1 如果是visible的，就往Listener中注册成功刺激，如果不是Visible但是上一帧是Visible就注册一个失败刺激
-			2 如果这一次的Query，是可见性改变的，就添加到QueryOperations数组中
+			2 如果这一次的Query，是可见性改变的，就添加到QueryOperations数组中，在这个Query的循环结束后处理，就是对可见数组和非可见数组的增删操作。
 			*/
 			else
 			{
