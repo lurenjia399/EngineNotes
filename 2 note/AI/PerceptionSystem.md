@@ -309,11 +309,13 @@ float UAISense_Sight::Update()
 		{
 			break;
 		}
-		/*
-		1 计算Visibility
-		*/
+		
 		if (TargetActor && ListenerPtr)
 		{
+			/*
+			1 计算Visibility
+			2 如果位置不在sh
+			*/
 			const EVisibilityResult VisibilityResult = 
 				ComputeVisibility(
 					World, //当前World
@@ -327,6 +329,29 @@ float UAISense_Sight::Update()
 					SeenLocation, 
 					NumberOfLoSChecksPerformed, 
 					NumberOfAsyncLosCheckRequested);
+			// 
+			if (VisibilityResult == EVisibilityResult::Pending)
+			{
+				QueryOperations.Add(FQueryOperation(bIsInRangeQuery, EOperationType::MoveToPending, bIsInRangeQuery ? InRangeIndex : OutOfRangeIndex));
+			}
+			else
+			{
+				const bool bIsVisible = VisibilityResult == EVisibilityResult::Visible;
+				const bool bWasVisible = SightQuery->GetLastResult();
+				const FVector TargetLocation = TargetActor->GetActorLocation();
+				UpdateQueryVisibilityStatus(*SightQuery, Listener, bIsVisible, SeenLocation, StimulusStrength, *TargetActor, TargetLocation);
+
+				const float SightRadiusSq = bWasVisible ? PropDigest.LoseSightRadiusSq : PropDigest.SightRadiusSq;
+				SightQuery->Importance = CalcQueryImportance(Listener, TargetLocation, SightRadiusSq);
+				const bool bShouldBeInRange = SightQuery->Importance > 0.0f;
+				if (bIsInRangeQuery != bShouldBeInRange)
+				{
+					QueryOperations.Add(FQueryOperation(bIsInRangeQuery, EOperationType::SwapList, bIsInRangeQuery ? InRangeIndex : OutOfRangeIndex));
+				}
+
+				// restart query
+				SightQuery->OnProcessed();
+			}
 		}
 	}
 }
