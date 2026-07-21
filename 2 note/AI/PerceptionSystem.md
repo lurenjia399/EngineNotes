@@ -283,6 +283,10 @@ bool UAISense_Sight::RegisterTarget(
 ```cpp
 float UAISense_Sight::Update()
 {
-	
+	/*
+	1 视野内的Query排序，根据Importance得分，和上次处理
+	*/
+	ForEach(SightQueriesInRange, RecalcScore);
+	SightQueriesInRange.Sort(FAISightQuery::FSortPredicate());
 }
 ```
