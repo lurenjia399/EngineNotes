@@ -288,5 +288,13 @@ float UAISense_Sight::Update()
 	*/
 	ForEach(SightQueriesInRange, RecalcScore);
 	SightQueriesInRange.Sort(FAISightQuery::FSortPredicate());
+	/*
+	1 遍历在视野内的Query和视野外的Query
+	*/
+	for (int32 QueryIndex = 0; QueryIndex < 
+		SightQueriesInRange.Num() + SightQueriesOutOfRange.Num(); ++QueryIndex)
+	{
+		
+	}
 }
 ```
