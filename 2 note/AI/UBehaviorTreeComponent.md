@@ -45,7 +45,7 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 	{
 		/*
 		1 添加一个BehaviorTreeInstance，填入InstanceStack数组中，表示一个行为树实例
-		2 在实例栈上 push 一个新实例，填入根节点等信息。UpdateInstanceId
+		2 添加一个BehaviorTreeInstanceId，填入KnownInstances数组中，表示一个行为树子树实例，在实例栈上 push 一个新实例，填入根节点等信息。UpdateInstanceId
   用"从根到当前节点的路径"生成一个唯一标识，用来复用同一子树在同一位置的历史内存。
 		3 创建NodeInstance，添加到treeComp中的NodeInstances数组中，
 		*/
