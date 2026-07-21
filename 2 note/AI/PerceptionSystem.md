@@ -76,8 +76,6 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 			for (AIPerception::FListenerMap::TIterator
 				 ListenerIt(ListenerContainer); ListenerIt; ++ListenerIt)
 			{
-				check(ListenerIt->Value.Listener.IsValid());
-
 				if (ListenerIt->Value.HasAnyNewStimuli())
 				{
 					ListenerIt->Value.ProcessStimuli();
