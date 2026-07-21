@@ -37,7 +37,8 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 	1 向 Manager 请求加载这棵树，拿到根节点 RootNode
   和这棵树需要的总内存大小 InstanceMemorySize（所有节点 NodeMemory
   之和）。
-	2 每次Load相同的tree，会从缓存中找信息
+	2 每次Load相同的tree，会从缓存中找信息，当某个 AI 第一次跑某棵行为树，LoadTree 会把树"编译"一次（StaticDuplicateObject 复制出一套节点对象、算好每个节点的内存偏移），存进 LoadedTemplates。之后所有跑同一棵树的 AI，LoadTree 
+  直接返回缓存里那同一个 Root 节点指针——不再复制。
 	*/
 	const bool bLoaded = BTManager->LoadTree(TreeAsset, RootNode, InstanceMemorySize);
 	
