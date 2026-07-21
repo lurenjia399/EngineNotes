@@ -43,7 +43,8 @@ void UBehaviorTreeComponent::TickComponent(float DeltaTime, const ELevelTick Tic
 				});
 		}
 	}
-	/**/
+	/*
+	*/
 	const bool bJustFinishedLatentAborts = TrackPendingLatentAborts();
 	if (bJustFinishedLatentAborts)
 	{
