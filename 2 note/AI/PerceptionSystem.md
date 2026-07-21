@@ -235,7 +235,8 @@ bool UAISense_Sight::RegisterTarget(
 	const TFunction<void(FAISightQuery&)>& OnAddedFunc)
 {
 	/*
-	1 向视觉频道中GetOrAdd，获取Sight
+	1 向视觉频道中GetOrAdd，获取SightTarget视觉目标，补充视觉目标的信息
+	2 
 	*/
 	FAISightTarget* SightTarget = ObservedTargets.Find(TargetActor.GetUniqueID());
 	if (SightTarget == nullptr || SightTarget->GetTargetActor() != &TargetActor)
@@ -254,5 +255,6 @@ bool UAISense_Sight::RegisterTarget(
 				Cast<IAISightTargetInterface>(&TargetActor);
 		}
 	}
+	SightTarget->TeamId = FGenericTeamId::GetTeamIdentifier(&TargetActor);
 }
 ```
