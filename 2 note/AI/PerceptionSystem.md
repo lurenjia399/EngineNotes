@@ -336,6 +336,10 @@ float UAISense_Sight::Update()
 			{
 				QueryOperations.Add(FQueryOperation(bIsInRangeQuery, EOperationType::MoveToPending, bIsInRangeQuery ? InRangeIndex : OutOfRangeIndex));
 			}
+			/*
+			1 如果是visible的，就
+			
+			*/
 			else
 			{
 				const bool bIsVisible = VisibilityResult == EVisibilityResult::Visible;
