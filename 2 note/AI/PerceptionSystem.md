@@ -343,5 +343,14 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 		OutSeenLocation = FAISystem::InvalidLocation;
 		return EVisibilityResult::Visible;
 	}
+	/*
+	1 
+	*/
+	const FVector TargetLocation = TargetActor->GetActorLocation();
+	const float SightRadiusSq = SightQuery.GetLastResult() ? PropDigest.LoseSightRadiusSq : PropDigest.SightRadiusSq;
+	if (!FAISystem::CheckIsTargetInSightCone(Listener.CachedLocation, Listener.CachedDirection, PropDigest.PeripheralVisionAngleCos, PropDigest.PointOfViewBackwardOffset, PropDigest.NearClippingRadiusSq, SightRadiusSq, TargetLocation))
+	{
+		return EVisibilityResult::NotVisible;
+	}
 }
 ```
