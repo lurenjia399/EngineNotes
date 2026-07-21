@@ -336,7 +336,7 @@ float UAISense_Sight::Update()
 UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 {
 	/*
-	1 判断是否需要直接算作看到目标，如果上次k
+	1 判断是否需要直接算作看到目标，如果上次看到位置满足配置的距离判断，就返回Visible
 	*/
 	if (ShouldAutomaticallySeeTarget(PropDigest, &SightQuery, Listener, TargetActor, OutStimulusStrength))
 	{
