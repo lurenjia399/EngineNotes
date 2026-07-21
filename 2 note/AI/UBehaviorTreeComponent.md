@@ -33,7 +33,17 @@ void UBehaviorTreeComponent::ProcessPendingInitialize()
 ```cpp
 bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 {
-	
+	/*
+	1 向 Manager 请求加载这棵树，拿到根节点 RootNode
+  和这棵树需要的总内存大小 InstanceMemorySize（所有节点 NodeMemory
+  之和）。
+	*/
+
+	const bool bLoaded = BTManager->LoadTree(TreeAsset, RootNode, InstanceMemorySize);
+	if (bLoaded)
+	{
+		
+	}
 }
 ```
 
