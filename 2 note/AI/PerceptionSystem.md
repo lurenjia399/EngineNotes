@@ -3,12 +3,10 @@
 ```cpp
 void UAIPerceptionSystem::Tick(float DeltaSeconds)
 {
-	CurrentTime = World->GetTimeSeconds();
-	// 有注册的感知原，就先处理
 	/*
 	1 有需要注册的感知源就先处理
 	2 给相应的感知频道注册感知源
-	3 
+	3 注册相应的刺激来源
 	*/
 	if (SourcesToRegister.Num() > 0)
 	{
