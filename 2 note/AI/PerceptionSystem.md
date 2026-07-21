@@ -230,5 +230,10 @@ void UAIPerceptionComponent::ProcessStimuli()
 
 ## RegisterTarget
 ```cpp
-
+bool UAISense_Sight::RegisterTarget(
+	AActor& TargetActor, 
+	const TFunction<void(FAISightQuery&)>& OnAddedFunc)
+{
+	
+}
 ```
