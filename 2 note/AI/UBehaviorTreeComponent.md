@@ -22,5 +22,10 @@ void UBehaviorTreeComponent::TickComponent(float DeltaTime, const ELevelTick Tic
 		AccumulatedTickDeltaTime = 0.0f;
 	};
 	DeltaTime = AccumulatedTickDeltaTime;
+	/*
+	1 记录这次tick是否是第一次tick
+	*/
+	const bool bWasTickedOnce = bTickedOnce;
+	bTickedOnce = true;
 }
 ```
