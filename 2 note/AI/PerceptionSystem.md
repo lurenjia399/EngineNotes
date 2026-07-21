@@ -1,5 +1,4 @@
 # UAIPerceptionSystem::Tick
-
 ```cpp
 void UAIPerceptionSystem::Tick(float DeltaSeconds)
 {
@@ -87,6 +86,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	}
 }
 ```
+
 
 # UAIPerceptionComponent
 ## OnRegister
