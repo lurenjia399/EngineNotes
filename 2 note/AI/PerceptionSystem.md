@@ -257,7 +257,8 @@ bool UAISense_Sight::RegisterTarget(
 	SightTarget->TeamId = FGenericTeamId::GetTeamIdentifier(&TargetActor);
 	/*
 	1 遍历所有的Listener，找到具有听觉的Listener
-	2 给Listener注册一个SightQuery，
+	2 给Listener注册一个SightQuery，这个视觉查询的OserverId是listener，targetId是感知源Actor
+	3 如果新添加了视觉chaun
 	*/
 	bool bNewQueriesAdded = false;
 	AIPerception::FListenerMap& ListenersMap = *GetListeners();
