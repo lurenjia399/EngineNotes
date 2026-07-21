@@ -256,7 +256,7 @@ bool UAISense_Sight::RegisterTarget(
 	}
 	SightTarget->TeamId = FGenericTeamId::GetTeamIdentifier(&TargetActor);
 	/*
-	1 
+	1 遍历所有的Listener，
 	*/
 	bool bNewQueriesAdded = false;
 	AIPerception::FListenerMap& ListenersMap = *GetListeners();
