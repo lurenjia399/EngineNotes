@@ -1,4 +1,5 @@
-# UAIPerceptionSystem::Tick
+# UAIPerceptionSystem
+## Tick
 ```cpp
 void UAIPerceptionSystem::Tick(float DeltaSeconds)
 {
@@ -86,7 +87,38 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 	}
 }
 ```
+## OnNewPawn
+```cpp
+/*
+1 在pawnchuang
+*/
+void UAIPerceptionSystem::OnNewPawn(APawn& Pawn)
+{
+	if (bHandlePawnNotification == false)
+	{
+		return;
+	}
 
+	for (UAISense* Sense : Senses)
+	{
+		if (Sense == nullptr)
+		{
+			continue;
+		}
+
+		if (Sense->WantsNewPawnNotification())
+		{
+			Sense->OnNewPawn(Pawn);
+		}
+
+		if (Sense->ShouldAutoRegisterAllPawnsAsSources())
+		{
+			FAISenseID SenseID = Sense->GetSenseID();
+			RegisterSource(SenseID, Pawn);
+		}
+	}
+}
+```
 
 # UAIPerceptionComponent
 ## OnRegister
