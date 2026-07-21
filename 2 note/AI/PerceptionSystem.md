@@ -374,10 +374,24 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 	}
 	/*
 	1 没有继承SightInterface
+	2 沿着Listener的位置dao
 	*/
 	else
 	{
-		
+		FHitResult HitResult;
+		const bool bHit = World->LineTraceSingleByChannel(HitResult, Listener.CachedLocation, TargetLocation, DefaultSightCollisionChannel, QueryParams, FCollisionResponseParams::DefaultResponseParam);
+
+		++OutNumberOfLoSChecksPerformed;
+
+		if (UE::AISense_Sight::IsTraceConsideredVisible(bHit ? &HitResult : nullptr, TargetActor))
+		{
+			OutSeenLocation = TargetLocation;
+			return EVisibilityResult::Visible;
+		}
+		else
+		{
+			return EVisibilityResult::NotVisible;
+		}
 	}
 }
 ```
