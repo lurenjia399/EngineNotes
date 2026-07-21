@@ -337,7 +337,7 @@ float UAISense_Sight::Update()
 				QueryOperations.Add(FQueryOperation(bIsInRangeQuery, EOperationType::MoveToPending, bIsInRangeQuery ? InRangeIndex : OutOfRangeIndex));
 			}
 			/*
-			1 如果是visible的，就往Listener中注册刺激
+			1 如果是visible的，就往Listener中注册成功刺激，如果不是Visible但是上一帧是Visible就注册一个失败刺激
 			
 			*/
 			else
