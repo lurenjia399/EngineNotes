@@ -234,6 +234,25 @@ bool UAISense_Sight::RegisterTarget(
 	AActor& TargetActor, 
 	const TFunction<void(FAISightQuery&)>& OnAddedFunc)
 {
-	
+	/*
+	1 向视觉频道中GetOrAdd，获取Sight
+	*/
+	FAISightTarget* SightTarget = ObservedTargets.Find(TargetActor.GetUniqueID());
+	if (SightTarget == nullptr || SightTarget->GetTargetActor() != &TargetActor)
+	{
+		FAISightTarget NewSightTarget(&TargetActor);
+		SightTarget = &(ObservedTargets.
+			Add(NewSightTarget.TargetId, NewSightTarget));
+		if (IAISightTargetInterface* InterfaceComponent = TargetActor.
+			FindComponentByInterface<IAISightTargetInterface>())
+		{
+			SightTarget->WeakSightTargetInterface = InterfaceComponent;
+		}
+		else 
+		{
+			SightTarget->WeakSightTargetInterface = 
+				Cast<IAISightTargetInterface>(&TargetActor);
+		}
+	}
 }
 ```
