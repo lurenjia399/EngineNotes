@@ -294,7 +294,20 @@ float UAISense_Sight::Update()
 	for (int32 QueryIndex = 0; QueryIndex < 
 		SightQueriesInRange.Num() + SightQueriesOutOfRange.Num(); ++QueryIndex)
 	{
-		
+		/*
+		1 遍历在视野内的Query和视野外的Query
+		*/
+		NumQueriesProcessed++;
+		if ((NumQueriesProcessed % MinQueriesPerTimeSliceCheck) == 0 
+			&& FPlatformTime::Seconds() > TimeSliceEnd)
+		{
+			bHitTimeSliceLimit = true;
+		}
+		if (bHitTimeSliceLimit || TracesCount >= MaxTracesPerTick 
+			|| AsyncTracesCount >= MaxAsyncTracesPerTick)
+		{
+			break;
+		}
 	}
 }
 ```
