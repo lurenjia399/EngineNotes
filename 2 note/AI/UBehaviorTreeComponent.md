@@ -19,18 +19,6 @@ void UBehaviorTreeComponent::StartTree(UBehaviorTree& Asset, EBTExecutionMode::T
 ```
 
 ```cpp
-void UBehaviorTreeComponent::ProcessPendingInitialize()
-{
-	/*
-	1 创建新的节点实例
-	2 初始化结束，改变标志位
-	*/
-	const bool bPushed = PushInstance(*TreeStartInfo.Asset);
-	TreeStartInfo.bPendingInitialize = false;
-}
-```
-
-```cpp
 bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 {
 	/*
