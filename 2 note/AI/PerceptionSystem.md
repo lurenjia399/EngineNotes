@@ -257,7 +257,7 @@ bool UAISense_Sight::RegisterTarget(
 	SightTarget->TeamId = FGenericTeamId::GetTeamIdentifier(&TargetActor);
 	/*
 	1 遍历所有的Listener，找到具有听觉的Listener
-	2 给Listener注册一个SightQuery，这个视觉查询的OserverId是listener，targetId是感知源Actor
+	2 给Listener注册一个SightQuery，这个视觉查询的OserverId是listener，targetId是感知源Actor,Importance就是[10,60]，沿着listener距离target线性增加，越靠近listener越大
 	3 如果新添加了视觉查询，就立即清空下次更新时间，下一次tick执行Update方法
 	*/
 	bool bNewQueriesAdded = false;
