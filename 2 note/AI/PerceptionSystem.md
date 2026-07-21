@@ -25,7 +25,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 		NextStimuliAgingTick = CurrentTime + PerceptionAgingRate;
 	}
 	/*
-	1 遍历所有Sense，Advance时间，这个时间是最大值FLT_MAX
+	1 遍历所有Sense感知频道，Advance频道时间
 	2 如果有到时间需要更新Sense了，bNeedsUpdate标志位为true
 	3 如果bNeedsUpdate标志位为true，遍历所有的Listener，更新Listenr信息。执行Sense的tick方法
 	*/
