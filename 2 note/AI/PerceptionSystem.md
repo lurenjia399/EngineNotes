@@ -374,7 +374,7 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 	}
 	/*
 	1 没有继承SightInterface
-	2 沿着Listener的位置dao
+	2 沿着Listener的位置到Target位置打一条射线，如果打中Target就算看到
 	*/
 	else
 	{
