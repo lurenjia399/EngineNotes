@@ -331,3 +331,17 @@ float UAISense_Sight::Update()
 	}
 }
 ```
+## ComputeVisibility
+```cpp
+UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
+{
+	/*
+	1 判断是否需要直接算作看到目标，如果上次k
+	*/
+	if (ShouldAutomaticallySeeTarget(PropDigest, &SightQuery, Listener, TargetActor, OutStimulusStrength))
+	{
+		OutSeenLocation = FAISystem::InvalidLocation;
+		return EVisibilityResult::Visible;
+	}
+}
+```
