@@ -39,9 +39,17 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
   之和）。
 	*/
 	const bool bLoaded = BTManager->LoadTree(TreeAsset, RootNode, InstanceMemorySize);
+	
 	if (bLoaded)
 	{
-		
+		/*
+		1 添加一个
+		*/
+		FBehaviorTreeInstance& NewInstance = InstanceStack.AddDefaulted_GetRef();
+		NewInstance.InstanceIdIndex = UpdateInstanceId(&TreeAsset, ActiveNode, InstanceStack.Num() - 1);
+		NewInstance.RootNode = RootNode;
+		NewInstance.ActiveNode = NULL;
+		NewInstance.ActiveNodeType = EBTActiveNode::Composite;
 	}
 }
 ```
