@@ -344,7 +344,7 @@ UAISense_Sight::EVisibilityResult UAISense_Sight::ComputeVisibility(...) const
 		return EVisibilityResult::Visible;
 	}
 	/*
-	1 
+	1 判断是否在视野内，首先判断Target是否在近平面和原平面中间，近远平面就是
 	*/
 	const FVector TargetLocation = TargetActor->GetActorLocation();
 	const float SightRadiusSq = SightQuery.GetLastResult() ? PropDigest.LoseSightRadiusSq : PropDigest.SightRadiusSq;
