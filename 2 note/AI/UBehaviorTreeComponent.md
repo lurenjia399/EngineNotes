@@ -43,7 +43,8 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 	if (bLoaded)
 	{
 		/*
-		1 添加一个
+		1 添加一个treeInstance
+		2 
 		*/
 		FBehaviorTreeInstance& NewInstance = InstanceStack.AddDefaulted_GetRef();
 		NewInstance.InstanceIdIndex = UpdateInstanceId(&TreeAsset, ActiveNode, InstanceStack.Num() - 1);
