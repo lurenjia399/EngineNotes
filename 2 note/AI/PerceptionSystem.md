@@ -310,7 +310,7 @@ float UAISense_Sight::Update()
 			break;
 		}
 		/*
-		1 
+		1 计算Visibility
 		*/
 		if (TargetActor && ListenerPtr)
 		{
@@ -323,7 +323,7 @@ float UAISense_Sight::Update()
 					Target, //SightTarget,感知源构成的目标带有阵营等其他信息
 					TargetActor, // 感知源，其他Pawn
 					PropDigest, // 配置的视觉参数
-					StimulusStrength, // 刺激强度，一个比例默认是1
+					StimulusStrength, // 传出来的数据，刺激强度
 					SeenLocation, 
 					NumberOfLoSChecksPerformed, 
 					NumberOfAsyncLosCheckRequested);
