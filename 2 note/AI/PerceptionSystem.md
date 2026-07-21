@@ -284,7 +284,7 @@ bool UAISense_Sight::RegisterTarget(
 float UAISense_Sight::Update()
 {
 	/*
-	1 视野内的Query排序，根据Importance得分，和上次处理
+	1 视野内的Query排序，根据Importance和上次处理时间计算得分，越大越先处理
 	*/
 	ForEach(SightQueriesInRange, RecalcScore);
 	SightQueriesInRange.Sort(FAISightQuery::FSortPredicate());
