@@ -1,3 +1,42 @@
+# StartTree
+
+```cpp
+void UBehaviorTreeComponent::StartTree(UBehaviorTree& Asset, EBTExecutionMode::Type ExecuteMode)
+{
+	/*
+	1 StopTree
+	*/
+	StopTree(EBTStopMode::Safe);
+
+	TreeStartInfo.Asset = &Asset;
+	TreeStartInfo.ExecuteMode = ExecuteMode;
+	TreeStartInfo.bPendingInitialize = true;
+	/*
+	1 核心初始化的操作
+	*/
+	ProcessPendingInitialize();
+}
+```
+
+```cpp
+void UBehaviorTreeComponent::ProcessPendingInitialize()
+{
+	/*
+	1 创建新的节点实例
+	2 初始化结束，改变标志位
+	*/
+	const bool bPushed = PushInstance(*TreeStartInfo.Asset);
+	TreeStartInfo.bPendingInitialize = false;
+}
+```
+
+```cpp
+bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
+{
+	
+}
+```
+
 # tick
 ```cpp
 void UBehaviorTreeComponent::TickComponent(float DeltaTime, const ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
