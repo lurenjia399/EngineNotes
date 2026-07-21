@@ -316,8 +316,17 @@ float UAISense_Sight::Update()
 		{
 			const EVisibilityResult VisibilityResult = 
 				ComputeVisibility(
-					World, *SightQuery, Listener, ListenerBodyActor, Target, TargetActor, PropDigest, StimulusStrength, SeenLocation, NumberOfLoSChecksPerformed, NumberOfAsyncLosCheckRequested);
-
+					World, //当前World
+					*SightQuery, // Query
+					Listener, // PerceptionComp所代表的Listener
+					ListenerBodyActor, // PerCeptionComp的Outer上PC控制的Pawn
+					Target, 
+					TargetActor, 
+					PropDigest, 
+					StimulusStrength, 
+					SeenLocation, 
+					NumberOfLoSChecksPerformed, 
+					NumberOfAsyncLosCheckRequested);
 		}
 	}
 }
