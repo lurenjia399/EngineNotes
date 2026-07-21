@@ -337,7 +337,7 @@ float UAISense_Sight::Update()
 				QueryOperations.Add(FQueryOperation(bIsInRangeQuery, EOperationType::MoveToPending, bIsInRangeQuery ? InRangeIndex : OutOfRangeIndex));
 			}
 			/*
-			1 如果是visible的，就
+			1 如果是visible的，就往Listener中注册刺激
 			
 			*/
 			else
