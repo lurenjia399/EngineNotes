@@ -52,7 +52,7 @@ bool UBehaviorTreeComponent::PushInstance(UBehaviorTree& TreeAsset)
 			InstanceInfo.RootNode = RootNode;
 		}
 		/*
-		1 如果Node设置了bCreateNodeInstance，创建NodeInstance，填入NodeInstances数组中
+		1 如果Node设置了bCreateNodeInstance，就需要创建NodeInstance，填入NodeInstances数组中
 		*/
 		NewInstance.SetInstanceMemory(InstanceInfo.InstanceMemory);
 		NewInstance.Initialize(*this, *RootNode, NodeInstanceIndex, bFirstTime ? EBTMemoryInit::Initialize : EBTMemoryInit::RestoreSubtree);
