@@ -91,7 +91,7 @@ void UAIPerceptionSystem::Tick(float DeltaSeconds)
 ```cpp
 /*
 1 在pawn创建的时候会遍历感知频道，如果有符合要求的就会向感知频道中添加感知源
-2 
+2 UAISense_Sight 视觉是感知所有pawn的，一般bAutoRegisterAllPawnsAsSources都是true，所以会把pawn注册到视觉感知频道中
 */
 void UAIPerceptionSystem::OnNewPawn(APawn& Pawn)
 {
