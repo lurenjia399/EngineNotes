@@ -51,6 +51,15 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 			FinalizeGeneration();
 		}
 	}
+	/*
+	1 已经执行过Generate了，需要执行test
+	2 如果这是最后一个 Test、查询模式是
+  SingleResult(只要一个最优点)、且这个 Test 能当"最终条件",那么就不用给所有点算完再选——边测边短路。而且在开始前,如果前面有打分性质的Test,会先 SortScores() 排序,让高分点先被测,进一步加速短路。  - 分片续跑:CurrentTestStartingItem 记录这个 Test 已经处理到第几个
+  Item。一个 Test 可能因为超时被切成多步,下次进来从上次的位置接着测。
+  - Done 判断(461–463):满足"不在异步 + (所有 Item 测完 / 找到单结果 /
+  没有新进展)"才算这个 Test 完成,然后
+  FinalizeTest()(应用过滤、归一化分数等)
+	*/
 	else if (OptionItem.Tests.IsValidIndex(CurrentTest))
 	{
 		{
