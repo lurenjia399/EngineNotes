@@ -17,3 +17,11 @@ void UEnvQueryManager::Tick(float DeltaTime)
 	}
 }
 ```
+
+#
+```cpp
+void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
+{
+	
+}
+```
