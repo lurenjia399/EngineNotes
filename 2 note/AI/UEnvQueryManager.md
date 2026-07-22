@@ -78,15 +78,12 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 	{
 		if (NumValidItems > 0)
 		{
-			// found items, sort and finish
 			FinalizeQuery();
 		}
 		else
-		{
-			// no items here, go to next option or finish			
+		{		
 			if (OptionIndex + 1 >= Options.Num())
 			{
-				// out of options, finish processing without errors
 				FinalizeQuery();
 			}
 			else
