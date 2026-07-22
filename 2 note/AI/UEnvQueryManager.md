@@ -23,15 +23,13 @@ void UEnvQueryManager::Tick(float DeltaTime)
 void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 {
 	/*
-	1 
+	1 CurrentTest < 0 表示没有执行过Test，需要先执行Generate
+	2 如果Generator没有正在运行，先清空数据
 	*/
 	if (CurrentTest < 0)
 	{
 		if (!OptionItem.Generator->IsCurrentlyRunningAsync())
 		{
-			SCOPE_CYCLE_COUNTER(STAT_AI_EQS_GeneratorTime);
-			DEC_DWORD_STAT_BY(STAT_AI_EQS_NumItems, Items.Num());
-
 			RawData.Reset();
 			Items.Reset();
 			ItemType = OptionItem.ItemType;
