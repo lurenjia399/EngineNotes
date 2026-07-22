@@ -42,6 +42,13 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 			FScopeCycleCounterUObject GeneratorScope(OptionItem.Generator);
 			OptionItem.Generator->GenerateItems(*this);
 		}
+		bIsCurrentlyRunningAsync |= OptionItem.Generator->IsCurrentlyRunningAsync();
+		bStepDone = !bIsCurrentlyRunningAsync;
+
+		if (bStepDone)
+		{
+			FinalizeGeneration();
+		}
 	}
 }
 ```
