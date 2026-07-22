@@ -53,7 +53,10 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 	}
 	else if (OptionItem.Tests.IsValidIndex(CurrentTest))
 	{
-		
+		{
+			FScopeCycleCounterUObject TestScope(TestObject);
+			TestObject->RunTest(*this);
+		}
 	}
 }
 ```
