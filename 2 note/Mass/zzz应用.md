@@ -525,8 +525,3 @@ Root
 ```cpp
 1 这个里面通过给ISM数组的AddBatchedTransform方法，来在更新伞ISM的位置，并更新伞的ISM中添加动画数据，通过读取AnimToTexture得来的
 ```
-# 7 司机表现
-1 
-```cpp
-
-```
