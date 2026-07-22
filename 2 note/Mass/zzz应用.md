@@ -525,4 +525,7 @@ Root
 ```cpp
 1 这个里面通过给ISM数组的AddBatchedTransform方法，来在更新伞ISM的位置，并更新伞的ISM中的CustomData来更新动画数据，通过读取AnimToTexture得来的
 ```
-#  
+#  Bus
+```cpp
+1 
+```
