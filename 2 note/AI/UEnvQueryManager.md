@@ -71,9 +71,7 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 		CurrentTest++;
 		CurrentTestStartingItem = 0;
 	}
-	/*
-	1 
-	*/
+	
 	if (!bIsCurrentlyRunningAsync && IsFinished() == false && (OptionItem.Tests.Num() == CurrentTest || NumValidItems <= 0))
 	{
 		if (NumValidItems > 0)
