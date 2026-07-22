@@ -22,6 +22,12 @@ void UEnvQueryManager::Tick(float DeltaTime)
 ```cpp
 void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 {
-	
+	/*
+	1 
+	*/
+	if (CurrentTest < 0)
+	{
+		
+	}
 }
 ```
