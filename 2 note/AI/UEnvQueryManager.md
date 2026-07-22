@@ -63,5 +63,38 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 			TestObject->RunTest(*this);
 		}
 	}
+	/*
+	1 如果这一步都执行完了，没有任何异步的过程，就推进到下一个Test
+	*/
+	if (bStepDone)
+	{
+		CurrentTest++;
+		CurrentTestStartingItem = 0;
+	}
+	/*
+	1 
+	*/
+	if (!bIsCurrentlyRunningAsync && IsFinished() == false && (OptionItem.Tests.Num() == CurrentTest || NumValidItems <= 0))
+	{
+		if (NumValidItems > 0)
+		{
+			// found items, sort and finish
+			FinalizeQuery();
+		}
+		else
+		{
+			// no items here, go to next option or finish			
+			if (OptionIndex + 1 >= Options.Num())
+			{
+				// out of options, finish processing without errors
+				FinalizeQuery();
+			}
+			else
+			{
+				OptionIndex++;
+				CurrentTest = -1;
+			}
+		}
+	}
 }
 ```
