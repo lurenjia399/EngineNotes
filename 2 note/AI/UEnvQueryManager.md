@@ -51,5 +51,9 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 			FinalizeGeneration();
 		}
 	}
+	else if (OptionItem.Tests.IsValidIndex(CurrentTest))
+	{
+		
+	}
 }
 ```
