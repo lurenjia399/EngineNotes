@@ -90,7 +90,7 @@ void UBehaviorTreeComponent::TickComponent(float DeltaTime, const ELevelTick Tic
 	const bool bWasTickedOnce = bTickedOnce;
 	bTickedOnce = true;
 	/*
-	1 
+	1 Tick 当前激活的辅助节点(Service / Decorator) 只遍历 当前处于激活状态 的 aux 节点(GetActiveAuxNodes),不是全树。Service 的定时逻辑、条件监听就在这里跑
 	*/
 	{
 		FBTSuspendBranchActionsScoped ScopedSuspend(*this, EBTBranchAction::Changing_Topology_Actions);
