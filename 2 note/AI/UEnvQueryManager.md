@@ -26,7 +26,7 @@ void FEnvQueryInstance::ExecuteOneStep(double TimeLimit)
 	1 CurrentTest < 0 表示没有执行过Test，需要先执行Generate
 	2 如果Generator没有正在运行，先清空数据之后运行
 	3 通过GenerateItems真正生成候选点
-	4 如果生成候选点是个异步的过程，
+	4 如果生成候选点不是异步的过程，就直接调用FinalizeGeneration完成生成，生成完了做收尾(比如去重、建索引)
 	*/
 	if (CurrentTest < 0)
 	{
