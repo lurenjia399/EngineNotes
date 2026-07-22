@@ -527,5 +527,5 @@ Root
 ```
 #  火车
 ```cpp
-1 构建火车路线，以火车站Actor为基准构建，通过FindLaneOverlaps方法找到车站Actor覆盖的Lanes，通过FindNearestLane找到路线的起始点
+1 构建火车路线，以火车站Actor为基准构建，通过FindLaneOverlaps方法找到车站Actor覆盖的Lanes，通过FindNearestLane找到路线的起始点。
 ```
