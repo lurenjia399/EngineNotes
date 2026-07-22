@@ -110,3 +110,26 @@ void Query(const FBox& Bounds, OutT& OutResults) const
 	}
 */
 ```
+
+5 
+```cpp
+THierarchicalHashGrid2D 最适合:
+  - 大量、体量相近、持续移动的 agent
+  在近似平面的世界里做邻域/重叠查询——这正是它在 Mass
+  里的用途(你这个文件 HTMassHashGridSubsystem 就是 MassCrowd
+  用的)。典型:人群避让、感知邻居查询、SmartObject 就近检索、AI
+  群体的空间索引。
+  - 更新极其频繁(每帧成千上万个体在动)、需要 O(1) 增删移。
+  - 世界很大甚至无界、不想预设 bounds。
+  - Z 方向不重要(角色基本贴地)。
+  - 只需要 broad-phase 候选集,narrow-phase 自己算。
+
+OctTree 更适合:
+  - 真正的 3D 查询:飞行单位、体积/空域、垂直分层明显的场景。
+  - 静态或半静态几何:渲染剔除(视锥/遮挡)、光照、碰撞 broad-phase、点云(
+  LidarPointCloudOctree)、网格绘制(TMeshPaintOctree)。
+  - 空间密度高度不均:大片空旷 +
+  局部极密,自适应细分能显著减少查询访问的节点。
+  - 需要射线求交、范围查询且希望假阳性更少。
+
+```
