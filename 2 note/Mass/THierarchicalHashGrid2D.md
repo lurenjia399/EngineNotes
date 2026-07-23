@@ -214,7 +214,7 @@ void AddElementInternal(
 		const FOctreeChildNodeRef ChildRef = 
 			NodeContext.GetContainingChild(ElementBounds);
 		/*
-			如果当前节点的8个子节点都容纳不了，jiu
+			如果当前节点的8个子节点都容纳不了，就放到当前节点中
 		*/
 		if (ChildRef.IsNULL())
 		{
@@ -222,6 +222,9 @@ void AddElementInternal(
 			SetElementId(Element, FOctreeElementId2(CurrentNodeIndex, ElementIndex));
 			return;
 		}
+		/*
+			如果当前节点的某个子节点能容纳，就
+		*/
 		else
 		{
 			FNodeIndex ChildNodeIndex = TreeNodes[CurrentNodeIndex].ChildNodes + ChildRef.Index;
