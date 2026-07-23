@@ -147,7 +147,7 @@ void AddElementInternal(
 	FNodeIndex CurrentNodeIndex, // 添加的节点索引
 	const FOctreeNodeContext& NodeContext, // octtree上下文信息
 	const FBoxCenterAndExtent& ElementBounds, // 元素的Bounds
-	typename TCallTraits<ElementType>::ConstReference Element,
+	typename TCallTraits<ElementType>::ConstReference Element,//元素
 	ElementArrayType& TempElementStorage)
 {
 	checkSlow(CurrentNodeIndex != INDEX_NONE);
