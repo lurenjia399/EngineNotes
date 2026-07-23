@@ -244,10 +244,11 @@ void RemoveElement(FOctreeElementId2 ElementId)
 		找到存储的节点，移除元素
 	*/
 	TreeElements[ElementId.NodeIndex].RemoveAtSwap(ElementId.ElementIndex, EAllowShrinking::No);
-
+	/*
+		如果移除的元素不是最后一个，因为是交换移除的所以需要更新交换过来元素的Id
+	*/
 	if (ElementId.ElementIndex < TreeElements[ElementId.NodeIndex].Num())
 	{
-		// Update the external element id for the element that was swapped into the vacated element index.
 		SetElementId(TreeElements[ElementId.NodeIndex][ElementId.ElementIndex], ElementId);
 	}
 
