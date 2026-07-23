@@ -160,7 +160,7 @@ void AddElementInternal(
 	if (TreeNodes[CurrentNodeIndex].IsLeaf())
 	{
 		/*
-			如果当前节点的元素数量+1超过了最大的数量，别难过且
+			如果当前节点的元素数量+1超过了最大的数量，并且当前节点大小大于最小叶子节点大小，说明需要继续往下细分
 		*/
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
 		{
