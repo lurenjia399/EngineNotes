@@ -169,7 +169,7 @@ void AddElementInternal(
 			*/
 			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
 			/*
-				细分节点，把当前节点中已有的元素右移到临时存储中
+				增加8个节点以及8个节点元素
 			*/
 			FNodeIndex ChildStartIndex = AllocateEightNodes();
 			ParentLinks[(ChildStartIndex - 1) / 8] = CurrentNodeIndex;
