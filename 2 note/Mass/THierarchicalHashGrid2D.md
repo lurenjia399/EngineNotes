@@ -223,7 +223,7 @@ void AddElementInternal(
 			return;
 		}
 		/*
-			如果当前节点的某个子节点能容纳，就
+			如果当前节点的某个子节点能容纳，就把新元素添加到子节点中
 		*/
 		else
 		{
@@ -234,6 +234,64 @@ void AddElementInternal(
 		}
 	}
 }
+```
+
+
+```cpp
+inline void RemoveElement(FOctreeElementId2 ElementId)
+	{
+		checkSlow(ElementId.IsValidId());
+
+		// Remove the element from the node's element list.
+		TreeElements[ElementId.NodeIndex].RemoveAtSwap(ElementId.ElementIndex, EAllowShrinking::No);
+
+		if (ElementId.ElementIndex < TreeElements[ElementId.NodeIndex].Num())
+		{
+			// Update the external element id for the element that was swapped into the vacated element index.
+			SetElementId(TreeElements[ElementId.NodeIndex][ElementId.ElementIndex], ElementId);
+		}
+
+		FNodeIndex CollapseNodeIndex = INDEX_NONE;
+		{
+			// Update the inclusive element counts for the nodes between the element and the root node,
+			// and find the largest node that is small enough to collapse.
+			FNodeIndex NodeIndex = ElementId.NodeIndex;
+			while (true)
+			{
+				TreeNodes[NodeIndex].InclusiveNumElements--;
+				if (TreeNodes[NodeIndex].InclusiveNumElements < OctreeSemantics::MinInclusiveElementsPerNode)
+				{
+					CollapseNodeIndex = NodeIndex;
+				}
+
+				if (NodeIndex == 0)
+				{
+					break;
+				}
+
+				NodeIndex = ParentLinks[(NodeIndex - 1) / 8];			
+			}
+		}
+
+		// Collapse the largest node that was pushed below the threshold for collapse by the removal.
+		if (CollapseNodeIndex != INDEX_NONE && !TreeNodes[CollapseNodeIndex].IsLeaf())
+		{
+			if (TreeElements[CollapseNodeIndex].Num() < (int32)TreeNodes[CollapseNodeIndex].InclusiveNumElements)
+			{
+				ElementArrayType TempElementStorage;
+				TempElementStorage.Reserve(TreeNodes[CollapseNodeIndex].InclusiveNumElements);
+				// Gather the elements contained in this node and its children.
+				CollapseNodesInternal(CollapseNodeIndex, TempElementStorage);
+				TreeElements[CollapseNodeIndex] = MoveTemp(TempElementStorage);
+
+				for (int ElementIndex = 0; ElementIndex < TreeElements[CollapseNodeIndex].Num(); ElementIndex++)
+				{
+					// Update the external element id for the element that's being collapsed.
+					SetElementId(TreeElements[CollapseNodeIndex][ElementIndex], FOctreeElementId2(CollapseNodeIndex, ElementIndex));
+				}
+			}
+		}
+	}
 ```
 
 
