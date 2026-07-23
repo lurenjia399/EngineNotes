@@ -209,9 +209,13 @@ void AddElementInternal(
 	else
 	{
 		/*
-			判断新元素的Bounds能否被dang'qian'jie'dian
+			判断新元素的Bounds能否被当前节点的8个子节点所容纳
 		*/
-		const FOctreeChildNodeRef ChildRef = NodeContext.GetContainingChild(ElementBounds);
+		const FOctreeChildNodeRef ChildRef = 
+			NodeContext.GetContainingChild(ElementBounds);
+		/*
+			如果当前节点的8个子节点都容纳不了
+		*/
 		if (ChildRef.IsNULL())
 		{
 			int ElementIndex = TreeElements[CurrentNodeIndex].Emplace(Element);
