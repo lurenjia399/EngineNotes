@@ -137,7 +137,7 @@ class TOctree2
 	FOctreeNodeContext RootNodeContext;
 	TArray<FNode> TreeNodes;//树的节点数组
 	TArray<FNodeIndex> ParentLinks;
-	TArray<ElementArrayType, TAlignedHeapAllocator<alignof(ElementArrayType)>> TreeElements;// 每个节点中包含的
+	TArray<ElementArrayType, TAlignedHeapAllocator<alignof(ElementArrayType)>> TreeElements;// 每个节点中包含的Elements
 };
 	
 ```
