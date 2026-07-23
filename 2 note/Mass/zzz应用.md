@@ -534,5 +534,6 @@ Root
 # 变道
 ```cpp
 1 UMassTrafficLaneChangingProcessor 来开启变道流程，选择目标车道，将车直接Teleport到目标车道，计算出变道开始位置，变道结束位置。
-2 UMassTrafficVehicleControlProcessor 
+2 UMassTrafficVehicleControlProcessor SimpleVehicle计算目标速度，PIDVehicle计算油门刹车转向值
+3 
 ```
