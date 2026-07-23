@@ -531,3 +531,7 @@ Root
 2 创建火车的Spawner，配置火车的entityConfig
 3 创建火车的Generator，在火车的路线上选择生成点，spawnentity
 ```
+# 变道
+```cpp
+1 UMassTrafficLaneChangingProcessor 来开启变道流程，将车直接Teleport到目标车道，计算出b
+```
