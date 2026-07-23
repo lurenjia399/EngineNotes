@@ -151,14 +151,17 @@ void AddElementInternal(
 	ElementArrayType& TempElementStorage)
 {
 	/*
-	1 增加树中当前节点的元素数量
+		增加树中当前节点的元素数量
 	*/
 	TreeNodes[CurrentNodeIndex].InclusiveNumElements++;
 	/*
-		 如果是
+		如果是叶子节点
 	*/
 	if (TreeNodes[CurrentNodeIndex].IsLeaf())
 	{
+		/*
+			如果当前节点的元素数量+1超过了最大的
+		*/
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
 		{
 			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
