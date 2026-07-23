@@ -251,11 +251,11 @@ void RemoveElement(FOctreeElementId2 ElementId)
 	{
 		SetElementId(TreeElements[ElementId.NodeIndex][ElementId.ElementIndex], ElementId);
 	}
-
+	/*
+		从移除元素位置开始向上遍历，找到需要回收的节点
+	*/
 	FNodeIndex CollapseNodeIndex = INDEX_NONE;
 	{
-		// Update the inclusive element counts for the nodes between the element and the root node,
-		// and find the largest node that is small enough to collapse.
 		FNodeIndex NodeIndex = ElementId.NodeIndex;
 		while (true)
 		{
