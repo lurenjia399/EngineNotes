@@ -21,7 +21,7 @@ PIDVehicleControl
 	5 计算当前车道的出口是否需要停下来
 	6 重新计算停不下来状态。
 	7 计算目标速度
-	8 通过PID算法计算出，刹车，油门的值，更新PIDVehicleControlFragment中数据，刹车，油门，转向，是否有手刹
+	8 通过目标速度根据PID算法计算出，刹车，油门的值，更新PIDVehicleControlFragment中数据，刹车，油门，转向，是否有手刹
 	9 UMassTrafficActorVehiclePhysicsProcessor UMassTrafficVehiclePhysicsProcessor
 	10 在物理计算后，UMassTrafficPostPhysicsUpdateTrafficVehiclesProcessor中，将PID车Actor的位置，速度，角速度，都同步给mass。如果currlane走完了，也通过MoveVehicleToNextLane进入nextlane
 }
