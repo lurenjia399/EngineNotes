@@ -132,6 +132,13 @@ OctTree 更适合:
 # 2 OctTree
 ## 1 AddElement
 ```cpp
-
+class TOctree2
+{
+	FOctreeNodeContext RootNodeContext;
+	TArray<FNode> TreeNodes;//树的节点数组
+	TArray<FNodeIndex> ParentLinks;
+	TArray<ElementArrayType, TAlignedHeapAllocator<alignof(ElementArrayType)>> TreeElements;
+};
+	
 ```
 
