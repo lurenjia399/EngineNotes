@@ -165,7 +165,9 @@ void AddElementInternal(
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
 		{
 			/*
-				把当前节点的
+				1 细分节点
+				2 把当前节点中已有的元素右移到临时存储中
+				3 
 			*/
 			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
 
