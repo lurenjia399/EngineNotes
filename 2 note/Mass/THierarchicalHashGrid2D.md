@@ -179,7 +179,7 @@ void AddElementInternal(
 			TreeNodes[CurrentNodeIndex].ChildNodes = ChildStartIndex;
 			TreeNodes[CurrentNodeIndex].InclusiveNumElements = 0;
 			/*
-				把细分节点前的旧元素都添加到
+				把细分节点前的旧元素都沿着当前节点添加到树的节点中
 			*/
 			for (typename TCallTraits<ElementType>::ConstReference ChildElement : TempElementStorage)
 			{
@@ -187,12 +187,15 @@ void AddElementInternal(
 				AddElementInternal(CurrentNodeIndex, NodeContext, ChildElementBounds, ChildElement, TempElementStorage);
 			}
 			/*
-				把新元素添加到当前节点了
+				把新元素沿着当前节点添加到树的节点中
 			*/
 			TempElementStorage.Reset();
 			AddElementInternal(CurrentNodeIndex, NodeContext, ElementBounds, Element, TempElementStorage);
 			return;
 		}
+		/*
+			如果不能细分节点了
+		*/
 		else
 		{
 			int ElementIndex = TreeElements[CurrentNodeIndex].Emplace(Element);
