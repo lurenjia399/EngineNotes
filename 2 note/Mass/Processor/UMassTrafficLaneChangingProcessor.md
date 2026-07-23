@@ -4,6 +4,7 @@
 2 以自己在当前车道的位置，去通过FindNearestLocationOnLane找目标车道的起始位置和结束位置
 3 TeleportVehicleToAnotherLane，从当前车道中把自己移除（就是让自己后车的NextVehicle指向自己前车，增加当前车道的空余长度，减少当前车道的数量），相应的把自己添加进目标车道。
 4 BeginLaneChangeProgression，设置变道的各种信息，目标车道的起始点，终止点，当前车道的前车后车数据
+5 如果开启了变道，也会在tick时候检测变道是否完成，就是判断
 ```
 
 # 1 TryStartingNewLaneChange
