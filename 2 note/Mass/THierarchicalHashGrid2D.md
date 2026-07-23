@@ -143,7 +143,12 @@ class TOctree2
 ```
 ## 1 AddElement
 ```cpp
-void AddElementInternal(FNodeIndex CurrentNodeIndex, const FOctreeNodeContext& NodeContext, const FBoxCenterAndExtent& ElementBounds, typename TCallTraits<ElementType>::ConstReference Element, ElementArrayType& TempElementStorage)
+void AddElementInternal(
+	FNodeIndex CurrentNodeIndex, // 添加的节点索引
+	const FOctreeNodeContext& NodeContext, // octtree上下文信息
+	const FBoxCenterAndExtent& ElementBounds, // 元素的Bounds
+	typename TCallTraits<ElementType>::ConstReference Element,
+	ElementArrayType& TempElementStorage)
 {
 	checkSlow(CurrentNodeIndex != INDEX_NONE);
 	TreeNodes[CurrentNodeIndex].InclusiveNumElements++;
