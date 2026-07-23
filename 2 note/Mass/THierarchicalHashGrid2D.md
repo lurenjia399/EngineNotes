@@ -150,8 +150,13 @@ void AddElementInternal(
 	typename TCallTraits<ElementType>::ConstReference Element,//元素
 	ElementArrayType& TempElementStorage)
 {
-	checkSlow(CurrentNodeIndex != INDEX_NONE);
+	/*
+	1 增加树中当前节点的元素数量
+	*/
 	TreeNodes[CurrentNodeIndex].InclusiveNumElements++;
+	/*
+		 如果是
+	*/
 	if (TreeNodes[CurrentNodeIndex].IsLeaf())
 	{
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
