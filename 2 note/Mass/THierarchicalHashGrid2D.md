@@ -240,9 +240,9 @@ void AddElementInternal(
 ```cpp
 void RemoveElement(FOctreeElementId2 ElementId)
 {
-	checkSlow(ElementId.IsValidId());
-
-	// Remove the element from the node's element list.
+	/*
+		
+	*/
 	TreeElements[ElementId.NodeIndex].RemoveAtSwap(ElementId.ElementIndex, EAllowShrinking::No);
 
 	if (ElementId.ElementIndex < TreeElements[ElementId.NodeIndex].Num())
