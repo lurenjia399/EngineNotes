@@ -160,12 +160,12 @@ void AddElementInternal(
 	if (TreeNodes[CurrentNodeIndex].IsLeaf())
 	{
 		/*
-			如果当前节点的元素数量+1超过了最大的数量，并且当前节点大小大于最小叶子节点大小，说明需要继续往下细分
+			如果当前节点的元素数量+1超过了最大的数量，并且当前节点大小大于最小叶子节点大小，说明需要细分节点
 		*/
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
 		{
 			/*
-				细分节点，把当前节点中已有的元素右移到临时存储中
+				把当前节点中已有的元素右移到临时存储中
 			*/
 			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
 			/*
@@ -179,7 +179,7 @@ void AddElementInternal(
 			TreeNodes[CurrentNodeIndex].ChildNodes = ChildStartIndex;
 			TreeNodes[CurrentNodeIndex].InclusiveNumElements = 0;
 			/*
-				把细分节点前的旧元素都添加新元素中
+				把细分节点前的旧元素都添加到
 			*/
 			for (typename TCallTraits<ElementType>::ConstReference ChildElement : TempElementStorage)
 			{
@@ -187,7 +187,7 @@ void AddElementInternal(
 				AddElementInternal(CurrentNodeIndex, NodeContext, ChildElementBounds, ChildElement, TempElementStorage);
 			}
 			/*
-				把细分节点前的旧元素都添加新元素中
+				把新元素添加到当前节点了
 			*/
 			TempElementStorage.Reset();
 			AddElementInternal(CurrentNodeIndex, NodeContext, ElementBounds, Element, TempElementStorage);
