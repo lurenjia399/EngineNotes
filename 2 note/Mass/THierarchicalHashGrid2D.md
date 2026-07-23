@@ -165,12 +165,12 @@ void AddElementInternal(
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
 		{
 			/*
-				1 细分节点
-				2 把当前节点中已有的元素右移到临时存储中
-				3 
+				细分节点，把当前节点中已有的元素右移到临时存储中
 			*/
 			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
-
+			/*
+				细分节点，把当前节点中已有的元素右移到临时存储中
+			*/
 			FNodeIndex ChildStartIndex = AllocateEightNodes();
 			ParentLinks[(ChildStartIndex - 1) / 8] = CurrentNodeIndex;
 			TreeNodes[CurrentNodeIndex].ChildNodes = ChildStartIndex;
