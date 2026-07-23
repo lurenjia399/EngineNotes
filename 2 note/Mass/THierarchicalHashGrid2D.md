@@ -155,7 +155,7 @@ void AddElementInternal(
 	*/
 	TreeNodes[CurrentNodeIndex].InclusiveNumElements++;
 	/*
-		如果是叶子节点
+		如果向叶子节点中添加元素
 	*/
 	if (TreeNodes[CurrentNodeIndex].IsLeaf())
 	{
@@ -194,7 +194,7 @@ void AddElementInternal(
 			return;
 		}
 		/*
-			如果不能细分节点了，就把新元素直接添加到当前节点中，并zhi'xin
+			如果不能细分节点了，就把新元素直接添加到当前节点中，并执行SetElementId回调
 		*/
 		else
 		{
@@ -203,6 +203,9 @@ void AddElementInternal(
 			return;
 		}
 	}
+	/*
+		如果向叶子节点中添加元素
+	*/
 	else
 	{
 		const FOctreeChildNodeRef ChildRef = NodeContext.GetContainingChild(ElementBounds);
