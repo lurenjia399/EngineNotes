@@ -179,14 +179,16 @@ void AddElementInternal(
 			TreeNodes[CurrentNodeIndex].ChildNodes = ChildStartIndex;
 			TreeNodes[CurrentNodeIndex].InclusiveNumElements = 0;
 			/*
-				把
+				把细分节点前的旧元素都添加新元素中
 			*/
 			for (typename TCallTraits<ElementType>::ConstReference ChildElement : TempElementStorage)
 			{
 				const FBoxCenterAndExtent ChildElementBounds(OctreeSemantics::GetBoundingBox(ChildElement));
 				AddElementInternal(CurrentNodeIndex, NodeContext, ChildElementBounds, ChildElement, TempElementStorage);
 			}
-
+			/*
+				把细分节点前的旧元素都添加新元素中
+			*/
 			TempElementStorage.Reset();
 			AddElementInternal(CurrentNodeIndex, NodeContext, ElementBounds, Element, TempElementStorage);
 			return;
