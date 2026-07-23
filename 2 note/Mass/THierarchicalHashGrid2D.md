@@ -208,6 +208,9 @@ void AddElementInternal(
 	*/
 	else
 	{
+		/*
+			判断新元素的Bounds能否被dang'qian'jie'dian
+		*/
 		const FOctreeChildNodeRef ChildRef = NodeContext.GetContainingChild(ElementBounds);
 		if (ChildRef.IsNULL())
 		{
