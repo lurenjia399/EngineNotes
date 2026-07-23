@@ -252,7 +252,7 @@ void RemoveElement(FOctreeElementId2 ElementId)
 		SetElementId(TreeElements[ElementId.NodeIndex][ElementId.ElementIndex], ElementId);
 	}
 	/*
-		从移除元素位置开始向上遍历，找到需要回收的节点
+		从移除元素位置开始向上遍历，找到需要合并节点
 	*/
 	FNodeIndex CollapseNodeIndex = INDEX_NONE;
 	{
@@ -274,20 +274,19 @@ void RemoveElement(FOctreeElementId2 ElementId)
 		}
 	}
 
-	// Collapse the largest node that was pushed below the threshold for collapse by the removal.
+	/*
+		合并节点
+	*/
 	if (CollapseNodeIndex != INDEX_NONE && !TreeNodes[CollapseNodeIndex].IsLeaf())
 	{
 		if (TreeElements[CollapseNodeIndex].Num() < (int32)TreeNodes[CollapseNodeIndex].InclusiveNumElements)
 		{
 			ElementArrayType TempElementStorage;
-			TempElementStorage.Reserve(TreeNodes[CollapseNodeIndex].InclusiveNumElements);
-			// Gather the elements contained in this node and its children.
+TempElementStorage.Reserve(TreeNodes[CollapseNodeIndex].InclusiveNumElements);
 			CollapseNodesInternal(CollapseNodeIndex, TempElementStorage);
 			TreeElements[CollapseNodeIndex] = MoveTemp(TempElementStorage);
-
 			for (int ElementIndex = 0; ElementIndex < TreeElements[CollapseNodeIndex].Num(); ElementIndex++)
 			{
-				// Update the external element id for the element that's being collapsed.
 				SetElementId(TreeElements[CollapseNodeIndex][ElementIndex], FOctreeElementId2(CollapseNodeIndex, ElementIndex));
 			}
 		}
