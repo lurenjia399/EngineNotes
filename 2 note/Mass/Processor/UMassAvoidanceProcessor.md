@@ -166,6 +166,7 @@ void UMassMovingAvoidanceProcessor::Execute(
 1
 ```cpp
 1 初始化Ghost是在UMassSteerToMoveTargetProcessor中，如果moveTarget是Stand的，才会初始化Ghost
+2 
 2 计算目标力，把 ghost 拉回MoveTarget ghost 朝 MoveTarget.Center 转向,离得越近速度衰减(GhostStandSlowdownRadius)
 3 计算分离力，这里有两类:
   - 对方也是站立、也有有效Ghost:→ 做 ghost-vs-ghost 分离。施加一个OtherGhost指向当前Ghost的力
