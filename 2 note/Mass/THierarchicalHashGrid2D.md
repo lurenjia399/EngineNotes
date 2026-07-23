@@ -130,7 +130,7 @@ OctTree 更适合:
 ```
 
 # 2 OctTree
-## 1 AddElement
+
 ```cpp
 class TOctree2
 {
@@ -141,4 +141,59 @@ class TOctree2
 };
 	
 ```
+## 1 AddElement
+```cpp
+void AddElementInternal(FNodeIndex CurrentNodeIndex, const FOctreeNodeContext& NodeContext, const FBoxCenterAndExtent& ElementBounds, typename TCallTraits<ElementType>::ConstReference Element, ElementArrayType& TempElementStorage)
+{
+	checkSlow(CurrentNodeIndex != INDEX_NONE);
+	TreeNodes[CurrentNodeIndex].InclusiveNumElements++;
+	if (TreeNodes[CurrentNodeIndex].IsLeaf())
+	{
+		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
+		{
+			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
+
+			FNodeIndex ChildStartIndex = AllocateEightNodes();
+			ParentLinks[(ChildStartIndex - 1) / 8] = CurrentNodeIndex;
+			TreeNodes[CurrentNodeIndex].ChildNodes = ChildStartIndex;
+			TreeNodes[CurrentNodeIndex].InclusiveNumElements = 0;
+
+			for (typename TCallTraits<ElementType>::ConstReference ChildElement : TempElementStorage)
+			{
+				const FBoxCenterAndExtent ChildElementBounds(OctreeSemantics::GetBoundingBox(ChildElement));
+				AddElementInternal(CurrentNodeIndex, NodeContext, ChildElementBounds, ChildElement, TempElementStorage);
+			}
+
+			TempElementStorage.Reset();
+			AddElementInternal(CurrentNodeIndex, NodeContext, ElementBounds, Element, TempElementStorage);
+			return;
+		}
+		else
+		{
+			int ElementIndex = TreeElements[CurrentNodeIndex].Emplace(Element);
+
+			SetElementId(Element, FOctreeElementId2(CurrentNodeIndex, ElementIndex));	
+			return;
+		}
+	}
+	else
+	{
+		const FOctreeChildNodeRef ChildRef = NodeContext.GetContainingChild(ElementBounds);
+		if (ChildRef.IsNULL())
+		{
+			int ElementIndex = TreeElements[CurrentNodeIndex].Emplace(Element);
+			SetElementId(Element, FOctreeElementId2(CurrentNodeIndex, ElementIndex));
+			return;
+		}
+		else
+		{
+			FNodeIndex ChildNodeIndex = TreeNodes[CurrentNodeIndex].ChildNodes + ChildRef.Index;
+			FOctreeNodeContext ChildNodeContext = NodeContext.GetChildContext(ChildRef);
+			AddElementInternal(ChildNodeIndex, ChildNodeContext, ElementBounds, Element, TempElementStorage);
+			return;
+		}
+	}
+}
+```
+
 
