@@ -241,7 +241,7 @@ void AddElementInternal(
 void RemoveElement(FOctreeElementId2 ElementId)
 {
 	/*
-		
+		找到存储的节点，移除元素
 	*/
 	TreeElements[ElementId.NodeIndex].RemoveAtSwap(ElementId.ElementIndex, EAllowShrinking::No);
 
