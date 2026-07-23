@@ -194,7 +194,7 @@ void AddElementInternal(
 			return;
 		}
 		/*
-			如果不能细分节点了
+			如果不能细分节点了，就把新元素直接添加到当前节点中
 		*/
 		else
 		{
