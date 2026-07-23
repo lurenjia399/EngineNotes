@@ -171,7 +171,7 @@ void UMassMovingAvoidanceProcessor::Execute(
   - 对方也是站立、也有有效Ghost:→ 做 ghost-vs-ghost 分离。施加一个OtherGhost指向当前Ghost的力
   - 对方在移动 / 没 Ghost:→ 把对方当成一个朝前突出的 2D 胶囊线段(OtherPersonalSpacePosition 沿其 forward 延伸),ghost躲这个胶囊。
 4 积分Ghost速度，位置等信息
-5 有了Ghost速度，位置后，下一帧在UMassSteerToMoveTargetProcessor中，就会处理，把
+5 有了Ghost速度，位置后，下一帧在UMassSteerToMoveTargetProcessor中，就会处理，让当前位置朝向ghost位置移动，
 ```
 2
 ```cpp
