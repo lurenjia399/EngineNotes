@@ -194,12 +194,11 @@ void AddElementInternal(
 			return;
 		}
 		/*
-			如果不能细分节点了，就把新元素直接添加到当前节点中
+			如果不能细分节点了，就把新元素直接添加到当前节点中，并zhi'xin
 		*/
 		else
 		{
 			int ElementIndex = TreeElements[CurrentNodeIndex].Emplace(Element);
-
 			SetElementId(Element, FOctreeElementId2(CurrentNodeIndex, ElementIndex));	
 			return;
 		}
