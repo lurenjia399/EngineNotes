@@ -204,7 +204,7 @@ void AddElementInternal(
 		}
 	}
 	/*
-		如果向叶子节点中添加元素
+		如果不是向叶子节点中添加元素
 	*/
 	else
 	{
