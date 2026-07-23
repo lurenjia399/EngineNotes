@@ -171,13 +171,16 @@ void AddElementInternal(
 			/*
 				1 增加8个节点以及8个节点元素
 				2 设置新增的8个节点的父节点为当前节点索引
-				3 当qia
+				3 当前节点的孩子节点设为新增的8个节点最大的索引
+				4 清掉当前节点的元素个数
 			*/
 			FNodeIndex ChildStartIndex = AllocateEightNodes();
 			ParentLinks[(ChildStartIndex - 1) / 8] = CurrentNodeIndex;
 			TreeNodes[CurrentNodeIndex].ChildNodes = ChildStartIndex;
 			TreeNodes[CurrentNodeIndex].InclusiveNumElements = 0;
-
+			/*
+				把
+			*/
 			for (typename TCallTraits<ElementType>::ConstReference ChildElement : TempElementStorage)
 			{
 				const FBoxCenterAndExtent ChildElementBounds(OctreeSemantics::GetBoundingBox(ChildElement));
