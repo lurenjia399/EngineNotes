@@ -148,7 +148,7 @@ void AddElementInternal(
 	const FOctreeNodeContext& NodeContext, // octtree上下文信息
 	const FBoxCenterAndExtent& ElementBounds, // 元素的Bounds
 	typename TCallTraits<ElementType>::ConstReference Element,//元素
-	ElementArrayType& TempElementStorage)
+	ElementArrayType& TempElementStorage)//在细分节点过程中，临时存储节点中旧的元素
 {
 	/*
 		增加树中当前节点的元素数量
@@ -164,6 +164,9 @@ void AddElementInternal(
 		*/
 		if (TreeElements[CurrentNodeIndex].Num() + 1 > OctreeSemantics::MaxElementsPerLeaf && NodeContext.Bounds.Extent.X > MinLeafExtent)
 		{
+			/*
+				把当前节点的
+			*/
 			TempElementStorage = MoveTemp(TreeElements[CurrentNodeIndex]);
 
 			FNodeIndex ChildStartIndex = AllocateEightNodes();
