@@ -536,5 +536,5 @@ Root
 1 UMassTrafficLaneChangingProcessor 来开启变道流程，选择目标车道，将车直接Teleport到目标车道，计算出变道开始位置，变道结束位置。
 2 UMassTrafficVehicleControlProcessor SimpleVehicle计算目标速度，PIDVehicle计算油门刹车转向值，SimpleVehicle就是哪些ISM车，PIDVehicle就是Actor车其中LowActor是mass模拟物理，HightActor是走VehicleMovementComp的真实物理
 3 UMassTrafficChooseNextLaneProcessor 选择下一条车道，就是当前车道走完了需要进入的车道
-4 
+4 UMassTrafficInterpolationProcessor SimpleVehicle的变道插值过程，
 ```
