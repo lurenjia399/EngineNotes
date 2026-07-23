@@ -529,5 +529,5 @@ Root
 ```cpp
 1 构建火车路线，以火车站Actor为基准构建，通过FindLaneOverlaps方法找到车站Actor覆盖的Lanes，通过FindNearestLane找到路线的起始点。沿着起始点开始遍历Linklanes，直到遍历完或者回到起点。顺便将火车路线，火车交叉路口等信息记录下来，保存到SaveActor身上（就是一个摆到大世界的Actor）。
 2 创建火车的Spawner，配置火车的entityConfig
-3 创建火车的Generator，在火车的路线上
+3 创建火车的Generator，在火车的路线上选择生成点，spawnentity
 ```
