@@ -47,6 +47,9 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 ```cpp
 else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 {
+	/*
+	1 在Stand状态下，如果Ghostmei'she'zhi'gu
+	*/
 	if (Ghost.LastSeenActionID != MoveTarget.GetCurrentActionID())
 	{
 		Ghost.Location = MoveTarget.Center;
