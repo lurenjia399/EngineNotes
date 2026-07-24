@@ -5,7 +5,7 @@
 1 
 ```cpp
 1 分成两种情况计算初始力
-2 如果是Move类型的，计算出
+2 如果是Move类型的，通过MoveTarget中速度计算出
 ```
 
 2 EMassMovementAction::Move，对Move类型的处理
