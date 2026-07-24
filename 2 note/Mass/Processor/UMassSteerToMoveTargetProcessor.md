@@ -25,7 +25,7 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	3 计算ForwardOffset，是entity位置在Forward方向上的投影
 	4 计算SidewaysOffset，是entity位置在左向量方向上的投影
 	5 计算SteerForward，是根据勾股定理，计算过entity位置与圆交点在Forward方向上的投影
-	6 计算SteerTarget，计算转向的目标点，因为entity有Delta就是
+	6 计算SteerTarget，计算转向的目标点，因为entity有Delta就是偏离了lane，需要在lane上找一个点让entity转向回来，回到lane上
 	*/
 	const FVector TargetSide = FVector::CrossProduct(MoveTarget.Forward, FVector::UpVector);
 	const FVector Delta = CurrentLocation - MoveTarget.Center;
