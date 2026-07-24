@@ -1,6 +1,6 @@
 0
 ```cpp
-1 计算AnimStateID
+1 计算AnimStateIndex，就是根据速度，天气选择当前的动作，站立走跑，下雨站立走跑，打伞zhan
 ```
 
 1 MassActor通过这个来更新AnimInstanceData数据，然后动画蓝图读取更新
