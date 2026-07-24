@@ -63,7 +63,7 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		StandingSteering.bEnteredFromMoveAction = MoveTarget.GetPreviousAction() == EMassMovementAction::Move;
 	}
 	/*
-	1 如果Ghost的位置和movetarget位置差距超过阈值，就设置
+	1 如果Ghost的位置和movetarget位置差距超过阈值，就设置bIsUpdatingTarget为true，说明该更新位置了
 	*/
 	if (!StandingSteering.bIsUpdatingTarget)
 	{
