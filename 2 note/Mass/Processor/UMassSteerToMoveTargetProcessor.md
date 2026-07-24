@@ -11,7 +11,7 @@ const FVector::FReal LookAheadDistance = FMath::Max(
 if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 {
 	/*
-	1 计算出
+	1 计算出展望未来距离，如果接近stand目标的就乘上系数，越接近移动目标就展望越小的距离
 	*/
 	FVector::FReal ArrivalFade = 1.;
 	if (MoveTarget.IntentAtGoal == EMassMovementAction::Stand)
