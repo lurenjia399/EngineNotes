@@ -2,7 +2,7 @@
 ```cpp
 1 计算AnimStateIndex，就是根据速度，天气选择当前的动作，站立走跑，下雨站立走跑，打伞站立走跑
 2 根据AnimStateIndex从AnimToTexture资源中选择AnimSequence，以及动画播放已经播放了的时间，播放速率，把这些数据组装成FMassCrowdAnimInstanceData，记录到AnimInstance。如果是从ISM切换成Actor的就立刻TickAnimation和RefreshBoneTransforms
-3 在AnimInstance更新数据的时候会根据已经播放的时间，
+3 
 ```
 
 1 MassActor通过这个来更新AnimInstanceData数据，然后动画蓝图读取更新
