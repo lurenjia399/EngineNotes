@@ -6,7 +6,7 @@
 ```cpp
 1 分成两种情况计算这一帧的初始力
 2 如果是Move类型的，通过计算Entity当前位置和MoveTarget.center记录的位置，算出转向方向，根据MoveTarget中记录速度和转向方向计算出转向速度，通过转向速度和当前实际速度以及配置的转向时间计算出转向力，这个转向力就是初始力
-3 如果是Stand类型的，会检测Ghost和entity的距离，如果距离超过阈值了就想让entity向Ghost移动，
+3 如果是Stand类型的，会检测Ghost和entity的距离，如果距离超过阈值了就想让entity向Ghost移动，也是
 ```
 
 2 EMassMovementAction::Move，对Move类型的处理
