@@ -5,6 +5,9 @@
 
 2 EMassMovementAction::Move，对Move类型的处理
 ```cpp
+// entity朝前提前看的距离，时间*MoveTarg
+const FVector::FReal LookAheadDistance = FMath::Max(
+	1.0f, MovingSteeringParams.LookAheadTime * MoveTarget.DesiredSpeed.Get());
 if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 {
 	
