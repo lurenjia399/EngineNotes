@@ -35,7 +35,10 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	FVector SteerTarget = MoveTarget.Center + MoveTarget.Forward * FMath::Clamp(ForwardOffset + SteerForward, 0., SteeringPredictionDistance);
 	/*
 	1 计算转向方向，就是entity当前位置指向转向目标点的向量
+	2 计算转向速度，就是转向方向 * 转向速度变量
 	*/
 	FVector SteerDirection = SteerTarget - CurrentLocation;
+	Steering.DesiredVelocity = SteerDirection * DesiredSpeed * Context.GetEntityManagerChecked().GetGlobalCustomTimeDilation();
+
 }
 ```
