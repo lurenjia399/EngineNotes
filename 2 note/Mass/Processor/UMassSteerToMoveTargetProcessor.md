@@ -77,7 +77,7 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		}
 	}
 	/*
-	1 更新
+	1 更新SteerTarget位置，就直接设置乘Ghost位置
 	*/
 	else
 	{
@@ -91,10 +91,15 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		}
 		else
 		{
-			// Speed is dropping, we have found the peak change, stop updating the target and start cooldown.
 			StandingSteering.TargetSelectionCooldown = StandingSteeringParams.TargetSelectionCooldown * FMath::RandRange(1.0f - StandingSteeringParams.TargetSelectionCooldownVariance, 1.0f + StandingSteeringParams.TargetSelectionCooldownVariance);
 			StandingSteering.bIsUpdatingTarget = false;
 		}
 	}
+	/*
+	1 同样的计算出zhuan'xi
+	*/
+	Steering.DesiredVelocity = SteerDirection * DesiredSpeed;
+	Force.Value = SteerK * (Steering.DesiredVelocity - DesiredMovement.DesiredVelocity); // Goal force
+	Force.Value = Force.Value.GetClampedToMaxSize(MovementParams.MaxAcceleration); 
 }
 ```
