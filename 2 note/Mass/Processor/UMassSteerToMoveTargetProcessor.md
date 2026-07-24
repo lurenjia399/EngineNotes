@@ -36,7 +36,7 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	/*
 	1 计算转向方向，就是entity当前位置指向转向目标点的向量
 	2 计算转向速度，就是转向方向 * 转向速度标量
-	3 计算出转向力，通过转向速度和当前移动速度的插值计算出
+	3 计算出转向力，通过转向速度和当前移动速度的差值 / 转向反应时间
 	*/
 	FVector SteerDirection = SteerTarget - CurrentLocation;
 	Steering.DesiredVelocity = SteerDirection * DesiredSpeed * Context.GetEntityManagerChecked().GetGlobalCustomTimeDilation();
