@@ -96,10 +96,10 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		}
 	}
 	/*
-	1 同样的计算出zhuan'xi
+	1 同样的计算出转向速度，让后根据速度/反应时间计算出转向力
 	*/
 	Steering.DesiredVelocity = SteerDirection * DesiredSpeed;
-	Force.Value = SteerK * (Steering.DesiredVelocity - DesiredMovement.DesiredVelocity); // Goal force
+	Force.Value = SteerK * (Steering.DesiredVelocity - DesiredMovement.DesiredVelocity);
 	Force.Value = Force.Value.GetClampedToMaxSize(MovementParams.MaxAcceleration); 
 }
 ```
