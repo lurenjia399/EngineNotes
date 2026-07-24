@@ -45,5 +45,19 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 ```
 3 EMassMovementAction::Stand，对Stand类型的处理
 ```cpp
+else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
+{
+	if (Ghost.LastSeenActionID != MoveTarget.GetCurrentActionID())
+	{
+		Ghost.Location = MoveTarget.Center;
+		Ghost.Velocity = FVector::ZeroVector;
+		Ghost.LastSeenActionID = MoveTarget.GetCurrentActionID();
 
+		StandingSteering.TargetLocation = MoveTarget.Center;
+		StandingSteering.TrackedTargetSpeed = 0.0f;
+		StandingSteering.bIsUpdatingTarget = false;
+		StandingSteering.TargetSelectionCooldown = StandingSteeringParams.TargetSelectionCooldown * FMath::RandRange(1.f - StandingSteeringParams.TargetSelectionCooldownVariance, 1.f + StandingSteeringParams.TargetSelectionCooldownVariance);
+		StandingSteering.bEnteredFromMoveAction = MoveTarget.GetPreviousAction() == EMassMovementAction::Move;
+	}
+}
 ```
