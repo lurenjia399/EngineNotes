@@ -43,3 +43,7 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	Force.Value = SteerK * (Steering.DesiredVelocity - DesiredMovement.DesiredVelocity);
 }
 ```
+3 EMassMovementAction::Stand，对Stand类型的处理
+```cpp
+
+```
