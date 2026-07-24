@@ -5,7 +5,7 @@
 1 
 ```cpp
 1 分成两种情况计算初始力
-2 如果是Move类型的，通过计算Entity当前位置和MoveTarget.center记录的位置，算出转向目标位置
+2 如果是Move类型的，通过计算Entity当前位置和MoveTarget.center记录的位置，算出前瞻距离，根据MoveTarget中记录速度和前瞻方向计算出前瞻速度，
 ```
 
 2 EMassMovementAction::Move，对Move类型的处理
