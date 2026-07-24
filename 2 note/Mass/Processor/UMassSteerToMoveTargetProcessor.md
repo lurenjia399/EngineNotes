@@ -19,5 +19,10 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 		ArrivalFade = FMath::Clamp(MoveTarget.DistanceToGoal / LookAheadDistance, 0., 1.);
 	}
 	const FVector::FReal SteeringPredictionDistance = LookAheadDistance * ArrivalFade;
+	/*
+	1 计算TargetSide朝左的向量，是Forward叉乘Up
+	*/
+	const FVector TargetSide = FVector::CrossProduct(MoveTarget.Forward, FVector::UpVector);
+	const FVector Delta = CurrentLocation - MoveTarget.Center;
 }
 ```
