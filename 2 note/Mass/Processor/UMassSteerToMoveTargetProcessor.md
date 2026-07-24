@@ -5,13 +5,13 @@
 
 2 EMassMovementAction::Move，对Move类型的处理
 ```cpp
-// entity朝前提前看的距离，时间*MoveTarget中速度
+// entity展望未来距离，时间*MoveTarget中速度
 const FVector::FReal LookAheadDistance = FMath::Max(
 	1.0f, MovingSteeringParams.LookAheadTime * MoveTarget.DesiredSpeed.Get());
 if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 {
 	/*
-	1 
+	1 计算出
 	*/
 	FVector::FReal ArrivalFade = 1.;
 	if (MoveTarget.IntentAtGoal == EMassMovementAction::Stand)
