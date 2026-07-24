@@ -49,7 +49,6 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 {
 	/*
 	1 在Stand状态下，如果Ghost没设置过，就设置Ghost和StandingSteer上的信息，相当于初始化Ghost
-	2 
 	*/
 	if (Ghost.LastSeenActionID != MoveTarget.GetCurrentActionID())
 	{
@@ -63,6 +62,9 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		StandingSteering.TargetSelectionCooldown = StandingSteeringParams.TargetSelectionCooldown * FMath::RandRange(1.f - StandingSteeringParams.TargetSelectionCooldownVariance, 1.f + StandingSteeringParams.TargetSelectionCooldownVariance);
 		StandingSteering.bEnteredFromMoveAction = MoveTarget.GetPreviousAction() == EMassMovementAction::Move;
 	}
+	/*
+	1 如果Ghost的位置和movetarget位置差距超过阈值，就设置
+	*/
 	if (!StandingSteering.bIsUpdatingTarget)
 	{
 		if (StandingSteering.TargetSelectionCooldown <= 0.0f
