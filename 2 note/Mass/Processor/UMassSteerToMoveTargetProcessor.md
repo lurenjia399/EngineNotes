@@ -23,11 +23,14 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	1 计算TargetSide朝左的向量，是MoveTarget.Forward叉乘Up向量，lane上的朝左向量
 	2 计算Delta，是MoveTarget.Center就是lane上的位置，和实际entity的位置差值，是lane上位置指向entity实际位置的向量
 	3 计算ForwardOffset，是entity位置在Forward方向上的投影
-	4 计算SidewaysOffset，是entity位置在左向量方向山的投影
+	4 计算SidewaysOffset，是entity位置在左向量方向上的投影
+	5 计算SteerForward，是根据勾股定理，
 	*/
 	const FVector TargetSide = FVector::CrossProduct(MoveTarget.Forward, FVector::UpVector);
 	const FVector Delta = CurrentLocation - MoveTarget.Center;
 	const FVector::FReal ForwardOffset = FVector::DotProduct(MoveTarget.Forward, Delta);
 	const FVector::FReal SidewaysOffset = FVector::DotProduct(TargetSide, Delta);
+	const FVector::FReal SteerForward = FMath::Sqrt(FMath::Max(0., FMath::Square(SteeringPredictionDistance) - FMath::Square(SidewaysOffset)));
+
 }
 ```
