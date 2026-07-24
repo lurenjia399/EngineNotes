@@ -63,7 +63,7 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		StandingSteering.bEnteredFromMoveAction = MoveTarget.GetPreviousAction() == EMassMovementAction::Move;
 	}
 	/*
-	1 如果Ghost的位置和movetarget位置差距超过阈值，就设置bIsUpdatingTarget为true，说明该更新位置了
+	1 如果Ghost的位置和movetarget位置差距超过阈值，就设置bIsUpdatingTarget为true，说明该更entity位置了
 	*/
 	if (!StandingSteering.bIsUpdatingTarget)
 	{
@@ -74,6 +74,26 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 			StandingSteering.TrackedTargetSpeed = 0.0f;
 			StandingSteering.bIsUpdatingTarget = true;
 			StandingSteering.bEnteredFromMoveAction = false;
+		}
+	}
+	/*
+	1 更新
+	*/
+	else
+	{
+		StandingSteering.TargetLocation = Ghost.Location;
+		const FVector::FReal GhostSpeed = Ghost.Velocity.Length();
+
+		if (GhostSpeed > (StandingSteering.TrackedTargetSpeed * StandingSteeringParams.TargetSpeedHysteresisScale))
+		{
+			const FVector::FReal TrackedTargetSpeed = FMath::Max(StandingSteering.TrackedTargetSpeed, GhostSpeed);
+			StandingSteering.TrackedTargetSpeed = static_cast<float>(TrackedTargetSpeed);
+		}
+		else
+		{
+			// Speed is dropping, we have found the peak change, stop updating the target and start cooldown.
+			StandingSteering.TargetSelectionCooldown = StandingSteeringParams.TargetSelectionCooldown * FMath::RandRange(1.0f - StandingSteeringParams.TargetSelectionCooldownVariance, 1.0f + StandingSteeringParams.TargetSelectionCooldownVariance);
+			StandingSteering.bIsUpdatingTarget = false;
 		}
 	}
 }
