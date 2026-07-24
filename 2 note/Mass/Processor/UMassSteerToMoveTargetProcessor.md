@@ -10,6 +10,14 @@ const FVector::FReal LookAheadDistance = FMath::Max(
 	1.0f, MovingSteeringParams.LookAheadTime * MoveTarget.DesiredSpeed.Get());
 if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 {
-	
+	/*
+	1 
+	*/
+	FVector::FReal ArrivalFade = 1.;
+	if (MoveTarget.IntentAtGoal == EMassMovementAction::Stand)
+	{
+		ArrivalFade = FMath::Clamp(MoveTarget.DistanceToGoal / LookAheadDistance, 0., 1.);
+	}
+	const FVector::FReal SteeringPredictionDistance = LookAheadDistance * ArrivalFade;
 }
 ```
