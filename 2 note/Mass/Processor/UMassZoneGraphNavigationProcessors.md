@@ -62,7 +62,7 @@ else if (ShortPath.ProgressDistance <=
 	LaneLocation.DistanceAlongLane = 
 		FMath::Min(FMath::Lerp(CurrPoint.DistanceAlongLane.Get(), 
 			NextPoint.DistanceAlongLane.Get(), T), LaneLocation.LaneLength);
-	// 根据插值T，赋值MoveTarget一些数据
+	// 根据插值T，赋值MoveTarget一些数据，lanesh
 	MoveTarget.Center = FMath::Lerp(CurrPoint.Position, NextPoint.Position, T);
 	MoveTarget.Forward = FMath::Lerp(CurrPoint.Tangent.GetVector(), 
 		NextPoint.Tangent.GetVector(), T).GetSafeNormal();
