@@ -33,6 +33,9 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	const FVector::FReal SidewaysOffset = FVector::DotProduct(TargetSide, Delta);
 	const FVector::FReal SteerForward = FMath::Sqrt(FMath::Max(0., FMath::Square(SteeringPredictionDistance) - FMath::Square(SidewaysOffset)));
 	FVector SteerTarget = MoveTarget.Center + MoveTarget.Forward * FMath::Clamp(ForwardOffset + SteerForward, 0., SteeringPredictionDistance);
-
+	/*
+	1 计算转向方向，就是entity当前位置指向转向目标点的向量
+	*/
+	FVector SteerDirection = SteerTarget - CurrentLocation;
 }
 ```
