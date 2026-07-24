@@ -21,8 +21,8 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 	const FVector::FReal SteeringPredictionDistance = LookAheadDistance * ArrivalFade;
 	/*
 	1 计算TargetSide朝左的向量，是MoveTarget.Forward叉乘Up向量，lane上的朝左向量
-	2 计算Delta，是MoveTarget.Center就是lane上的位置，和实际entity的位置差值
-	3 计算ForwardOffset，是
+	2 计算Delta，是MoveTarget.Center就是lane上的位置，和实际entity的位置差值，是lane上位置指向entity实际位置的向量
+	3 计算ForwardOffset，是lane上Forward和lane指向entity实际
 	*/
 	const FVector TargetSide = FVector::CrossProduct(MoveTarget.Forward, FVector::UpVector);
 	const FVector Delta = CurrentLocation - MoveTarget.Center;
