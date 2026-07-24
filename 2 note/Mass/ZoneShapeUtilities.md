@@ -45,15 +45,6 @@ void TessellateSplineShape(
 	// Calculate miter extrusion at vertices
 	CalculateMiters(CurvePoints, EdgeNormals);
 
-#if HOTTA_ENGINE_MODIFY
-	//���ŷ��߷���ƽ��OffsetAlongNormal
-	for (int32 i = 0; i < CurvePoints.Num(); i++)
-	{
-		FShapePoint& Point = CurvePoints[i];
-		Point.Position = Point.Position + Point.Right * OffsetAlongNormal;
-	}
-#endif
-
 	// 计算ZoneShapeComp的边缘点，从起始点的坐下开始，顺时针转一圈，如果是Sharp的话就是四个点
 	Zone.BoundaryPointsBegin = OutZoneStorage.BoundaryPoints.Num();
 	const float TotalWidth = LaneProfile.GetLanesTotalWidth();
