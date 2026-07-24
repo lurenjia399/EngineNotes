@@ -1,7 +1,7 @@
 0
 ```cpp
 1 计算AnimStateIndex，就是根据速度，天气选择当前的动作，站立走跑，下雨站立走跑，打伞站立走跑
-2 根据AnimStateIndex从AnimToTexture资源中选择AnimSequence
+2 根据AnimStateIndex从AnimToTexture资源中选择AnimSequence，
 ```
 
 1 MassActor通过这个来更新AnimInstanceData数据，然后动画蓝图读取更新
