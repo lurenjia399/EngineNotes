@@ -48,7 +48,8 @@ if (MoveTarget.GetCurrentAction() == EMassMovementAction::Move)
 else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 {
 	/*
-	1 在Stand状态下，如果Ghostmei'she'zhi'gu
+	1 在Stand状态下，如果Ghost没设置过，就设置Ghost和StandingSteer上的信息，相当于初始化Ghost
+	2 
 	*/
 	if (Ghost.LastSeenActionID != MoveTarget.GetCurrentActionID())
 	{
@@ -61,6 +62,17 @@ else if (MoveTarget.GetCurrentAction() == EMassMovementAction::Stand)
 		StandingSteering.bIsUpdatingTarget = false;
 		StandingSteering.TargetSelectionCooldown = StandingSteeringParams.TargetSelectionCooldown * FMath::RandRange(1.f - StandingSteeringParams.TargetSelectionCooldownVariance, 1.f + StandingSteeringParams.TargetSelectionCooldownVariance);
 		StandingSteering.bEnteredFromMoveAction = MoveTarget.GetPreviousAction() == EMassMovementAction::Move;
+	}
+	if (!StandingSteering.bIsUpdatingTarget)
+	{
+		if (StandingSteering.TargetSelectionCooldown <= 0.0f
+			&& FVector::DistSquared(StandingSteering.TargetLocation, Ghost.Location) > FMath::Square(TargetMoveThreshold))
+		{
+			StandingSteering.TargetLocation = Ghost.Location;
+			StandingSteering.TrackedTargetSpeed = 0.0f;
+			StandingSteering.bIsUpdatingTarget = true;
+			StandingSteering.bEnteredFromMoveAction = false;
+		}
 	}
 }
 ```
