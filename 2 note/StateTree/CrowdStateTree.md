@@ -81,7 +81,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	// 13 如果是GlobalFrame，就会执行Evaluator的TreeStart方法，执行GlobalTask的EnterState方法，并返回EnterState的结果作为GlobalTasksRunStatus
 	const EStateTreeRunStatus GlobalTasksRunStatus = 
 		StartEvaluatorsAndGlobalTasks(LastInitializedTaskIndex);
-	// 14 
+	// 14 如果GobalTask执行的结果是Running，或者是没有GobalTask
 	if (GlobalTasksRunStatus == EStateTreeRunStatus::Running)
 	{
 		// 7 执行Evaluator的tick
