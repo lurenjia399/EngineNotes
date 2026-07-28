@@ -56,7 +56,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		7.3 赋值StateTree，是一个指针，就是StateTree的指针
 		7.4 赋值根节点RootState
 		7.5 赋值ActiveStates，初始化下
-		7.6 
+		7.6 标记bIsGlobalFrame为true，表示这一个执行帧需要执行GlobalTask
 	*/
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
