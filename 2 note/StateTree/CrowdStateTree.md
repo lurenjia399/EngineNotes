@@ -42,12 +42,14 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		InstanceData.SetSharedEventQueue(
 			Parameters.SharedEventQueue.ToSharedRef());
 	}
-	// 5 如果参数中没有全局Parameters，就值
+	// 5 如果参数中没有全局Parameters，就往执行上下文中设置默认的
 	if (!Parameters.GlobalParameters || 
 		!SetGlobalParameters(*Parameters.GlobalParameters))
 	{
 		SetGlobalParameters(RootStateTree.GetDefaultParameters());
 	}
+	// 6 保护bAllowedToScheduleNextTick值，在Start方法结束后恢复。表示从这里开始不能执行ScheduleNextTi
+	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
 	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
@@ -59,6 +61,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	UpdateInstanceData({}, Exec.ActiveFrames);
 	// 5 
 	SetUpdatePhaseInExecutionState(Exec, EStateTreeUpdatePhase::StartTree);
+	
 	// 6 Evaluator执行TreeStart，GlobalTask执行EnterState
 	const EStateTreeRunStatus GlobalTasksRunStatus = 
 		StartEvaluatorsAndGlobalTasks(LastInitializedTaskIndex);
@@ -211,4 +214,6 @@ EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
 	}
 	TickUpdateTasksInternal(DeltaTime);
 	TickTriggerTransitionsInternal();
-	return TickPostlude
+	return TickPostlude();
+}
+```
