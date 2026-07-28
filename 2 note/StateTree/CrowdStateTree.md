@@ -84,10 +84,10 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	// 14 如果GobalTask执行的结果是Running，或者是没有GobalTask
 	if (GlobalTasksRunStatus == EStateTreeRunStatus::Running)
 	{
-		// 7 执行Evaluator的tick
+		// 15 Tick一次Evaluator，但是不TickGlobalTask
 		constexpr bool bTickGlobalTasks = false;
 		TickEvaluatorsAndGlobalTasks(0.0f, bTickGlobalTasks);
-		// 8 设置运行状态，上一次tick状态为Unset
+		// 16 设置运行状态，上一次tick状态为Unset
 		Exec.TreeRunStatus = EStateTreeRunStatus::Running;
 		Exec.LastTickStatus = EStateTreeRunStatus::Unset;
 		// 9 从根节点开始SelectState，dfs遍历，遍历到叶子节点，构建选择链，会调用TestCondition方法，判断能否进入选择链
