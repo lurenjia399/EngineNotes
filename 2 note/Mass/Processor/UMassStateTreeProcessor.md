@@ -7,5 +7,6 @@
 ```cpp
 1 一个UStateTree资产，会放在ConstSharedFragment中，使用相同资产的entity会共享这个Fragment
 2 在UMassStateTreeActivationProcessor这个初始化的Processor中，会遍历所有Entity，为每个Entity创建Instance，存在UMassStateTreeSubsystem中返回InstanceHandle，Hande存放在StateTreeInstanceFragment里
-3 依然还在UMassStateTreeActivationProcessor里，继续遍历所有Entity，为每个Entity创建StateTreeContext并执行Star
+3 依然还在UMassStateTreeActivationProcessor里，继续遍历所有Entity，为每个Entity创建StateTreeContext并执行Start方法
+4 
 ```
