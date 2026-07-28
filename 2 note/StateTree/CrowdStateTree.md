@@ -76,7 +76,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	// 11 在数的执行状态中初始化一个随机种子
 	Exec.RandomStream.Initialize(Parameters.RandomSeed.IsSet() 
 		? Parameters.RandomSeed.GetValue() : FPlatformTime::Cycles());
-	// 5 
+	// 12 将数的执行状态中的CurrentPhase变量设置成StartTree。表示所处的当前状态是StartTree
 	SetUpdatePhaseInExecutionState(Exec, EStateTreeUpdatePhase::StartTree);
 	
 	// 6 Evaluator执行TreeStart，GlobalTask执行EnterState
