@@ -64,7 +64,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	InitFrame.RootState = FStateTreeStateHandle::Root;
 	InitFrame.ActiveStates = {};
 	InitFrame.bIsGlobalFrame = true;
-	// 8 在StateTree的Frames数组中寻找根，并返回FrameInfo
+	// 8 在StateTree的Frames数组中寻找根Frame，也就是寻找主树因为只有主树是带有根的，并返回主树的FrameInfo
 	const FCompactStateTreeFrame* FrameInfo = 
 		RootStateTree.GetFrameFromHandle(FStateTreeStateHandle::Root);
 	// 4
