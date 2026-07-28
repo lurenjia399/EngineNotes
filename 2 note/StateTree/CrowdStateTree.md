@@ -33,6 +33,8 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	{
 		Stop();
 	}
+	// 3 保护bAllowedToScheduleNextTick变量，无论被修改duo'c
+	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
 	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
