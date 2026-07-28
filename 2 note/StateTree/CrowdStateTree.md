@@ -28,11 +28,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 {
 	// 1 从InstanceStorage中获取树的执行状态。InstanceStorage是每个Entity独有的在UMassStateTreeActivationProcessor这个里创建出的数据空间，并且是通过MakeShare出来的数据存放在UMassStateTreeSubsystem的InstanceDataArray数组中，通过SubSystem一直保持持有不析构
 	FStateTreeExecutionState& Exec = GetExecState();
-	if (!Exec.CurrentPhase == EStateTreeUpdatePhase::Unset)
-	{
-		return EStateTreeRunStatus::Failed;
-	}
-	// 2 如果之前还在运行就停止
+	// 2 判断树的执行状态，如果还在运行就Stop。
 	if (Exec.TreeRunStatus == EStateTreeRunStatus::Running)
 	{
 		Stop();
