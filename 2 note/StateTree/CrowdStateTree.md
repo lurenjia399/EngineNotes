@@ -35,6 +35,13 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	}
 	//3 InstanceData就是每个Entity所独有的数据。这里重置因为是Start方法
 	InstanceData.Reset();
+	// 4 通过移动语义把参数中ExecutionExtension移动到树的执行状态中，并把EventQueue放到
+	Exec.ExecutionExtension = MoveTemp(Parameters.ExecutionExtension);
+	if (Parameters.SharedEventQueue)
+	{
+		InstanceData.SetSharedEventQueue(
+			Parameters.SharedEventQueue.ToSharedRef());
+	}
 	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
