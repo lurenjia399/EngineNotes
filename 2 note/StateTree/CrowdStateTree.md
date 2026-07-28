@@ -33,7 +33,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	{
 		Stop();
 	}
-	//3 InstanceData
+	//3 InstanceData就是每个Entity所独有的数据。这里重置因为是Start方法
 	InstanceData.Reset();
 	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
