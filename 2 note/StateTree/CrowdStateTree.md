@@ -71,7 +71,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	InitFrame.ActiveTasksStatus = FrameInfo ? 
 		FStateTreeTasksCompletionStatus(*FrameInfo) 
 			: FStateTreeTasksCompletionStatus();
-	// 10 更新每个Entity身上的InstanceData数据，
+	// 10 更新每个Entity身上的InstanceData数据，把StateTree中的GobalTask，Evaluator中记录的InstanceData都填充到Entity身上
 	UpdateInstanceData({}, Exec.ActiveFrames);
 	// 5 
 	SetUpdatePhaseInExecutionState(Exec, EStateTreeUpdatePhase::StartTree);
