@@ -53,7 +53,10 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	/*
 		7.1 向树的执行状态中新加一个执行帧
 		7.2 赋值执行帧的FrameID，是一个从0递增的计数器，计数器存在实例中，也就是Entity独有
-		7.3 赋值State
+		7.3 赋值StateTree，是一个指针，就是StateTree的指针
+		7.4 赋值根节点RootState
+		7.5 赋值ActiveStates，初始化下
+		7.6 
 	*/
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
