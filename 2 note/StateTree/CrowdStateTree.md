@@ -1,11 +1,4 @@
 
-# FStateTreeExecutionContext
-```cpp
-struct FStateTreeExecutionContext
-{
-	
-}
-```
 # SelectionBehavior
 ```cpp
 enum class EStateTreeStateSelectionBehavior : uint8
@@ -33,7 +26,7 @@ enum class EStateTreeStateSelectionBehavior : uint8
 ```cpp
 EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameters)
 {
-	// 1 获取实例
+	// 1 从InstanceStorage中获取
 	FStateTreeExecutionState& Exec = GetExecState();
 	if (!Exec.CurrentPhase == EStateTreeUpdatePhase::Unset)
 	{
