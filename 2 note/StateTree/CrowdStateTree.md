@@ -26,7 +26,7 @@ enum class EStateTreeStateSelectionBehavior : uint8
 ```cpp
 EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameters)
 {
-	// 1 从InstanceStorage中获取树的执行状态，InstanceStorage是每个Entity独有的在，
+	// 1 从InstanceStorage中获取树的执行状态，InstanceStorage是每个Entity独有的在UMassStateTreeActivationProcessor这个里创建出的数据空间，
 	FStateTreeExecutionState& Exec = GetExecState();
 	if (!Exec.CurrentPhase == EStateTreeUpdatePhase::Unset)
 	{
