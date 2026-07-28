@@ -5,5 +5,6 @@
 5 SignalEntities方法通过创建FMassStateTreeExecutionContext来执行StateTree了。
 
 ```cpp
-1 一个UStateTree资产，会放在ConstSharedFragment中，使用相同资产的entity会共享
+1 一个UStateTree资产，会放在ConstSharedFragment中，使用相同资产的entity会共享这个Fragment
+2 
 ```
