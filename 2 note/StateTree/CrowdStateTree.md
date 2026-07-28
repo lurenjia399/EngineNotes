@@ -67,6 +67,10 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	// 8 在StateTree的Frames数组中寻找根Frame，也就是寻找根索引是Root的主树，因为子树的跟索引是节点索引，并返回主树的Frame
 	const FCompactStateTreeFrame* FrameInfo = 
 		RootStateTree.GetFrameFromHandle(FStateTreeStateHandle::Root);
+	// 9 赋值执行帧的ActiveTasksStatus，表示激活的
+	InitFrame.ActiveTasksStatus = FrameInfo ? 
+		FStateTreeTasksCompletionStatus(*FrameInfo) 
+			: FStateTreeTasksCompletionStatus();
 	// 4
 	UpdateInstanceData({}, Exec.ActiveFrames);
 	// 5 
