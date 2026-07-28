@@ -48,7 +48,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	{
 		SetGlobalParameters(RootStateTree.GetDefaultParameters());
 	}
-	// 6 保护bAllowedToScheduleNextTick值，在Start方法结束后恢复。表示从这里开始不能执行ScheduleNextTi
+	// 6 保护bAllowedToScheduleNextTick值，在Start方法结束后恢复。表示从这里开始不能执行Rick
 	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
 	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
