@@ -35,12 +35,18 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	}
 	//3 InstanceData就是每个Entity所独有的数据。这里重置因为是Start方法
 	InstanceData.Reset();
-	// 4 通过移动语义把参数中ExecutionExtension移动到树的执行状态中，并把EventQueue放到
+	// 4 通过移动语义把参数中ExecutionExtension移动到树的执行状态中，并把EventQueue放到InstanceData中
 	Exec.ExecutionExtension = MoveTemp(Parameters.ExecutionExtension);
 	if (Parameters.SharedEventQueue)
 	{
 		InstanceData.SetSharedEventQueue(
 			Parameters.SharedEventQueue.ToSharedRef());
+	}
+	// 5 如果参数中没有全局Parameters，就值
+	if (!Parameters.GlobalParameters || 
+		!SetGlobalParameters(*Parameters.GlobalParameters))
+	{
+		SetGlobalParameters(RootStateTree.GetDefaultParameters());
 	}
 	// 3 添加一个ActiveFrame
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
@@ -205,6 +211,4 @@ EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
 	}
 	TickUpdateTasksInternal(DeltaTime);
 	TickTriggerTransitionsInternal();
-	return TickPostlude();
-}
-```
+	return TickPostlude
