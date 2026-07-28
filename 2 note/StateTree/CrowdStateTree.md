@@ -188,5 +188,18 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 
 # Tick
 ```cpp
-
+EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
+{
+	// bAllowedToScheduleNextTick临时设置成false，在tick结束回滚
+	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
+	
+	const EStateTreeRunStatus PreludeResult = TickPrelude();
+	if (PreludeResult != EStateTreeRunStatus::Running)
+	{
+		return PreludeResult;
+	}
+	TickUpdateTasksInternal(DeltaTime);
+	TickTriggerTransitionsInternal();
+	return TickPostlude();
+}
 ```
