@@ -50,7 +50,10 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 	}
 	// 6 保护bAllowedToScheduleNextTick值，在Start方法结束后恢复。表示从这里开始不能执行Rick
 	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
-	// 3 添加一个ActiveFrame
+	/*
+		7.1 向树的执行状态中新加一个执行帧
+		7.2 赋值
+	*/
 	FStateTreeExecutionFrame& InitFrame = Exec.ActiveFrames.AddDefaulted_GetRef();
 	InitFrame.FrameID = UE::StateTree::FActiveFrameID(Storage.GenerateUniqueId());
 	InitFrame.StateTree = &RootStateTree;
