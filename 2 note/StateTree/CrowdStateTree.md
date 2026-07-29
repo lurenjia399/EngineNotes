@@ -181,7 +181,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 			}
 		}
 	}
-	// 3 更新状态，FirstFrameResult表示第一个激活帧中GlobalTask的执行状态，StateResult表示所有执行帧中
+	// 3 更新状态，FirstFrameResult表示第一个激活帧中GlobalTask的执行状态，StateResult表示所有执行帧中每个节点的执行状态合，这个合会根据优先级排序
 	EStateTreeRunStatus FirstFrameResult = EStateTreeRunStatus::Running;
 	EStateTreeRunStatus FrameResult = EStateTreeRunStatus::Running;
 	EStateTreeRunStatus StateResult = EStateTreeRunStatus::Running;
