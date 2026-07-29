@@ -378,7 +378,7 @@ bool FStateTreeExecutionContext::SelectState(
 ```
 # TriggerTransitions
 ```cpp
-1 
+1 处理实例里的TransitionRequest，是外部主动调用的请求，
 ```
 
 ```cpp
