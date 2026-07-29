@@ -209,6 +209,10 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 			StateResult = GetPriorityRunStatus(StateResult, CastToRunStatus(StateTasksStatus));
 		}
 	}
+	// 4 最终判断是否
+	Exec.bHasPendingCompletedState = StateResult != EStateTreeRunStatus::Running
+		 || FrameResult != EStateTreeRunStatus::Running;
+	return StateResult;
 }
 ```
 
