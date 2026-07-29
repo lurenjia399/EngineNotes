@@ -244,7 +244,7 @@ void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 	{
 		// 4 每次循环都清掉临时数据
 		ON_SCOPE_EXIT{ InstanceData.ResetTemporaryInstances(); };
-		// 5 
+		// 5 触发Transition，找到NextTransition
 		if (TriggerTransitions())
 		{
 			NextTransitionSource.Reset();
