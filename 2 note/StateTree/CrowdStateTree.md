@@ -400,7 +400,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 	}
 	// 2 处理完请求后就清空掉
 	InstanceData.ResetTransitionRequests();
-	// 3 如果延迟的Transitiondao
+	// 3 如果延迟的Transition过期了，就放到ExpiredTransitionsDelayed数组中
 	TArray<FStateTreeTransitionDelayedState, TInlineAllocator<8>> 
 		ExpiredTransitionsDelayed;
 	for (TArray<FStateTreeTransitionDelayedState>::TIterator It =
@@ -412,7 +412,11 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 			It.RemoveCurrentSwap();
 		}
 	}
-	
+	// 4 
+	if (Exec.ActiveFrames.Num() > 0)
+	{
+		
+	}
 	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
 	{
