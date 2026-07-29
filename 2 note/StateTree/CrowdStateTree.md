@@ -439,18 +439,25 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		}
 		/*
 		5.1 遍历节点上的所有Transition
-		5.2 如果不能Transition,优先级不够，
+		5.2 
+		5.3 
 		*/
 		else if (Handler.StateHandle.IsValid())
 		{
 			for (uint8 TransitionCounter = 0; 
 				TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 			{
+				
 				if (Transition.bTransitionEnabled == false)
 				{
 					continue;
 				}
 				if (Transition.Priority <= NextTransition.Priority)
+				{
+					continue;
+				}
+				if (EnumHasAnyFlags(Transition.Trigger, 
+					EStateTreeTransitionTrigger::OnStateCompleted))
 				{
 					continue;
 				}
