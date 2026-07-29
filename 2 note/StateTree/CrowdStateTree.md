@@ -220,7 +220,8 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 ```cpp
 void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 {
-	
+	// 1 获取树执行状态，如果当前没有激活帧就返回
+	FStateTreeExecutionState& Exec = GetExecState();
 }
 ```
 
