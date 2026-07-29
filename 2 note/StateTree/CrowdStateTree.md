@@ -480,6 +480,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 						continue;
 					}
 				}
+				// 下面处理Event类型的Transition
 			}
 		}
 		for (uint8 TransitionCounter = 0; 
