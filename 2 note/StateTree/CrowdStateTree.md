@@ -382,7 +382,7 @@ bool FStateTreeExecutionContext::SelectState(
 /*
 1 处理实例里的TransitionRequest，是外部主动调用的请求。执行RequestTransition
 2 处理过期的，带有Event，Delegate，Tick的Transition。执行RequestTransition
-3 处理那些状态改变的Transition。找到状态改变的State节点，从上往下遍历执行Transition，如果一个Transition条件满足就执行RequestTransition，并提高优先级，如果也请求成功了就退出遍历也就是只执行一个RequestTrasition。
+3 处理那些状态改变的Transition。从状态改变的state节点开始向父节点遍历，遍历的内容就是从上往下遍历执行Transition，如果一个Transition条件满足就执行RequestTransition，并提高优先级，如果也请求成功了就退出遍历也就是只执行一个RequestTrasition。
 */
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
