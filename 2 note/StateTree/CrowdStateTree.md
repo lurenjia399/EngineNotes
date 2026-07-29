@@ -378,6 +378,10 @@ bool FStateTreeExecutionContext::SelectState(
 ```
 # TriggerTransitions
 ```cpp
+1 
+```
+
+```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
 	// 1 遍历实例中的TransitionRequest，处理外部的Transition请求
@@ -542,7 +546,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 	if (NextTransition.Priority == EStateTreeTransitionPriority::None
 		&& (Exec.LastTickStatus != EStateTreeRunStatus::Running || Exec.bHasPendingCompletedState))
 	{
-		
+		// 省略
 	}
 }
 ```
