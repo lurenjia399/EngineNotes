@@ -430,9 +430,14 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		}
 		TransitionHandlers.StableSort();
 	}
-	// 5 遍历所有的需要Tick的Transition，
+	// 5 遍历所有的需要Tick的Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
 	{
+		// 这部分Mass不走欸
+		if (Handler.TaskIndex.IsValid())
+		{
+			
+		}
 		for (uint8 TransitionCounter = 0; 
 			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 		{
