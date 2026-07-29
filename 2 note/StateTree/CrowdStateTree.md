@@ -380,7 +380,7 @@ bool FStateTreeExecutionContext::SelectState(
 ```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
-	// 1 遍历实例中的TransitionRequest
+	// 1 遍历实例中的TransitionRequest，处理外部的Transition请求
 	for (const FStateTreeTransitionRequest& Request : 
 		InstanceData.GetTransitionRequests())
 	{
