@@ -412,15 +412,23 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 			It.RemoveCurrentSwap();
 		}
 	}
-	// 4 
+	// 4 遍历当前执行帧，在遍历执行帧中的ji'huo
 	if (Exec.ActiveFrames.Num() > 0)
 	{
 		for (int32 FrameIndex = EndFrameIndex; FrameIndex >= 0; FrameIndex--)
 		{
 			for (int32 StateIndex = CurrentFrame.ActiveStates.Num() - 1; StateIndex >= 0; StateIndex--)
 			{
-				
+				if (State.
+					ShouldTickTransitions(bHasEvents,bHasBroadcastedDelegates) 
+					|| State.bHasTransitionTasks 
+					|| bHasActiveTransitionDelayed)
+				{
+					TransitionHandlers.Emplace(FrameIndex, StateHandle, StateID, EStateTreeTransitionPriority::Normal);
+				}
 			}
+		}
+		TransitionHandlers.StableSort();
 	}
 	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
