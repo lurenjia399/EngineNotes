@@ -152,7 +152,7 @@ bool FStateTreeExecutionContext::SelectState(
 		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
 	}
 	Algo::Reverse(PathToNextState);
-	// 2 赋值CurrentStateTreeIndex，表示激活帧中和参数使用的同一个statetree资源的帧。赋值CurrentFrameIndex，表示
+	// 2 赋值CurrentStateTreeIndex，表示激活帧中和参数使用的同一个statetree资源的帧。赋值CurrentFrameIndex，表示同一资源帧中相同的rootState。
 	int32 CurrentFrameIndex = INDEX_NONE;
 	int32 CurrentStateTreeIndex = INDEX_NONE;
 	for (int32 FrameIndex = Exec.ActiveFrames.Num() - 1; 
