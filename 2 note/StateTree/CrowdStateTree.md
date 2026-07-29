@@ -261,19 +261,14 @@ void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 			}
 			// 7 进入目标state节点
 			const EStateTreeRunStatus LastTickStatus = EnterState(NextTransition);
-			// 8 清掉Ne
+			// 8 清掉NextTransition
 			NextTransition = FStateTreeTransitionResult();
-
 			Exec.LastTickStatus = LastTickStatus;
-
-			// Report state completed immediately.
 			if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
 			{
 				StateCompleted();
 			}
 		}
-
-		// Stop as soon as have found a running state.
 		if (Exec.LastTickStatus == EStateTreeRunStatus::Running)
 		{
 			break;
