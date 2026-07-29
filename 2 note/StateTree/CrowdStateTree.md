@@ -538,6 +538,12 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 			}
 		}
 	}
+	// 如果没有更高优先级的Transition，就
+	if (NextTransition.Priority == EStateTreeTransitionPriority::None
+		&& (Exec.LastTickStatus != EStateTreeRunStatus::Running || Exec.bHasPendingCompletedState))
+	{
+		
+	}
 }
 ```
 
