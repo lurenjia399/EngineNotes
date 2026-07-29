@@ -134,6 +134,11 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 	{
 		return EStateTreeRunStatus::Failed;
 	}
+	// 2 遍历激活帧
+	for (int32 FrameIndex = 0; FrameIndex < Exec.ActiveFrames.Num(); ++FrameIndex)
+	{
+		
+	}
 }
 ```
 
