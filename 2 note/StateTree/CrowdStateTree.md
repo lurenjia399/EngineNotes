@@ -106,6 +106,17 @@ EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
 	return TickPostlude();
 }
 ```
+## TickUpdateTasksInternal
+```cpp
+void FStateTreeExecutionContext::TickUpdateTasksInternal(float DeltaTime)
+{
+	//1 如果执行
+	for (FStateTreeTransitionDelayedState& DelayedState : Exec.DelayedTransitions)
+	{
+		DelayedState.TimeLeft -= DeltaTime;
+	}
+}
+```
 
 # SelectState
 ```cpp
