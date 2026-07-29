@@ -137,7 +137,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 	// 2 遍历激活帧
 	for (int32 FrameIndex = 0; FrameIndex < Exec.ActiveFrames.Num(); ++FrameIndex)
 	{
-		// 2.1 如果是
+		// 2.1 如果是GlobalFrame，就会执行一次Evaluator和GlobalTask的Tick
 		if (ExecutionContext::Private::bTickGlobalNodesFollowingTreeHierarchy)
 		{
 			if (TickArgs.Frame->bIsGlobalFrame)
@@ -153,6 +153,57 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 					TickArgs.bShouldTickTasks = false;
 					break;
 				}
+			}
+		}
+		// 2.2 遍历激活帧当中的所有的激活状态
+		for (int32 StateIndex = 0; StateIndex < 
+			TickArgs.Frame->ActiveStates.Num(); ++StateIndex)
+		{
+			const FStateTreeStateHandle CurrentHandle = TickArgs.Frame->ActiveStates[StateIndex];
+			const FCompactStateTreeState& CurrentState = CurrentStateTree->States[CurrentHandle.Index];
+			FTasksCompletionStatus CurrentCompletionStatus = TickArgs.Frame->ActiveTasksStatus.GetStatus(CurrentState);
+
+			TickArgs.StateID = TickArgs.Frame->ActiveStates.StateIDs[StateIndex];
+			TickArgs.TasksCompletionStatus = &CurrentCompletionStatus;
+
+			FCurrentlyProcessedStateScope StateScope(*this, CurrentHandle);
+			UE_STATETREE_DEBUG_SCOPED_STATE(this, CurrentHandle);
+
+			STATETREE_CLOG(CurrentState.TasksNum > 0, VeryVerbose, TEXT("%*sState '%s'")
+				, (FrameIndex + StateIndex + 1) * Debug::IndentSize, TEXT("")
+				, *DebugGetStatePath(Exec.ActiveFrames, TickArgs.Frame, StateIndex));
+
+			if (CurrentState.Type == EStateTreeStateType::Linked || CurrentState.Type == EStateTreeStateType::LinkedAsset)
+			{
+				if (CurrentState.ParameterDataHandle.IsValid() && CurrentState.ParameterBindingsBatch.IsValid())
+				{
+					const FStateTreeDataView StateParamsDataView = GetDataView(TickArgs.ParentFrame, *TickArgs.Frame, CurrentState.ParameterDataHandle);
+					CopyBatchOnActiveInstances(TickArgs.ParentFrame, *TickArgs.Frame, StateParamsDataView, CurrentState.ParameterBindingsBatch);
+				}
+			}
+
+			const bool bHasEvents = EventQueue && EventQueue->HasEvents();
+			bool bRequestLoopStop = false;
+			if (bCopyBoundPropertiesOnNonTickedTask || CurrentState.ShouldTickTasks(bHasEvents))
+			{
+				// Update Tasks data and tick if possible (ie. if no task has yet failed and bShouldTickTasks is true)
+				TickArgs.TasksBegin = CurrentState.TasksBegin;
+				TickArgs.TasksNum = CurrentState.TasksNum;
+				TickArgs.Indent = (FrameIndex + StateIndex + 1);
+				const FTickTaskResult TickTasksResult = TickTasks(TickArgs);
+
+				// Keep updating the binding but do not call tick on tasks if there's a failure.
+				TickArgs.bShouldTickTasks = TickTasksResult.bShouldTickTasks
+					&& !CurrentCompletionStatus.HasAnyFailed();
+				// If a failure and we do not copy then bindings, then we can stop.
+				bRequestLoopStop = !bCopyBoundPropertiesOnNonTickedTask && !TickTasksResult.bShouldTickTasks;
+			}
+
+			NumTotalEnabledTasks += CurrentState.EnabledTasksNum;
+
+			if (bRequestLoopStop)
+			{
+				break;
 			}
 		}
 	}
