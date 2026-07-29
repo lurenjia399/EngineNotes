@@ -93,33 +93,24 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 }
 ```
 
-# TickTask
+# Tick
 ```cpp
-EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
+EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
 {
-	if (TickArgs.Frame->bIsGlobalFrame)
+	CSV_SCOPED_TIMING_STAT_EXCLUSIVE(StateTree_Tick);
+
+	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
+
+	const EStateTreeRunStatus PreludeResult = TickPrelude();
+	if (PreludeResult != EStateTreeRunStatus::Running)
 	{
-		// TickEvaluatorsAndGlobalTasksForFrame
-		constexpr bool bTickGlobalTasks = true;
-		const EStateTreeRunStatus FrameResult = 
-			TickEvaluatorsAndGlobalTasksForFrame(DeltaTime, bTickGlobalTasks,
-				FrameIndex, TickArgs.ParentFrame, TickArgs.Frame);
-		if (FrameResult != EStateTreeRunStatus::Running)
-		{
-			TickArgs.bShouldTickTasks = false;
-			break;
-		}
+		return PreludeResult;
 	}
-	// 遍历state链，依次Tick
-	for (int32 StateIndex = 0; StateIndex < 
-		TickArgs.Frame->ActiveStates.Num(); ++StateIndex)
-	{
-		if (bCopyBoundPropertiesOnNonTickedTask || 
-			CurrentState.ShouldTickTasks(bHasEvents))
-		{
-			const FTickTaskResult TickTasksResult = TickTasks(TickArgs);
-		}
-	}
+
+	TickUpdateTasksInternal(DeltaTime);
+	TickTriggerTransitionsInternal();
+
+	return TickPostlude();
 }
 ```
 
