@@ -155,17 +155,15 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 				}
 			}
 		}
-		// 2.2 遍历激活帧当中的所有的激活状态
+		// 2.2 遍历激活帧当中的所有的激活状态，统计所有的状态上需要执行Task的数量
 		for (int32 StateIndex = 0; StateIndex < 
 			TickArgs.Frame->ActiveStates.Num(); ++StateIndex)
 		{
 			const FStateTreeStateHandle CurrentHandle = TickArgs.Frame->ActiveStates[StateIndex];
 			const FCompactStateTreeState& CurrentState = CurrentStateTree->States[CurrentHandle.Index];
 			FTasksCompletionStatus CurrentCompletionStatus = TickArgs.Frame->ActiveTasksStatus.GetStatus(CurrentState);
-
 			TickArgs.StateID = TickArgs.Frame->ActiveStates.StateIDs[StateIndex];
 			TickArgs.TasksCompletionStatus = &CurrentCompletionStatus;
-
 			FCurrentlyProcessedStateScope StateScope(*this, CurrentHandle);
 			if (CurrentState.Type == EStateTreeStateType::Linked || CurrentState.Type == EStateTreeStateType::LinkedAsset)
 			{
@@ -176,7 +174,6 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 				}
 			}
 			NumTotalEnabledTasks += CurrentState.EnabledTasksNum;
-
 			if (bRequestLoopStop)
 			{
 				break;
