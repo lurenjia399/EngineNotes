@@ -380,6 +380,24 @@ bool FStateTreeExecutionContext::SelectState(
 ```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
+	for (const FStateTreeTransitionRequest& Request : 
+		InstanceData.GetTransitionRequests())
+	{
+		const FStateTreeExecutionFrame* CurrentFrame = 
+			Exec.FindActiveFrame(Request.SourceFrameID);
+		if (CurrentFrame)
+		{
+			if (RequestTransition(*CurrentFrame, Request.TargetState, 
+				Request.Priority, /*TransitionEvent*/nullptr, Request.Fallback))
+			{
+				NextTransitionSource = FStateTreeTransitionSource(
+					CurrentFrame->StateTree, 
+					EStateTreeTransitionSourceType::ExternalRequest, 
+					Request.TargetState, Request.Priority);
+			}
+		}
+	}
+	
 	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
 	{
