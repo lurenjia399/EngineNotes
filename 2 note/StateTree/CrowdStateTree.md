@@ -115,6 +115,14 @@ void FStateTreeExecutionContext::TickUpdateTasksInternal(float DeltaTime)
 	{
 		DelayedState.TimeLeft -= DeltaTime;
 	}
+	// 2 执行TickTask方法
+	Exec.LastTickStatus = TickTasks(DeltaTime);
+	if (Exec.LastTickStatus != EStateTreeRunStatus::Running 
+		&& Exec.RequestedStop == EStateTreeRunStatus::Unset 
+		&& PreviousTickStatus == EStateTreeRunStatus::Running)
+	{
+		StateCompleted();
+	}
 }
 ```
 
