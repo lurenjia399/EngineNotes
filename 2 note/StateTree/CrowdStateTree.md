@@ -133,12 +133,24 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 ```cpp
 bool FStateTreeExecutionContext::SelectState(
 	const FStateTreeExecutionFrame& CurrentFrame,// 从CurrentFrame选择State，Frame就代表一棵树
-	const FStateTreeStateHandle NextState,// 遍历
+	const FStateTreeStateHandle NextState,// 开始遍历的NextState
 	FStateSelectionResult& OutSelectionResult,
 	const FStateTreeSharedEvent* TransitionEvent,
 	const EStateTreeSelectionFallback Fallback)
 {
-	
+	// 1 遍历的NextState链路，缓存从根节点出来到NextState的路径
+	TArray<FStateTreeStateHandle, 
+		TInlineAllocator<FStateTreeActiveStates::MaxStates>> PathToNextState;
+	FStateTreeStateHandle CurrState = NextState;
+	while (CurrState.IsValid())
+	{
+		if (PathToNextState.Num() == FStateTreeActiveStates::MaxStates)
+		{
+			return false;
+		}
+		PathToNextState.Push(CurrState);
+		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
+	}
 }
 ```
 # TriggerTransitions
