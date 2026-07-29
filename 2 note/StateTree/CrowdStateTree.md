@@ -197,6 +197,19 @@ bool FStateTreeExecutionContext::SelectState(
 			}
 		}
 	}
+	/*
+	5.1 执行Slect
+	*/
+	if (SelectStateInternal(
+		CurrentParentFrame, 
+		OutSelectionResult.GetSelectedFrames()[LastFrameIndex],
+		CurrentFrameInActiveFrames, 
+		NewStatesPathToNextState, 
+		OutSelectionResult, 
+		TransitionEvent))
+	{
+		return true;
+	}
 }
 ```
 # TriggerTransitions
