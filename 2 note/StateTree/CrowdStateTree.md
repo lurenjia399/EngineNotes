@@ -249,26 +249,19 @@ void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 		{
 			NextTransitionSource.Reset();
 			ExitState(NextTransition);
-			// Tree succeeded or failed.
+			// 6 如果目标state是已经完成的
 			if (NextTransition.TargetState.IsCompletionState())
 			{
-				// Transition to a terminal state (succeeded/failed), or default transition failed.
-				Exec.TreeRunStatus = NextTransition.TargetState.ToCompletionStatus();
-
-				// Stop evaluators and global tasks.
+				Exec.TreeRunStatus = 
+					NextTransition.TargetState.ToCompletionStatus();
 				StopEvaluatorsAndGlobalTasks(Exec.TreeRunStatus);
-
-				// No active states or global tasks anymore, reset frames.
 				Exec.ActiveFrames.Reset();
-
 				RemoveAllDelegateListeners();
-
 				break;
 			}
-
-			// Enter state tasks can fail/succeed, treat it same as tick.
+			// 7 进入目标state节点
 			const EStateTreeRunStatus LastTickStatus = EnterState(NextTransition);
-
+			// 8 清掉Ne
 			NextTransition = FStateTreeTransitionResult();
 
 			Exec.LastTickStatus = LastTickStatus;
