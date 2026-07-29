@@ -110,7 +110,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
 ```cpp
 void FStateTreeExecutionContext::TickUpdateTasksInternal(float DeltaTime)
 {
-	//1 如果执行
+	//1 从树执行状态获取延迟触发的Transition，推进时间
 	for (FStateTreeTransitionDelayedState& DelayedState : Exec.DelayedTransitions)
 	{
 		DelayedState.TimeLeft -= DeltaTime;
