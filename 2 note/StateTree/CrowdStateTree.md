@@ -152,7 +152,23 @@ bool FStateTreeExecutionContext::SelectState(
 		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
 	}
 	Algo::Reverse(PathToNextState);
-	
+	// 2 赋值CurrentFrameIndex，表示当前Frame索引是
+	int32 CurrentFrameIndex = INDEX_NONE;
+	int32 CurrentStateTreeIndex = INDEX_NONE;
+	for (int32 FrameIndex = Exec.ActiveFrames.Num() - 1; 
+		FrameIndex >= 0; FrameIndex--)
+	{
+		const FStateTreeExecutionFrame& Frame = Exec.ActiveFrames[FrameIndex]; 
+		if (Frame.StateTree == NextStateTree)
+		{
+			CurrentStateTreeIndex = FrameIndex;
+			if (Frame.RootState == NextRootState)
+			{
+				CurrentFrameIndex = FrameIndex;
+				break;
+			}
+		}
+	}
 }
 ```
 # TriggerTransitions
