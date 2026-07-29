@@ -247,12 +247,8 @@ void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 		// 5 
 		if (TriggerTransitions())
 		{
-			UE_STATETREE_DEBUG_SCOPED_PHASE(this, EStateTreeUpdatePhase::ApplyTransitions);
-			UE_STATETREE_DEBUG_TRANSITION_EVENT(this, NextTransitionSource, EStateTreeTraceEventType::OnTransition);
 			NextTransitionSource.Reset();
-
 			ExitState(NextTransition);
-
 			// Tree succeeded or failed.
 			if (NextTransition.TargetState.IsCompletionState())
 			{
