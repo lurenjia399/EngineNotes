@@ -457,7 +457,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 				{
 					continue;
 				}
-				// 5.3 如果正好遍历到Transition过期了就RequestTransition
+				// 5.3 如果正好遍历到Transition过期了就RequestTransition。如果请求了
 				if (Transition.HasDelay())
 				{
 					for (const FStateTreeTransitionDelayedState& DelayedTransition
@@ -475,7 +475,6 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 							}
 						}
 					}
-
 					if (bTriggeredDelayedTransition)
 					{
 						continue;
