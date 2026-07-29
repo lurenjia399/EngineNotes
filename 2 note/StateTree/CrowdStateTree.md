@@ -137,7 +137,24 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 	// 2 遍历激活帧
 	for (int32 FrameIndex = 0; FrameIndex < Exec.ActiveFrames.Num(); ++FrameIndex)
 	{
-		
+		// 2.1 如果是
+		if (ExecutionContext::Private::bTickGlobalNodesFollowingTreeHierarchy)
+		{
+			if (TickArgs.Frame->bIsGlobalFrame)
+			{
+				constexpr bool bTickGlobalTasks = true;
+				const EStateTreeRunStatus FrameResult = TickEvaluatorsAndGlobalTasksForFrame(DeltaTime, bTickGlobalTasks, FrameIndex, TickArgs.ParentFrame, TickArgs.Frame);
+				if (FrameResult != EStateTreeRunStatus::Running)
+				{
+					if (ExecutionContext::Private::bGlobalTasksCompleteOwningFrame == false || FrameIndex == 0)
+					{
+						Exec.RequestedStop = ExecutionContext::GetPriorityRunStatus(Exec.RequestedStop, FrameResult);
+					}
+					TickArgs.bShouldTickTasks = false;
+					break;
+				}
+			}
+		}
 	}
 }
 ```
