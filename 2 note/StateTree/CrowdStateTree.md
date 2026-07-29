@@ -198,7 +198,7 @@ bool FStateTreeExecutionContext::SelectState(
 		}
 	}
 	/*
-	5.1 执行SelectStateInternal方法，
+	5.1 执行SelectStateInternal方法，dfs遍历，遍历到叶子节点，构建选择链，
 	*/
 	if (SelectStateInternal(
 		CurrentParentFrame, 
