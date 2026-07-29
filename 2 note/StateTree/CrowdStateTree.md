@@ -66,11 +66,11 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 		// 16 设置数的执行状态中的其他变量，表示数正在运行，上一次的Tick结果是UnSet
 		Exec.TreeRunStatus = EStateTreeRunStatus::Running;
 		Exec.LastTickStatus = EStateTreeRunStatus::Unset;
-		// 9 从根节点开始SelectState，dfs遍历，遍历到叶子节点，构建选择链，会调用TestCondition方法，判断能否进入选择链
+		// 17 从根节点开始SelectState，dfs遍历，遍历到叶子节点，构建选择链，会调用TestCondition方法，判断能否进入选择链
 		FStateSelectionResult StateSelectionResult;
 		if (SelectState(InitFrame, RootState, StateSelectionResult))
 		{
-			// 如果叶子状态完成了，就标记statetree完成
+			// 18 如果叶子状态完成了，就标记statetree完成
 			if (StateSelectionResult.GetSelectedFrames()
 				.Last().ActiveStates.Last().IsCompletionState())
 			{
@@ -78,20 +78,15 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 					StateSelectionResult.GetSelectedFrames()
 					.Last().ActiveStates.Last().ToCompletionStatus();
 			}
-			// 叶子状态没有完成，就进入叶子状态
+			// 19 叶子状态没有完成，就进入叶子状态
 			else
 			{
 				/*
-				1  执行EnterState，根据选择链依次进入state，如果state有enterConditions就执行Condition的EnterState
-				2 for循环依次执行state中的Task,执行Task中的EnterState方法
+				19.1  执行EnterState，根据选择链依次进入state，如果state有enterConditions就执行Condition的EnterState
+				19.2 for循环依次执行state中的Task,执行Task中的EnterState方法
 				*/
 				const EStateTreeRunStatus LastTickStatus = EnterState(Transition);
 				Exec.LastTickStatus = LastTickStatus;
-				// EnterState后不是Running，就完成statetree
-				if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
-				{
-					StateCompleted();
-				}
 			}
 		}
 	}
