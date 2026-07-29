@@ -483,6 +483,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 				// 下面处理Event类型的Transition
 			}
 		}
+		
 		for (uint8 TransitionCounter = 0; 
 			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 		{
