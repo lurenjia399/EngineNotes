@@ -380,7 +380,7 @@ bool FStateTreeExecutionContext::SelectState(
 ```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
-	// 遍历实例中的TransitionRequest，Tick的一开始不会有请求，但因为tick执行5次，后续就会有请求了
+	// 1 遍历实例中的TransitionRequest
 	for (const FStateTreeTransitionRequest& Request : 
 		InstanceData.GetTransitionRequests())
 	{
@@ -398,6 +398,8 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 			}
 		}
 	}
+	// 2 处理完请求后就清空掉
+	InstanceData.ResetTransitionRequests();
 	
 	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
