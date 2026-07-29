@@ -415,7 +415,12 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 	// 4 
 	if (Exec.ActiveFrames.Num() > 0)
 	{
-		
+		for (int32 FrameIndex = EndFrameIndex; FrameIndex >= 0; FrameIndex--)
+		{
+			for (int32 StateIndex = CurrentFrame.ActiveStates.Num() - 1; StateIndex >= 0; StateIndex--)
+			{
+				
+			}
 	}
 	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
