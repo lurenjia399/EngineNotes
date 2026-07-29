@@ -138,7 +138,7 @@ bool FStateTreeExecutionContext::SelectState(
 	const FStateTreeSharedEvent* TransitionEvent,
 	const EStateTreeSelectionFallback Fallback)
 {
-	// 1 遍历的NextState链路，缓存从根节点出来到NextState的路径
+	// 1 遍历的NextState链路，缓存从根节点出来到NextState的路径。CurrState表示根节点
 	TArray<FStateTreeStateHandle, 
 		TInlineAllocator<FStateTreeActiveStates::MaxStates>> PathToNextState;
 	FStateTreeStateHandle CurrState = NextState;
@@ -151,6 +151,8 @@ bool FStateTreeExecutionContext::SelectState(
 		PathToNextState.Push(CurrState);
 		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
 	}
+	Algo::Reverse(PathToNextState);
+	
 }
 ```
 # TriggerTransitions
