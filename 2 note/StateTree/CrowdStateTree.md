@@ -97,16 +97,9 @@ EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameter
 ```cpp
 EStateTreeRunStatus FStateTreeExecutionContext::Tick(const float DeltaTime)
 {
-	CSV_SCOPED_TIMING_STAT_EXCLUSIVE(StateTree_Tick);
-
+	// 1 保护bAllowedToScheduleNextTick值，在Start方法结束后恢复。表示从这里开始不能执行Rick
 	TGuardValue<bool> ScheduledNextTickScope(bAllowedToScheduleNextTick, false);
-
-	const EStateTreeRunStatus PreludeResult = TickPrelude();
-	if (PreludeResult != EStateTreeRunStatus::Running)
-	{
-		return PreludeResult;
-	}
-
+	// 2 
 	TickUpdateTasksInternal(DeltaTime);
 	TickTriggerTransitionsInternal();
 
