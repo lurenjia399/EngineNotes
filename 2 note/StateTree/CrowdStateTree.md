@@ -1,5 +1,3 @@
-
-
 # Start
 ```cpp
 EStateTreeRunStatus FStateTreeExecutionContext::Start(FStartParameters Parameters)
