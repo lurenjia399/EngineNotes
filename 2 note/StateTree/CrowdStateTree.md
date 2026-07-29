@@ -167,12 +167,6 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 			TickArgs.TasksCompletionStatus = &CurrentCompletionStatus;
 
 			FCurrentlyProcessedStateScope StateScope(*this, CurrentHandle);
-			UE_STATETREE_DEBUG_SCOPED_STATE(this, CurrentHandle);
-
-			STATETREE_CLOG(CurrentState.TasksNum > 0, VeryVerbose, TEXT("%*sState '%s'")
-				, (FrameIndex + StateIndex + 1) * Debug::IndentSize, TEXT("")
-				, *DebugGetStatePath(Exec.ActiveFrames, TickArgs.Frame, StateIndex));
-
 			if (CurrentState.Type == EStateTreeStateType::Linked || CurrentState.Type == EStateTreeStateType::LinkedAsset)
 			{
 				if (CurrentState.ParameterDataHandle.IsValid() && CurrentState.ParameterBindingsBatch.IsValid())
