@@ -238,6 +238,58 @@ void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 	FStateTreeExecutionState& Exec = GetExecState();
 	// 2 重置TriggerTransitionsFromFrameIndex数组
 	TriggerTransitionsFromFrameIndex.Reset();
+	// 3 for循环，循环5次
+	static constexpr int32 MaxIterations = 5;
+	for (int32 Iter = 0; Iter < MaxIterations; Iter++)
+	{
+		// 4 每次循环都清掉临时数据
+		ON_SCOPE_EXIT{ InstanceData.ResetTemporaryInstances(); };
+		// 5 
+		if (TriggerTransitions())
+		{
+			UE_STATETREE_DEBUG_SCOPED_PHASE(this, EStateTreeUpdatePhase::ApplyTransitions);
+			UE_STATETREE_DEBUG_TRANSITION_EVENT(this, NextTransitionSource, EStateTreeTraceEventType::OnTransition);
+			NextTransitionSource.Reset();
+
+			ExitState(NextTransition);
+
+			// Tree succeeded or failed.
+			if (NextTransition.TargetState.IsCompletionState())
+			{
+				// Transition to a terminal state (succeeded/failed), or default transition failed.
+				Exec.TreeRunStatus = NextTransition.TargetState.ToCompletionStatus();
+
+				// Stop evaluators and global tasks.
+				StopEvaluatorsAndGlobalTasks(Exec.TreeRunStatus);
+
+				// No active states or global tasks anymore, reset frames.
+				Exec.ActiveFrames.Reset();
+
+				RemoveAllDelegateListeners();
+
+				break;
+			}
+
+			// Enter state tasks can fail/succeed, treat it same as tick.
+			const EStateTreeRunStatus LastTickStatus = EnterState(NextTransition);
+
+			NextTransition = FStateTreeTransitionResult();
+
+			Exec.LastTickStatus = LastTickStatus;
+
+			// Report state completed immediately.
+			if (Exec.LastTickStatus != EStateTreeRunStatus::Running)
+			{
+				StateCompleted();
+			}
+		}
+
+		// Stop as soon as have found a running state.
+		if (Exec.LastTickStatus == EStateTreeRunStatus::Running)
+		{
+			break;
+		}
+	}
 }
 ```
 
