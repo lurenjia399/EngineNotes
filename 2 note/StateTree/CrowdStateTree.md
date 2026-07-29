@@ -457,7 +457,36 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 				{
 					continue;
 				}
-				
+				// 5.3 
+				if (Transition.HasDelay())
+				{
+					for (const FStateTreeTransitionDelayedState& DelayedTransition
+					 : ExpiredTransitionsDelayed)
+					{
+						if (DelayedTransition.StateID == Handler.StateID 
+						&& DelayedTransition.TransitionIndex == 
+							FStateTreeIndex16(TransitionIndex))
+						{
+							if (RequestTransition(CurrentFrame, Transition.State, Transition.Priority, &DelayedTransition.CapturedEvent, Transition.Fallback))
+							{
+								// If the transition was successfully requested with a specific event, consume and remove the event, it's been used.
+								if (DelayedTransition.CapturedEvent.IsValid() && Transition.bConsumeEventOnSelect)
+								{
+									ConsumeEvent(DelayedTransition.CapturedEvent);
+								}
+
+								NextTransitionSource = FStateTreeTransitionSource(CurrentFrame.StateTree, FStateTreeIndex16(TransitionIndex), Transition.State, Transition.Priority);
+								bTriggeredDelayedTransition = true;
+								break;
+							}
+						}
+					}
+
+					if (bTriggeredDelayedTransition)
+					{
+						continue;
+					}
+				}
 			}
 		}
 		for (uint8 TransitionCounter = 0; 
