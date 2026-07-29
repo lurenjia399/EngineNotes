@@ -400,6 +400,18 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 	}
 	// 2 处理完请求后就清空掉
 	InstanceData.ResetTransitionRequests();
+	// 3 如果延迟的Transitiondao
+	TArray<FStateTreeTransitionDelayedState, TInlineAllocator<8>> 
+		ExpiredTransitionsDelayed;
+	for (TArray<FStateTreeTransitionDelayedState>::TIterator It =
+		 Exec.DelayedTransitions.CreateIterator(); It; ++It)
+	{
+		if (It->TimeLeft <= 0.0f)
+		{
+			ExpiredTransitionsDelayed.Emplace(MoveTemp(*It));
+			It.RemoveCurrentSwap();
+		}
+	}
 	
 	// 遍历state链上的所有Transition
 	for (const FTransitionHandler& Handler : TransitionHandlers)
