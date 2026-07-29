@@ -155,7 +155,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 				}
 			}
 		}
-		// 2.2 遍历激活帧当中的所有的激活状态，统计所有的状态上需要执行Task的数量。并且更新子树的上的参数，  为什么要每帧做这件事：链接状态的子树/子资产在运行期间，其参数值可能依赖父树里会随时间变化的变量（比如黑板上的某个浮点数），所以不能只在进入状态（EnterState）时拷贝一次，需要在每次 Tick 时都重新同步一遍，保证子树看到的参数始终是最新值。这段逻辑发生在真正Tick 该状态下的任务，即参数总是先于任务被更新，保证任务读取到的是本帧最新的参数。
+		// 2.2 遍历激活帧当中的所有的激活状态，统计所有的状态上需要执行Task的数量。
 		for (int32 StateIndex = 0; StateIndex < 
 			TickArgs.Frame->ActiveStates.Num(); ++StateIndex)
 		{
@@ -165,7 +165,9 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 			TickArgs.StateID = TickArgs.Frame->ActiveStates.StateIDs[StateIndex];
 			TickArgs.TasksCompletionStatus = &CurrentCompletionStatus;
 			FCurrentlyProcessedStateScope StateScope(*this, CurrentHandle);
-			
+			/*
+			并且更新子树的上的参数，为什么要每帧做这件事：链接状态的子树/子资产在运行期间，其参数值可能依赖父树里会随时间变化的变量（比如黑板上的某个浮点数），所以不能只在进入状态（EnterState）时拷贝一次，需要在每次 Tick 时都重新同步一遍，保证子树看到的参数始终是最新值。这段逻辑发生在真正Tick 该状态下的任务，即参数总是先于任务被更新，保证任务读取到的是本帧最新的参数。
+			*/
 			if (CurrentState.Type == EStateTreeStateType::Linked || CurrentState.Type == EStateTreeStateType::LinkedAsset)
 			{
 				if (CurrentState.ParameterDataHandle.IsValid() && CurrentState.ParameterBindingsBatch.IsValid())
@@ -173,6 +175,18 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 					const FStateTreeDataView StateParamsDataView = GetDataView(TickArgs.ParentFrame, *TickArgs.Frame, CurrentState.ParameterDataHandle);
 					CopyBatchOnActiveInstances(TickArgs.ParentFrame, *TickArgs.Frame, StateParamsDataView, CurrentState.ParameterBindingsBatch);
 				}
+			}
+			/*
+			如果需要
+			*/
+			if (CurrentState.ShouldTickTasks(bHasEvents))
+			{
+				TickArgs.TasksBegin = CurrentState.TasksBegin;
+				TickArgs.TasksNum = CurrentState.TasksNum;
+				TickArgs.Indent = (FrameIndex + StateIndex + 1);
+				const FTickTaskResult TickTasksResult = TickTasks(TickArgs);
+				TickArgs.bShouldTickTasks = TickTasksResult.bShouldTickTasks
+					&& !CurrentCompletionStatus.HasAnyFailed();
 			}
 			NumTotalEnabledTasks += CurrentState.EnabledTasksNum;
 			if (bRequestLoopStop)
