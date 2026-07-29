@@ -444,9 +444,16 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		else if (Handler.StateHandle.IsValid())
 		{
 			for (uint8 TransitionCounter = 0; 
-			TransitionCounter < State.TransitionsNum; ++TransitionCounter)
+				TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 			{
-				
+				if (Transition.bTransitionEnabled == false)
+				{
+					continue;
+				}
+				if (Transition.Priority <= NextTransition.Priority)
+				{
+					continue;
+				}
 			}
 		}
 		for (uint8 TransitionCounter = 0; 
