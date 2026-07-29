@@ -131,8 +131,12 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 
 # SelectState
 ```cpp
-bool FStateTreeExecutionContext::SelectState(const FStateTreeExecutionFrame& CurrentFrame,const FStateTreeStateHandle NextState,FStateSelectionResult& OutSelectionResult,const FStateTreeSharedEvent* TransitionEvent,
-const EStateTreeSelectionFallback Fallback)
+bool FStateTreeExecutionContext::SelectState(
+	const FStateTreeExecutionFrame& CurrentFrame,// 从CurrentFrame选择State，Frame就代表一棵树
+	const FStateTreeStateHandle NextState,// 遍历
+	FStateSelectionResult& OutSelectionResult,
+	const FStateTreeSharedEvent* TransitionEvent,
+	const EStateTreeSelectionFallback Fallback)
 {
 	
 }
