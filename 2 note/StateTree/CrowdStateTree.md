@@ -152,7 +152,7 @@ bool FStateTreeExecutionContext::SelectState(
 		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
 	}
 	Algo::Reverse(PathToNextState);
-	// 2 赋值CurrentFrameIndex，表示当前Frame索引是
+	// 2 赋值CurrentFrameIndex，表示当前Frame索引，是数的执行状态中的激活Frame索引。赋值CurrentStateTreeIndex
 	int32 CurrentFrameIndex = INDEX_NONE;
 	int32 CurrentStateTreeIndex = INDEX_NONE;
 	for (int32 FrameIndex = Exec.ActiveFrames.Num() - 1; 
