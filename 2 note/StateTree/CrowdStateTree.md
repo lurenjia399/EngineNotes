@@ -236,6 +236,8 @@ void FStateTreeExecutionContext::TickTriggerTransitionsInternal()
 {
 	// 1 获取树执行状态，如果当前没有激活帧就返回
 	FStateTreeExecutionState& Exec = GetExecState();
+	// 2 重置TriggerTransitionsFromFrameIndex数组
+	TriggerTransitionsFromFrameIndex.Reset();
 }
 ```
 
