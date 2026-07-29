@@ -412,7 +412,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 			It.RemoveCurrentSwap();
 		}
 	}
-	// 4 遍历当前执行帧，在遍历执行帧中的ji'huo
+	// 4 遍历当前执行帧，在遍历执行帧中的ActiveStates，判断每个State节点是否应该TickTransition，如果需要Transition就添加到TransitionHandlers数组中
 	if (Exec.ActiveFrames.Num() > 0)
 	{
 		for (int32 FrameIndex = EndFrameIndex; FrameIndex >= 0; FrameIndex--)
