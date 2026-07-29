@@ -177,7 +177,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 				}
 			}
 			/*
-			如果需要
+			如果需要执行TickTask，这里执行
 			*/
 			if (CurrentState.ShouldTickTasks(bHasEvents))
 			{
