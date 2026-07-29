@@ -129,6 +129,14 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 }
 ```
 
+# SelectState
+```cpp
+bool FStateTreeExecutionContext::SelectState(const FStateTreeExecutionFrame& CurrentFrame,const FStateTreeStateHandle NextState,FStateSelectionResult& OutSelectionResult,const FStateTreeSharedEvent* TransitionEvent,
+const EStateTreeSelectionFallback Fallback)
+{
+	
+}
+```
 # TriggerTransitions
 ```cpp
 bool FStateTreeExecutionContext::TriggerTransitions()
