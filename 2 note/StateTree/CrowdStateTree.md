@@ -124,6 +124,17 @@ void FStateTreeExecutionContext::TickUpdateTasksInternal(float DeltaTime)
 		StateCompleted();
 	}
 }
+
+EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
+{
+	// 1 获取树执行状态，如果当前没有激活帧就返回
+	FStateTreeExecutionState& Exec = GetExecState();
+	Exec.bHasPendingCompletedState = false;
+	if (Exec.ActiveFrames.IsEmpty())
+	{
+		return EStateTreeRunStatus::Failed;
+	}
+}
 ```
 
 # SelectState
