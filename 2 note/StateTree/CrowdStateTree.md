@@ -175,24 +175,6 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 					CopyBatchOnActiveInstances(TickArgs.ParentFrame, *TickArgs.Frame, StateParamsDataView, CurrentState.ParameterBindingsBatch);
 				}
 			}
-
-			const bool bHasEvents = EventQueue && EventQueue->HasEvents();
-			bool bRequestLoopStop = false;
-			if (bCopyBoundPropertiesOnNonTickedTask || CurrentState.ShouldTickTasks(bHasEvents))
-			{
-				// Update Tasks data and tick if possible (ie. if no task has yet failed and bShouldTickTasks is true)
-				TickArgs.TasksBegin = CurrentState.TasksBegin;
-				TickArgs.TasksNum = CurrentState.TasksNum;
-				TickArgs.Indent = (FrameIndex + StateIndex + 1);
-				const FTickTaskResult TickTasksResult = TickTasks(TickArgs);
-
-				// Keep updating the binding but do not call tick on tasks if there's a failure.
-				TickArgs.bShouldTickTasks = TickTasksResult.bShouldTickTasks
-					&& !CurrentCompletionStatus.HasAnyFailed();
-				// If a failure and we do not copy then bindings, then we can stop.
-				bRequestLoopStop = !bCopyBoundPropertiesOnNonTickedTask && !TickTasksResult.bShouldTickTasks;
-			}
-
 			NumTotalEnabledTasks += CurrentState.EnabledTasksNum;
 
 			if (bRequestLoopStop)
