@@ -183,7 +183,7 @@ bool FStateTreeExecutionContext::SelectState(
 		OutSelectionResult = FStateSelectionResult(MakeArrayView(Exec.ActiveFrames.GetData(), NumCommonFrames));
 		CurrentFrameInActiveFrames  = &Exec.ActiveFrames[CurrentStateTreeIndex];
 	}
-	// 4 赋值FirstNewStateIndex，表示当前激活帧中激活节点和
+	// 4 赋值FirstNewStateIndex，表示当前激活帧中激活链和目标节点链，第一次分叉的节点是哪个
 	int32 FirstNewStateIndex = 0;
 	if (CurrentFrameIndex != INDEX_NONE)
 	{
