@@ -198,7 +198,7 @@ bool FStateTreeExecutionContext::SelectState(
 		}
 	}
 	/*
-	5.1 执行Slect
+	5.1 执行SelectStateInternal方法，
 	*/
 	if (SelectStateInternal(
 		CurrentParentFrame, 
