@@ -152,7 +152,7 @@ bool FStateTreeExecutionContext::SelectState(
 		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
 	}
 	Algo::Reverse(PathToNextState);
-	// 2 赋值CurrentStateTreeIndex，表示激活帧中和参数使用的同一个statetree资源的帧。赋值CurrentFrameIndex，表示同一资源帧中相同的rootState。
+	// 2 赋值CurrentStateTreeIndex，表示激活帧中和参数使用的同一个statetree资源的帧索引。赋值CurrentFrameIndex，表示同一资源帧中相同的rootState的帧索引。
 	int32 CurrentFrameIndex = INDEX_NONE;
 	int32 CurrentStateTreeIndex = INDEX_NONE;
 	for (int32 FrameIndex = Exec.ActiveFrames.Num() - 1; 
@@ -168,6 +168,20 @@ bool FStateTreeExecutionContext::SelectState(
 				break;
 			}
 		}
+	}
+	// 3 赋值CurrentFrameInActiveFrames，优先选CurrentFrameIndex，如果
+	const FStateTreeExecutionFrame* CurrentFrameInActiveFrames  = nullptr;
+	if (CurrentFrameIndex != INDEX_NONE)
+	{
+		const int32 NumCommonFrames = CurrentFrameIndex + 1;
+		OutSelectionResult = FStateSelectionResult(MakeArrayView(Exec.ActiveFrames.GetData(), NumCommonFrames));
+		CurrentFrameInActiveFrames  = &Exec.ActiveFrames[CurrentFrameIndex];
+	}
+	else if (CurrentStateTreeIndex != INDEX_NONE)
+	{
+		const int32 NumCommonFrames = CurrentStateTreeIndex + 1;
+		OutSelectionResult = FStateSelectionResult(MakeArrayView(Exec.ActiveFrames.GetData(), NumCommonFrames));
+		CurrentFrameInActiveFrames  = &Exec.ActiveFrames[CurrentStateTreeIndex];
 	}
 }
 ```
