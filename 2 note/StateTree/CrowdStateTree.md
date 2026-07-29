@@ -378,12 +378,11 @@ bool FStateTreeExecutionContext::SelectState(
 ```
 # TriggerTransitions
 ```cpp
-1 处理实例里的TransitionRequest，是外部主动调用的请求。执行RequestTransition
-2 处理过期的，带有Event，Delegate，Tick的Transition。执行RequestTransition
-3 处理那些状态改变的Transition。执行RequestTransition
+
 ```
 
 ```cpp
+
 bool FStateTreeExecutionContext::TriggerTransitions()
 {
 	// 1 遍历实例中的TransitionRequest，处理外部的Transition请求
