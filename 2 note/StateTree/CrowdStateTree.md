@@ -183,6 +183,20 @@ bool FStateTreeExecutionContext::SelectState(
 		OutSelectionResult = FStateSelectionResult(MakeArrayView(Exec.ActiveFrames.GetData(), NumCommonFrames));
 		CurrentFrameInActiveFrames  = &Exec.ActiveFrames[CurrentStateTreeIndex];
 	}
+	// 4 赋值FirstNewStateIndex，表示当前激活帧中激活节点和
+	int32 FirstNewStateIndex = 0;
+	if (CurrentFrameIndex != INDEX_NONE)
+	{
+		FirstNewStateIndex = FMath::Max(0, FMath::Min(PathToNextState.Num(), LastFrame.ActiveStates.Num()) - 1);
+		for (int32 Index = 0; Index < FMath::Min(PathToNextState.Num(), LastFrame.ActiveStates.Num()); ++Index)
+		{
+			if (LastFrame.ActiveStates[Index] != PathToNextState[Index])
+			{
+				FirstNewStateIndex = Index;
+				break;
+			}
+		}
+	}
 }
 ```
 # TriggerTransitions
