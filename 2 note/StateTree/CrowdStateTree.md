@@ -457,7 +457,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 				{
 					continue;
 				}
-				// 5.3 如果时延迟触发的Transition，就遍历过期数组，如果
+				// 5.3 如果正好遍历到Transition过期了就RequestTransition
 				if (Transition.HasDelay())
 				{
 					for (const FStateTreeTransitionDelayedState& DelayedTransition
