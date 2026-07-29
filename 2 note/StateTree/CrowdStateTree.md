@@ -169,7 +169,7 @@ bool FStateTreeExecutionContext::SelectState(
 			}
 		}
 	}
-	// 3 赋值CurrentFrameInActiveFrames，优先选CurrentFrameIndex，如果使用同一资源并且相同RootState。you
+	// 3 赋值CurrentFrameInActiveFrames，优先选CurrentFrameIndex，如果使用同一资源并且相同RootState的激活帧。次选使用同一资源的激活帧。
 	const FStateTreeExecutionFrame* CurrentFrameInActiveFrames  = nullptr;
 	if (CurrentFrameIndex != INDEX_NONE)
 	{
