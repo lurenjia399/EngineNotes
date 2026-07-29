@@ -181,6 +181,7 @@ EStateTreeRunStatus FStateTreeExecutionContext::TickTasks(const float DeltaTime)
 			}
 		}
 	}
+	// 3 
 	EStateTreeRunStatus FirstFrameResult = EStateTreeRunStatus::Running;
 	EStateTreeRunStatus FrameResult = EStateTreeRunStatus::Running;
 	EStateTreeRunStatus StateResult = EStateTreeRunStatus::Running;
