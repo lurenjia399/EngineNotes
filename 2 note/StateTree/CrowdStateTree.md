@@ -439,7 +439,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		}
 		/*
 		5.1 遍历节点上的所有Transition
-		5.2 
+		5.2 如果不能Transition,优先级不够，
 		*/
 		else if (Handler.StateHandle.IsValid())
 		{
