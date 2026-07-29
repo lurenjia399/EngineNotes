@@ -169,7 +169,7 @@ bool FStateTreeExecutionContext::SelectState(
 			}
 		}
 	}
-	// 3 赋值CurrentFrameInActiveFrames，优先选CurrentFrameIndex，如果
+	// 3 赋值CurrentFrameInActiveFrames，优先选CurrentFrameIndex，如果使用同一资源并且相同RootState。you
 	const FStateTreeExecutionFrame* CurrentFrameInActiveFrames  = nullptr;
 	if (CurrentFrameIndex != INDEX_NONE)
 	{
