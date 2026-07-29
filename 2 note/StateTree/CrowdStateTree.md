@@ -437,17 +437,13 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 		{
 			// 这部分Mass不走
 		}
-		/*
-		5.1 遍历节点上的所有Transition
-		5.2 
-		5.3 
-		*/
+		// 遍历节点上的所有Transition
 		else if (Handler.StateHandle.IsValid())
 		{
 			for (uint8 TransitionCounter = 0; 
 				TransitionCounter < State.TransitionsNum; ++TransitionCounter)
 			{
-				
+				// 5.2 如果不能Transition,优先级不够，完成节点触发的，都不在这里处理
 				if (Transition.bTransitionEnabled == false)
 				{
 					continue;
@@ -461,6 +457,7 @@ bool FStateTreeExecutionContext::TriggerTransitions()
 				{
 					continue;
 				}
+				
 			}
 		}
 		for (uint8 TransitionCounter = 0; 
