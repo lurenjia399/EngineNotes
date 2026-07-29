@@ -152,7 +152,7 @@ bool FStateTreeExecutionContext::SelectState(
 		CurrState = CurrentFrame.StateTree->States[CurrState.Index].Parent;
 	}
 	Algo::Reverse(PathToNextState);
-	// 2 赋值CurrentStateTreeIndex，表示在zhi
+	// 2 赋值CurrentStateTreeIndex，CurrentFrameIndex，
 	int32 CurrentFrameIndex = INDEX_NONE;
 	int32 CurrentStateTreeIndex = INDEX_NONE;
 	for (int32 FrameIndex = Exec.ActiveFrames.Num() - 1; 
