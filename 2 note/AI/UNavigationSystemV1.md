@@ -25,4 +25,14 @@ void UNavigationSystemV1::PerformNavigationBoundsUpdate(const TArray<FNavigation
 }
 ```
 
-# 
+# GetNavigationBoundsForNavData
+
+```cpp
+int UNavigationSystemV1::GetNavigationBoundsForNavData(
+	const ANavigationData& NavData, // 导航数据
+	TArray<FBox>& OutBounds, // 输出符合条件的导航范围
+	ULevel* InLevel) const // 只获取特定关卡的导航范围
+{
+	
+}
+```
