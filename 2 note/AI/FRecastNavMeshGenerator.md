@@ -35,11 +35,17 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 				AvgLayersPerTile, //每个Tile的平均层数
 				DestNavMesh->NavMeshVersion);// 使用NavMesh的版本号
 			/*
-			1 如果DetourMesh中最大d
+			1 如果DetourMesh中最大的Tile数量和需要的Tile不一致，就需要重建Detour
+			2 为什么需要销毁重建？
+				  // Detour NavMesh 在创建时指定最大瓦片数
+				  // 这个数量是固定的，不能动态调整
+				  // 要改变容量，必须：
+			  //   1. 销毁旧的 dtNavMesh
+			  //   2. 创建新的 dtNavMesh（新容量）
+			  //   3. 重新生成所有瓦片数据
 			*/
 			if (DetourMesh->getMaxTiles() != MaxRequestedTiles)
 			{
-				UE_LOG(LogNavigation, Log, TEXT("%s> Navigation bounds changed, rebuilding navmesh"), *DestNavMesh->GetName());
 				// Destroy current NavMesh
 				DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(nullptr);
 
