@@ -28,11 +28,29 @@ void UNavigationSystemV1::PerformNavigationBoundsUpdate(const TArray<FNavigation
 # GetNavigationBoundsForNavData
 
 ```cpp
+// 获取特定导航数据对象（如某个NavMesh）应该使用的所有导航边界（Navigation Bounds）
 int UNavigationSystemV1::GetNavigationBoundsForNavData(
 	const ANavigationData& NavData, // 导航数据
 	TArray<FBox>& OutBounds, // 输出符合条件的导航范围
 	ULevel* InLevel) const // 只获取特定关卡的导航范围
 {
-	
+	// 
+	const int InitialBoundsCount = OutBounds.Num();
+	OutBounds.Reserve(InitialBoundsCount + RegisteredNavBounds.Num());
+	const int32 AgentIndex = GetSupportedAgentIndex(&NavData);
+
+	if (AgentIndex != INDEX_NONE)
+	{
+		for (const FNavigationBounds& NavigationBounds : RegisteredNavBounds)
+		{
+			if ((InLevel == nullptr || NavigationBounds.Level == InLevel)
+				&& NavigationBounds.SupportedAgents.Contains(AgentIndex))
+			{
+				OutBounds.Add(NavigationBounds.AreaBox);
+			}
+		}
+	}
+
+	return OutBounds.Num() - InitialBoundsCount;
 }
 ```
