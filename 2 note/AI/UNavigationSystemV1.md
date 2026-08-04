@@ -40,7 +40,7 @@ int UNavigationSystemV1::GetNavigationBoundsForNavData(
 	
 	// 2 通过导航数据获取AgentIndex,AgentIndex表示不同尺寸的角色
 	const int32 AgentIndex = GetSupportedAgentIndex(&NavData);
-
+	// 3 SystemV1没配SupportedAgents就会是默认的，这里AgentIndex默认回是0
 	if (AgentIndex != INDEX_NONE)
 	{
 		for (const FNavigationBounds& NavigationBounds : RegisteredNavBounds)
