@@ -11,7 +11,7 @@ void UNavigationSystemV1::PerformNavigationBoundsUpdate(const TArray<FNavigation
 		
 		}
 	}
-	// 2 更新了NavBounds，也需要告诉ANavigationData，NavBounds改变了
+	// 2 更新了NavBounds，也需要告诉ANavigationData，NavBounds改变了。判断tile是否超标，是否需要重建DetourMesh
 	if (UpdatedAreas.Num())
 	{
 		for (ANavigationData* NavData : NavDataSet)
