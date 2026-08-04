@@ -49,16 +49,20 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 				// 销毁当前的DetourMesh
 				DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(nullptr);
 
-				// 重建新的DetourMesh，
+				/*
+				 // 1. 将所有边界标记为"脏区域"
+				  // 2. 使用 NavigationBounds 标志（表示是边界变化，不是几何体变化）
+				  // 3. 调用 RebuildDirtyAreas 触发重建
+				*/
 				if (InclusionBounds.Num() > 0)
 				{
 					TArray<FNavigationDirtyArea> AsDirtyAreas;
 					AsDirtyAreas.Reserve(InclusionBounds.Num());
 					for (const FBox& BBox : InclusionBounds)
 					{
-						AsDirtyAreas.Add(FNavigationDirtyArea(BBox, ENavigationDirtyFlag::NavigationBounds));
+						AsDirtyAreas.Add(FNavigationDirtyArea(
+						BBox, ENavigationDirtyFlag::NavigationBounds));
 					}
-				
 					RebuildDirtyAreas(AsDirtyAreas);
 				}
 			}
