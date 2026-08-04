@@ -2,6 +2,9 @@
 ```cpp
 void UNavigationSystemV1::Build()
 {
+	/*
+	1 清掉当前World上
+	*/
 	FNavigationSystem::DiscardNavigationDataChunks(*World);
 	
 }
