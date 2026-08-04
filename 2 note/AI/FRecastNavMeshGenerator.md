@@ -46,11 +46,10 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 			*/
 			if (DetourMesh->getMaxTiles() != MaxRequestedTiles)
 			{
-				// 销毁当前的
+				// 销毁当前的DetourMesh
 				DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(nullptr);
 
-				// if there are any valid bounds recreate detour navmesh instance
-				// and mark all bounds as dirty
+				// 重建新的DetourMesh，
 				if (InclusionBounds.Num() > 0)
 				{
 					TArray<FNavigationDirtyArea> AsDirtyAreas;
