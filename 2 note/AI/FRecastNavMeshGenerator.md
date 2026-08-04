@@ -28,9 +28,11 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 		if (NavSys && !NavSys->IsNavigationBuildingLocked())
 		{
 			const int32 MaxRequestedTiles = UE::NavMesh::Private::
-				CalculateMaxTilesCount(InclusionBounds, 
-				Config.GetTileSizeUU(), AvgLayersPerTile, 
-				DestNavMesh->NavMeshVersion);
+				CalculateMaxTilesCount(
+				InclusionBounds, // 导航应用的边界，就是NavVolume所框选的范围
+				Config.GetTileSizeUU(), //配置的Tile大小
+				AvgLayersPerTile, //每个Tile的平均层数
+				DestNavMesh->NavMeshVersion);// 使用NavMeshd
 
 		}
 	}
