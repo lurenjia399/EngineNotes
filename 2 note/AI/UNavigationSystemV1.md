@@ -5,7 +5,7 @@ void UNavigationSystemV1::Build()
 	/*
 	1 清掉当前World上所有Level的NavDataChunk。
 	2 ARecastNavMesh::OnNavMeshGenerationFinished 在编辑器下的这个方法中会创建出NavDataChunk。
-	3 在ARecastNavMesh::OnStreamingLevelAdded和ARecastNavMesh::OnStreamingLevelRemoved这个方法中会对NavDataCh
+	3 在ARecastNavMesh::OnStreamingLevelAdded和ARecastNavMesh::OnStreamingLevelRemoved这个方法中会往NavDataChunk中填充数据
 	*/
 	FNavigationSystem::DiscardNavigationDataChunks(*World);
 	
