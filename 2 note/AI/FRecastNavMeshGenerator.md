@@ -14,7 +14,8 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 	dtNavMesh* DetourMesh = DestNavMesh->GetRecastNavMeshImpl() 
 		? DestNavMesh->GetRecastNavMeshImpl()->GetRecastMesh() : nullptr;
 	/*
-	1 条件
+	1 不能是静态NavMesh。静态 NavMesh = 游戏运行时不可修改的烘焙数据，动态 NavMesh = 可以在编辑器/运行时重建
+	2 NavMesh 标记为可调整大小. 某些固定大小的 NavMesh 不允许改变瓦片数量
 	*/
 	if (!IsGameStaticNavMesh(DestNavMesh) && DestNavMesh->IsResizable() && DetourMesh)
 	{
