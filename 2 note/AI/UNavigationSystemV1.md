@@ -3,7 +3,9 @@
 void UNavigationSystemV1::Build()
 {
 	/*
-	1 清掉当前World上所有Level的NavigationDatdaChunk
+	1 清掉当前World上所有Level的NavDataChunk。
+	2 ARecastNavMesh::OnNavMeshGenerationFinished 在编辑器下的这个方法中会创建出NavDataChunk。
+	3 
 	*/
 	FNavigationSystem::DiscardNavigationDataChunks(*World);
 	
