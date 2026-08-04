@@ -12,7 +12,26 @@ void UNavigationSystemV1::Build()
 }
 ```
 
+```cpp
+ ┌─────────┬───────────────────────────────────┬─────────────────┐
+  │  方式   │               位置                │      触发       │
+  ├─────────┼───────────────────────────────────┼─────────────────┤
+  │ 控制台  │ NavigationSystem.cpp:5877         │ 控制台输入 Rebu │
+  │ 命令    │                                   │ ildNavigation   │
+  ├─────────┼───────────────────────────────────┼─────────────────┤
+  │ 编辑器  │                                   │ Build → Build   │
+  │ 菜单    │ EditorBuildUtils.cpp:979          │ Paths / Build   │
+  │         │                                   │ All             │
+  ├─────────┼───────────────────────────────────┼─────────────────┤
+  │ WP      │ WorldPartitionNavigationDataBuild │ World Partition │
+  │ 构建器  │ er.cpp:418                        │  分块导航构建   │
+  ├─────────┼───────────────────────────────────┼─────────────────┤
+  │         │                                   │ -run=ResavePack │
+  │ 命令行  │ ContentCommandlets.cpp:2272       │ ages -BuildNavi │
+  │         │                                   │ gationData      │
+  └─────────┴───────────────────────────────────┴─────────────────┘
 
+```
 # AddNavigationBoundsUpdateRequest
 ``` cpp
 void UNavigationSystemV1::PerformNavigationBoundsUpdate(const TArray<FNavigationBoundsUpdateRequest>& UpdateRequests)
