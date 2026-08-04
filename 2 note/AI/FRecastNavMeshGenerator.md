@@ -40,13 +40,13 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 				  // Detour NavMesh 在创建时指定最大瓦片数
 				  // 这个数量是固定的，不能动态调整
 				  // 要改变容量，必须：
-			  //   1. 销毁旧的 dtNavMesh
-			  //   2. 创建新的 dtNavMesh（新容量）
-			  //   3. 重新生成所有瓦片数据
+				  //   1. 销毁旧的 dtNavMesh
+				  //   2. 创建新的 dtNavMesh（新容量）
+				  //   3. 重新生成所有瓦片数据
 			*/
 			if (DetourMesh->getMaxTiles() != MaxRequestedTiles)
 			{
-				// Destroy current NavMesh
+				// 销毁当前的
 				DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(nullptr);
 
 				// if there are any valid bounds recreate detour navmesh instance
