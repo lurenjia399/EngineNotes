@@ -11,7 +11,7 @@ void UNavigationSystemV1::PerformNavigationBoundsUpdate(const TArray<FNavigation
 		
 		}
 	}
-	// 2 更新了NavBounds，也需要告诉ANavigationData，需要NavBounds改变了需要更新NavDataGenerator上的相关数据
+	// 2 更新了NavBounds，也需要告诉ANavigationData，NavBounds改变了需要更新NavDataGenerator上的相关数据
 	if (UpdatedAreas.Num())
 	{
 		for (ANavigationData* NavData : NavDataSet)
