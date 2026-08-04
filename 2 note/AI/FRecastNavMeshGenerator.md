@@ -8,7 +8,17 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 	*/
 	UpdateNavigationBounds();
 	
+	/*
+	1 获取Detour数据类
+	*/
 	dtNavMesh* DetourMesh = DestNavMesh->GetRecastNavMeshImpl() 
 		? DestNavMesh->GetRecastNavMeshImpl()->GetRecastMesh() : nullptr;
+	/*
+	1 条件
+	*/
+	if (!IsGameStaticNavMesh(DestNavMesh) && DestNavMesh->IsResizable() && DetourMesh)
+	{
+		
+	}
 }
 ```
