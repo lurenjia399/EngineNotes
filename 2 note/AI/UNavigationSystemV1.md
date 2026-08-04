@@ -43,7 +43,7 @@ int UNavigationSystemV1::GetNavigationBoundsForNavData(
 	// 3 SystemV1没配SupportedAgents就会是默认的，这里AgentIndex默认回是0
 	if (AgentIndex != INDEX_NONE)
 	{
-		// 4 判断NavBounds中配的SupportedAgents是否满足，满足
+		// 4 判断NavBounds中配的SupportedAgents是否满足，满足的话就输出导航区域
 		for (const FNavigationBounds& NavigationBounds : RegisteredNavBounds)
 		{
 			if ((InLevel == nullptr || NavigationBounds.Level == InLevel)
