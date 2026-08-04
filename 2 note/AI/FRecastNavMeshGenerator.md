@@ -21,15 +21,17 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 	if (!IsGameStaticNavMesh(DestNavMesh) && DestNavMesh->IsResizable() && DetourMesh)
 	{
 		/*
-		1  // 锁定场景：
-		  // - 正在进行批量操作（如关卡流送）
-		  // - 正在播放游戏
-		  // - 用户临时禁用自动重建
+		1  // 锁定场景：- 正在进行批量操作（如关卡流送）- 用户临时禁用自动重建。在没有锁定的情况下才会继续执行
 		*/
-		const UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+		const UNavigationSystemV1* NavSys = FNavigationSystem::
+			GetCurrent<UNavigationSystemV1>(GetWorld());
 		if (NavSys && !NavSys->IsNavigationBuildingLocked())
 		{
-			
+			const int32 MaxRequestedTiles = UE::NavMesh::Private::
+				CalculateMaxTilesCount(InclusionBounds, 
+				Config.GetTileSizeUU(), AvgLayersPerTile, 
+				DestNavMesh->NavMeshVersion);
+
 		}
 	}
 }
