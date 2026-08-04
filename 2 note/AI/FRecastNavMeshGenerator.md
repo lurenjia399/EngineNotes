@@ -27,6 +27,7 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 			GetCurrent<UNavigationSystemV1>(GetWorld());
 		if (NavSys && !NavSys->IsNavigationBuildingLocked())
 		{
+			// 计算边界范围里需要创建的Tile数量，通过
 			const int32 MaxRequestedTiles = UE::NavMesh::Private::
 				CalculateMaxTilesCount(
 				InclusionBounds, // 导航应用的边界，就是NavVolume所框选的范围
