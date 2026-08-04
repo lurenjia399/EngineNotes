@@ -1,5 +1,11 @@
 # Build
-
+```cpp
+void UNavigationSystemV1::Build()
+{
+	FNavigationSystem::DiscardNavigationDataChunks(*World);
+	
+}
+```
 
 
 # AddNavigationBoundsUpdateRequest
