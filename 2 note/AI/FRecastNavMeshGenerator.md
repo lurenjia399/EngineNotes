@@ -27,14 +27,36 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 			GetCurrent<UNavigationSystemV1>(GetWorld());
 		if (NavSys && !NavSys->IsNavigationBuildingLocked())
 		{
-			// 计算边界范围里需要创建的Tile数量，通过
+			// 计算边界范围里能容纳的Tile数量，数量最后在乘上平均层数就是MaxRequestedTiles
 			const int32 MaxRequestedTiles = UE::NavMesh::Private::
 				CalculateMaxTilesCount(
 				InclusionBounds, // 导航应用的边界，就是NavVolume所框选的范围
 				Config.GetTileSizeUU(), //配置的Tile大小
 				AvgLayersPerTile, //每个Tile的平均层数
 				DestNavMesh->NavMeshVersion);// 使用NavMesh的版本号
+			/*
+			1 如果DetourMesh中最大d
+			*/
+			if (DetourMesh->getMaxTiles() != MaxRequestedTiles)
+			{
+				UE_LOG(LogNavigation, Log, TEXT("%s> Navigation bounds changed, rebuilding navmesh"), *DestNavMesh->GetName());
+				// Destroy current NavMesh
+				DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(nullptr);
 
+				// if there are any valid bounds recreate detour navmesh instance
+				// and mark all bounds as dirty
+				if (InclusionBounds.Num() > 0)
+				{
+					TArray<FNavigationDirtyArea> AsDirtyAreas;
+					AsDirtyAreas.Reserve(InclusionBounds.Num());
+					for (const FBox& BBox : InclusionBounds)
+					{
+						AsDirtyAreas.Add(FNavigationDirtyArea(BBox, ENavigationDirtyFlag::NavigationBounds));
+					}
+				
+					RebuildDirtyAreas(AsDirtyAreas);
+				}
+			}
 		}
 	}
 }
