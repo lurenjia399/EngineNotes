@@ -32,7 +32,7 @@ void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
 				InclusionBounds, // 导航应用的边界，就是NavVolume所框选的范围
 				Config.GetTileSizeUU(), //配置的Tile大小
 				AvgLayersPerTile, //每个Tile的平均层数
-				DestNavMesh->NavMeshVersion);// 使用NavMeshd
+				DestNavMesh->NavMeshVersion);// 使用NavMesh的版本号
 
 		}
 	}
