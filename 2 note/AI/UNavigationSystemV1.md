@@ -38,7 +38,7 @@ int UNavigationSystemV1::GetNavigationBoundsForNavData(
 	const int InitialBoundsCount = OutBounds.Num();
 	OutBounds.Reserve(InitialBoundsCount + RegisteredNavBounds.Num());
 	
-	// 2 通过导航数据获取AgentIndex,AgentIndex表示不同尺寸d
+	// 2 通过导航数据获取AgentIndex,AgentIndex表示不同尺寸的角色
 	const int32 AgentIndex = GetSupportedAgentIndex(&NavData);
 
 	if (AgentIndex != INDEX_NONE)
