@@ -10,9 +10,18 @@ void UNavigationSystemV1::Build()
 	FNavigationSystem::DiscardNavigationDataChunks(*World);
 	/*
 	1 判断是否有导航区域，就是NavVolume框住的范围
+	2 没有导航区域就返回，不Build
 	*/
 	const bool bHasWork = IsThereAnywhereToBuildNavigation();
+	if (!bHasWork)
+	{
+		return;
+	}
 	
+	/*
+	1 开启
+	*/
+	const double BuildStartTime = FPlatformTime::Seconds();
 }
 ```
 
