@@ -49,9 +49,12 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		// 3 初始化TiledMeshParameters数据
 		dtNavMeshParams TiledMeshParameters;
 		FMemory::Memzero(TiledMeshParameters);	
-		// 4  是ARecastNavMesh中NavMeshOriginOffset，表示
+		// 4  是ARecastNavMesh中NavMeshOriginOffset，表示tile空间的原点，默认是0，0，0
 		FVector NMOrigin = RcNavMeshOrigin;
 		rcVcopy(TiledMeshParameters.orig, &NMOrigin.X);
+		// 5 设置Tile的宽高，
+		TiledMeshParameters.tileWidth = Config.GetTileSizeUU();
+		TiledMeshParameters.tileHeight = Config.GetTileSizeUU();
 	}
 }
 ```
