@@ -74,7 +74,9 @@ void UNavigationSystemV1::RebuildAll(bool bIsLoadTime)
 	1 收集所有的导航区域。遍历场景中的ANavMeshBoundsVolume，构建出FNavigationBounds，放到RegisteredNavBounds数组中
 	*/
 	GatherNavigationBounds();
-	/**
+	/*
+	1 
+	*/
 	FNavigationDataHandler NavHandler(DefaultOctreeController, DefaultDirtyAreasController);
 	NavHandler.ProcessPendingOctreeUpdates();
 	PendingNavBoundsUpdates.Reset();
