@@ -82,6 +82,10 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		6 此时 dtNavMesh 已完全初始化，但不含任何 tile 数据——所有 tile都在空闲链表里，_posLookup 全是 nullptr。后续通过 addTile() 逐个添加实际的导航数据
 		*/
 		const dtStatus status = DetourMesh->init(&TiledMeshParameters);
+		// 10 记录当前有效的Tile的数量
+		NumActiveTiles = GetTilesCountHelper(DetourMesh);
+		// 11 把初始化号的dtnavMesh填充到Recast
+		DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(DetourMesh);
 	}
 }
 ```
