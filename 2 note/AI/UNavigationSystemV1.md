@@ -19,9 +19,16 @@ void UNavigationSystemV1::Build()
 	}
 	
 	/*
-	1 开启
+	1 开启Build的时间
 	*/
 	const double BuildStartTime = FPlatformTime::Seconds();
+	/*
+	1 创建NavData
+	*/
+	if (bAutoCreateNavigationData == true)
+	{
+		SpawnMissingNavigationData();
+	}
 }
 ```
 
