@@ -15,13 +15,12 @@ void FRecastNavMeshGenerator::Init()
 	1 
 	*/
 	UpdateNavigationBounds();
+	/*
 	
+	*/
 	if (bRecreateNavmesh)
 	{
-		// recreate navmesh from scratch if no data was loaded
 		ConstructTiledNavMesh();
-
-		// mark all the areas we need to update, which is the whole (known) navigable space if not restricted to active tiles
 		if (NavSys && NavSys->IsActiveTilesGenerationEnabled() == false)
 		{
 			MarkNavBoundsDirty();
@@ -29,7 +28,6 @@ void FRecastNavMeshGenerator::Init()
 	}
 	else
 	{
-		// otherwise just update generator params
 		Config.MaxPolysPerTile = MaxPolysPerTile;
 		NumActiveTiles = GetTilesCountHelper(DestNavMesh->GetRecastNavMeshImpl()->DetourNavMesh);
 	}
