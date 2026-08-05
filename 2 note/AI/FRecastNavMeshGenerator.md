@@ -73,7 +73,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		TiledMeshParameters.resolutionParams[
 			(uint8)ENavigationDataResolution::High].bvQuantFactor = 
 				1.f / DestNavMesh->GetCellSize(ENavigationDataResolution::High);
-		// 9 根据参数chu'shi
+		// 9 根据参数初始化dtNavMesh方法
 		const dtStatus status = DetourMesh->init(&TiledMeshParameters);
 	}
 }
