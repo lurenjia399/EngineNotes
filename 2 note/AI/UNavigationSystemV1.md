@@ -22,12 +22,16 @@ void UNavigationSystemV1::Build()
 	*/
 	const double BuildStartTime = FPlatformTime::Seconds();
 	/*
-	1 创建NavData，如果没有NavData或者是没有合适的NavData，就需要重新创建一个出来
+	1 创建NavData，如果没有NavData或者是没有合适的NavData，就需要重新创建一个出来，保存到地图中
 	*/
 	if (bAutoCreateNavigationData == true)
 	{
 		SpawnMissingNavigationData();
 	}
+	/*
+	1 
+	*/
+	ProcessRegistrationCandidates();
 }
 ```
 
