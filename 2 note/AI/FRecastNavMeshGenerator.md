@@ -1,6 +1,13 @@
 # Init
 ```cpp
-
+void FRecastNavMeshGenerator::Init()
+{
+	/*
+	1 
+	*/
+	ConfigureBuildProperties(Config);
+	
+}
 ```
 
 # OnNavigationBoundsChanged
