@@ -23,7 +23,7 @@ void UNavigationSystemV1::Build()
 	*/
 	const double BuildStartTime = FPlatformTime::Seconds();
 	/*
-	1 创建NavData
+	1 创建NavData，如果没有NavDatahu'zhe
 	*/
 	if (bAutoCreateNavigationData == true)
 	{
