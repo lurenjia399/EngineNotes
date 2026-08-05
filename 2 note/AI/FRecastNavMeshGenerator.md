@@ -97,7 +97,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 # EnsureBuildCompletion
 ```cpp
 /*
-1 创建FRecastTileGeneratorWrapper这个Task来
+1 创建FRecastTileGeneratorWrapper这个Task来处理
 */
 void FRecastNavMeshGenerator::EnsureBuildCompletion()
 {
