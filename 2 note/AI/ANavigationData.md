@@ -10,7 +10,8 @@ void ANavigationData::RebuildAll()
 	LoadBeforeGeneratorRebuild();
 	
 	/*
-	1 ARecastNavMesh重写了，
+	1 ARecastNavMesh重写了
+	2 
 	*/
 	PostLoadPreRebuild();
 }
