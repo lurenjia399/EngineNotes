@@ -83,7 +83,7 @@ void UNavigationSystemV1::RebuildAll(bool bIsLoadTime)
 	PendingNavBoundsUpdates.Reset();
 	DefaultDirtyAreasController.Reset();
 	/*
-	1 遍历所有的NavData，
+	1 遍历所有的NavData，如果满足要求就调用RebuildAll方法来重建，具体内容在ANavigationData文件里
 	*/
 	for (int32 NavDataIndex = 0; NavDataIndex < NavDataSet.Num(); ++NavDataIndex)
 	{
