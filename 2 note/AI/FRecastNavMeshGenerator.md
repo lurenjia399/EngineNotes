@@ -94,6 +94,10 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 }
 ```
 
+# EnsureBuildCompletion
+```cpp
+
+```
 # ConfigureBuildProperties
 
 ```cpp
