@@ -1,3 +1,8 @@
+# Init
+```cpp
+
+```
+
 # OnNavigationBoundsChanged
 ```cpp
 void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
