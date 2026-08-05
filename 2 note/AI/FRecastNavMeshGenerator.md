@@ -96,6 +96,9 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 
 # EnsureBuildCompletion
 ```cpp
+/*
+1 创建FRecastTileGeneratorWrapper这个Task来
+*/
 void FRecastNavMeshGenerator::EnsureBuildCompletion()
 {
 	const bool bHadTasks = GetNumRemaningBuildTasks() > 0;
@@ -105,16 +108,12 @@ void FRecastNavMeshGenerator::EnsureBuildCompletion()
 	{
 		const int32 NumTasksToProcess = (bDoAsyncDataGathering ? 1 : MaxTileGeneratorTasks) - RunningDirtyTiles.Num();
 		ProcessTileTasksAndGetUpdatedTiles(NumTasksToProcess);
-		
-		// Block until tasks are finished
 		for (TRunningTileElement<FRecastTileGeneratorWrapper>& Element : RunningDirtyTiles)
 		{
 			Element.AsyncTask->EnsureCompletion();
 		}
 	}
 	while (GetNumRemaningBuildTasks() > 0);
-
-	// Update navmesh drawing only if we had something to build
 	if (bHadTasks)
 	{
 		DestNavMesh->RequestDrawingUpdate();
