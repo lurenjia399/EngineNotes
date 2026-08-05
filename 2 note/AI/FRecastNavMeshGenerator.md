@@ -38,8 +38,16 @@ void FRecastNavMeshGenerator::Init()
 ```cpp
 bool FRecastNavMeshGenerator::ConstructTiledNavMesh() 
 {
-	// 取消构建，确保没有残留的异步 tile 生成任务在跑，避免新旧网格并存导致数据竞争
+	// 1 取消构建，确保没有残留的异步 tile 生成任务在跑，避免新旧网格并存导致数据竞争
 	CancelBuild();
+	/*
+	2 创建新的dtNavMesh实例
+	*/
+	dtNavMesh* DetourMesh = dtAllocNavMesh();	
+	if (DetourMesh)
+	{
+		
+	}
 }
 ```
 # OnNavigationBoundsChanged
