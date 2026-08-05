@@ -82,6 +82,24 @@ void UNavigationSystemV1::RebuildAll(bool bIsLoadTime)
 	NavHandler.ProcessPendingOctreeUpdates();
 	PendingNavBoundsUpdates.Reset();
 	DefaultDirtyAreasController.Reset();
+	/*
+	1 遍历所有的NavData，
+	*/
+	for (int32 NavDataIndex = 0; NavDataIndex < NavDataSet.Num(); ++NavDataIndex)
+	{
+		ANavigationData* NavData = NavDataSet[NavDataIndex];
+				
+		if (NavData && (!bIsLoadTime || NavData->NeedsRebuildOnLoad()) 
+			&& (!bIsInGame || NavData->SupportsRuntimeGeneration()) 
+			&& (BuildBounds.IsValid == 0))
+		{
+
+#if	WITH_EDITOR
+			NavData->SetIsBuildingOnLoad(bIsLoadTime);
+#endif
+			NavData->RebuildAll();
+		}
+	}
 }
 ```
 
