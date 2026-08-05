@@ -17,7 +17,7 @@ void ANavigationData::RebuildAll()
 	PostLoadPreRebuild();
 	/*
 	1 ARecastNavMesh重写了
-	2 
+	2 重置NavDataGenerator，创建新的FRecastNavMeshGenerator，并初始化
 	*/
 	ConditionalConstructGenerator(); 
 }
