@@ -17,7 +17,7 @@ void FRecastNavMeshGenerator::Init()
 	UpdateNavigationBounds();
 	/*
 	1 如果是需要创建Mavmsh，就会通过ConstructTiledNavMesh方法创建出一个dtNavMesh，并初始化，但是还没有塞入Tile数据
-	2 
+	2 通过MarkNavBoundsDirty方法填充PendingDirtyTiles数组，把需要更新的Tile都找到等后边更新数据
 	*/
 	if (bRecreateNavmesh)
 	{
