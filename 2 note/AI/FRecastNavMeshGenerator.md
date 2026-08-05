@@ -17,6 +17,7 @@ void FRecastNavMeshGenerator::Init()
 	UpdateNavigationBounds();
 	/*
 	1 如果是需要创建Mavmsh，就会通过ConstructTiledNavMesh方法创建出一个dtNavMesh，并初始化，但是还没有塞入Tile数据
+	2 
 	*/
 	if (bRecreateNavmesh)
 	{
@@ -26,6 +27,9 @@ void FRecastNavMeshGenerator::Init()
 			MarkNavBoundsDirty();
 		}
 	}
+	/*
+	如果是不需要创建Mavmsh，就更新数据
+	*/
 	else
 	{
 		Config.MaxPolysPerTile = MaxPolysPerTile;
