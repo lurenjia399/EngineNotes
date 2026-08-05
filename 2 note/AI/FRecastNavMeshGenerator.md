@@ -6,7 +6,33 @@ void FRecastNavMeshGenerator::Init()
 	1 读取ARecastNavMesh中的配置，输出到Config成员变量中
 	*/
 	ConfigureBuildProperties(Config);
+	/*
+	1 
+	*/
+	AdditionalCachedData = FRecastNavMeshCachedData::Construct(DestNavMesh);
+	ResolveGeneratedLinkAreas(Config);
+	/*
+	1 
+	*/
+	UpdateNavigationBounds();
 	
+	if (bRecreateNavmesh)
+	{
+		// recreate navmesh from scratch if no data was loaded
+		ConstructTiledNavMesh();
+
+		// mark all the areas we need to update, which is the whole (known) navigable space if not restricted to active tiles
+		if (NavSys && NavSys->IsActiveTilesGenerationEnabled() == false)
+		{
+			MarkNavBoundsDirty();
+		}
+	}
+	else
+	{
+		// otherwise just update generator params
+		Config.MaxPolysPerTile = MaxPolysPerTile;
+		NumActiveTiles = GetTilesCountHelper(DestNavMesh->GetRecastNavMeshImpl()->DetourNavMesh);
+	}
 }
 ```
 
