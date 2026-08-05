@@ -32,7 +32,7 @@ void UNavigationSystemV1::Build()
 	1 处理NavDataRegistrationQueue数组，数组表示需要延迟注册的NavData。遍历数组将所有延迟注册的NavData都执行RegisterNavData方法
 	*/
 	ProcessRegistrationCandidates();
-	// 重新构建导航数据
+	// 重新构建导航数据，主要对之前准备好的 NavData 调用他们的 NavigationData::RebuildAll ，用他们具体的 NavDataGenerator （如 RecastNavMeshGenerator ）去 RebuildAll 重建所有已知的导航数据。
 	RebuildAll();
 	// 阻塞等待所有构建完成
 	for (ANavigationData* NavData : NavDataSet)
