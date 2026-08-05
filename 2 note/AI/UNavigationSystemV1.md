@@ -8,6 +8,10 @@ void UNavigationSystemV1::Build()
 	3 在ARecastNavMesh::OnStreamingLevelAdded和ARecastNavMesh::OnStreamingLevelRemoved这个方法中会往NavDataChunk中填充数据
 	*/
 	FNavigationSystem::DiscardNavigationDataChunks(*World);
+	/*
+	1 判断是否有导航区域，就是NavVolume框住的范围
+	*/
+	const bool bHasWork = IsThereAnywhereToBuildNavigation();
 	
 }
 ```
