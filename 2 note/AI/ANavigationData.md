@@ -8,6 +8,11 @@ void ANavigationData::RebuildAll()
 	2 目的是在Rebuild前处理一些东西
 	*/
 	LoadBeforeGeneratorRebuild();
+	
+	/*
+	1 ARecastNavMesh重写了，
+	*/
+	PostLoadPreRebuild();
 }
 ```
 
