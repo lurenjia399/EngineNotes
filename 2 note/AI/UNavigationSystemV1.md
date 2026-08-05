@@ -75,7 +75,8 @@ void UNavigationSystemV1::RebuildAll(bool bIsLoadTime)
 	*/
 	GatherNavigationBounds();
 	/*
-	1 
+	1 更新导航八叉树 OctreeController.NavOctree，确保其最新。
+	2 主要是对 OctreeController.PendingOctreeUpdates 中的数据进行处理，对于 PendingOctreeUpdates 中的每个 FNavigationDirtyElement ，从 set 中移除出去，并且通过 FNavigationDataHandler::AddElementToNavOctree 把它添加到 OctreeController.NavOctree 等八叉树中
 	*/
 	FNavigationDataHandler NavHandler(DefaultOctreeController, DefaultDirtyAreasController);
 	NavHandler.ProcessPendingOctreeUpdates();
