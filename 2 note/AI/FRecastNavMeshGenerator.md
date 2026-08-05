@@ -84,7 +84,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		const dtStatus status = DetourMesh->init(&TiledMeshParameters);
 		// 10 记录当前有效的Tile的数量
 		NumActiveTiles = GetTilesCountHelper(DetourMesh);
-		// 11 把初始化号的dtnavMesh填充到Recast
+		// 11 把初始化号的dtnavMesh填充到RecastNamesh结构中
 		DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(DetourMesh);
 	}
 }
