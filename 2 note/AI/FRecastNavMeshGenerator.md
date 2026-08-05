@@ -52,9 +52,13 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		// 4  是ARecastNavMesh中NavMeshOriginOffset，表示tile空间的原点，默认是0，0，0
 		FVector NMOrigin = RcNavMeshOrigin;
 		rcVcopy(TiledMeshParameters.orig, &NMOrigin.X);
-		// 5 设置Tile的宽高，计算就是tileSize * cs。tileSize是TileSizeUU / CellSize表示Tile的边长能容纳多少个Cell。cs就是CellSize，每个格子的大小。因为宽高一样所以是正方形
+		// 5 设置tile的宽高，计算就是tileSize * cs。tileSize是TileSizeUU / CellSize表示Tile的边长能容纳多少个Cell。cs就是CellSize，每个格子的大小。因为宽高一样所以是正方形
 		TiledMeshParameters.tileWidth = Config.GetTileSizeUU();
 		TiledMeshParameters.tileHeight = Config.GetTileSizeUU();
+		// 6 
+		CalcNavMeshProperties(TiledMeshParameters.maxTiles, 
+			TiledMeshParameters.maxPolys);
+		Config.MaxPolysPerTile = TiledMeshParameters.maxPolys;
 	}
 }
 ```
