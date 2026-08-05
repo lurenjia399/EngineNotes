@@ -78,7 +78,8 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		2 通过memcpy来将参数拷贝到m_params成员变量中
 		3 缓存参数中的tileWidth，tileHeight，maxTiles等数据
 		4 创建m_tiles单向列表，把所有的tile都串联起来
-		5 创建m_posLookup快速查询，通过tile的x,y坐标，快速从数组中找到tile
+		5 创建m_posLookup快速查询，目的是通过tile的x,y坐标，快速从数组中找到tile
+		6 此时 dtNavMesh 已完全初始化，但不含任何 tile 数据——所有 tile都在空闲链表里，_posLookup 全是 nullptr。后续通过 addTile() 逐个添加实际的导航数据
 		*/
 		const dtStatus status = DetourMesh->init(&TiledMeshParameters);
 	}
