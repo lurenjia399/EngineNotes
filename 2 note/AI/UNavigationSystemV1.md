@@ -33,7 +33,19 @@ void UNavigationSystemV1::Build()
 	*/
 	ProcessRegistrationCandidates();
 	
+	// 重新构建导航数据
 	RebuildAll();
+	
+	/*
+	1 
+	*/
+	for (ANavigationData* NavData : NavDataSet)
+	{
+		if (NavData)
+		{
+			NavData->EnsureBuildCompletion();
+		}
+	}
 }
 ```
 
