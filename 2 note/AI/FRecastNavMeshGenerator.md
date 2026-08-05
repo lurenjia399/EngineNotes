@@ -35,7 +35,9 @@ void FRecastNavMeshGenerator::Init()
 ```
 
 # ConstructTiledNavMesh
+```cpp
 
+```
 # OnNavigationBoundsChanged
 ```cpp
 void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
