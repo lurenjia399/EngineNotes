@@ -11,7 +11,7 @@ void ANavigationData::RebuildAll()
 	
 	/*
 	1 ARecastNavMesh重写了
-	2 
+	2 qu'xia
 	*/
 	PostLoadPreRebuild();
 }
