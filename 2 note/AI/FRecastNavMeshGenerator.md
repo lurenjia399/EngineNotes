@@ -59,6 +59,10 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		CalcNavMeshProperties(TiledMeshParameters.maxTiles, 
 			TiledMeshParameters.maxPolys);
 		Config.MaxPolysPerTile = TiledMeshParameters.maxPolys;
+		// 7 设置Agent的攀爬高度，高度，身体半径
+		TiledMeshParameters.walkableClimb = Config.AgentMaxClimb;
+		TiledMeshParameters.walkableHeight = Config.AgentHeight;
+		TiledMeshParameters.walkableRadius = Config.AgentRadius;
 	}
 }
 ```
