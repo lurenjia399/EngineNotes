@@ -3,7 +3,7 @@
 void FRecastNavMeshGenerator::Init()
 {
 	/*
-	1 
+	1 读取ARecastNavMesh中的配置，输出到Config成员变量中
 	*/
 	ConfigureBuildProperties(Config);
 	
