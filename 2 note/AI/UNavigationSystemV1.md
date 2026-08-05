@@ -17,13 +17,12 @@ void UNavigationSystemV1::Build()
 	{
 		return;
 	}
-	
 	/*
 	1 开启Build的时间
 	*/
 	const double BuildStartTime = FPlatformTime::Seconds();
 	/*
-	1 创建NavData，如果没有NavDatahu'zhe
+	1 创建NavData，如果没有NavData或者是没有合适的NavData，就需要重新创建一个出来
 	*/
 	if (bAutoCreateNavigationData == true)
 	{
