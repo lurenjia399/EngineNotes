@@ -36,7 +36,11 @@ void FRecastNavMeshGenerator::Init()
 
 # ConstructTiledNavMesh
 ```cpp
-
+bool FRecastNavMeshGenerator::ConstructTiledNavMesh() 
+{
+	// 取消构建，确保没有残留的异步 tile 生成任务在跑，避免新旧网格并存导致数据竞争
+	CancelBuild();
+}
 ```
 # OnNavigationBoundsChanged
 ```cpp
