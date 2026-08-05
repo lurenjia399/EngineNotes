@@ -29,7 +29,7 @@ void UNavigationSystemV1::Build()
 		SpawnMissingNavigationData();
 	}
 	/*
-	1 
+	1 处理NavDataRegistrationQueue数组，遍历数组将所有
 	*/
 	ProcessRegistrationCandidates();
 }
