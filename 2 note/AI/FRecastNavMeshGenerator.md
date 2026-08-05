@@ -46,7 +46,12 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 	dtNavMesh* DetourMesh = dtAllocNavMesh();	
 	if (DetourMesh)
 	{
-		
+		// 3 初始化TiledMeshParameters数据
+		dtNavMeshParams TiledMeshParameters;
+		FMemory::Memzero(TiledMeshParameters);	
+
+		FVector NMOrigin = RcNavMeshOrigin;
+		rcVcopy(TiledMeshParameters.orig, &NMOrigin.X);
 	}
 }
 ```
