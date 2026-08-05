@@ -21,7 +21,7 @@ void ANavigationData::RebuildAll()
 	*/
 	ConditionalConstructGenerator(); 
 	/*
-	1 如果NavDataGenerator创建成功了，这里会执行RebuildAll
+	1 如果NavDataGenerator创建成功了，这里会执行RebuildAll，里面zhu'y
 	*/
 	if (NavDataGenerator.IsValid())
 	{
