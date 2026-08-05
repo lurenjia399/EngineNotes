@@ -11,7 +11,8 @@ void ANavigationData::RebuildAll()
 	
 	/*
 	1 ARecastNavMesh重写了
-	2 qu'xia
+	2 取消注册旧的UBaseGeneratedNavLinksProxy，创建新的并通过RegisterCustomLink方法注册到NavSystemV1中的CustomNavLinksMap这个数组里
+	3 NavLinkJumpDownConfig.LinkProxyClass.Get() != nullptr 
 	*/
 	PostLoadPreRebuild();
 }
