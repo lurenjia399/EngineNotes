@@ -63,6 +63,12 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		TiledMeshParameters.walkableClimb = Config.AgentMaxClimb;
 		TiledMeshParameters.walkableHeight = Config.AgentHeight;
 		TiledMeshParameters.walkableRadius = Config.AgentRadius;
+		
+		TiledMeshParameters.resolutionParams[
+			(uint8)ENavigationDataResolution::Low].bvQuantFactor = 
+				1.f / DestNavMesh->GetCellSize(ENavigationDataResolution::Low);
+		TiledMeshParameters.resolutionParams[(uint8)ENavigationDataResolution::Default].bvQuantFactor = 1.f / DestNavMesh->GetCellSize(ENavigationDataResolution::Default);
+		TiledMeshParameters.resolutionParams[(uint8)ENavigationDataResolution::High].bvQuantFactor = 1.f / DestNavMesh->GetCellSize(ENavigationDataResolution::High);
 	}
 }
 ```
