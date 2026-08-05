@@ -20,6 +20,20 @@ void ANavigationData::RebuildAll()
 	2 重置NavDataGenerator，创建新的FRecastNavMeshGenerator，并初始化
 	*/
 	ConditionalConstructGenerator(); 
+	/*
+	1 如果NavDataGenerator创建成功了，这里会执行RebuildAll
+	*/
+	if (NavDataGenerator.IsValid())
+	{
+#if WITH_EDITOR		
+		if (!IsBuildingOnLoad())
+		{
+			MarkPackageDirty();
+		}
+#endif
+
+		NavDataGenerator->RebuildAll();
+	}
 }
 ```
 
