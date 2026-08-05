@@ -68,7 +68,13 @@ void UNavigationSystemV1::Build()
 
 # RebuildAll
 ```cpp
-
+void UNavigationSystemV1::RebuildAll(bool bIsLoadTime)
+{
+	/*
+	1 收集所有的导航区域。遍历放到RegisteredNavBounds数组中
+	*/
+	GatherNavigationBounds();
+}
 ```
 
 # AddNavigationBoundsUpdateRequest
