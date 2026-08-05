@@ -49,7 +49,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		// 3 初始化TiledMeshParameters数据
 		dtNavMeshParams TiledMeshParameters;
 		FMemory::Memzero(TiledMeshParameters);	
-
+		// 4  是ARecastNavMesh中NavMeshOriginOffset，表示
 		FVector NMOrigin = RcNavMeshOrigin;
 		rcVcopy(TiledMeshParameters.orig, &NMOrigin.X);
 	}
