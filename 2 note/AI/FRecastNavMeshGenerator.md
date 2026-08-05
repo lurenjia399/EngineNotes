@@ -78,6 +78,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		2 通过memcpy来将参数拷贝到m_params成员变量中
 		3 缓存参数中的tileWidth，tileHeight，maxTiles等数据
 		4 创建m_tiles单向列表，把所有的tile都串联起来
+		5 创建m_posLookup快速查询，通过tile的x,y坐标，快速从数组中找到tile
 		*/
 		const dtStatus status = DetourMesh->init(&TiledMeshParameters);
 	}
