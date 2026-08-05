@@ -58,6 +58,114 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 	}
 }
 ```
+
+# ConfigureBuildProperties
+
+```cpp
+void FRecastNavMeshGenerator::ConfigureBuildProperties(FRecastBuildConfig& OutConfig)
+{
+	// @TODO those variables should be tweakable per navmesh actor
+	const float CellSize = DestNavMesh->GetCellSize(ENavigationDataResolution::Default);
+	ensure(CellSize != 0.f);
+	const float CellHeight = DestNavMesh->GetCellHeight(ENavigationDataResolution::Default);
+	const float AgentHeight = DestNavMesh->AgentHeight;
+	const float AgentMaxSlope = DestNavMesh->AgentMaxSlope;
+	const float AgentMaxClimb = DestNavMesh->GetAgentMaxStepHeight(ENavigationDataResolution::Default);
+	const float AgentRadius = DestNavMesh->AgentRadius;
+
+	OutConfig.Reset();
+
+	OutConfig.cs = CellSize;
+	OutConfig.ch = CellHeight;
+	OutConfig.walkableSlopeAngle = AgentMaxSlope;
+	OutConfig.walkableHeight = FMath::CeilToInt(AgentHeight / CellHeight);
+	OutConfig.walkableClimb = FMath::CeilToInt(AgentMaxClimb / CellHeight);
+	OutConfig.walkableRadius = FMath::CeilToInt(AgentRadius / CellSize);
+	OutConfig.maxStepFromWalkableSlope = OutConfig.cs * FMath::Tan(FMath::DegreesToRadians(OutConfig.walkableSlopeAngle));
+	
+	// For each navmesh resolutions, validate that AgentMaxStepHeight is high enough for the AgentMaxSlope angle
+	for (int32 Index = 0; Index < (uint8)ENavigationDataResolution::MAX; Index++)
+	{
+		const ENavigationDataResolution Resolution = (ENavigationDataResolution)Index;
+		
+		const float MaxStepHeight = DestNavMesh->GetAgentMaxStepHeight(Resolution);
+		const float TempCellHeight = DestNavMesh->GetCellHeight(Resolution);
+		const int WalkableClimbVx = FMath::CeilToInt(MaxStepHeight / TempCellHeight);
+
+		// Compute the required climb to prevent direct neighbor filtering in rcFilterLedgeSpansImp (minh < -walkableClimb).
+		// See comment: "The current span is close to a ledge if the drop to any neighbour span is less than the walkableClimb."
+		const float RequiredClimb = DestNavMesh->GetCellSize(Resolution) * FMath::Tan(FMath::DegreesToRadians(AgentMaxSlope));
+		const int RequiredClimbVx = FMath::CeilToInt(RequiredClimb / TempCellHeight);
+		
+		if (WalkableClimbVx < RequiredClimbVx)
+		{
+			// This is a log since we need to let the user decide which one of the parameters needs to be changed (if any).
+			UE_LOG(LogNavigationDataBuild, Log, TEXT("%s: AgentMaxStepHeight (%f) for resolution %s is not high enough in steep slopes (AgentMaxSlope is %f). "
+				"Use AgentMaxStepHeight bigger than %f or a smaller AgentMaxSlope to avoid undesirable navmesh holes in steep slopes. "
+				"This can also be avoided by using smaller CellSize and CellHeight."),
+				*GetNameSafe(DestNavMesh), MaxStepHeight,
+				*UEnum::GetDisplayValueAsText(Resolution).ToString(), AgentMaxSlope, static_cast<float>(RequiredClimbVx-1)*TempCellHeight);
+		}
+	}
+
+	if (IsGeneratingLinks())
+	{
+		// NavLink builder configuration
+		const FNavLinkGenerationJumpDownConfig& JumpDown = DestNavMesh->NavLinkJumpDownConfig;
+		JumpDown.CopyToDetourConfig(OutConfig.JumpDownConfig);
+
+		const float JumpDownSpillDistance = JumpDown.bEnabled ? JumpDown.JumpLength - JumpDown.JumpDistanceFromEdge : 0.f;
+		constexpr float JumpOverSpillDistance = 0.f; //JumpOver.bEnabled ? JumpOver.JumpDistanceFromGapCenter : 0.f;		// @todo: jump over config is not exposed for now
+		OutConfig.LinkSpillDistance = FMath::Max(JumpDownSpillDistance, JumpOverSpillDistance);
+	}
+	
+	// store original sizes
+	OutConfig.AgentHeight = AgentHeight;
+	OutConfig.AgentMaxClimb = AgentMaxClimb;
+	OutConfig.AgentRadius = AgentRadius;
+
+	UE::NavMesh::Private::ComputeConfigBorderSizes(DestNavMesh->bGenerateNavLinks, OutConfig);
+
+	OutConfig.maxEdgeLen = (int32)(1200.0f / CellSize);
+
+	// hardcoded, but can be overridden by RecastNavMesh params later
+	OutConfig.minRegionArea = (int32)rcSqr(0);
+	OutConfig.mergeRegionArea = (int32)rcSqr(20.f);
+
+	OutConfig.maxVertsPerPoly = (int32)MAX_VERTS_PER_POLY;
+	OutConfig.detailSampleDist = 600.0f;
+	OutConfig.detailSampleMaxError = 1.0f;
+
+	OutConfig.minRegionArea = (int32)rcSqr(DestNavMesh->MinRegionArea / CellSize);
+	OutConfig.mergeRegionArea = (int32)rcSqr(DestNavMesh->MergeRegionSize / CellSize);
+	OutConfig.maxSimplificationError = DestNavMesh->MaxSimplificationError;
+	OutConfig.simplificationElevationRatio = DestNavMesh->SimplificationElevationRatio;
+	OutConfig.bPerformVoxelFiltering = DestNavMesh->bPerformVoxelFiltering;
+	OutConfig.bMarkLowHeightAreas = DestNavMesh->bMarkLowHeightAreas;
+	OutConfig.bUseExtraTopCellWhenMarkingAreas = DestNavMesh->bUseExtraTopCellWhenMarkingAreas;
+	OutConfig.bFilterLowSpanSequences = DestNavMesh->bFilterLowSpanSequences;
+	OutConfig.bFilterLowSpanFromTileCache = DestNavMesh->bFilterLowSpanFromTileCache;
+	if (DestNavMesh->bMarkLowHeightAreas)
+	{
+		OutConfig.walkableHeight = 1;
+	}
+
+	OutConfig.bGenerateLinks = IsGeneratingLinks();
+
+	const UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	OutConfig.AgentIndex = NavSys ? NavSys->GetSupportedAgentIndex(DestNavMesh) : 0;
+
+	OutConfig.tileSize = FMath::Max(FMath::TruncToInt(DestNavMesh->TileSizeUU / CellSize), 1);
+	UE_CLOG(OutConfig.tileSize == 1, LogNavigation, Error, TEXT("RecastNavMesh TileSize of 1 is highly discouraged. This occurence indicates an issue with RecastNavMesh\'s generation properties (specifically TileSizeUU: %f, CellSize: %f). Please ensure their correctness.")
+		, DestNavMesh->TileSizeUU, CellSize);
+
+	OutConfig.regionChunkSize = FMath::Max(1, OutConfig.tileSize / FMath::Max(1, DestNavMesh->LayerChunkSplits));
+	OutConfig.TileCacheChunkSize = FMath::Max(1, OutConfig.tileSize / FMath::Max(1, DestNavMesh->RegionChunkSplits));
+	OutConfig.LedgeSlopeFilterMode = DestNavMesh->LedgeSlopeFilterMode;
+	OutConfig.regionPartitioning = DestNavMesh->LayerPartitioning;
+	OutConfig.TileCachePartitionType = DestNavMesh->RegionPartitioning;
+}
+```
 # OnNavigationBoundsChanged
 ```cpp
 void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
