@@ -55,7 +55,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		// 5 设置tile的宽高，计算就是tileSize * cs。tileSize是TileSizeUU / CellSize表示Tile的边长能容纳多少个Cell。cs就是CellSize，每个格子的大小。因为宽高一样所以是正方形
 		TiledMeshParameters.tileWidth = Config.GetTileSizeUU();
 		TiledMeshParameters.tileHeight = Config.GetTileSizeUU();
-		// 6 
+		// 6  Detour 的 dtPolyRef 设计是固定位宽的整数ID，不像现代数据库可以用变长ID。所以必须在初始化时就决定位分配方案，之后无法更改。 这个方法就是做这个决策：1. 看世界有多大（需要多少 tile） 2. 看硬限制允许多少（TileNumberHardLimit）3. 算出一个平衡的分配方案 4. 如果算出来的超过编码能力，报错并截断。一旦 dtNavMesh->init() 调用完成，这个导航网格的 maxTiles 和  maxPolys 就固化了，除非整个推倒重建（ConstructTiledNavMesh重来），否则无法扩容
 		CalcNavMeshProperties(TiledMeshParameters.maxTiles, 
 			TiledMeshParameters.maxPolys);
 		Config.MaxPolysPerTile = TiledMeshParameters.maxPolys;
