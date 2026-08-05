@@ -73,30 +73,8 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 		TiledMeshParameters.resolutionParams[
 			(uint8)ENavigationDataResolution::High].bvQuantFactor = 
 				1.f / DestNavMesh->GetCellSize(ENavigationDataResolution::High);
-				
-		if (TiledMeshParameters.maxTiles == 0)
-		{
-			UE_LOG(LogNavigation, Warning, TEXT("ConstructTiledNavMesh: Failed to create navmesh of size 0."));
-			bSuccess = false;
-		}
-		else
-		{
-			const dtStatus status = DetourMesh->init(&TiledMeshParameters);
-
-			if (dtStatusFailed(status))
-			{
-				UE_LOG(LogNavigation, Warning, TEXT("ConstructTiledNavMesh: Could not init navmesh."));
-				bSuccess = false;
-			}
-			else
-			{
-				bSuccess = true;
-				NumActiveTiles = GetTilesCountHelper(DetourMesh);
-				DestNavMesh->GetRecastNavMeshImpl()->SetRecastMesh(DetourMesh);
-
-				UE::NavMesh::Private::CheckTileIndicesInValidRange(InclusionBounds, *DestNavMesh);
-			}
-		}
+		// 9 根据参数chu'shi
+		const dtStatus status = DetourMesh->init(&TiledMeshParameters);
 	}
 }
 ```
