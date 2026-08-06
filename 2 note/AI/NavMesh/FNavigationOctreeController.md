@@ -9,5 +9,6 @@
 
 # OctTree存的什么
 ```cpp
-1 当前世界中存储的Level。World->GetNumLevels()；
+1 当前世界中存储的Level的Bounds。World->GetNumLevels()；
+2 
 ```
