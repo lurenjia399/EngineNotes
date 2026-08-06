@@ -21,7 +21,7 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 		RelevantDataArray.Add(Element.Data);
 	});
 	/*
-	1 
+	1 构建提速数据
 	*/
 	for (TSharedRef<FNavigationRelevantData, ESPMode::ThreadSafe>& ElementData : RelevantDataArray)
 	{
