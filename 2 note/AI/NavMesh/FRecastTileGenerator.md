@@ -6,6 +6,7 @@
 3 TNavStatArray<FBox> InclusionBounds;// 存储的是和自己Tile相交的NavVolume
 4 uint32 bFullyEncapsulatedByInclusionBounds;// InclusionBounds中记录的NavVolume是否完全包含自己的Tile
 
+5 TArray<FNavMeshTileData> CompressedLayers;
 ```
 
 # GatherGeometry
