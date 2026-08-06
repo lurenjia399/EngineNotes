@@ -15,7 +15,7 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 {
 	// 拿到自己的Tile包含扩展的盒子大小
 	const FBox NewBounds = ParentGenerator.GrowBoundingBox(TileBB, false);
-	// 通过八叉树的缓存结构，根据Tile扩展盒子大小查找，找到xiang'jiao
+	// 通过八叉树的缓存结构，根据Tile扩展盒子大小查找，找到相交的元素记录到RelevantDataArray中
 	NavigationOctree->FindElementsWithBoundsTest(NewBounds,[]()
 	{
 		RelevantDataArray.Add(Element.Data);
