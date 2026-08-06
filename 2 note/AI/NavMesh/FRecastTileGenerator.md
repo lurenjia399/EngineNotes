@@ -1,6 +1,6 @@
 # 
 ```cpp
-1 FBox TileBB;// 
+1 FBox TileBB;// 表示Tile的边界盒子，就是一个立方体盒子。
 ```
 
 # GatherGeometry
