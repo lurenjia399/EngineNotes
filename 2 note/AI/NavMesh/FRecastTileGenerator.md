@@ -15,5 +15,11 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 {
 	// 拿到自己的Tile包含扩展的盒子大小
 	const FBox NewBounds = ParentGenerator.GrowBoundingBox(TileBB, false);
+	
+	NavigationOctree->FindElementsWithBoundsTest(NewBounds,[]()
+	{
+		RelevantDataArray.Add(Element.Data);
+	}
+	);
 }
 ```
