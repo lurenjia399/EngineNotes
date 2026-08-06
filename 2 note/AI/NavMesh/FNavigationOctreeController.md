@@ -9,5 +9,5 @@
 
 # OctTree存的什么
 ```cpp
-1 
+1 World->GetNumLevels()；
 ```
