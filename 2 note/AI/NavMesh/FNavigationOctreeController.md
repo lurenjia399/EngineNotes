@@ -2,5 +2,11 @@
 ```cpp
 1 监听UNavigationObjectRepository对象的OnNavigationElementAddedDelegate代理，在代理执行的时候，会将参数添加到OctreeController.PendingUpdates的处理数组中。随后在NavSystemV1的tick里将参数添加到Octree中。
 2 ConditionalPopulateNavOctree这个方法就是会重新构建Octree。把当前World里的Level都记录到Octree中，以及UNavigationObjectRepository中的所有NavRelevantElement都添加到Octree中。
-3 ConditionalPopulateNavOctree 这个方法是在多出有可能执行的，其中有LoadMap记在地图的时候，SetNewWorldOrigin改变WorldOrigin位置的时候，有新的NavData注册的时候，NavBounds更新的时候，基本上就是导航数据变化de
+
+3 ConditionalPopulateNavOctree 这个方法是在多出有可能执行的，其中有LoadMap记在地图的时候，SetNewWorldOrigin改变WorldOrigin位置的时候，有新的NavData注册的时候，NavBounds更新的时候，基本上就是导航数据变化的时候都有可能触发NavOctree的重建。
+```
+
+# OctTree存的什么
+```cpp
+
 ```
