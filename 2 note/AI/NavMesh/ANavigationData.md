@@ -36,9 +36,3 @@ void ANavigationData::RebuildAll()
 	}
 }
 ```
-
-# ARecastNavMesh
-# OnNavigationBoundsChanged
-```cpp
-1 
-```
