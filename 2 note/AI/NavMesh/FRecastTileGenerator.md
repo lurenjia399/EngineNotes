@@ -13,7 +13,7 @@
 ```cpp
 void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentGenerator, bool bGeometryChanged)
 {
-	// 拿到自己的Tile的大小，包含扩展
+	// 拿到自己的Tile包含扩展的盒子大小
 	const FBox NewBounds = ParentGenerator.GrowBoundingBox(TileBB, false);
 }
 ```
