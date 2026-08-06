@@ -4,7 +4,7 @@
 2 ConditionalPopulateNavOctree这个方法就是会重新构建Octree。把当前World里的Level都记录到Octree中，以及UNavigationObjectRepository中的所有NavRelevantElement都添加到Octree中。
 
 1 ConditionalPopulateNavOctree 这个方法是在多出有可能执行的，其中有LoadMap记在地图的时候，SetNewWorldOrigin改变WorldOrigin位置的时候，有新的NavData注册的时候，NavBounds更新的时候，基本上就是导航数据变化的时候都有可能触发NavOctree的重建。
-2 这些都是在编辑器运行时会重建，在运行时如果NavData不允许y
+2 这些都是在编辑器运行时会重建，在运行时如果NavData不允许运行时修改，这个Octree也不会重建是空的
 ```
 
 # OctTree存的什么
