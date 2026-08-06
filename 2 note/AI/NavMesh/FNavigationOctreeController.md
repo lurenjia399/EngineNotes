@@ -1,4 +1,5 @@
 # Add
 ```cpp
-1 监听UNavigationObjectRepository对象的OnNavigationElementAddedDelegate代理，在代理执行的时候
+1 监听UNavigationObjectRepository对象的OnNavigationElementAddedDelegate代理，在代理执行的时候，会将参数添加到OctreeController.PendingUpdates的处理数组中。随后在NavSystemV1的tick里将参数添加到Octree中
+2 ConditionalPopulateNavOctree这个方法就是会重新构建Octree，
 ```
