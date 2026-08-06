@@ -9,7 +9,6 @@
 5 TArray<FNavMeshTileData> CompressedLayers;
 ```
 
-
 # GatherGeometry
 ```cpp
 void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentGenerator, bool bGeometryChanged)
@@ -38,5 +37,13 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 			bNewResolutionFound = true;
 		}
 	}
+}
+```
+
+# GenerateTile
+```cpp
+bool FRecastTileGenerator::GenerateTile()
+{
+	
 }
 ```
