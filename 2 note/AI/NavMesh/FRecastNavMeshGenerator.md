@@ -99,7 +99,7 @@ bool FRecastNavMeshGenerator::ConstructTiledNavMesh()
 /*
 1 创建FRecastTileGeneratorWrapper这个Task来处理PendingDirtyTiles中的数据
 2 在Task的创建时会优先创建出FRecastTileGenerator，在FRecastTileGenerator的SetUp初始化方法中，就会对每个Tile进行体素化。
-3 DoWork方法中真正的执行FRecastTileGenerator::GenerateTile方法来生成Tile
+3 Task执行就是执行DoWork方法中真正的执行FRecastTileGenerator::GenerateTile方法来生成Tile
 */
 void FRecastNavMeshGenerator::EnsureBuildCompletion()
 {
