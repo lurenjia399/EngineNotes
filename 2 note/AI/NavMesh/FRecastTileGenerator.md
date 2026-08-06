@@ -23,7 +23,7 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 	/*
 	1 为找到的影响导航Actor，构建体素数据缓存，每个Tile会对应一个体素数据缓存
 	2 遍历Actor，通过将可行走的三角形投影到xz平面，找到覆盖的体素列
-	3 
+	3 生成Span，每个Span记录了是位于哪个体素列，包含了哪些
 	*/
 	for (TSharedRef<FNavigationRelevantData, ESPMode::ThreadSafe>& ElementData : RelevantDataArray)
 	{
