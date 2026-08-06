@@ -10,5 +10,5 @@
 # OctTree存的什么
 ```cpp
 1 当前世界中存储的Level的Bounds。World->GetNumLevels()；
-2 继承INavRelevantInterface的Actor，UPrimitiveComponent默认是继承INavRelevantInterface，在Actor或者是Comp注册的时候
+2 继承INavRelevantInterface的Actor，UPrimitiveComponent默认是继承INavRelevantInterface，在Actor或者是Comp注册的时候，如果他们影响导航就会添加到NavRelevantElements数组中
 ```
