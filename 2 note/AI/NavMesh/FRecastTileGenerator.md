@@ -20,5 +20,20 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 	{
 		RelevantDataArray.Add(Element.Data);
 	});
+	/*
+	1 
+	*/
+	for (TSharedRef<FNavigationRelevantData, ESPMode::ThreadSafe>& ElementData : RelevantDataArray)
+	{
+		GatherNavigationDataGeometry(
+			ElementData, *NavSys, OwnerNavDataConfig, bGeometryChanged);
+
+		const ENavigationDataResolution Resolution = ElementData->Modifiers.GetNavMeshResolution();
+		if (Resolution != ENavigationDataResolution::Invalid)
+		{
+			HighestResolution = FMath::Max(HighestResolution, Resolution);
+			bNewResolutionFound = true;
+		}
+	}
 }
 ```
