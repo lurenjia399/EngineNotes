@@ -104,5 +104,12 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		return true;
 	}
+	
+	if (TileConfig.bPerformVoxelFiltering && !bFullyEncapsulatedByInclusionBounds)
+	{
+		ApplyVoxelFilter(SolidHF, TileConfig.walkableRadius);
+	}
+	
+	GenerateRecastFilter(BuildContext);
 }
 ```
