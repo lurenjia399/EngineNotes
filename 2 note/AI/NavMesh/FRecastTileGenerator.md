@@ -134,5 +134,12 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		return false;
 	}
+	
+	if (!RecastBuildLayers(BuildContext, RasterContext))
+	{
+		return false;
+	}
+	
+	return RecastBuildTileCache(BuildContext, RasterContext);
 }
 ```
