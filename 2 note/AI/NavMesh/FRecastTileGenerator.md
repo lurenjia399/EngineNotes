@@ -98,7 +98,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	/*
 	1 如果没有高度场
 	2 如果高度场中的Spans数组是空的
-	3 说明zh
+	3 说明这个Tile中没有几何体，就提前返回掉
 	*/
 	if (!SolidHF || SolidHF->pools == 0)
 	{
