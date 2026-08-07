@@ -2,7 +2,7 @@
 ```cpp
 1 RecastNavMeshGenerator的ProcessTileTasksAsyncAndGetUpdatedTiles方法触发，方法中会创建出Task，Task的执行的内容就是调用RecastTileGenerator的DoWork方法。
 2 在创建Task的时候，传的参数是RecastTileGenerator，也就是会创建TileGenerator，就是会执行SetUp方法。
-3 SetUp方法的内容就是，根据Tile的大小在NavOctTree中查到，查到的结果就是Tile所覆盖的Actor或者是Comp，然后遍历结果对每个
+3 SetUp方法的内容就是，根据Tile的大小在NavOctTree中查到，查到的结果就是Tile所覆盖的Actor或者是Comp，然后遍历结果，ji
 ```
 
 # 
