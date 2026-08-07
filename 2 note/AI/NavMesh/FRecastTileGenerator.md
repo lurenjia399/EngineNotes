@@ -136,7 +136,9 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		return false;
 	}
-	
+	/*
+	1 构建分层，
+	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
 	{
 		return false;
