@@ -77,13 +77,15 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	FNavMeshBuildContext& BuildContext, const dtLinkBuilderData& InLinkBuilderData)
 {
 	/*
-	1 创建高度场的数据结构，初始化Spans的内存池
+	1 创建高度场的数据结构，初始化Spans的内存池，这里只是初始化内存，内存中没有数据。最终在体素化之后会存下这个Tile里面所有的Span
 	*/
 	if (!CreateHeightField(BuildContext))
 	{
 		return false;
 	}
-	/**
+	/*
+	2 
+	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 }
 ```
