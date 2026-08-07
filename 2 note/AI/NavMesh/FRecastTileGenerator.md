@@ -77,7 +77,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	FNavMeshBuildContext& BuildContext, const dtLinkBuilderData& InLinkBuilderData)
 {
 	/*
-	1 创建高度场的数据结构，初始化Spans的内存池，这里只是初始化内存，内存中没有数据。最终在体素化之后会存下这个Tile里面所有的Span，
+	1 创建高度场的数据结构，初始化Spans的内存池，这里只是初始化内存，内存中没有数据。最终在体素化之后会存下这个Tile里面所有的Span。
 	*/
 	if (!CreateHeightField(BuildContext))
 	{
@@ -117,15 +117,20 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	2 rcFilterLowHangingWalkableObstacles 沿着每个体素列从下往上遍历Span，如果当前Span不能走但是上一个Span可以走，并且高度差小于walkableClimb,也把这个不能走的Span标记成可以走。
 	3 rcFilterLedgeSpans 如果当前Span可以走，但是距离他邻居的高度差超过了walkableClimb，说明当前Span没法站人，需要标记成不可走。
 	4 rcFilterWalkableLowHeightSpans 同一个体素列上当前Span的顶面距离下一个Span的地面的空间，这个空间站不下一个Agent，就要把当前Span标记成不可走。
-	4 rcFilterWalkableLowHeightSpansSequences 如果空间站不下一个Agent，但是可以让Agent蹲下通过，也不会把Span标记成不可以走。
+	5 rcFilterWalkableLowHeightSpansSequences 如果空间站不下一个Agent，但是可以让Agent蹲下通过，也不会把Span标记成不可以走。
 	*/
 	GenerateRecastFilter(BuildContext);
 	/*
 	1 压缩高度场中的Spans，变成CompactSpan，重新组织Span记录的数据并记到rcCompactHeightfield中。
 	2 rcCompactCell 是每一个体素列一个，其中Index表示最下边的Span在总的Spans数组中的索引，count表示这个体素列上有多少个Span。
-		3 rcCompactSpan 是新的Span结构，其中y表示Span地面高度，h表示Span顶面高度 - Span地面高度，con表示相邻的CompactSpan，areas表示那个是否可行走的标志位。
+	3 rcCompactSpan 是新的Span结构，其中y表示Span地面高度，h表示Span顶面高度 - Span地面高度，con表示相邻的CompactSpan，areas表示那个是否可行走的标志位。
 	*/
 	if (!BuildCompactHeightField(BuildContext))
+	{
+		return false;
+	}
+	
+	if (!RecastErodeWalkable(BuildContext))
 	{
 		return false;
 	}
