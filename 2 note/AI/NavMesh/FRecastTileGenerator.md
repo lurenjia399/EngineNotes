@@ -104,7 +104,9 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		return true;
 	}
-	
+	/*
+	1 一个过滤，过滤掉生成在Tile之外的Span，
+	*/
 	if (TileConfig.bPerformVoxelFiltering && !bFullyEncapsulatedByInclusionBounds)
 	{
 		ApplyVoxelFilter(SolidHF, TileConfig.walkableRadius);
