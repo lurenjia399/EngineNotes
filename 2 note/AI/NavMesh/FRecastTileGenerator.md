@@ -115,6 +115,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	/*
 	1 过滤可行走表面
 	2 rcFilterLowHangingWalkableObstacles 沿着每个体素列从下往上遍历Span，如果当前Span不能走但是上一个Span可以走，并且高度差小于walkableClimb,也把这个不能走的Span标记成可以走。
+	3 rcFilterLedgeSpans 
 	*/
 	GenerateRecastFilter(BuildContext);
 }
