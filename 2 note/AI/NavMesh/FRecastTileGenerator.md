@@ -137,7 +137,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	1 构建分层，将体素列上的Span都按照层分开
+	1 构建分层，将体素列上的Span都按照层分开，就是将离散的Span按高度整合成Layer
 	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
 	{
