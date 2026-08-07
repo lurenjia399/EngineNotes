@@ -112,7 +112,10 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		ApplyVoxelFilter(SolidHF, TileConfig.walkableRadius);
 	}
-	
+	/*
+	1 过滤可行走表面
+	2 
+	*/
 	GenerateRecastFilter(BuildContext);
 }
 ```
