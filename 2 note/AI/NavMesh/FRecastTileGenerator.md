@@ -77,7 +77,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	FNavMeshBuildContext& BuildContext, const dtLinkBuilderData& InLinkBuilderData)
 {
 	/*
-	1 创建高度场的数据结构，初始化Sp
+	1 创建高度场的数据结构，初始化Spans的内存池
 	*/
 	if (!CreateHeightField(BuildContext))
 	{
