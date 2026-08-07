@@ -143,7 +143,9 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		return false;
 	}
-	
+	/*
+	1 填充到CompressedLayers，把Layer在进行整合，把数据都存在CompressedLayers里
+	*/
 	return RecastBuildTileCache(BuildContext, RasterContext);
 }
 ```
