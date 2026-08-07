@@ -149,3 +149,16 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	return RecastBuildTileCache(BuildContext, RasterContext);
 }
 ```
+
+## GenerateNavigationDataLayer
+
+```cpp
+bool FRecastTileGenerator::GenerateNavigationDataLayer(
+	FNavMeshBuildContext& BuildContext, FTileCacheCompressor& TileCompressor,
+	FTileCacheAllocator& GenNavAllocator, 
+	FTileGenerationContext& GenerationContext, 
+	const dtLinkBuilderData& InLinkBuilderData, int32 LayerIdx)
+{
+	
+}
+```
