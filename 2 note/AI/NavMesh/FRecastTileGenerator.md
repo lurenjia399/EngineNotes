@@ -90,5 +90,9 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	4 如果想让房间内部的走廊有导航其他地方没有导航，可以让屋顶投影让所有的地方都没有导航，再用标记MaskFillCollisionUnderneathForNavmesh的ModiferVolume包裹走廊部分的房顶，就可以去掉走廊部分的投影，让走廊部分有导航。ModiferVolume上的MaskFillCollisionUnderneathForNavmesh作用就是清楚包裹的Spans上的投影标记。
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
+	/*
+	1 
+	*/
+	RasterizeTriangles(BuildContext, RasterContext);
 }
 ```
