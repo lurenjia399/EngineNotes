@@ -120,7 +120,9 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	4 rcFilterWalkableLowHeightSpansSequences 如果空间站不下一个Agent，但是可以让Agent蹲下通过，也不会把Span标记成不可以走。
 	*/
 	GenerateRecastFilter(BuildContext);
-	/
+	/*
+	1 
+	*/
 	if (!BuildCompactHeightField(BuildContext))
 	{
 		return false;
