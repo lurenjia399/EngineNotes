@@ -137,7 +137,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	1 构建分层，
+	1 构建分层，将体素列上的Span都按照层分开，比如一个体素列上you'sa
 	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
 	{
