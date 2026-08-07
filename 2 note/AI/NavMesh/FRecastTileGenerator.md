@@ -77,7 +77,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	FNavMeshBuildContext& BuildContext, const dtLinkBuilderData& InLinkBuilderData)
 {
 	/*
-	1 创建高度场的数据结构，初始化Spans的内存池，这里只是初始化内存，内存中没有数据。最终在体素化之后会存下这个Tile里面所有的Span
+	1 创建高度场的数据结构，初始化Spans的内存池，这里只是初始化内存，内存中没有数据。最终在体素化之后会存下这个Tile里面所有的Span，
 	*/
 	if (!CreateHeightField(BuildContext))
 	{
@@ -91,7 +91,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 	/*
-	1 体素化，遍历Tile中包含几何体的三角形，找到其覆盖的体素
+	1 体素化，遍历Tile中包含几何体的三角形，找到其覆盖的体素组成Span,保存到高度场的Spans中。
 	*/
 	RasterizeTriangles(BuildContext, RasterContext);
 }
