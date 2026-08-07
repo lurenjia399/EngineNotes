@@ -52,6 +52,26 @@ void FRecastTileGenerator::GatherGeometry(const FRecastNavMeshGenerator& ParentG
 ```cpp
 bool FRecastTileGenerator::GenerateTile()
 {
+	if (bRegenerateCompressedLayers)
+	{
+		CompressedLayers.Reset();
+		bSuccess = GenerateCompressedLayers(BuildContext, LinkBuiderData);
+		if (bSuccess)
+		{
+			// Mark all layers as dirty
+			DirtyLayers.Init(true, CompressedLayers.Num());
+		}
+	}
 	
+	if (bSuccess)
+	{
+		bSuccess = GenerateNavigationData(BuildContext, LinkBuiderData);
+	}
+	
+	return bSuccess;
 }
+```
+## GenerateCompressedLayers
+```cpp
+
 ```
