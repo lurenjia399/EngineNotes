@@ -84,7 +84,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	2 
+	2 计算
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 }
