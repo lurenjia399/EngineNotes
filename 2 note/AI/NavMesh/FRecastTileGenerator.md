@@ -117,8 +117,13 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	2 rcFilterLowHangingWalkableObstacles 沿着每个体素列从下往上遍历Span，如果当前Span不能走但是上一个Span可以走，并且高度差小于walkableClimb,也把这个不能走的Span标记成可以走。
 	3 rcFilterLedgeSpans 如果当前Span可以走，但是距离他邻居的高度差超过了walkableClimb，说明当前Span没法站人，需要标记成不可走。
 	4 rcFilterWalkableLowHeightSpans 同一个体素列上当前Span的顶面距离下一个Span的地面的空间，这个空间站不下一个Agent，就要把当前Span标记成不可走。
-	4 rcFilterWalkableLowHeightSpansSequences 如果空间zhan'bu
+	4 rcFilterWalkableLowHeightSpansSequences 如果空间站不下一个Agent，但是可以让Agent蹲下通过，也不会把Span标记成不可以走。
 	*/
 	GenerateRecastFilter(BuildContext);
+	/
+	if (!BuildCompactHeightField(BuildContext))
+	{
+		return false;
+	}
 }
 ```
