@@ -95,5 +95,14 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	2 每个Span表示在一个体素列上的区间。这个区间是由一个或多个体素块组成。
 	*/
 	RasterizeTriangles(BuildContext, RasterContext);
+	/*
+	1 如果没有高度场
+	2 如果高度场中的Spans数组是空的
+	3 说明zh
+	*/
+	if (!SolidHF || SolidHF->pools == 0)
+	{
+		return true;
+	}
 }
 ```
