@@ -129,7 +129,9 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	{
 		return false;
 	}
-	
+	/*
+	1 改变可行走的轮廓，不能紧贴着
+	*/
 	if (!RecastErodeWalkable(BuildContext))
 	{
 		return false;
