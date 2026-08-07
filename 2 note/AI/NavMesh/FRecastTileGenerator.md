@@ -121,7 +121,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	*/
 	GenerateRecastFilter(BuildContext);
 	/*
-	1 
+	1 压缩高度场z
 	*/
 	if (!BuildCompactHeightField(BuildContext))
 	{
