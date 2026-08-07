@@ -1,7 +1,7 @@
 # 
 ```cpp
 1 ProcessTileTasksAsyncAndGetUpdatedTiles 由这个方法执行
-1 RecastNavMeshGenerator的ProcessTileTasksAsyncAndGetUpdatedTiles方法触发，方法中会创建出对应的Task
+1 RecastNavMeshGenerator的ProcessTileTasksAsyncAndGetUpdatedTiles方法触发，方法中会创建出Task取zhi'xin
 ```
 
 # 
