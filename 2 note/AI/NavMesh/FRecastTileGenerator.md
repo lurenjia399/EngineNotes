@@ -3,7 +3,7 @@
 1 RecastNavMeshGenerator的ProcessTileTasksAsyncAndGetUpdatedTiles方法触发，方法中会创建出Task，Task的执行的内容就是调用RecastTileGenerator的DoWork方法。
 2 在创建Task的时候，传的参数是RecastTileGenerator，也就是会创建TileGenerator，就是会执行SetUp方法。
 3 SetUp方法的内容就是，根据Tile的大小在NavOctTree中查到，查到的结果就是Tile所覆盖的Actor或者是Comp，然后遍历结果，将每个结果的Geometry都收集到RawGeometry数组中。也就是收集几何体数据为体素话做准备。
-4 DoWork方法的内容就是GenerateTile，
+4 DoWork方法的内容就是GenerateTile，GenerateTile主要分成两部分，第一部分就是把Tile中的几何体体素化生成Span，然后根据高度Span整合成Layer，
 ```
 
 # 
