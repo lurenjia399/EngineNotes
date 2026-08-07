@@ -91,7 +91,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 	/*
-	1 
+	1 体素化，遍历Tile中包含几何体的三角形，找到其覆盖的体素
 	*/
 	RasterizeTriangles(BuildContext, RasterContext);
 }
