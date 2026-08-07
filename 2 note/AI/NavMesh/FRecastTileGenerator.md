@@ -123,7 +123,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	/*
 	1 压缩高度场中的Spans，变成CompactSpan，重新组织Span记录的数据并记到rcCompactHeightfield中。
 	2 rcCompactCell 是每一个体素列一个，其中Index表示最下边的Span在总的Spans数组中的索引，count表示这个体素列上有多少个Span。
-	3 rcCompactSpan 
+	3 rcCompactSpan 是新的Span结构，其中y表示Span顶面的
 	*/
 	if (!BuildCompactHeightField(BuildContext))
 	{
