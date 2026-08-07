@@ -84,7 +84,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	2 计算
+	2 计算是否要投影到地面标志位，遍历Tile中几何体的三角形的时候，如果是默认tou
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 }
