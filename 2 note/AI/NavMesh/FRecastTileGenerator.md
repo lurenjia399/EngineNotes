@@ -84,7 +84,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	2 计算是否要投影到地面标志位，遍历Tile中几何体的三角形的时候，如果是默认的就是不投影，会根据三角形位置生成span就是会悬空。如果几何体配置了FillCollisionUnderneathForNavmesh，就会向下投影到地面。如果NavModiferVolume勾选了这个标志位，就是Volume框选的位置不会投影到地面。比如一个房子的，我们的屋顶是默认的就是不投影到地面，房间内部会生成导航。如果不想让房间内部生成dao
+	2 计算是否要投影到地面标志位，遍历Tile中几何体的三角形的时候，如果是默认的就是不投影，会根据三角形位置生成span就是会悬空。如果几何体配置了FillCollisionUnderneathForNavmesh，就会向下投影到地面。如果NavModiferVolume勾选了这个标志位，就是Volume框选的位置不会投影到地面。比如一个房子的，我们的屋顶是默认的就是不投影到地面，房间内部会生成导航。如果不想让房间内部生成导航就可以设置屋顶是投影的
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 }
