@@ -105,7 +105,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return true;
 	}
 	/*
-	1 一个过滤，过滤掉生成在Tile之外的Span，
+	1 一个过滤，过滤掉生成在Tile之外的Span，把这些Span标记成不可走
 	*/
 	if (TileConfig.bPerformVoxelFiltering && !bFullyEncapsulatedByInclusionBounds)
 	{
