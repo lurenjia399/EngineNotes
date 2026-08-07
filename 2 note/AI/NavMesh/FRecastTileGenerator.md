@@ -92,6 +92,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 	/*
 	1 体素化，遍历Tile中包含几何体的三角形，找到其覆盖的体素组成Span,保存到高度场的Spans中。
+	2 每个Span表示在一个体素列上，
 	*/
 	RasterizeTriangles(BuildContext, RasterContext);
 }
