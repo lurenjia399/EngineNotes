@@ -130,7 +130,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	1 改变可行走的轮廓，不能紧贴着
+	1 收缩可行走区域，不能紧贴着边缘，如果紧贴着边缘就会导致Agent陷进墙里
 	*/
 	if (!RecastErodeWalkable(BuildContext))
 	{
