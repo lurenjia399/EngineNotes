@@ -84,7 +84,8 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	2 计算是否要投影到地面标志位，遍历Tile中几何体的三角形的时候，如果是默认tou
+	2 计算是否要投影到地面标志位，遍历Tile中几何体的三角形的时候，如果是默认的就是不投影，会根据三角形位置生成span就是会悬空。如果几何体配值了FillCollisionUnderneathFor
+  Navmesh
 	*/
 	ComputeRasterizationMasks(BuildContext, RasterContext);
 }
