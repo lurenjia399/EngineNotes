@@ -73,5 +73,12 @@ bool FRecastTileGenerator::GenerateTile()
 ```
 ## GenerateCompressedLayers
 ```cpp
-
+bool FRecastTileGenerator::GenerateCompressedLayers(
+	FNavMeshBuildContext& BuildContext, const dtLinkBuilderData& InLinkBuilderData)
+{
+	if (!CreateHeightField(BuildContext))
+	{
+		return false;
+	}
+}
 ```
