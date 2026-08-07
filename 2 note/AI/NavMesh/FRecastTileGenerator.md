@@ -106,7 +106,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	}
 	/*
 	1 一个过滤，过滤掉生成在Tile之外的Span，把这些Span标记成不可走
-	2 执行过滤的条件一个是配置，是默认开启的，第二个条件是当前的NavVolume是否完全包含了Tile
+	2 执行过滤的条件一个是配置，是默认开启的，第二个条件是当前的NavVolume是否完全包含了Tile，只有每完全包含才需要zhi'xing
 	*/
 	if (TileConfig.bPerformVoxelFiltering && !bFullyEncapsulatedByInclusionBounds)
 	{
