@@ -137,7 +137,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	1 构建分层，将体素列上的Span都按照层分开，就是将离散的Span按高度整合成Layer，用的是WATERSHED这个算法
+	1 构建分层，将体素列上的Span都按照层分开，就是将离散的Span按高度整合成一个一个的Layer，用的是分水岭这个算法
 	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
 	{
