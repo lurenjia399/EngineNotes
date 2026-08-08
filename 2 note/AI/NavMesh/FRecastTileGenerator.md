@@ -172,21 +172,16 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	*/
 	if (TileConfig.TileCachePartitionType == RC_REGION_WATERSHED)
 	{
-		GenerationContext.DistanceField = dtAllocTileCacheDistanceField(&GenNavAllocator);
-		if (GenerationContext.DistanceField == nullptr)
-		{
-			BuildContext.log(RC_LOG_ERROR, "GenerateNavigationDataLayer: Out of memory 'DistanceField'.");
-			return false;
-		}
+		GenerationContext.DistanceField = 
+			dtAllocTileCacheDistanceField(&GenNavAllocator);
 
-		status = dtBuildTileCacheDistanceField(&GenNavAllocator, *GenerationContext.Layer, *GenerationContext.DistanceField);
-		if (dtStatusFailed(status))
-		{
-			BuildContext.log(RC_LOG_ERROR, "GenerateNavigationDataLayer: Failed to build distance field.");
-			return false;
-		}
+		status = dtBuildTileCacheDistanceField
+			(&GenNavAllocator, *GenerationContext.Layer, 
+				*GenerationContext.DistanceField);
 
-		status = dtBuildTileCacheRegions(&GenNavAllocator, TileConfig.minRegionArea, TileConfig.mergeRegionArea, *GenerationContext.Layer, *GenerationContext.DistanceField);
+		status = dtBuildTileCacheRegions(&GenNavAllocator, 
+			TileConfig.minRegionArea, TileConfig.mergeRegionArea, 
+			*GenerationContext.Layer, *GenerationContext.DistanceField);
 	}
 }
 ```
