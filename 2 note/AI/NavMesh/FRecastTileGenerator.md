@@ -185,9 +185,19 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 				*GenerationContext.Layer, *GenerationContext.DistanceField);
 		}
 	}
+	/*
+	1 
+	*/
 	{
-		GenerationContext.ContourSet = 
-			dtAllocTileCacheContourSet(&GenNavAllocator);
+		GenerationContext.ContourSet=dtAllocTileCacheContourSet(&GenNavAllocator);
+		GenerationContext.ClusterSet = tAllocTileCacheClusterSet(&GenNavAllocator);
+		status = dtBuildTileCacheContours(
+			&GenNavAllocator, *GenerationContext.Layer,
+			TileConfig.walkableClimb, 
+			TileConfig.maxSimplificationError, 
+			TileConfig.simplificationElevationRatio,
+			TileConfig.cs, TileConfig.ch,*GenerationContext.ContourSet, 
+			*GenerationContext.ClusterSet, bSkipContourSimplification);
 	}
 	
 }
