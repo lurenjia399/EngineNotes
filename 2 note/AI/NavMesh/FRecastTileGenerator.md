@@ -168,7 +168,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	*/
 	MarkDynamicAreas(*GenerationContext.Layer);
 	/*
-	1 
+	1 再次分水岭的操作，和上边RecastBuildLayers体素化之后分水冷的区别就是第一次分水岭
 	*/
 	if (TileConfig.TileCachePartitionType == RC_REGION_WATERSHED)
 	{
