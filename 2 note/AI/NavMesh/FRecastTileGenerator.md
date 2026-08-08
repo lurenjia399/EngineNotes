@@ -160,7 +160,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	const dtLinkBuilderData& InLinkBuilderData, int32 LayerIdx)
 {
 	/*
-	1 解压层数据
+	1 解压层数据，之前压缩了这里解压下，还原出
 	*/
 	status = dtDecompressTileCacheLayer(&GenNavAllocator, &TileCompressor, (const unsigned char*)CompressedData.GetData(), CompressedData.DataSize, &GenerationContext.Layer);
 
