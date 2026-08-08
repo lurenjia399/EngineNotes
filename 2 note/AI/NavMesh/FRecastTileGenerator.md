@@ -164,7 +164,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	*/
 	status = dtDecompressTileCacheLayer(&GenNavAllocator, &TileCompressor, (const unsigned char*)CompressedData.GetData(), CompressedData.DataSize, &GenerationContext.Layer);
 	/*
-	1 
+	1 根据Modifer修改区域
 	*/
 	MarkDynamicAreas(*GenerationContext.Layer);
 }
