@@ -216,13 +216,16 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 		status = dtBuildTileCacheClusters(&GenNavAllocator, 
 			*GenerationContext.ClusterSet, *GenerationContext.PolyMesh);
 	}
+	/*
+	1 
+	*/
 	if (TileConfig.bGenerateDetailedMesh)
 	{
 		GenerationContext.DetailMesh = 
 			tAllocTileCachePolyMeshDetail(&GenNavAllocator);
 		status = dtBuildTileCachePolyMeshDetail(&GenNavAllocator, 
-			TileConfig.cs, TileConfig.ch, TileConfig.detailSampleDist, TileConfig.detailSampleMaxError,
-
+			TileConfig.cs, TileConfig.ch, TileConfig.detailSampleDist, 
+			TileConfig.detailSampleMaxError,
 	}
 }
 ```
