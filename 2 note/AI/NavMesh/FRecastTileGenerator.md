@@ -206,7 +206,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	}
 	/*
 	1 构建PolyMesh
-	2 沿着上边算出的区域轮廓三角化，每个Poly都是个san'jiao'xi
+	2 沿着上边算出的区域轮廓三角化，每个Poly都是个三角形
 	*/
 	{
 		GenerationContext.PolyMesh = dtAllocTileCachePolyMesh(&GenNavAllocator);
@@ -216,6 +216,13 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 		status = dtBuildTileCacheClusters(&GenNavAllocator, 
 			*GenerationContext.ClusterSet, *GenerationContext.PolyMesh);
 	}
-	
+	if (TileConfig.bGenerateDetailedMesh)
+	{
+		GenerationContext.DetailMesh = 
+			tAllocTileCachePolyMeshDetail(&GenNavAllocator);
+		status = dtBuildTileCachePolyMeshDetail(&GenNavAllocator, 
+			TileConfig.cs, TileConfig.ch, TileConfig.detailSampleDist, TileConfig.detailSampleMaxError,
+
+	}
 }
 ```
