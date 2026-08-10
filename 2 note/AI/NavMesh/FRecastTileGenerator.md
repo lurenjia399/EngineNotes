@@ -137,8 +137,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 		return false;
 	}
 	/*
-	1 用分水岭算法，把xiang'li
-	1 用分水岭算法，把相连的span划分到同一个Layer中，同一个体素列上的span会在不同的Layer上面
+	1 用分水岭算法，把相连的span都组合成一块完整的连通区域，在根据区域的不同划分成不同的层
 	2 其中分水岭的距离场表示每个span到边界的距离，边界包括不可行的span或者是没有连接的span(墙，悬崖)。
 	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
