@@ -205,7 +205,8 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 			*GenerationContext.ClusterSet, bSkipContourSimplification);
 	}
 	/*
-	1 
+	1 构建PolyMesh
+	2 
 	*/
 	{
 		GenerationContext.PolyMesh = dtAllocTileCachePolyMesh(&GenNavAllocator);
