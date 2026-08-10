@@ -139,11 +139,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	/*
 	1 用分水岭算法，把相连的span都组合成一块完整的连通区域，在根据区域的不同划分成不同的层
 	2 其中分水岭的距离场表示每个span到边界的距离，边界包括不可行的span或者是没有连接的span(墙，悬崖)。
-	3 遍历 span,先算出每个 span 到最近边界(不可走处 或 area 类型切换处)的 chamfer 距离;以此为海拔跑分水岭洪水填充,把
-  ▎ span 划分成平面连通的 region(同一格子列里上下叠着的 span
-  ▎ 必然落在不同 region,因为它们之间没有水平连接);然后按 region
-  ▎ 的垂直重叠关系分层——不重叠且平面连通的归一层,重叠的分到不同
-  ▎ 层,再把高度相近的层合并。
+	3 遍历 span,先算出每个 span 到最近边界(不可走处 或 area 类型切换处)的距离;以此为海拔跑分水岭洪水填充,把 span 划分成平面连通的 region，然后按 region 的垂直重叠关系分层——不重叠且平面连通的归一层,重叠的分到不同层,再把高度相近的层合并。
 	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
 	{
