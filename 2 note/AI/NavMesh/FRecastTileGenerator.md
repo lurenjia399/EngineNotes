@@ -217,7 +217,8 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 			*GenerationContext.ClusterSet, *GenerationContext.PolyMesh);
 	}
 	/*
-	1 
+	1 构建DetailMesh
+	2 
 	*/
 	if (TileConfig.bGenerateDetailedMesh)
 	{
