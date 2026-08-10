@@ -241,5 +241,15 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 				GeneratedLinks);	
 		}
 	}
+	/*
+	1 创建NavMeshData,创建导航数据
+	*/
+	if (!dtCreateNavMeshData(&Params, &NavData, &NavDataSize))
+	{
+		BuildContext.log(RC_LOG_ERROR, "Could not build Detour navmesh.");
+		return false;
+	}
+	GenerationContext.NavigationData.Add(FNavMeshTileData(NavData, NavDataSize, LayerIdx, CompressedData.LayerBBox));
+
 }
 ```
