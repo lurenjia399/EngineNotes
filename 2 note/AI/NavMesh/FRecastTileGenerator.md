@@ -191,7 +191,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 		}
 	}
 	/*
-	1 创建轮廓contour。分水岭划分出的区域是一个个的小正方形组成的边界，这里优化下边界减少锯齿，让轮廓平滑
+	1 创建轮廓contour。分水岭划分出的区域是一个个的小正方形组成的，所以他们的轮廓是由锯齿的，这里就是为了减少锯齿
 	*/
 	{
 		GenerationContext.ContourSet=dtAllocTileCacheContourSet(&GenNavAllocator);
