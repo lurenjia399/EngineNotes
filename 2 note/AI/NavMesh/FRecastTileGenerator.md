@@ -172,8 +172,8 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	/*
 	1 再次分水岭的操作，和上边RecastBuildLayers体素化之后分水岭的区别就是第一次分水岭将Span划分成不同的Layer，第二次是在Layer上分水岭会考虑ModiferVolume，将Layer转化成Region。
 	2 这一次的分水岭操作，是在层的基础上，遍历格子,先算出每个格子到最近边界(不可走处 或 area 类型切换处)的距离;以此为海拔跑分水岭洪水填充,把格子划分成平面连通的 region。
-	2 和第一次分水岭的区别。两者都是为了划分出区域，第一次划分出区域后再根据Span的垂直关系划分出Layer，而第二次就是在Layer的基础上划分区域为后边的操作使用。
-	3 第一个已经划分出区域了为什么第二次还要划分。第一次是划分出了区域但是为了优化压缩的层数据，所以就没有存下来，第二次划分出区域是在ModifierVolume之后，区域有可能根据Volume动态改变，所以还需要根据层在划分一次。
+	3 和第一次分水岭的区别。两者都是为了划分出区域，第一次划分出区域后再根据Span的垂直关系划分出Layer，而第二次就是在Layer的基础上划分区域为后边的操作使用。
+	4 第一个已经划分出区域了为什么第二次还要划分。第一次是划分出了区域但是为了优化压缩的层数据，所以就没有存下来，第二次划分出区域是在ModifierVolume之后，区域有可能根据Volume动态改变，所以还需要根据层在划分一次。
 	*/
 	{
 		if (TileConfig.TileCachePartitionType == RC_REGION_WATERSHED)
@@ -191,7 +191,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 		}
 	}
 	/*
-	1 
+	1 构建轮廓
 	*/
 	{
 		GenerationContext.ContourSet=dtAllocTileCacheContourSet(&GenNavAllocator);
