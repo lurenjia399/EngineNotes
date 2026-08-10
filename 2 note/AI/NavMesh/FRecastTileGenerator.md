@@ -218,7 +218,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	}
 	/*
 	1 构建DetailMesh
-	2 
+	2 多边形内部细分成三角网后,寻路路径的 z 值逐三角形跟随真实高度起伏——爬坡、过坑时路径平滑贴地,而不是走平面斜线
 	*/
 	if (TileConfig.bGenerateDetailedMesh)
 	{
