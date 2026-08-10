@@ -204,6 +204,17 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 			TileConfig.cs, TileConfig.ch,*GenerationContext.ContourSet, 
 			*GenerationContext.ClusterSet, bSkipContourSimplification);
 	}
+	/*
+	1 
+	*/
+	{
+		GenerationContext.PolyMesh = dtAllocTileCachePolyMesh(&GenNavAllocator);
+		status = dtBuildTileCachePolyMesh(&GenNavAllocator, 
+			&BuildContext, *GenerationContext.ContourSet, 
+			*GenerationContext.PolyMesh, TileConfig.walkableClimb);
+		status = dtBuildTileCacheClusters(&GenNavAllocator, 
+			*GenerationContext.ClusterSet, *GenerationContext.PolyMesh);
+	}
 	
 }
 ```
