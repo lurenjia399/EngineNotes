@@ -171,6 +171,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	MarkDynamicAreas(*GenerationContext.Layer);
 	/*
 	1 再次分水岭的操作，和上边RecastBuildLayers体素化之后分水冷的区别就是第一次分水岭将Span划分成不同的Layer，第二次是在Layer上分水岭会考虑ModiferVolume，将Layer转化成Region。记录每个格子到不可走格子的距离，作为分水岭的高度图，距离不可走越远值越大。
+	2 
 	*/
 	{
 		if (TileConfig.TileCachePartitionType == RC_REGION_WATERSHED)
