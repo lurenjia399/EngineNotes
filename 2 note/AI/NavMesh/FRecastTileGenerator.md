@@ -228,5 +228,18 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 			TileConfig.cs, TileConfig.ch, TileConfig.detailSampleDist, 
 			TileConfig.detailSampleMaxError,
 	}
+	/*
+	1 构建GeneratedLinks
+	*/
+	TArray<FGeneratedNavigationLink> GeneratedLinks;
+	if (InLinkBuilderData.generatingLinks)
+	{
+		if (SolidHF && CompactHF)
+		{
+			status = BuildTileCacheLinks(BuildContext, &GenNavAllocator, 
+				*GenerationContext.Layer, *GenerationContext.ContourSet, 
+				GeneratedLinks);	
+		}
+	}
 }
 ```
