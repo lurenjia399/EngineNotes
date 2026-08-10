@@ -206,7 +206,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	}
 	/*
 	1 构建PolyMesh
-	2 
+	2 沿着上边算出的区域轮廓三角化，每个Poly都是个san'jiao'xi
 	*/
 	{
 		GenerationContext.PolyMesh = dtAllocTileCachePolyMesh(&GenNavAllocator);
