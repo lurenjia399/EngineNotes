@@ -138,7 +138,7 @@ bool FRecastTileGenerator::GenerateCompressedLayers(
 	}
 	/*
 	1 构建分层，将体素列上的Span都按照层分开，就是将离散的Span按高度整合成一个一个的Layer，用的是分水岭这个算法。相邻的Span会在同一个Layer
-	2 用分水岭的算法，分水岭的距离场表示每个span到边界的距离，边界包括不可行的span或者是没有链接，把连通的span划分到同一个Region中，在整合Region成Layer
+	2 用分水岭的算法，分水岭的距离场表示每个span到边界的距离，边界包括不可行的span或者是没有连接的span(墙，悬崖)，把连通的span划分到同一个Region中，在整合Region成Layer
 	3 
 	*/
 	if (!RecastBuildLayers(BuildContext, RasterContext))
