@@ -11,9 +11,10 @@
 void URecastNavMeshDataChunk::GetTiles(
 	const FPImplRecastNavMesh* NavMeshImpl, // 场景中RecastNavMesh里的Impl
 	const TArray<FNavTileRef>& TileRefs, // 和DataChunk的范围相交的Tile
-	const EGatherTilesCopyMode CopyMode, 
+	const EGatherTilesCopyMode CopyMode, // 枚举
 	const bool bMarkAsAttached /*= true*/)
 {
-	
+	//
+	Tiles.Empty(TileRefs.Num());
 }
 ```
