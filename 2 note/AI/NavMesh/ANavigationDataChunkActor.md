@@ -5,7 +5,7 @@
 3 在运行时，通过AddNavigationDataChunkToWorld和RemoveNavigationDataChunkFromWorld方法来对导航数据进行添加移除
 ```
 
-# 2 填充DataChunk数据
+# 2 收集导航数据
 ```cpp
 void URecastNavMeshDataChunk::GetTiles(
 	const FPImplRecastNavMesh* NavMeshImpl, // 场景中RecastNavMesh里的Impl
@@ -14,11 +14,11 @@ void URecastNavMeshDataChunk::GetTiles(
 	const bool bMarkAsAttached /*= true*/)
 {
 	/*
-	 清空Tiles数据
+	1 清空Tiles数据
 	*/
 	Tiles.Empty(TileRefs.Num());
 	/*
-	 遍历相交的所有Tile
+	2 遍历相交的所有Tile
 	*/
 	for (const FNavTileRef TileRef : TileRefs)
 	{
