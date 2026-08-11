@@ -7,6 +7,9 @@
 
 # 2 收集导航数据
 ```cpp
+/*
+1 用DataChunkA
+*/
 void URecastNavMeshDataChunk::GetTiles(
 	const FPImplRecastNavMesh* NavMeshImpl, // 场景中RecastNavMesh里的Impl
 	const TArray<FNavTileRef>& TileRefs, // 和DataChunk的范围相交的Tile
