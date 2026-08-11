@@ -85,8 +85,6 @@ void ARecastNavMesh::OnStreamingNavDataAdded(ANavigationDataChunkActor& InActor)
 
 			for (const FNavigationOctreeElement& NavElement : NavElements)
 			{
-				UE_VLOG_BOX(this, LogNavigation, Verbose, NavElement.Bounds.GetBox(), FColor::Orange, TEXT(""));
-
 				NavSys->AddDirtyArea(
 					NavElement.Bounds.GetBox(),
 					ENavigationDirtyFlag::All,
