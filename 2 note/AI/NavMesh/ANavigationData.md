@@ -21,7 +21,8 @@ void ANavigationData::RebuildAll()
 	*/
 	ConditionalConstructGenerator(); 
 	/*
-	1 如果NavDataGenerator创建成功了，这里会执行RebuildAll，里面主要也是执行ConstructTiledNavMesh方法，这个方法在创建NavDataGenerator的时候也会走，这里就不会走了
+	1 如果NavDataGenerator创建成功了，这里会执行RebuildAll
+	2 
 	*/
 	if (NavDataGenerator.IsValid())
 	{
