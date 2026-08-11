@@ -25,26 +25,13 @@ void URecastNavMeshDataChunk::GetTiles(
 	{
 		if (Tile && Tile->header)
 		{
-			// Make our own copy of tile data
+			// 把Tile中的数据拷贝到RawTileData中
 			uint8* RawTileData = nullptr;
 			if (CopyMode & EGatherTilesCopyMode::CopyData)
 			{
 				RawTileData = DuplicateRecastRawData(Tile->data, Tile->dataSize);
 			}
-
-			// We need tile cache data only if navmesh supports any kind of runtime generation
-			FNavMeshTileData TileCacheData;
-			uint8* RawTileCacheData = nullptr;
-			if (CopyMode & EGatherTilesCopyMode::CopyCacheData)
-			{
-				TileCacheData = NavMeshImpl->GetTileCacheLayer(Tile->header->x, Tile->header->y, Tile->header->layer);
-				if (TileCacheData.IsValid())
-				{
-					// Make our own copy of tile cache data
-					RawTileCacheData = DuplicateRecastRawData(TileCacheData.GetData(), TileCacheData.DataSize);
-				}
-			}
-
+			// 组装出新的临时变量
 			FRecastTileData RecastTileData(Tile->dataSize, RawTileData, TileCacheData.DataSize, RawTileCacheData);
 			RecastTileData.OriginalX = Tile->header->x;
 			RecastTileData.OriginalY = Tile->header->y;
@@ -52,7 +39,7 @@ void URecastNavMeshDataChunk::GetTiles(
 			RecastTileData.Y = Tile->header->y;
 			RecastTileData.Layer = Tile->header->layer;
 			RecastTileData.bAttached = bMarkAsAttached;
-
+			// 添加到Tiles数组中
 			Tiles.Add(RecastTileData);
 		}
 	}
