@@ -3,7 +3,8 @@
 
 ```cpp
 1 从 UNavigationSystemV1::Build 方法开始，可以通过RebuildNavigation命令调用过来
-2 Build中会调用GatherNavigationBounds方法注册NavVolume。然后找到场景中的
+2 Build中会调用GatherNavigationBounds方法注册NavVolume。然后找到场景中的RecastNavMesh执行其RebuildAll方法。然后还要执行RecastNavMesh的EnsureBuildCompletion方法
+3 
 ```
 # RebuildAll
 ```cpp
