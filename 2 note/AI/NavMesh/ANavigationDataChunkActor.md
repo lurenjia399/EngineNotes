@@ -14,7 +14,16 @@ void URecastNavMeshDataChunk::GetTiles(
 	const EGatherTilesCopyMode CopyMode, // 枚举
 	const bool bMarkAsAttached /*= true*/)
 {
-	//
+	/*
+	1 清空Tiles数据
+	*/
 	Tiles.Empty(TileRefs.Num());
+	/*
+	1 遍历相交的所有Tile
+	*/
+	for (const FNavTileRef TileRef : TileRefs)
+	{
+		
+	}
 }
 ```
