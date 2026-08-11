@@ -65,6 +65,9 @@ void ANavigationDataChunkActor::EndPlay(const EEndPlayReason::Type EndPlayReason
 ```cpp
 void ARecastNavMesh::OnStreamingNavDataAdded(ANavigationDataChunkActor& InActor)
 {
+	/*
+	1 加载导航数据的方法，就是将DataChunkActor的Tile
+	*/
 	URecastNavMeshDataChunk* NavDataChunk = GetNavigationDataChunk(InActor);
 	if (NavDataChunk)
 	{
