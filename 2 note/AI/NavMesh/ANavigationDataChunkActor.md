@@ -59,6 +59,9 @@ void ANavigationDataChunkActor::EndPlay(const EEndPlayReason::Type EndPlayReason
 }
 ```
 
-```
-
+```cpp
+void ARecastNavMesh::OnStreamingNavDataAdded(ANavigationDataChunkActor& InActor)
+{
+	
+}
 ```
