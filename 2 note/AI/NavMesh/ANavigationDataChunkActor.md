@@ -62,6 +62,38 @@ void ANavigationDataChunkActor::EndPlay(const EEndPlayReason::Type EndPlayReason
 ```cpp
 void ARecastNavMesh::OnStreamingNavDataAdded(ANavigationDataChunkActor& InActor)
 {
-	
+	URecastNavMeshDataChunk* NavDataChunk = GetNavigationDataChunk(InActor);
+	if (NavDataChunk)
+	{
+		AttachNavMeshDataChunk(*NavDataChunk);
+	}
+	// 运行时影响导航的情况
+	if (IsWorldPartitionedDynamicNavmesh())
+	{
+		UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+		if (NavSys)
+		{
+			FNavigationOctreeFilter Filter;
+			Filter.bIncludeGeometry = true;
+			Filter.bExcludeLoadedData = true;
+		
+			TArray<FNavigationOctreeElement> NavElements;
+			NavSys->FindElementsInNavOctree(InActor.GetBounds(), Filter, NavElements);
+
+			for (const FNavigationOctreeElement& NavElement : NavElements)
+			{
+				UE_VLOG_BOX(this, LogNavigation, Verbose, NavElement.Bounds.GetBox(), FColor::Orange, TEXT(""));
+
+				NavSys->AddDirtyArea(
+					NavElement.Bounds.GetBox(),
+					ENavigationDirtyFlag::All,
+					[SourceElement = NavElement.Data->SourceElement]
+					{
+						return SourceElement;
+					},
+					"Streaming data added");
+			}
+		}
+	}
 }
 ```
