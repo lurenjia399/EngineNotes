@@ -2,13 +2,13 @@
 ```cpp
 1 由UWorldPartitionNavigationDataBuilder创建出来，在编辑器按下BuildPaths，会启动新的进程来执行Builder的Run方法，里面会执行GenerateNavigationData这个方法，根据WorldSetting中的NavigationDataChunkGridSize来找场景中和NavVolume重叠的Cell，为每一个Cell都创建一个NavigationDataChunkActor
 2 创建的过程中会执行CollectNavData方法来收集导航数据，方法内部是执行的UNavigationSystemV1::FillNavigationDataChunkActor方法。在FillNavigationDataChunkActor方法中就是会给NavigationDataChunkActor创建URecastNavMeshDataChunk导航数据，导航数据就是根据ChunkActor的大小去查询相交的Tile，把Tile中的数据拷贝到DataChunk中。
-3 在运行时，通过AddNavigationDataChunkToWorld和RemoveNavigationDataChunkFromWorld方法来对导航数据进行添加移除
+3 在运行时，通过AddNavigationDataChunkToWorld和RemoveNavigationDataChunkFromWorld方法来对DataChunkzhon
 ```
 
 # 2 收集导航数据
 ```cpp
 /*
-1 用DataChunkA
+1 用DataChunkActor的范围作为查询范围，直接查找相交的Tile，把所有Tile中的数据在包装下存到Tiles数组中
 */
 void URecastNavMeshDataChunk::GetTiles(
 	const FPImplRecastNavMesh* NavMeshImpl, // 场景中RecastNavMesh里的Impl
