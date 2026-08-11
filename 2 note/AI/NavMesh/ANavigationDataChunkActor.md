@@ -7,3 +7,13 @@
 ```
 
 # 2 填充DataChunk数据
+```cpp
+void URecastNavMeshDataChunk::GetTiles(
+	const FPImplRecastNavMesh* NavMeshImpl, // 场景中RecastNavMesh里的Impl
+	const TArray<FNavTileRef>& TileRefs, // 和DataChunk的范围相交的Tile
+	const EGatherTilesCopyMode CopyMode, 
+	const bool bMarkAsAttached /*= true*/)
+{
+	
+}
+```
