@@ -67,7 +67,10 @@ void ARecastNavMesh::OnStreamingNavDataAdded(ANavigationDataChunkActor& InActor)
 	{
 		AttachNavMeshDataChunk(*NavDataChunk);
 	}
-	// 运行时影响导航的情况
+	/*
+	1 运行时影响导航的情况
+	2 
+	*/
 	if (IsWorldPartitionedDynamicNavmesh())
 	{
 		UNavigationSystemV1* NavSys = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
