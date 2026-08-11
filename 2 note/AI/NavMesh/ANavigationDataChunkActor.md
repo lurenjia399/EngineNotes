@@ -1,9 +1,8 @@
 # 1创建
 ```cpp
 1 由UWorldPartitionNavigationDataBuilder创建出来，在编辑器按下BuildPaths，会启动新的进程来执行Builder的Run方法，里面会执行GenerateNavigationData这个方法，根据WorldSetting中的NavigationDataChunkGridSize来找场景中和NavVolume重叠的Cell，为每一个Cell都创建一个NavigationDataChunkActor
-2 创建的过程中会执行CollectNavData方法来收集导航数据，方法内部是执行的UNavigationSystemV1::FillNavigationDataChunkActor方法。
-3 在FillNavigationDataChunkActor方法中就是会给NavigationDataChunkActor创建URecastNavMeshDataChunk导航数据，导航数据就是根据ChunkActor的大小去查询相交的Tile，把Tile中的数据拷贝到DataChunk中。
-4 在运行时，通过AddNavigationDataChunkToWorld和RemoveNavigationDataChunkFromWorld方法来对导航数据进行添加移除
+2 创建的过程中会执行CollectNavData方法来收集导航数据，方法内部是执行的UNavigationSystemV1::FillNavigationDataChunkActor方法。在FillNavigationDataChunkActor方法中就是会给NavigationDataChunkActor创建URecastNavMeshDataChunk导航数据，导航数据就是根据ChunkActor的大小去查询相交的Tile，把Tile中的数据拷贝到DataChunk中。
+3 在运行时，通过AddNavigationDataChunkToWorld和RemoveNavigationDataChunkFromWorld方法来对导航数据进行添加移除
 ```
 
 # 2 填充DataChunk数据
@@ -46,4 +45,20 @@ void URecastNavMeshDataChunk::GetTiles(
 }
 ```
 
-# 3 
+# 3 添加/移除导航数据
+```cpp
+void ANavigationDataChunkActor::BeginPlay()
+{
+	Super::BeginPlay();
+	AddNavigationDataChunkToWorld();
+}
+void ANavigationDataChunkActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	RemoveNavigationDataChunkFromWorld();
+	Super::EndPlay(EndPlayReason);
+}
+```
+
+```
+
+```
