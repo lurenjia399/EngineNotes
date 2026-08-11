@@ -122,6 +122,12 @@ void FRecastNavMeshGenerator::EnsureBuildCompletion()
 	}
 }
 ```
+
+# ProcessTileTasksAsyncAndGetUpdatedTiles
+```cpp
+
+```
+
 # OnNavigationBoundsChanged
 ```cpp
 void FRecastNavMeshGenerator::OnNavigationBoundsChanged()
