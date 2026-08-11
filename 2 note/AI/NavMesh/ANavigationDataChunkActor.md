@@ -69,7 +69,7 @@ void ARecastNavMesh::OnStreamingNavDataAdded(ANavigationDataChunkActor& InActor)
 	}
 	/*
 	1 运行时影响导航的情况
-	2 
+	2 直接通过OctTree查找DataChunkActor范围内的几何体，把
 	*/
 	if (IsWorldPartitionedDynamicNavmesh())
 	{
