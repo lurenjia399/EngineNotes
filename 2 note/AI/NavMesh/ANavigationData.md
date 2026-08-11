@@ -5,7 +5,7 @@
 2 Build中会调用GatherNavigationBounds方法注册NavVolume。然后找到场景中的RecastNavMesh执行其RebuildAll方法。然后还要执行RecastNavMesh的EnsureBuildCompletion方法，最终会执行FRecastNavMeshGenerator::EnsureBuildCompletion的方法
 3 ARecastNavMesh::RebuildAll方法中会创建出FRecastNavMeshGenerator，然后执行Generator的RebuildAll方法。Generator的RebuildAll方法中会初始化dtNavMesh和一些数据。
 4 FRecastNavMeshGenerator::EnsureBuildCompletion方法，会创建出异步Task，为每个Task创建出TileGenerator，创建的时候会执行SetUp方法，Task执行的时候就会调用TileGenerator的DoWork方法。
-5 SetUp方法和DoWork方法都在FRecastTileGenerator文件中详细描述过，这里简化下。
+5 SetUp方法和DoWork方法都在FRecastTileGenerator文件中详细描述过，这里简化下。SetUp中
 ```
 # RebuildAll
 ```cpp
