@@ -197,5 +197,13 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	{
 		Ar << RecastNavMeshSizeBytes;
 	}
+	if (Ar.IsLoading())
+	{
+		SerializeRecastNavMesh(Ar, RecastNavMeshImpl, NavMeshVersion);
+	}
+	else
+	{
+		// 写数据不看
+	}
 }
 ```
