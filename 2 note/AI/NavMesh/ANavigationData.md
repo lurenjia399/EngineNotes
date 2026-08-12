@@ -41,3 +41,10 @@ void ANavigationData::RebuildAll()
 ```
 
 # 序列化
+
+```cpp
+void ARecastNavMesh::Serialize( FArchive& Ar )
+{
+	
+}
+```
