@@ -94,7 +94,10 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	if (Ar.IsSaving()) 
 	{
 		TilesToSave.Reserve(DetourNavMesh->getMaxTiles());
-		/**/
+		/*
+		1 如果是WP的NavMesh，就不用处理，Tile中的导航数据都会由NavigationDataChunkActor序列化
+		2 
+		*/
 		if (NavMeshOwner->bIsWorldPartitioned)
 		{
 			
