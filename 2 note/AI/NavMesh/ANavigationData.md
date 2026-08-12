@@ -129,6 +129,51 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 				}
 			}
 		}
+		// 得到记录TilesToSave的长度，NumTiles
+		NumTiles = TilesToSave.Num();
+	}
+	// 把需要序列化Tile的数量，Tile的原点，Tile的长度，Tile的高度，最大的Tile数量，Poly的数量等各种参数都序列化进去
+	Ar << NumTiles;
+	dtNavMeshParams Params = *DetourNavMesh->getParams();
+	Ar << Params.orig[0] << Params.orig[1] << Params.orig[2];
+	Ar << Params.tileWidth;
+	Ar << Params.tileHeight;
+	Ar << Params.maxTiles;
+	Ar << Params.maxPolys;
+	Ar << Params.walkableHeight;
+	Ar << Params.walkableRadius;
+	Ar << Params.walkableClimb;
+	if (Ar.IsLoading())
+	{
+		// 读数据的不看
+	}
+	else
+	{
+		for (FNavTileRef TileRefToSave : TilesToSave)
+		{
+			const dtMeshTile* Tile = ConstNavMesh->getTileByRef(static_cast<dtTileRef>(TileRefToSave));
+			dtTileRef TileRef = ConstNavMesh->getTileRef(Tile);
+			int32 TileDataSize = Tile->dataSize;
+			Ar << TileRef << TileDataSize;
+
+			unsigned char* TileData = Tile->data;
+			SerializeRecastMeshTile(Ar, NavMeshVersion, TileData, TileDataSize);
+
+			// Serialize compressed tile cache layer only if navmesh requires it
+			{
+				FNavMeshTileData TileCacheLayer;
+				uint8* CompressedData = nullptr;
+				int32 CompressedDataSize = 0;
+				if (bSupportsRuntimeGeneration)
+				{
+					TileCacheLayer = GetTileCacheLayer(Tile->header->x, Tile->header->y, Tile->header->layer);
+					CompressedData = TileCacheLayer.GetDataSafe();
+					CompressedDataSize = TileCacheLayer.DataSize;
+				}
+				
+				SerializeCompressedTileCacheData(Ar, NavMeshVersion, CompressedData, CompressedDataSize);
+			}
+		}
 	}
 }
 ```
