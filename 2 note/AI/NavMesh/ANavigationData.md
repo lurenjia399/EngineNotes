@@ -104,7 +104,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 		/*
 		1 如果不是WP的NavMesh
 		2 如果是Static或者是Modifer类型的NavMesh，就获取NavMesh所在关卡的NavVolume所覆盖的Tile，把这些Tile记录到 TilesToSave 数组中
-		3 如果是Dynamic类型的NavMesh，
+		3 如果是Dynamic类型的NavMesh，就遍历所有的Tile，把所有的Tile都记录到 TilesToSave 数组中
 		*/
 		else
 		{
@@ -114,6 +114,19 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 				GetNavMeshTilesIn(NavMeshOwner->
 					GetNavigableBoundsInLevel(NavMeshOwner->GetLevel()),
 					TilesToSave);
+			}
+			else
+			{
+				dtNavMesh const* ConstNavMesh = DetourNavMesh;
+				for (int i = 0; i < ConstNavMesh->getMaxTiles(); ++i)
+				{
+					const dtMeshTile* Tile = ConstNavMesh->getTile(i);
+					if (Tile != NULL && Tile->header != NULL && Tile->dataSize > 0)
+					{
+						FNavTileRef TileRef(ConstNavMesh->getTileRef(Tile));
+						TilesToSave.Add(TileRef);
+					}
+				}
 			}
 		}
 	}
