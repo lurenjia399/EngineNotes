@@ -65,9 +65,23 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	else
 	{
 		/*
-		1 写入数据的具体方法，把RecastNavMeshImpl
+		1 写入数据的具体方法，把RecastNavMeshImpl中记录的数据写入
 		*/
 		SerializeRecastNavMesh(Ar, RecastNavMeshImpl, NavMeshVersion);
+		/*
+		1 回填真实尺寸
+		2 获取写入数据后的位置CurPos
+		3 计算数据所占的
+		*/
+		if (Ar.IsSaving())
+		{
+			int64 CurPos = Ar.Tell();
+			RecastNavMeshSizeBytes = IntCastChecked<uint32>(
+				CurPos - RecastNavMeshSizePos);
+			Ar.Seek(RecastNavMeshSizePos);
+			Ar << RecastNavMeshSizeBytes;
+			Ar.Seek(CurPos);
+		}
 	}
 }
 ```
