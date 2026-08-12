@@ -50,11 +50,24 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	/*
 	1 占位
 	2 缓存写数据之前的位置RecastNavMeshSizePos
+	3 把0写进入去
 	*/
 	uint32 RecastNavMeshSizeBytes = 0;  
 	int64 RecastNavMeshSizePos = Ar.Tell();  
 	{  
 	    Ar << RecastNavMeshSizeBytes;  
+	}
+	
+	if (Ar.IsLoading())
+	{
+		// 先省略
+	}
+	else
+	{
+		/*
+		1 写入数据的具体方法，把RecastNavMeshImpl
+		*/
+		SerializeRecastNavMesh(Ar, RecastNavMeshImpl, NavMeshVersion);
 	}
 }
 ```
