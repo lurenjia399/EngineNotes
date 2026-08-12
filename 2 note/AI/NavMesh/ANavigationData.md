@@ -221,7 +221,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 		ReleaseDetourNavMesh();
 		DetourNavMesh = dtAllocNavMesh();
 	}
-	// 把需要Tile的数量，Tile的原点，Tile的长度，Tile的高度，最大的Tile数量，Poly的数量等各种参数都序列化进去
+	// 把需要Tile的数量，Tile的原点，Tile的长度，Tile的高度，最大的Tile数量，Poly的数量等各种参数都从资源中读出来
 	Ar << NumTiles;
 	dtNavMeshParams Params = *DetourNavMesh->getParams();
 	Ar << Params.orig[0] << Params.orig[1] << Params.orig[2];
@@ -232,5 +232,13 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	Ar << Params.walkableHeight;
 	Ar << Params.walkableRadius;
 	Ar << Params.walkableClimb;
+	if (Ar.IsLoading())
+	{
+		
+	}
+	else
+	{
+		// 写数据不看
+	}
 }
 ```
