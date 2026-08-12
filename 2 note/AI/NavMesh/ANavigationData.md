@@ -103,11 +103,17 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 		}
 		/*
 		1 如果不是WP的NavMesh
-		2 
+		2 如果是Static或者是Modifer的
 		*/
 		else
 		{
-			
+			if (NavMeshOwner->SupportsStreaming() 
+				&& NavSys && !IsRunningCommandlet())
+			{
+				GetNavMeshTilesIn(NavMeshOwner->
+					GetNavigableBoundsInLevel(NavMeshOwner->GetLevel()),
+					TilesToSave);
+			}
 		}
 	}
 }
