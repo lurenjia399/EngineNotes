@@ -89,6 +89,11 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 ```
 
 ```cpp
-
+void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
+{
+	if (Ar.IsSaving() && !Ar.IsTransacting() 
+		&& !UE::Transaction::DiffUtil::IsGeneratingDiffableObject(Ar)) 
+	{
+}
 ```
 # 读数据
