@@ -71,7 +71,8 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 		/*
 		1 回填真实尺寸
 		2 获取写入数据后的位置CurPos
-		3 计算数据所占的
+		3 计算数据所占的大小RecastNavMeshSizeBytes = CurPos - RecastNavMeshSizePos
+		4 回到占位的位置，把数据大小写入，在回到现在的位置
 		*/
 		if (Ar.IsSaving())
 		{
