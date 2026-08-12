@@ -184,5 +184,18 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 # 读数据
 
 ```cpp
-
+void ARecastNavMesh::Serialize( FArchive& Ar )
+{
+	/*
+	0 这些都和写数据一致。
+	1 占位
+	2 缓存写数据之前的位置RecastNavMeshSizePos
+	3 把0写进入去
+	*/
+	uint32 RecastNavMeshSizeBytes = 0;
+	int64 RecastNavMeshSizePos = Ar.Tell();
+	{
+		Ar << RecastNavMeshSizeBytes;
+	}
+}
 ```
