@@ -65,7 +65,8 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	else
 	{
 		/*
-		1 写入数据的具体方法，把RecastNavMeshImpl中记录的数据写入
+		1 写入数据的具体方法
+		2 执行RecastNavMeshImpl::Serialize方法，后面看下
 		*/
 		SerializeRecastNavMesh(Ar, RecastNavMeshImpl, NavMeshVersion);
 		/*
@@ -87,4 +88,7 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 }
 ```
 
+```cpp
+
+```
 # 读数据
