@@ -150,7 +150,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	/*
 	1 遍历需要序列化的Tile
 	2 首先将每个Tile的索引，Tile所包含的数据大小序列化进去
-	3 
+	3 然后通过SerializeRecastMeshTile把
 	*/
 	else
 	{
