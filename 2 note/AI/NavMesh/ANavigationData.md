@@ -94,6 +94,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	if (Ar.IsSaving()) 
 	{
 		TilesToSave.Reserve(DetourNavMesh->getMaxTiles());
+		/**/
 		if (NavMeshOwner->bIsWorldPartitioned)
 		{
 			
