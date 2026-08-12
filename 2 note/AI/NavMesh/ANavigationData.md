@@ -197,6 +197,10 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	{
 		Ar << RecastNavMeshSizeBytes;
 	}
+	/*
+	1 读数据的具体方法
+	2 执行RecastNavMeshImpl::Serialize方法，后面看下
+	*/
 	if (Ar.IsLoading())
 	{
 		SerializeRecastNavMesh(Ar, RecastNavMeshImpl, NavMeshVersion);
