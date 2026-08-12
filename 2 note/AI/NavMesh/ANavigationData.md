@@ -234,7 +234,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	Ar << Params.walkableClimb;
 	/*
 	1 根据序列化出来的参数，首先初始化DetourNavMesh
-	2 遍历所有的Tile
+	2 遍历所有的Tile，把Tile数据从资源中读出来
 	*/
 	if (Ar.IsLoading())
 	{
@@ -244,14 +244,6 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 			dtTileRef TileRef = MAX_uint64;
 			int32 TileDataSize = 0;
 			Ar << TileRef << TileDataSize;
-
-			if (TileRef == MAX_uint64 || TileDataSize == 0)
-			{
-				continue;
-			}
-			
-			unsigned char* TileData = NULL;
-			TileDataSize = 0;
 			SerializeRecastMeshTile(Ar, NavMeshVersion, TileData, TileDataSize);
 
 			if (TileData != NULL)
