@@ -42,6 +42,8 @@ void ANavigationData::RebuildAll()
 
 # 序列化
 
+# 写数据
+
 ```cpp
 void ARecastNavMesh::Serialize( FArchive& Ar )
 {
