@@ -91,9 +91,14 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 ```cpp
 void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 {
-	if (Ar.IsSaving() && !Ar.IsTransacting() 
-		&& !UE::Transaction::DiffUtil::IsGeneratingDiffableObject(Ar)) 
+	if (Ar.IsSaving()) 
 	{
+		TilesToSave.Reserve(DetourNavMesh->getMaxTiles());
+		if (NavMeshOwner->bIsWorldPartitioned)
+		{
+			
+		}
+	}
 }
 ```
 # 读数据
