@@ -7,7 +7,7 @@
 4 FRecastNavMeshGenerator::EnsureBuildCompletion方法，会创建出异步Task，为每个Task创建出TileGenerator，创建的时候会执行SetUp方法，Task执行的时候就会调用TileGenerator的DoWork方法。在Task执行完成后，把生成的NavMeshData导航数据通过AddTile方法添加到DtNavMesh中。
 5 SetUp方法和DoWork方法都在FRecastTileGenerator文件中详细描述过，这里简化下。SetUp中就是收集自己Tile所覆盖的几何体，为体素化做准备。DoWork中就是执行管线，体素化->过滤可行走span->分水岭划分Layer->压缩Layer成CompassedLayer。然后是解压缩Layer->对每个Layer分水岭出区域->生成区域轮廓->三角化生成PolyMesh->进一步生成DetailMesh->生成NavMeshData导航数据。
 ```
-# RebuildAll
+
 ```cpp
 // 基类的方法是这个，但是默认生成的是ARecastNavMesh这个NavData，会重写一部分方法
 void ANavigationData::RebuildAll()
@@ -40,4 +40,4 @@ void ANavigationData::RebuildAll()
 }
 ```
 
-# 
+# 序列化
