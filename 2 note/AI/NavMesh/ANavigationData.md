@@ -199,7 +199,7 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	}
 	/*
 	1 读数据的具体方法
-	2 执行RecastNavMeshImpl::Serialize方法，后面看下
+	2 和写数据一样都是执行RecastNavMeshImpl::Serialize方法，后面看下
 	*/
 	if (Ar.IsLoading())
 	{
@@ -208,6 +208,18 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	else
 	{
 		// 写数据不看
+	}
+}
+```
+
+```cpp
+void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
+{
+	// 
+	if (Ar.IsLoading())
+	{
+		ReleaseDetourNavMesh();
+		DetourNavMesh = dtAllocNavMesh();
 	}
 }
 ```
