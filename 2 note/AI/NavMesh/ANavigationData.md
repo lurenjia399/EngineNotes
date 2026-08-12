@@ -31,7 +31,6 @@ void ANavigationData::RebuildAll()
 	ConditionalConstructGenerator(); 
 	/*
 	1 如果NavDataGenerator创建成功了，这里会执行RebuildAll
-	2 
 	*/
 	if (NavDataGenerator.IsValid())
 	{
@@ -60,7 +59,7 @@ void ARecastNavMesh::Serialize( FArchive& Ar )
 	
 	if (Ar.IsLoading())
 	{
-		// 先省略
+		// 读数据的不看
 	}
 	else
 	{
@@ -183,3 +182,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 }
 ```
 # 读数据
+
+```cpp
+
+```
