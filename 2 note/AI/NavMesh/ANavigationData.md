@@ -232,50 +232,54 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	Ar << Params.walkableHeight;
 	Ar << Params.walkableRadius;
 	Ar << Params.walkableClimb;
+	/*
+	1 根据序列化出来的参数，首先初始化DetourNavMesh
+	2 遍历所有的Tile
+	*/
 	if (Ar.IsLoading())
 	{
 		dtStatus Status = DetourNavMesh->init(&Params);
-		NavMeshOwner->bHasNoTileData = (NumTiles == 0);
 		for (int i = 0; i < NumTiles; ++i)
+		{
+			dtTileRef TileRef = MAX_uint64;
+			int32 TileDataSize = 0;
+			Ar << TileRef << TileDataSize;
+
+			if (TileRef == MAX_uint64 || TileDataSize == 0)
 			{
-				dtTileRef TileRef = MAX_uint64;
-				int32 TileDataSize = 0;
-				Ar << TileRef << TileDataSize;
+				continue;
+			}
+			
+			unsigned char* TileData = NULL;
+			TileDataSize = 0;
+			SerializeRecastMeshTile(Ar, NavMeshVersion, TileData, TileDataSize);
 
-				if (TileRef == MAX_uint64 || TileDataSize == 0)
-				{
-					continue;
-				}
-				
-				unsigned char* TileData = NULL;
-				TileDataSize = 0;
-				SerializeRecastMeshTile(Ar, NavMeshVersion, TileData, TileDataSize);
-
-				if (TileData != NULL)
-				{
+			if (TileData != NULL)
+			{
 #if WITH_NAVMESH_SEGMENT_LINKS					
-					AddedTiles.Add(TileRef);
+				AddedTiles.Add(TileRef);
 #endif
 
-					dtMeshHeader* const TileHeader = (dtMeshHeader*)TileData;
-					Status = DetourNavMesh->addTile(TileData, TileDataSize, DT_TILE_FREE_DATA, TileRef, NULL);
-					if (dtStatusDetail(Status, DT_OUT_OF_MEMORY))
-					{
-						UE_LOG(LogNavigation, Warning, TEXT("%hs Failed to add tile (%d,%d:%d), %d tile limit reached in %s. If using FixedTilePoolSize, try increasing the TilePoolSize or using bigger tiles."),
-							__FUNCTION__, TileHeader->x, TileHeader->y, TileHeader->layer, DetourNavMesh->getMaxTiles(), *NavMeshOwner->GetFullName());
-					}
-
-					// Serialize compressed tile cache layer
-					uint8* ComressedTileData = nullptr;
-					int32 CompressedTileDataSize = 0;
-					SerializeCompressedTileCacheData(Ar, NavMeshVersion, ComressedTileData, CompressedTileDataSize);
-					
-					if (CompressedTileDataSize > 0)
-					{
-						AddTileCacheLayer(TileHeader->x, TileHeader->y, TileHeader->layer,
-							FNavMeshTileData(ComressedTileData, CompressedTileDataSize, TileHeader->layer, Recast2UnrealBox(TileHeader->bmin, TileHeader->bmax)));
-					}
+				dtMeshHeader* const TileHeader = (dtMeshHeader*)TileData;
+				Status = DetourNavMesh->addTile(TileData, TileDataSize, DT_TILE_FREE_DATA, TileRef, NULL);
+				if (dtStatusDetail(Status, DT_OUT_OF_MEMORY))
+				{
+					UE_LOG(LogNavigation, Warning, TEXT("%hs Failed to add tile (%d,%d:%d), %d tile limit reached in %s. If using FixedTilePoolSize, try increasing the TilePoolSize or using bigger tiles."),
+						__FUNCTION__, TileHeader->x, TileHeader->y, TileHeader->layer, DetourNavMesh->getMaxTiles(), *NavMeshOwner->GetFullName());
 				}
+
+				// Serialize compressed tile cache layer
+				uint8* ComressedTileData = nullptr;
+				int32 CompressedTileDataSize = 0;
+				SerializeCompressedTileCacheData(Ar, NavMeshVersion, ComressedTileData, CompressedTileDataSize);
+				
+				if (CompressedTileDataSize > 0)
+				{
+					AddTileCacheLayer(TileHeader->x, TileHeader->y, TileHeader->layer,
+						FNavMeshTileData(ComressedTileData, CompressedTileDataSize, TileHeader->layer, Recast2UnrealBox(TileHeader->bmin, TileHeader->bmax)));
+				}
+			}
+		}
 	}
 	else
 	{
