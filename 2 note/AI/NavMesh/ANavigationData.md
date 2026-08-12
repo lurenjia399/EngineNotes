@@ -234,7 +234,8 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	Ar << Params.walkableClimb;
 	/*
 	1 根据序列化出来的参数，首先初始化DetourNavMesh
-	2 遍历所有的Tile，把Tile数据从资源中读出来
+	2 遍历所有的Tile，把TileData从资源中读出来
+	3 然后通过DetourNavMesh->addTile方法，把TileData添加到DtourNavMesh中
 	*/
 	if (Ar.IsLoading())
 	{
@@ -248,19 +249,9 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 
 			if (TileData != NULL)
 			{
-#if WITH_NAVMESH_SEGMENT_LINKS					
-				AddedTiles.Add(TileRef);
-#endif
-
 				dtMeshHeader* const TileHeader = (dtMeshHeader*)TileData;
-				Status = DetourNavMesh->addTile(TileData, TileDataSize, DT_TILE_FREE_DATA, TileRef, NULL);
-				if (dtStatusDetail(Status, DT_OUT_OF_MEMORY))
-				{
-					UE_LOG(LogNavigation, Warning, TEXT("%hs Failed to add tile (%d,%d:%d), %d tile limit reached in %s. If using FixedTilePoolSize, try increasing the TilePoolSize or using bigger tiles."),
-						__FUNCTION__, TileHeader->x, TileHeader->y, TileHeader->layer, DetourNavMesh->getMaxTiles(), *NavMeshOwner->GetFullName());
-				}
-
-				// Serialize compressed tile cache layer
+				Status = DetourNavMesh->addTile(TileData, 
+					TileDataSize, DT_TILE_FREE_DATA, TileRef, NULL);
 				uint8* ComressedTileData = nullptr;
 				int32 CompressedTileDataSize = 0;
 				SerializeCompressedTileCacheData(Ar, NavMeshVersion, ComressedTileData, CompressedTileDataSize);
