@@ -235,7 +235,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	/*
 	1 根据序列化出来的参数，首先初始化DetourNavMesh
 	2 遍历所有的Tile，把TileData从资源中读出来
-	3 然后通过DetourNavMesh->addTile方法，把TileData添加到DtourNavMesh中
+	3 然后通过DetourNavMesh->addTile方法，把TileData添加到DtourNavMesh中。然后紧接着读CompressedLayer的数据
 	*/
 	if (Ar.IsLoading())
 	{
@@ -252,14 +252,19 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 				dtMeshHeader* const TileHeader = (dtMeshHeader*)TileData;
 				Status = DetourNavMesh->addTile(TileData, 
 					TileDataSize, DT_TILE_FREE_DATA, TileRef, NULL);
+				
 				uint8* ComressedTileData = nullptr;
 				int32 CompressedTileDataSize = 0;
-				SerializeCompressedTileCacheData(Ar, NavMeshVersion, ComressedTileData, CompressedTileDataSize);
+				SerializeCompressedTileCacheData(Ar, NavMeshVersion,
+					ComressedTileData, CompressedTileDataSize);
 				
 				if (CompressedTileDataSize > 0)
 				{
-					AddTileCacheLayer(TileHeader->x, TileHeader->y, TileHeader->layer,
-						FNavMeshTileData(ComressedTileData, CompressedTileDataSize, TileHeader->layer, Recast2UnrealBox(TileHeader->bmin, TileHeader->bmax)));
+					AddTileCacheLayer(TileHeader->x, 
+						TileHeader->y, TileHeader->layer,
+						FNavMeshTileData(ComressedTileData, 
+							CompressedTileDataSize, TileHeader->layer, 
+							Recast2UnrealBox(TileHeader->bmin, TileHeader->bmax)));
 				}
 			}
 		}
