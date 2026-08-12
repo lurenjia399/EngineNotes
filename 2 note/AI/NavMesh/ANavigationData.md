@@ -150,7 +150,7 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 	/*
 	1 遍历需要序列化的Tile
 	2 首先将每个Tile的索引，Tile所包含的数据大小序列化进去
-	3 然后通过SerializeRecastMeshTile把Tile具体的数据序列化进去
+	3 然后通过SerializeRecastMeshTile把Tile具体的数据序列化进去，如果是非Static的NavMesh，还需要将CompressedLayer上记录的数据也序列化进去
 	*/
 	else
 	{
@@ -160,23 +160,23 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 			dtTileRef TileRef = ConstNavMesh->getTileRef(Tile);
 			int32 TileDataSize = Tile->dataSize;
 			Ar << TileRef << TileDataSize;
-
 			unsigned char* TileData = Tile->data;
 			SerializeRecastMeshTile(Ar, NavMeshVersion, TileData, TileDataSize);
-
-			// Serialize compressed tile cache layer only if navmesh requires it
+			
 			{
 				FNavMeshTileData TileCacheLayer;
 				uint8* CompressedData = nullptr;
 				int32 CompressedDataSize = 0;
 				if (bSupportsRuntimeGeneration)
 				{
-					TileCacheLayer = GetTileCacheLayer(Tile->header->x, Tile->header->y, Tile->header->layer);
+					TileCacheLayer = GetTileCacheLayer(Tile->header->x, 
+						Tile->header->y, Tile->header->layer);
 					CompressedData = TileCacheLayer.GetDataSafe();
 					CompressedDataSize = TileCacheLayer.DataSize;
 				}
 				
-				SerializeCompressedTileCacheData(Ar, NavMeshVersion, CompressedData, CompressedDataSize);
+				SerializeCompressedTileCacheData(Ar, NavMeshVersion, 
+					CompressedData, CompressedDataSize);
 			}
 		}
 	}
