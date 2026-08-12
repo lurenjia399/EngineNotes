@@ -47,6 +47,14 @@ void ANavigationData::RebuildAll()
 ```cpp
 void ARecastNavMesh::Serialize( FArchive& Ar )
 {
-	
+	/*
+	1 占位
+	2 缓存写数据之前的位置RecastNavMeshSizePos
+	*/
+	uint32 RecastNavMeshSizeBytes = 0;  
+	int64 RecastNavMeshSizePos = Ar.Tell();  
+	{  
+	    Ar << RecastNavMeshSizeBytes;  
+	}
 }
 ```
