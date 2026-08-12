@@ -103,7 +103,8 @@ void FPImplRecastNavMesh::Serialize( FArchive& Ar, int32 NavMeshVersion )
 		}
 		/*
 		1 如果不是WP的NavMesh
-		2 如果是Static或者是Modifer的
+		2 如果是Static或者是Modifer类型的NavMesh，就获取NavMesh所在关卡的NavVolume所覆盖的Tile，把这些Tile记录到 TilesToSave 数组中
+		3 如果是Dynamic类型的NavMesh，
 		*/
 		else
 		{
