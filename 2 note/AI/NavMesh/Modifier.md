@@ -12,6 +12,6 @@
 # UNavModifierComponent
 ```cpp
 1 我们在需要更新导航的时候，需要执行RefreshNavigationModifiers方法，然会执行FNavigationSystem::UpdateComponentData方法
-2 UpdateComponentData这个方法里会将自己的Bounds
+2 UpdateComponentData这个方法里会将自己的Bounds作为元素添加到OctTree中
 ```
 
