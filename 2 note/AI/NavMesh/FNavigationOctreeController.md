@@ -14,5 +14,8 @@
 ```
 
 # NavModifierVolume
-
+```cpp
+1 在 PostRegisterAllComponents 方法中监听跟组件的位置改变回调，如果位置改变了执行 FNavigationSystem::UpdateActorData 方法
+2 
+```
 
