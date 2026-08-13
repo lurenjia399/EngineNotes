@@ -13,6 +13,7 @@
 ```cpp
 1 我们在需要更新导航的时候，需要执行RefreshNavigationModifiers方法，然会执行FNavigationSystem::UpdateComponentData方法
 2 UpdateComponentData这个方法里会将自己的Bounds作为FNavigationElement元素添加到OctTree中，在FNavigationElement的构造函数中会执行Comp的GetNavigationData方法
-3 GetNavigationData
+3 GetNavigationData 重写了这个方法，方法中我们可以创建Modifier来影响导航数据的生成
+4 添加到OctTree之后的执行流程和NavModifierVolume就一样了
 ```
 
