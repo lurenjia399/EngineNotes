@@ -167,7 +167,7 @@ bool FRecastTileGenerator::GenerateNavigationDataLayer(
 	status = dtDecompressTileCacheLayer(&GenNavAllocator, &TileCompressor, (const unsigned char*)CompressedData.GetData(), CompressedData.DataSize, &GenerationContext.Layer);
 	/*
 	1 根据Modifer修改区域，执行此方法之前layer上只记录了Agent能走和不能走的数据，一些Modifer中记录的数据是没有的，比如水的区域走的慢，沼泽区域走的代价更高，会通过Modifer框住的区域把信息注册到Layer的span中。
-	2 这些Area也包括运行时动态创建的
+	2 这些Area也包括运行时动态修改的，比如破坏物被破坏之后
 	*/
 	MarkDynamicAreas(*GenerationContext.Layer);
 	/*
