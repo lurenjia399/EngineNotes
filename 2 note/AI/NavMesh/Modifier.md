@@ -11,6 +11,6 @@
 
 # UNavModifierComponent
 ```cpp
-
+1 重写了GetNavigationData方法，这个方法在执行RefreshNavigationModifiers方法后，会执行UpdateComponentData
 ```
 
