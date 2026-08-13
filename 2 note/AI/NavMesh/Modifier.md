@@ -11,6 +11,7 @@
 
 # UNavModifierComponent
 ```cpp
-1 重写了GetNavigationData方法，这个方法在执行RefreshNavigationModifiers方法后，会执行UpdateComponentData
+1 我们在需要更新导航的时候，需要执行RefreshNavigationModifiers方法，然会执行FNavigationSystem::UpdateComponentData方法
+2 UpdateComponentData这个方法里会将自己的Bounds
 ```
 
