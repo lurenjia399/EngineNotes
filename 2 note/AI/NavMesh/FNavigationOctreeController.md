@@ -17,6 +17,6 @@
 ```cpp
 1 在 PostRegisterAllComponents 方法中监听跟组件的位置改变回调，如果位置改变了执行 FNavigationSystem::UpdateActorData 方法
 2 在NavigationSystem的构造函数中，UpdateActorDataDelegate回调监听了UpdateActorInNavOctree方法，所以位置改变执行的是UpdateActorInNavOctree方法
-3 UpdataActorInNavOctree方法中判断Actor是否继承了INavRelevantInterface，如果继承了就会将Actor封装
+3 UpdataActorInNavOctree方法中判断Actor是否继承了INavRelevantInterface，如果继承了就会将Actor封装成FNavigationDirtyElement添加到PendingUpdates数组中
 ```
 
