@@ -24,3 +24,8 @@
 7 PendingDirtyTiles数组在运行时会由FRecastNavMeshGenerator::TickAsyncBuild方法处理，然后也是执行ProcessTileTasksAsyncAndGetUpdatedTiles流程，因为不用重新生成Layer，所以就执行执行GenerateNavigationData方法了，这个方法里就解压缩Layer，更新Modifier，然后分水岭划分出区域轮廓，三角化生成PolyMesh，然后生成DetailMesh，构建出导航数据。
 ```
 
+# UNavModifierComponent
+```cpp
+
+```
+
