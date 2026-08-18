@@ -24,5 +24,5 @@
 3 ANavLinkProxy::GetNavigationData方法中就是将配置的Point添加到FCompositeNavModifier中
 4 添加到OctTree之后的执行流程和NavModifierVolume就一样了，其中在执行FRecastTileGenerator::Setup方法的时候会在主线程GatherGeometry收集几何体
 5 在收集几何体中会将八叉树中记录的Modifier复制到FRecastTileGenerator的Modifier中
-6 最终在GenerateNavigationData这个方法中会标记
+6 最终在GenerateNavigationData这个方法中会更新Modifier所覆盖的区域，然后执行重新生成的导航的逻辑。
 ```
