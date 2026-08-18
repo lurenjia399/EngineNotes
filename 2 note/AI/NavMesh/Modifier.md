@@ -19,5 +19,5 @@
 
 # ANavLinkProxy
 ```cpp
-
+1 在改变了属性后，在ANavLinkProxy::PostEditChangeProperty这个方法zho
 ```
