@@ -20,5 +20,5 @@
 # ANavLinkProxy
 ```cpp
 1 在改变了属性后，在ANavLinkProxy::PostEditChangeProperty这个方法中会执行更新导航的方法，也就是执行UNavigationSystemV1::UpdateActorInNavOctree这个方法
-2 
+2 UpdateActorInNavOctree的逻辑试
 ```
