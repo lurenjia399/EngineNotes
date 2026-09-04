@@ -70,7 +70,7 @@ class FWorldPartitionActorDesc
 	// 还有很多
 }
 ```
-# 3 生成StreamingCell，划分场景
+# 3 划分场景
 ```cpp
 void UWorldPartition::PrepareEditorGameWorld()
 {
@@ -98,6 +98,7 @@ void UWorldPartition::PrepareEditorGameWorld()
 bool UWorldPartition::GenerateContainerStreaming(const FGenerateStreamingParams& InParams, FGenerateStreamingContext& InContext)
 {
 	StreamingGenerator.PreparationPhase(InParams.ContainerInstanceCollection);
+	// za
 	RuntimeHash->GenerateStreaming(StreamingPolicy, &GenerationContextProxy, 
 		InContext.PackagesToGenerate)
 }
@@ -245,6 +246,7 @@ bool UHTUtil::IsCollisionLoaded(const UObject* WorldContextObject, const TArray<
 }
 ```
 
+# 4 生成StreamingCell
 
 
 # 运行时StreamingCell切换
