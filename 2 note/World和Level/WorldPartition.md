@@ -246,12 +246,10 @@ bool UHTUtil::IsCollisionLoaded(const UObject* WorldContextObject, const TArray<
 # 4 生成StreamingCell
 
 ``` cpp
-bool UWorldPartition::GenerateContainerStreaming(const FGenerateStreamingParams& InParams, FGenerateStreamingContext& InContext)
+bool UWorldPartitionRuntimeSpatialHash::GenerateStreaming(
+UWorldPartitionStreamingPolicy* StreamingPolicy, const IStreamingGenerationContext* StreamingGenerationContext, TArray<FString>* OutPackagesToGenerate)
 {
-	StreamingGenerator.PreparationPhase(InParams.ContainerInstanceCollection);
-	// 在第四部分看
-	RuntimeHash->GenerateStreaming(StreamingPolicy, &GenerationContextProxy, 
-		InContext.PackagesToGenerate)
+	
 }
 ```
 4.1 
