@@ -304,8 +304,8 @@ void UWorldPartitionSubsystem::UpdateStreamingState()
 默认情况下，StreamingSource代表的加载范围是一个球形，以自己的位置为原点，Partition的LoadingRange为半径。判断与Cell中content的Bounds（不是cell的bounds是里面actor组成的bounds）是否相交用的是FMath::SphereAABBIntersection()，其实现的逻辑是只要计算球心不在立方体中，球心距立方体边界平方和的大小和半径平方和大小就行。
 2 接下来是UpdateStreamingState：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250505183402.png)
-这里处理了Server和Clinet的不同，还有是否开启了ServerStreaming。如果是Server，默认没有开启流送，一开始就认为所有Cell都需要考虑流送。如果是Client则会对每一个`StreamingSrouce`都判断与他相交的Cell，只有这些相交的Cell需要考虑流送。
-2.1 UpdateStreamingStateInternal 首先根据Source来查找到需要Load和Activate的RuntimeCell [[UWorldPartitionRuntimeSpatialHash#ForEachStreamingCellsSources]]
+这个方法里主要两部分工作一部分是UpdateStreamingStateInternal，一部分是PostUpdateStreamingStateInternal_GameThread。
+2.1 UpdateStreamingStateInternal 里，hu首先根据Source来查找到需要Load和Activate的RuntimeCell [[UWorldPartitionRuntimeSpatialHash#ForEachStreamingCellsSources]]
 2.2 
 3 UWorldPartitionStreamingPolicy::UpdateStreamingPerformance这个方法是在UpdateStreamingState这个方法里执行的，主要目的就是性能判断，性能的预计算是在UpdateStreamingState方法中，计算出streamingsource距离cell的距离，以及距离和streamingsource半径的比例。然后在UpdateStreamingPerformance方法中判断，
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250506175724.png)
