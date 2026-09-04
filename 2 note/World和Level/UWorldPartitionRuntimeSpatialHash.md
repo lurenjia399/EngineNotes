@@ -26,5 +26,15 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 	}
 	else
 	{
+		ForEachStreamingGrid([&](const FSpatialHashStreamingGrid& StreamingGrid)
+		{
+			if (IsCellRelevantFor(StreamingGrid.bClientOnlyVisible))
+			{
+				StreamingGrid.GetCells(Sources, ActivateStreamingSourceCells,
+					 LoadStreamingSourceCells, 
+					 GetEffectiveEnableZCulling(bEnableZCulling), Context);					
+			}
+		});
+	}
 }
 ```
