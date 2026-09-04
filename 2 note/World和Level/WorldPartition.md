@@ -70,7 +70,7 @@ class FWorldPartitionActorDesc
 	// 还有很多
 }
 ```
-# 3 生成StreamingCell
+# 3 生成StreamingCell，划分场景
 ```cpp
 void UWorldPartition::PrepareEditorGameWorld()
 {
