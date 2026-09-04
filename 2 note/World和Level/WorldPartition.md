@@ -305,7 +305,7 @@ void UWorldPartitionSubsystem::UpdateStreamingState()
 2 接下来是UpdateStreamingState：
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250505183402.png)
 这个方法里主要两部分工作一部分是UpdateStreamingStateInternal，一部分是PostUpdateStreamingStateInternal_GameThread。
-2.1 UpdateStreamingStateInternal 里，hu首先根据Source来查找到需要Load和Activate的RuntimeCell [[UWorldPartitionRuntimeSpatialHash#ForEachStreamingCellsSources]]
+2.1 UpdateStreamingStateInternal 里，首先根据Source来查找到需要Load和Activate的RuntimeCell [[UWorldPartitionRuntimeSpatialHash#ForEachStreamingCellsSources]]
 2.2 
 3 UWorldPartitionStreamingPolicy::UpdateStreamingPerformance这个方法是在UpdateStreamingState这个方法里执行的，主要目的就是性能判断，性能的预计算是在UpdateStreamingState方法中，计算出streamingsource距离cell的距离，以及距离和streamingsource半径的比例。然后在UpdateStreamingPerformance方法中判断，
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250506175724.png)
