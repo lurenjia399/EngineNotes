@@ -11,18 +11,16 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 		!InContext.IsValid() ? 
 			FWorldPartitionStreamingContext::Create(GetTypedOuter<UWorld>()) 
 			: FWorldPartitionStreamingContext();
+	// 2 如果传进来的StreamingSource是空的，
 	if (Sources.Num() == 0)
 	{
-		// Get always loaded cells
 		ForEachStreamingGrid([&] (const FSpatialHashStreamingGrid& StreamingGrid)
 		{
-#if HOTTA_ENGINE_MODIFY && UE_SERVER
-			if (IsCellRelevantFor(StreamingGrid.bClientOnlyVisible, StreamingGrid.bHybridModeInvisible))
-#else
 			if (IsCellRelevantFor(StreamingGrid.bClientOnlyVisible))
-#endif
 			{
-				StreamingGrid.GetNonSpatiallyLoadedCells(ActivateStreamingSourceCells.GetCells(), LoadStreamingSourceCells.GetCells(), Context);
+				StreamingGrid.GetNonSpatiallyLoadedCells(
+					ActivateStreamingSourceCells.GetCells(), 
+					LoadStreamingSourceCells.GetCells(), Context);
 			}
 		});
 	}
