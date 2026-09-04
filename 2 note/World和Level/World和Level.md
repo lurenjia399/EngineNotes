@@ -1186,7 +1186,7 @@ void UWorld::AddToWorld(
 ```cpp
 /*
 1 就是服务器需要验证客户端MakeVisible的请求
-2 由ShouldWaitForServerAckBeforeChangingVisibilityState这个方法向服务器发送需要Visible的关卡，服务器会判断这个关卡是否已经加载了，已经加载了就会将关卡Name保存到ClientConnection中，然后回应客户端可以Visible了。
+2 由ShouldWaitForServerAckBeforeChangingVisibilityState这个方法向服务器发送需要Visible的关卡，服务器会判断这个关卡是否已经加载了，已经加载了就会将关卡Name保存到ClientConnection中，然后回应客户端成功。
 3 服务器的回应是成功的，客户端上的关卡才可以由MakingVisible状态到LoadedVisible状态
 */
 bool ULevelStreaming::CanMakeVisible()
