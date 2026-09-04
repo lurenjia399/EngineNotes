@@ -72,7 +72,7 @@ class FWorldPartitionActorDesc
 ```
 # 3 生成StreamingCell
 ```cpp
-void UWorldPartition::OnBeginPlay()
+void UWorldPartition::PrepareEditorGameWorld()
 {
 	// 生成参数，定义一个结构体
 	FGenerateStreamingParams Params = FGenerateStreamingParams()
