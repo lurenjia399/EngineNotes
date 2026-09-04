@@ -247,7 +247,9 @@ bool UHTUtil::IsCollisionLoaded(const UObject* WorldContextObject, const TArray<
 
 ``` cpp
 bool UWorldPartitionRuntimeSpatialHash::GenerateStreaming(
-UWorldPartitionStreamingPolicy* StreamingPolicy, const IStreamingGenerationContext* StreamingGenerationContext, TArray<FString>* OutPackagesToGenerate)
+	UWorldPartitionStreamingPolicy* StreamingPolicy, 
+	const IStreamingGenerationContext* StreamingGenerationContext,
+	 TArray<FString>* OutPackagesToGenerate)
 {
 	
 }
