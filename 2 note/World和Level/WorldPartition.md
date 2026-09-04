@@ -98,6 +98,7 @@ void UWorldPartition::PrepareEditorGameWorld()
 bool UWorldPartition::GenerateContainerStreaming(const FGenerateStreamingParams& InParams, FGenerateStreamingContext& InContext)
 {
 	StreamingGenerator.PreparationPhase(InParams.ContainerInstanceCollection);
+	RuntimeHash->GenerateStreaming(StreamingPolicy, &GenerationContextProxy, InContext.PackagesToGenerate)
 }
 ```
 2 会执行PreparationPhase方法
