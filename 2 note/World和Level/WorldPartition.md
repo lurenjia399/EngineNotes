@@ -254,8 +254,9 @@ bool UWorldPartitionRuntimeSpatialHash::GenerateStreaming(
 	
 }
 ```
-4.1 在GenerateStreaming方法中，首先就是创建AllGrids数组，把所有的Grid都放进去
-4.2 构建GridActorSetInstances这个二维数组，数组索引是AllGrids数组中的索引GridIndex，二维索引是
+4.1 在GenerateStreaming方法中，首先就是创建AllGrids数组，把所有的Grid都放进去。
+4.2 构建GridActorSetInstances这个二维数组，数组索引是AllGrids数组中的索引GridIndex，索引下的内容是ActorSetInstance。这个二维数组的元素表示了，一个Grid下容纳的所有ActorSetInstance。
+4.3 
 
 
 # 运行时StreamingCell切换
