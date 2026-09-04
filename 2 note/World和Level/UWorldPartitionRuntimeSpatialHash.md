@@ -15,7 +15,10 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 	if (Sources.Num() == 0)
 	{
 	}
-	// 3 如果有StreamingSource来触发流送
+	/*
+	3 如果有StreamingSource来触发流送
+	3.1 遍历WP上的所有Grid，每一个Gird都执行GetCells
+	*/
 	else
 	{
 		ForEachStreamingGrid([&](const FSpatialHashStreamingGrid& StreamingGrid)
