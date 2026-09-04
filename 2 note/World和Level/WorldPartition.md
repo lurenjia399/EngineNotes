@@ -275,7 +275,7 @@ bool UWorldPartitionRuntimeSpatialHash::GenerateStreaming(
 4.1 在GenerateStreaming方法中，首先就是创建AllGrids数组，把所有的Grid都放进去。
 4.2 构建GridActorSetInstances这个二维数组，数组索引是AllGrids数组中的索引GridIndex，索引下的内容是ActorSetInstance。这个二维数组的元素表示了，一个Grid下容纳的所有ActorSetInstance。
 4.3 遍历所有的Grid，对每个Grid都执行两部分操作：
-4.3.1 第一部分是GetPartitionedActors方法，根据ActorSet的Bounds的中心，来确定被划分到哪个GridCell里，也会区分ActorSet的DataLayer，相同Datalayer的ActorSet才会被划分到一起。最终的结果就是**把DataChunk(相同Datalayer的ActorSet)添加到每一个Grid中的Level的某一个Cell（）里面**。
+4.3.1 第一部分是GetPartitionedActors方法，根据ActorSet的Bounds的中心，来确定被划分到哪个GridCell里，也会区分ActorSet的DataLayer，相同Datalayer的ActorSet才会被划分到一起。最终的结果就是**把DataChunk(相同Datalayer的ActorSet)添加到每一个Grid中的Level的某一个GridCell(每个Level都会根据CellSize大小划分出多个GridCell)里面**。
 4.3.2 第二部分是
 
 # 运行时StreamingCell切换
