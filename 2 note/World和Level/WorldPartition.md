@@ -89,11 +89,11 @@ void UWorldPartition::PrepareEditorGameWorld()
 		GeneratedLevelStreamingPackageNames.Add(Package);
 	}
 	
-	RuntimeHash->OnBeginPlay();
-	ExternalDataLayerManager->OnBeginPlay();
+	RuntimeHash->PrepareEditorGameWorld();
+	ExternalDataLayerManager->PrepareEditorGameWorld();
 }
 ```
-1 在编辑器下运行游戏，会执行OnBeginPlay方法，这里面是开始执行生成cell的开始
+1 在编辑器下运行游戏，会执行PrepareEditorGameWorld方法，这里面是开始执行生成cell的开始
 ```cpp
 bool UWorldPartition::GenerateContainerStreaming(const FGenerateStreamingParams& InParams, FGenerateStreamingContext& InContext)
 {
