@@ -251,7 +251,25 @@ bool UWorldPartitionRuntimeSpatialHash::GenerateStreaming(
 	const IStreamingGenerationContext* StreamingGenerationContext,
 	 TArray<FString>* OutPackagesToGenerate)
 {
-	
+	// 4.1
+	TArray<FSpatialHashRuntimeGrid> AllGrids;
+	AllGrids.Append(Grids);
+	// 4.2 
+	StreamingGenerationContext->ForEachActorSetInstance([&GridsMapping, &GridActorSetInstances](const IStreamingGenerationContext::FActorSetInstance& ActorSetInstance)
+	{
+		GridActorSetInstances[GridIndex].Add(&ActorSetInstance);
+	});
+	// 4.3
+	const FBox WorldBounds = StreamingGenerationContext->GetWorldBounds();
+	for (int32 GridIndex = 0; GridIndex < AllGrids.Num(); GridIndex++)
+	{
+		const FSpatialHashRuntimeGrid& Grid = AllGrids[GridIndex];
+		const FSquare2DGridHelper PartitionedActors = GetPartitionedActors(WorldBounds, Grid, GridActorSetInstances[GridIndex], Settings);
+		if (!CreateStreamingGrid(Grid, PartitionedActors, StreamingPolicy, OutPackagesToGenerate))
+		{
+			return false;
+		}
+	}
 }
 ```
 4.1 在GenerateStreaming方法中，首先就是创建AllGrids数组，把所有的Grid都放进去。
