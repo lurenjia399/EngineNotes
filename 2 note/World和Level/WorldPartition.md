@@ -254,7 +254,8 @@ bool UWorldPartitionRuntimeSpatialHash::GenerateStreaming(
 	
 }
 ```
-4.1 在GenerateStreaming方法中，首先就是
+4.1 在GenerateStreaming方法中，首先就是创建AllGrids数组，把所有的Grid都放进去
+4.2 
 
 
 # 运行时StreamingCell切换
