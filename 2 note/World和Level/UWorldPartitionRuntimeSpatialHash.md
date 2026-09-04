@@ -17,7 +17,8 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 	}
 	/*
 	3 如果有StreamingSource来触发流送
-	3.1 遍历WP上的所有Grid，每一个Gird都执行GetCells
+	3.1 遍历WP上的所有Grid，每一个Gird都执行GetCells方法
+	3.2 GetCells
 	*/
 	else
 	{
