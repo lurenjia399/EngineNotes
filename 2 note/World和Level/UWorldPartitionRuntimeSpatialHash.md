@@ -52,3 +52,13 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 	}
 }
 ```
+# GetStreamingPerformance
+```cpp
+EWorldPartitionStreamingPerformance 
+	UWorldPartitionRuntimeHash::GetStreamingPerformance(
+	const TSet<const UWorldPartitionRuntimeCell*>& CellsToActivate, 
+	bool& bOutShouldBlock) const
+{
+	
+}
+```
