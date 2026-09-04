@@ -18,7 +18,8 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 	/*
 	3 如果有StreamingSource来触发流送
 	3.1 遍历WP上的所有Grid，每一个Gird都执行GetCells方法
-	3.2 GetCells方法就是对Grid上的每个Level都于Source形状相交，得到相交的FGridCellCoord（也就是找到每个Level与Source相交的Cell的xy坐标），根据xy坐标从Level上找到
+	3.2 GetCells方法就是对Grid上的每个Level都于Source形状相交，得到相交的FGridCellCoord（也就是找到每个Level与Source相交的Cell的xy坐标），根据xy坐标从Level上找到RuntimeCell
+	3.3 找到RuntimeCell之后就会，
 	*/
 	else
 	{
