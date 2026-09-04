@@ -11,10 +11,11 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 		!InContext.IsValid() ? 
 			FWorldPartitionStreamingContext::Create(GetTypedOuter<UWorld>()) 
 			: FWorldPartitionStreamingContext();
-	// 2 如果传进来的StreamingSource
+	// 2 如果没有StreamingSource来流送
 	if (Sources.Num() == 0)
 	{
 	}
+	// 3 如果有StreamingSource来触发流送
 	else
 	{
 		ForEachStreamingGrid([&](const FSpatialHashStreamingGrid& StreamingGrid)
