@@ -1185,7 +1185,8 @@ void UWorld::AddToWorld(
 
 ```cpp
 /*
-1 就是判断
+1 就是服务器需要验证客户端MakeVisible的请求
+2 由ShouldWaitForServerAckBeforeChangingVisibilityState这个方法向服务器发送需要Visible的关卡，服务器
 */
 bool ULevelStreaming::CanMakeVisible()
 {
