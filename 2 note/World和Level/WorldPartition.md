@@ -306,8 +306,8 @@ void UWorldPartitionSubsystem::UpdateStreamingState()
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250505183402.png)
 这个方法里主要两部分工作一部分是UpdateStreamingStateInternal，一部分是PostUpdateStreamingStateInternal_GameThread。
 2.1 UpdateStreamingStateInternal 里，根据Source来查找到需要Load和Activate的RuntimeCell [[UWorldPartitionRuntimeSpatialHash#ForEachStreamingCellsSources]]。
-找到需要加载的Cell后执行GetStreamingPerformance方法，计算出Cell的流送性能
-2.2 
+找到需要加载的Cell后执行GetStreamingPerformance方法，返回当前出Cell的流送性能
+2.2 PostUpdateStreamingStateInternal_GameThread 这个方法主要是
 3 UWorldPartitionStreamingPolicy::UpdateStreamingPerformance这个方法是在UpdateStreamingState这个方法里执行的，主要目的就是性能判断，性能的预计算是在UpdateStreamingState方法中，计算出streamingsource距离cell的距离，以及距离和streamingsource半径的比例。然后在UpdateStreamingPerformance方法中判断，
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/20250506175724.png)
 `GBlockOnSlowStreamingRatio`默认是0.25，`GBlockOnSlowStreamingWarningFactor`是2。如果Source的加载半径是256，则`StreamingSource.Center`离Cell 8m 时如果还没加载好，就会被判定为性能是`Critical`。11.3m 时还没加载好就会被判断为Slow。
