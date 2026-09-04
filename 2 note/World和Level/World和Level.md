@@ -1184,7 +1184,17 @@ void UWorld::AddToWorld(
 ```
 
 ```cpp
-
+/*
+1 就是判断
+*/
+bool ULevelStreaming::CanMakeVisible()
+{
+	if (ShouldWaitForServerAckBeforeChangingVisibilityState(
+		ENetLevelVisibilityRequest::MakingVisible))
+		{
+			return false;
+		}
+}
 ```
 
 4 第三步是MakingVisible状态到LoadedVisible状态。这个状态会首先通过CanMakeVisible方法判断能否切换状态，如果可以切换就调用AddtoWorld方法，将关卡中的Actor加载到world中，如果不可以就提前返回掉等下一次在判断能否切换。
