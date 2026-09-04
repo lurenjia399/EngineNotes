@@ -1066,7 +1066,7 @@ bool ULevelStreaming::RequestLevel(UWorld* PersistentWorld, bool bAllowLevelLoad
 }
 ```
 2 第一步就是unload状态到loadednotvisible。这个状态切换主要是调用了RequestLevel方法，将我们的关卡资源加载到内存当中。
-3 第二步是loadednotvisible状态到MakingVisible状态。这个状态切换主要是BeginClientNetVisibilityRequest方法，记录了客户端的关卡id，用于通知服务器。
+3 第二步是loadednotvisible状态到MakingVisible状态。这个状态切换主要是BeginClientNetVisibilityRequest方法，记录了客户端需要将关卡切换的关卡id，用于通知服务器。
 ```cpp
 void UWorld::AddToWorld(
 	ULevel* Level, //需要Add的Level
