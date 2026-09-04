@@ -602,4 +602,4 @@ ue5提供了两种划分的模式：UWorldPartitionRuntimeHashSet和UWorldPartit
 - 2 刷怪器刷的位置，通过IsStreamingCompleted查询到的是X-25_Y20这个cell
 - 3 位置通过GetCellCoords这个方法计算得到的就是X-25_Y20这个
 - 4 地板被划分到-26的原因是，地板太大了，地板的Bounds中心位置，通过GetCellCoords方法计算中心位置，得到的就是X-26_Y20这个
-- 5 属于一个GridCell的Actor可能覆盖多个GridCell范围。IsStreamingCompleted是遍历所有的StreamingGrid，对每一个StreamingGrid的Level
+- 5 属于一个GridCell的Actor可能覆盖多个GridCell范围。IsStreamingCompleted是遍历所有的StreamingGrid，用Query来查找每一个StreamingGrid的Level上相交的RuntimeCell并返回。
