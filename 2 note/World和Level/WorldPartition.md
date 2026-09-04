@@ -98,7 +98,7 @@ void UWorldPartition::PrepareEditorGameWorld()
 bool UWorldPartition::GenerateContainerStreaming(const FGenerateStreamingParams& InParams, FGenerateStreamingContext& InContext)
 {
 	StreamingGenerator.PreparationPhase(InParams.ContainerInstanceCollection);
-	// za
+	// 在第四部分看
 	RuntimeHash->GenerateStreaming(StreamingPolicy, &GenerationContextProxy, 
 		InContext.PackagesToGenerate)
 }
@@ -247,6 +247,17 @@ bool UHTUtil::IsCollisionLoaded(const UObject* WorldContextObject, const TArray<
 ```
 
 # 4 生成StreamingCell
+
+``` cpp
+bool UWorldPartition::GenerateContainerStreaming(const FGenerateStreamingParams& InParams, FGenerateStreamingContext& InContext)
+{
+	StreamingGenerator.PreparationPhase(InParams.ContainerInstanceCollection);
+	// 在第四部分看
+	RuntimeHash->GenerateStreaming(StreamingPolicy, &GenerationContextProxy, 
+		InContext.PackagesToGenerate)
+}
+```
+4.1 
 
 
 # 运行时StreamingCell切换
