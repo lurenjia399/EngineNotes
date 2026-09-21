@@ -569,7 +569,7 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 	ExtractContentBundleContainerInstances(this, 
 		ContentBundleContainerInstances, BaseAndEDLContainerInstances);
 	/*
-	2 UWorldPartitionRuntimeHash 中的静态方法。
+	2 UWorldPartitionRuntimeHash 中的静态方法。遍历引擎中的所有UClass，找到继承UWorldPartitionRuntimeHash这个类的UClass，
 	*/
 	UWorldPartitionRuntimeHash::ExecutePreSetupHLODActors(this, Params);
 }
