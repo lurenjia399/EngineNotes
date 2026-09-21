@@ -82,6 +82,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 		GridsMapping.Add(Grid.GridName, i);
 	}
 	
+	// 5 核心方法，遍历Grid，对相应的ActorSet都执行生成HLOD方法
 	for (int32 GridIndex = 0; GridIndex < Grids.Num(); GridIndex++)
 	{
 		GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
