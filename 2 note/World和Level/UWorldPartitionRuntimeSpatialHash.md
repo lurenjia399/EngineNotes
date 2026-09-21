@@ -71,7 +71,8 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	// 3 生成HLOD的RuntimeGrid，key是GridCell的名称，value是GridCell
 	TMap<FName, FSpatialHashRuntimeGrid> HLODGrids = 
 		CreateHLODGrids(HLODLayersLevels);
-	// 4 缓存
+	
+	// 4 缓存Grid的名称，key是Grid名称，vlaue是此Grid在Grid数组中索引
 	TMap<FName, int32> GridsMapping;
 	GridsMapping.Add(NAME_None, 0);
 	for (int32 i = 0; i < Grids.Num(); i++)
