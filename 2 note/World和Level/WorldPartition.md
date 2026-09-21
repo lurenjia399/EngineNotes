@@ -30,8 +30,8 @@ void UWorldPartition::Initialize()
 void FContentBundleEditor::DoInjectContent()
 ->UActorDescContainerInstance* RegisterActorDescContainerInstance(...)
 
-UActorDescContainerInstance* UExternalDataLayerManager
-	::RegisterExternalDataLayerActorDescContainer(...)
+UActorDescContainerInstance* 
+	UExternalDataLayerManager::RegisterExternalDataLayerActorDescContainer()
 ->UActorDescContainerInstance* RegisterActorDescContainerInstance(...)
 ```
 1 在wp初始化的时候，我们会通过RegisterActorDescContainerInstance方法来创建注册出ActorDescContainerInstance这个对象。
