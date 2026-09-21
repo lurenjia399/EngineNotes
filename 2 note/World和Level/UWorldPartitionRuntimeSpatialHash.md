@@ -52,3 +52,13 @@ void UWorldPartitionRuntimeSpatialHash::ForEachStreamingCellsSources(
 	}
 }
 ```
+
+# SetupHLODActors
+```cpp
+bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
+	const IStreamingGenerationContext* StreamingGenerationContext, 
+	const UWorldPartition::FSetupHLODActorsParams& Params) const
+{
+	
+}
+```
