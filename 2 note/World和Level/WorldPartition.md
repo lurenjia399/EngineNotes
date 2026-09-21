@@ -574,22 +574,8 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 	*/
 	UWorldPartitionRuntimeHash::ExecutePreSetupHLODActors(this, Params);
 	
-	// Process all Content Bundle container instances
-	for (const UActorDescContainerInstance* ContentBundleContainerInstance : ContentBundleContainerInstances)
-	{
-		FStreamingGenerationContainerInstanceCollection ContentBundleCollection(
-			{ ContentBundleContainerInstance }, 
-				FStreamingGenerationContainerInstanceCollection::
-			ECollectionType::BaseAsContentBundle);
-		SetupHLODActorsForCollection(ContentBundleCollection);
-	}
-
-	// Single pass for base and EDL container instances
-	if (!BaseAndEDLContainerInstances.IsEmpty())
-	{
-		FStreamingGenerationContainerInstanceCollection Collection(BaseAndEDLContainerInstances, FStreamingGenerationContainerInstanceCollection::ECollectionType::BaseAndEDLs);
-		SetupHLODActorsForCollection(Collection);
-	}
+	// 3 会对ContentBundleContainerInstances和BaseAndEDLContainerInstances两个集合都执行SetupHLODActors方法
+	
 }
 ```
 
