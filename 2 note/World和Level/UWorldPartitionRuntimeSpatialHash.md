@@ -68,8 +68,17 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	// 2 通过GCObject强引用HLODLayers，防止GC掉
 	TGCObjectsScopeGuard<UHLODLayer> KeepHLODLayersAlive(HLODLayers);
 	
-	// 3 
+	// 3 生成HLOD的RuntimeGrid，key是GridCell的名称，value是GridCell
 	TMap<FName, FSpatialHashRuntimeGrid> HLODGrids = 
 		CreateHLODGrids(HLODLayersLevels);
+	// 4 缓存
+	TMap<FName, int32> GridsMapping;
+	GridsMapping.Add(NAME_None, 0);
+	for (int32 i = 0; i < Grids.Num(); i++)
+	{
+		const FSpatialHashRuntimeGrid& Grid = Grids[i];
+		check(!GridsMapping.Contains(Grid.GridName));
+		GridsMapping.Add(Grid.GridName, i);
+	}
 }
 ```
