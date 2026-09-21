@@ -81,5 +81,10 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 		check(!GridsMapping.Contains(Grid.GridName));
 		GridsMapping.Add(Grid.GridName, i);
 	}
+	
+	for (int32 GridIndex = 0; GridIndex < Grids.Num(); GridIndex++)
+	{
+		GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
+	}
 }
 ```
