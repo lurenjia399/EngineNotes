@@ -575,7 +575,7 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 
 # 问题
 1 ContentBundleGuid 是什么？
-可以通过创建GameFeature资产，在资产中填
+可以通过创建GameFeature资产，在资产中添加AddWorldPartitionContent的Action，这个Action作用就是把插件路径下的内容添加到当前World中，添加的东西都带有ContentBund
 2 actor的runtimegrid不同，但他们在一个actorset里，grid会改么，改成什么呢？
 有引用关系的actor如果gridname不同，就会失效，相当于没配置gridname
 3 为什么grid要是一个数组呢？为啥需要多个呢？
