@@ -29,6 +29,10 @@ void UWorldPartition::Initialize()
   
 void FContentBundleEditor::DoInjectContent()
 ->UActorDescContainerInstance* RegisterActorDescContainerInstance(...)
+
+UActorDescContainerInstance* UExternalDataLayerManager
+	::RegisterExternalDataLayerActorDescContainer(...)
+->UActorDescContainerInstance* RegisterActorDescContainerInstance(...)
 ```
 1 在wp初始化的时候，我们会通过RegisterActorDescContainerInstance方法来创建注册出ActorDescContainerInstance这个对象。
 2 在ActorDescContainerInstance这个对象初始化的时候会首先通过RegisterContainer方法来创建出ActorDescContainer，而ActorDescContainer这个的初始化会遍历当前地图中的actor，对其生成WorldPartitionActorDesc。
