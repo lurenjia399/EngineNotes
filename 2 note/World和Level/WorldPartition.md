@@ -556,7 +556,12 @@ TArray<UActorComponent*> UHLODBuilderMeshApproximate::Build(const FHLODBuildCont
 */
 void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 {
-	
+	// 1 收集
+	TArray<const UActorDescContainerInstance*> ContentBundleContainerInstances;
+	TArray<const UActorDescContainerInstance*> BaseAndEDLContainerInstances;
+	ExtractContentBundleContainerInstances(this, 
+		ContentBundleContainerInstances, BaseAndEDLContainerInstances);
+
 }
 ```
 
