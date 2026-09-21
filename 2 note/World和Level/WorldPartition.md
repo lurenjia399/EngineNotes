@@ -547,6 +547,18 @@ TArray<UActorComponent*> UHLODBuilderMeshApproximate::Build(const FHLODBuildCont
 	//它与`SimplifiedMesh`相比，这里会剔除掉看不见的Mesh，这可以减少许多不必要的三角面。内部的Mesh就完全不存在，所以这种合并的结果通常比`SimplifiedMesh`的结果还要简化。这对于大规模的室内场景的HLOD是巨大的提升
 }
 ```
+
+
+## SetupHLODActors
+```cpp
+/*
+void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
+{
+	
+}
+```
+
+
 # 问题
 1 
 2 actor的runtimegrid不同，但他们在一个actorset里，grid会改么，改成什么呢？
