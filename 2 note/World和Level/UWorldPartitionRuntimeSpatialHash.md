@@ -84,7 +84,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	
 	/*
 	5.1 核心方法，遍历Grid，对相应的ActorSet都执行生成HLOD方法
-	5.2 
+	5.2 she
 	*/
 	for (int32 GridIndex = 0; GridIndex < Grids.Num(); GridIndex++)
 	{
