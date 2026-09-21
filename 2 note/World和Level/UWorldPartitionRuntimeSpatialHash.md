@@ -59,11 +59,12 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	const IStreamingGenerationContext* StreamingGenerationContext, 
 	const UWorldPartition::FSetupHLODActorsParams& Params) const
 {
-	// 遍历WP中所有的ActorDesc，找到配置的所有HLODLayer，没配就是默认的
+	//1 遍历WP中所有的ActorDesc，找到配置的所有HLODLayer，没配就是默认的
 	TMap<UHLODLayer*, int32> HLODLayersLevels = 
 		GatherHLODLayers(StreamingGenerationContext, WorldPartition);
 	TArray<UHLODLayer*> HLODLayers;
 	HLODLayersLevels.GetKeys(HLODLayers);
+	
 	// 2 通过GCObject强引用HLODLayers，防止GC掉
 	TGCObjectsScopeGuard<UHLODLayer> KeepHLODLayersAlive(HLODLayers);
 }
