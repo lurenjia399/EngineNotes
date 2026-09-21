@@ -568,7 +568,10 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 	TArray<const UActorDescContainerInstance*> BaseAndEDLContainerInstances;
 	ExtractContentBundleContainerInstances(this, 
 		ContentBundleContainerInstances, BaseAndEDLContainerInstances);
-	// 2 
+	/*
+	2 UWorldPartitionRuntimeHash zho
+	*/
+	UWorldPartitionRuntimeHash::ExecutePreSetupHLODActors(this, Params);
 }
 ```
 
