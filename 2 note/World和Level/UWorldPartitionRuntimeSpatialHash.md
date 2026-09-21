@@ -59,7 +59,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	const IStreamingGenerationContext* StreamingGenerationContext, 
 	const UWorldPartition::FSetupHLODActorsParams& Params) const
 {
-	// 1 遍历WP中所有的ActorDesc，找到配置的所有HLODLayer，没配就是默认的
+	// 1 遍历WP中所有的ActorDesc，找到配置的所有HLODLayer，没配就是默认的。每个
 	TMap<UHLODLayer*, int32> HLODLayersLevels = 
 		GatherHLODLayers(StreamingGenerationContext, WorldPartition);
 	TArray<UHLODLayer*> HLODLayers;
