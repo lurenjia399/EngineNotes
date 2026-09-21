@@ -563,12 +563,12 @@ TArray<UActorComponent*> UHLODBuilderMeshApproximate::Build(const FHLODBuildCont
 */
 void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 {
-	// 1 把当前WP中所有的ActorDesc都分成两部分。一部分是带有ContentBundle的，另一部分就是不带有的。ContentBundle
+	// 1 把当前WP中所有的ActorDesc都分成两部分。一部分是带有ContentBundle的，另一部分就是不带有的。ContentBundle的含义是外部的，通过GameFeature热插拔的内容
 	TArray<const UActorDescContainerInstance*> ContentBundleContainerInstances;
 	TArray<const UActorDescContainerInstance*> BaseAndEDLContainerInstances;
 	ExtractContentBundleContainerInstances(this, 
 		ContentBundleContainerInstances, BaseAndEDLContainerInstances);
-
+	// 2 
 }
 ```
 
