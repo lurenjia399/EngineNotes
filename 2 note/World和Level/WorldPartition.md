@@ -577,7 +577,7 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 	// 3 会对ContentBundleContainerInstances和BaseAndEDLContainerInstances两个集合都执行UWorldPartitionRuntimeSpatialHash::SetupHLODActors方法
 	RuntimeHash
 		->SetupHLODActors(StreamingGenerator.GetStreamingGenerationContext
->(InContainerInstanceCollection), Params);
+			(InContainerInstanceCollection), Params);
 }
 ```
 
