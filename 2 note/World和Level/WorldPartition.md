@@ -552,6 +552,8 @@ TArray<UActorComponent*> UHLODBuilderMeshApproximate::Build(const FHLODBuildCont
 ## SetupHLODActors
 ```cpp
 /*
+1 由 UWorldPartitionHLODsBuilder 的 SetupHLODActors方法调用过来
+*/
 void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 {
 	
