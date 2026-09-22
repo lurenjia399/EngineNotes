@@ -85,7 +85,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	/*
 	5.1 核心方法，遍历RuntimeGrid，对相应的ActorSet都执行生成HLOD方法，每一个RuntimeGrid层都有一个HLOD0的HLODActor
 	5.2 生成方法是GenerateHLODActorsForGrid方法，方法中第一步是根据参数将ActorSet集合划分到GridCell里（通过GetPartitionedActors方法实现），第二步就是遍历划分出的GridCell，在GridCell中遍历DataChunk（就是不同Datalayer会划分出不同的），第三步就是把DataChunk中的ActorSet集合作为参数执行CreateHLODActors方法，方法的返回值就是AWorldPartitionHLOD数组。
-	5.3 CreateHLODActors方法，方法中第一步是
+	5.3 CreateHLODActors方法，方法中第一步是把ActorSet集合
 	5.5 这里是给每个Gird的Level0创建出HLODActor
 	*/
 	for (int32 GridIndex = 0; GridIndex < Grids.Num(); GridIndex++)
