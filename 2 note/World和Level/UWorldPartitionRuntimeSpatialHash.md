@@ -94,6 +94,15 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	}
 	/*
 	6.1 在每个HLODGrid上，对每个GridCell中的DataChunk里的ActorSet，使用不同的HLODLayer都会生成一个不同的HLODActor，其中HLODLevel是1。遍历执行的，所有会每个HLODGrid都生成，生成不同的HLODLevel。
+	6.2 经过5和6两个步骤，生成的结果是
+		Base Actors (Grid: RuntimeGrid, LODLevel: 0)
+		    ↓ 合并生成
+		HLOD Actor L1 (Grid: HLOD0Grid, LODLevel: 1)  ← 阶段二生成
+		    ↓ 在 HLOD1Grid 中继续合并
+		HLOD Actor L2 (Grid: HLOD1Grid, LODLevel: 2)
+		    ↓ 在 HLOD2Grid 中继续合并
+		HLOD Actor L3 (Grid: HLOD2Grid, LODLevel: 3)
+
 	*/
 	for (auto It = HLODGrids.CreateIterator(); It; ++It)
 	{
