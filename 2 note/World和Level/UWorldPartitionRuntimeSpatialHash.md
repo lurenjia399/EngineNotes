@@ -110,13 +110,6 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	}
 	/*
 	7 经过5和6两个步骤，生成的结果是
-		Base Actors (Grid: RuntimeGrid, LODLevel: 0)
-		    ↓ 合并生成
-		HLOD Actor L1 (Grid: HLOD0Grid, LODLevel: 1)
-		    ↓ 在 HLOD1Grid 中继续合并
-		HLOD Actor L2 (Grid: HLOD1Grid, LODLevel: 2)
-		    ↓ 在 HLOD2Grid 中继续合并
-		HLOD Actor L3 (Grid: HLOD2Grid, LODLevel: 3)
 	*/
 }
 ```
