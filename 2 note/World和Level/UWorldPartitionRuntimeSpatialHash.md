@@ -83,7 +83,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	}
 	
 	/*
-	5.1 核心方法，遍历Grid，对相应的ActorSet都执行生成HLOD方法，每一个Grid层都有一个HLOD0的HLODActor
+	5.1 核心方法，遍历Grid，对相应的ActorSet都执行生成HLOD方法，每一个RuntimeGrid层都有一个HLOD0的HLODActor
 	5.2 生成方法是GenerateHLODActorsForGrid方法
 	5.3 方法中首先判断是否能生成HLOD，AlwaysLoad的和没有ActorSet的Datatrunk不能生成
 	5.4 然后会给每一个RuntimeCell都创建出HLODActor
@@ -93,5 +93,6 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	{
 		GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
 	}
+	// 6 给每个HLODGrid都创建一个HLODActor
 }
 ```
