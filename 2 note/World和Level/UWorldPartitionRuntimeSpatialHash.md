@@ -91,7 +91,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	*/
 	for (int32 GridIndex = 0; GridIndex < Grids.Num(); GridIndex++)
 	{
-		// 参数是Grid名称，GridLevel，
+		// 参数是Grid名称，GridLevel，Grid上的ActorSet集合
 		GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
 	}
 	// 6 给每个HLODGrid都创建一个相应Level的HLODActor
