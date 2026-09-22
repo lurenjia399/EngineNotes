@@ -110,7 +110,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	}
 	/*
 	7.1 经过5和6两个步骤，生成的结果是：
-	7.2 HLOD0Actor是根据RuntimeGrid的CellSize大小划分的GridCell，在遍历其中的DataChunk，给每一个生成HLOD0Actor。
+	7.2 HLOD0Actor是把RuntimeGrid上所有的ActorSet根据的CellSize大小划分的GridCell，在遍历RuntimeGrid上所有其中的DataChunk，给每一个生成HLOD0Actor。
 	7.3 HLOD1Actor是根据HLODGrid0的CellSize大小划分的GridCell，在遍历其中的DataChunk，给每一个生成HLOD1Actor。
 	*/
 }
