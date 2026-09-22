@@ -93,6 +93,13 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	{
 		GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
 	}
-	// 6 给每个HLODGrid都创建一个HLODActor
+	// 6 给每个HLODGrid都创建一个相应Level的HLODActor
+	for (auto It = HLODGrids.CreateIterator(); It; ++It)
+	{
+		GenerateHLODActors(
+			HLODGrids[HLODGridName], 
+			HLODLayersLevels[HLODGrids[HLODGridName].HLODLayer] + 1, 
+			HLODActorSetInstancePtrs);
+	}
 }
 ```
