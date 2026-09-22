@@ -92,7 +92,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	{
 		GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
 	}
-	// 6 在每个HLODGrid上，对每个GridCell中的DataChunk里的ActorSet，使用不同的HLODLayer都会生成一个不同的HLODActor，其中HLODLevel是1。bian'li
+	// 6 在每个HLODGrid上，对每个GridCell中的DataChunk里的ActorSet，使用不同的HLODLayer都会生成一个不同的HLODActor，其中HLODLevel是1。遍历执行的，所有会每个HLODGrid都生成，生成不同的HLODLevel。
 	for (auto It = HLODGrids.CreateIterator(); It; ++It)
 	{
 		if (!GridsHLODActors.Contains(HLODGridName))
