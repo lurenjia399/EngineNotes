@@ -68,7 +68,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	// 2 通过GCObject强引用HLODLayers，防止GC掉
 	TGCObjectsScopeGuard<UHLODLayer> KeepHLODLayersAlive(HLODLayers);
 	
-	// 3 生成HLODGrid，
+	// 3 生成HLODGrid，场景中Actor配置的每一个HLODLayer都会根据不同的Level生成一个
 	TMap<FName, FSpatialHashRuntimeGrid> HLODGrids = 
 		CreateHLODGrids(HLODLayersLevels);
 	
