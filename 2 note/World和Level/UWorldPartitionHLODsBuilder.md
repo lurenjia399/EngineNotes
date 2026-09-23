@@ -35,6 +35,13 @@ bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& 
 ```cpp
 bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 {
-	
+	if (WorldPartition)
+	{
+		TArray<FGuid> HLODActorsToBuild;
+		if (!GetHLODActorsToBuild(HLODActorsToBuild))
+		{
+			return false;
+		}
+	}
 }
 ```
