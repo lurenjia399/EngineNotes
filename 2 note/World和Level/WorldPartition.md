@@ -414,7 +414,7 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
  RuntimeHash->SetupHLODActors方法可参考[[UWorldPartitionRuntimeSpatialHash#SetupHLODActors]]
 
 ### HLOD_Build
-1 根据命令行的参数来执行不同的操作，下面看下BuildHLODActors方法
+1 根据命令行的参数来执行不同的操作，下面看下BuildHLODActors方法，参考[[UWorldPartitionHLODsBuilder#BuildHLODActors]] 
 ```cpp
 bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 {
@@ -436,38 +436,6 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 	}
 }
 ```
-2 首先会收集WorldPatition里面所有的HLODActor，然后遍历这个HLODActor数组，对其中每个元素都执行BuildHLOD方法。
-```cpp
-uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
-{
-	// 1 首先加载hlodactor中的sourceActors，加载成streaminglevel的形式，也就是会把SourceActors这些Actor都放到streaminglevel中。这里走的方法是UWorldPartitionHLODSourceActorsFromCell::LoadSourceActors这个方法
-	ULevelStreaming* LevelStreaming = nullptr;
-	{
-		FAutoScopedDurationTimer LoadTimeScope;
-		LevelStreaming = LoadSourceActors(InHLODActor, bIsDirty);
-		LoadTimeMS = FMath::RoundToInt(LoadTimeScope.GetTime() * 1000);
-	}
-	// 2 遍历level里面的actor，将actor身上挂着的hlodRelevant的comp都收集到这个HLODRelevantComponents里面
-	if (LevelStreaming->GetLoadedLevel())
-	{
-		HLODRelevantComponents = GatherHLODRelevantComponents(LevelStreaming->GetLoadedLevel()->Actors);
-	}
-	// 3 将HLODActor(可以复用以前的)的HLODHash，与HLODActor的信息和HLODRelevantComponents计算的Hash比较，不同则说明数据发生变化，需要重新构建。否则跳过构建
-	uint32 OldHLODHash = bIsDirty ? 0 : InHLODActor->GetHLODHash();
-	uint32 NewHLODHash = ComputeHLODHash(InHLODActor, HLODRelevantComponents);
-	if (OldHLODHash == NewHLODHash)
-	{
-		return OldHLODHash;
-	}
-	// 4 获取hlodlayer配置的构建方式，根据不同的buildClass来执行不同的Build方法，返回构建出的Comp
-	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
-	TSubclassOf<UHLODBuilder> HLODBuilderClass = GetHLODBuilderClass(HLODLayer);
-	HLODComponents = HLODBuilder->Build(HLODBuildContext);
-	// 5 将构建出的Comp都Attach到HLODActor身上
-	InHLODActor->SetHLODComponents(HLODComponents);
-}
-```
-3 对每个HlodActor都执行以下操作，首先获取其SourceActor，然后通过SourceActor配置的HlodLayer里面配置的build方式创建出对应的Comp，然后将其Attach到HlodActor上。下面看下各种不同的build方式。
 
 # 问题
 1 ContentBundleGuid 是什么？
