@@ -522,38 +522,7 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 }
 ```
 3 对每个HlodActor都执行以下操作，首先获取其SourceActor，然后通过SourceActor配置的HlodLayer里面配置的build方式创建出对应的Comp，然后将其Attach到HlodActor上。下面看下各种不同的build方式。
-#### 1 Instancing
-```cpp
-TArray<UActorComponent*> UHLODBuilderInstancing::Build(const FHLODBuildContext& InHLODBuildContext, const TArray<UActorComponent*>& InSourceComponents) const
-{
-	// UHLODBuilderInstancing将相同的Mesh合并成InstancedStaticMesh。默认使用的是`UHLODInstancedStaticMeshComponent
-	TArray<UActorComponent*> HLODComponents = UHLODBuilder::BatchInstances(InSourceComponents);
-}
-```
 
-#### 2 MeshMerge
-```cpp
-TArray<UActorComponent*> UHLODBuilderMeshMerge::Build(const FHLODBuildContext& InHLODBuildContext, const TArray<UActorComponent*>& InSourceComponents) const
-{
-	// 把所有StaticMeshComponent合并成一个StaticMesh。
-	MeshMergeUtilities.MergeComponentsToStaticMesh(SourcePrimitiveComponents, InHLODBuildContext.World, UseSettings, HLODMaterial, InHLODBuildContext.AssetsOuter->GetPackage(), InHLODBuildContext.AssetsBaseName, Assets, MergedActorLocation, 0.25f, false);
-
-}
-```
-#### 3 MeshSimplify
-```cpp
-TArray<UActorComponent*> UHLODBuilderMeshSimplify::Build(const FHLODBuildContext& InHLODBuildContext, const TArray<UActorComponent*>& InSourceComponents) const
-{
-	// 目的也是把所有StaticMeshComponent合并成一个StaticMesh，但是合并的应该是一个简化的mesh这是和MeshMerge的区别所在
-}
-```
-#### 4 MeshApproximate
-```cpp
-TArray<UActorComponent*> UHLODBuilderMeshApproximate::Build(const FHLODBuildContext& InHLODBuildContext, const TArray<UActorComponent*>& InSourceComponents) const
-{
-	//它与`SimplifiedMesh`相比，这里会剔除掉看不见的Mesh，这可以减少许多不必要的三角面。内部的Mesh就完全不存在，所以这种合并的结果通常比`SimplifiedMesh`的结果还要简化。这对于大规模的室内场景的HLOD是巨大的提升
-}
-```
 
 
 ## SetupHLODActors
@@ -578,6 +547,7 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 	RuntimeHash
 		->SetupHLODActors(StreamingGenerator.GetStreamingGenerationContext
 			(InContainerInstanceCollection), Params);
+	[[UWorldPartitionRuntimeSpatialHash#]]
 }
 ```
 
