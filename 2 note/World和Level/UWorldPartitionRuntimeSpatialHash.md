@@ -119,7 +119,9 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 ```
 
 ```cpp
-举例说明：我们有两个HLOD0（CellSize = 256，LoadingRange = 512）和HLOD1（CellSize = 512，LoadingRange = 1024）两个资源。资源中配置是HLOD0.ParentLayer = HLOD1。场景中Actor配置HLOD0。
+举例说明：
+资源配置：我们有两个HLOD0（CellSize = 256，LoadingRange = 512）和HLOD1（CellSize = 512，LoadingRange = 1024）两个资源。资源中配置是HLOD0.ParentLayer = HLOD1。场景中Actor配置HLOD0。
+第一步生成HLODLayersLevels的结果为，[HLOD0-0],[HLOD1]
 划分流程为:
 	1 遍历RuntimeGrid，按照Grid信息划分出GridCell，按照Level0生成HLODActor。因为场景Actor配置的是HLOD0，所以会生成HLOD0Actor(RuntimeGrid=HLOD0_256_512，HLODLayer=HLOD0.ParentActor)。
 	2 遍历HLODGrids，按照HLOD0Grid信息划分出GridCell，按照Level1生成HLODActor。因为HLOD0Actor配置的是HLOD1，所以会生成HLOD1Actor(RuntimeGrid=HLOD1_512_1024，HLODLayer=HLOD1.ParentActor)
