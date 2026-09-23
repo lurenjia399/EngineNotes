@@ -1,16 +1,32 @@
-# SetupHLODActors
+# RunInternal
 ``` cpp
-bool UWorldPartitionHLODsBuilder::SetupHLODActors()
-{
-	// 不是独立HLODWorld的WP关卡会执行
-	if (WorldPartition && !WorldPartition->IsStandaloneHLODWorld())
-	{
-		WorldPartition->SetupHLODActors(SetupHLODActorsParams);
-	}
-	
-}
 bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& InCellInfo, FPackageSourceControlHelper& PackageHelper)
 {
-	
+	if (bRet && ShouldRunStep(EHLODBuildStep::HLOD_Setup))
+	{
+		bRet = SetupHLODActors();
+	}
+	if (bRet && ShouldRunStep(EHLODBuildStep::HLOD_Build))
+	{
+		bRet = BuildHLODActors();
+	}
+
+	if (bRet && ShouldRunStep(EHLODBuildStep::HLOD_Delete))
+	{
+		bRet = DeleteHLODActors();
+	}
+
+	if (bRet && ShouldRunStep(EHLODBuildStep::HLOD_Finalize))
+	{
+		bRet = SubmitHLODActors();
+	}
+
+	if (bRet && ShouldRunStep(EHLODBuildStep::HLOD_Stats))
+	{
+		bRet = DumpStats();
+	}
 }
 ```
+
+## SetupHLODActors
+can'ka
