@@ -78,22 +78,27 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	// 4 
 	/*
 	4.1 根据配置，找到HLODBuilder的UClass并创建出HLODBuilder。
-	4.2 调用UHLODBuilder::Build方法
+	4.2 调用UHLODBuilder::Build方法，
 	*/
 	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
 	TSubclassOf<UHLODBuilder> HLODBuilderClass = GetHLODBuilderClass(HLODLayer);
 	if (HLODBuilderClass)
 	{
+		// 4.1
 		UHLODBuilder* HLODBuilder = NewObject<UHLODBuilder>(
 			GetTransientPackage(), HLODBuilderClass);
+		// 4.2
 		FHLODBuildResult BuildResult;
 		{
 			FAutoScopedDurationTimer BuildTimeScope;
 			BuildResult = HLODBuilder->Build(HLODBuildContext);
 			BuildTimeMS = FMath::RoundToInt(BuildTimeScope.GetTime() * 1000);
 		}
+		// 4.3
+		
+		// 4.4
 		InHLODActor->SetInputStats(BuildResult.InputStats);
-			InHLODActor->SetHLODComponents(BuildResult.HLODComponents);
+		InHLODActor->SetHLODComponents(BuildResult.HLODComponents);
 	}
 }
 ```
