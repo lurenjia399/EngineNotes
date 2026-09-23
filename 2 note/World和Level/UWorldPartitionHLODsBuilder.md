@@ -9,4 +9,8 @@ bool UWorldPartitionHLODsBuilder::SetupHLODActors()
 	}
 	
 }
+bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& InCellInfo, FPackageSourceControlHelper& PackageHelper)
+{
+	
+}
 ```
