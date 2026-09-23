@@ -423,6 +423,33 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 	RuntimeHash->SetupHLODActors(StreamingGenerator.GetStreamingGenerationContext(InContainerInstanceCollection), Params);
 }
 ```
+
+
+```cpp
+/*
+1 由 UWorldPartitionHLODsBuilder 的 SetupHLODActors方法调用过来
+*/
+void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
+{
+	// 1 把当前WP中所有的ActorDesc都分成两部分。一部分是带有ContentBundle的，另一部分就是不带有的。ContentBundle的含义是外部的，通过GameFeature热插拔的内容
+	TArray<const UActorDescContainerInstance*> ContentBundleContainerInstances;
+	TArray<const UActorDescContainerInstance*> BaseAndEDLContainerInstances;
+	ExtractContentBundleContainerInstances(this, 
+		ContentBundleContainerInstances, BaseAndEDLContainerInstances);
+	/*
+	2.1 UWorldPartitionRuntimeHash 中的静态方法。遍历引擎中的所有UClass，找到继承UWorldPartitionRuntimeHash这个类的UClass，通过UClass的CDO执行PreSetupHLODActors方法
+	2.2 UWorldPartitionRuntimeSpatialHash::PreSetupHLODActors，
+	*/
+	UWorldPartitionRuntimeHash::ExecutePreSetupHLODActors(this, Params);
+	
+	// 3 会对ContentBundleContainerInstances和BaseAndEDLContainerInstances两个集合都执行UWorldPartitionRuntimeSpatialHash::SetupHLODActors方法
+	RuntimeHash
+		->SetupHLODActors(StreamingGenerator.GetStreamingGenerationContext
+			(InContainerInstanceCollection), Params);
+}
+```
+ RuntimeHash->SetupHLODActors方法可参考[[UWorldPartitionRuntimeSpatialHash#SetupHLODActors]]
+
 2 对于 UWorldPartitionRuntimeHashSet::SetupHLODActors
 ```cpp
 bool UWorldPartitionRuntimeHashSet::SetupHLODActors(...) const
@@ -525,31 +552,6 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 
 
 
-## SetupHLODActors
-```cpp
-/*
-1 由 UWorldPartitionHLODsBuilder 的 SetupHLODActors方法调用过来
-*/
-void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
-{
-	// 1 把当前WP中所有的ActorDesc都分成两部分。一部分是带有ContentBundle的，另一部分就是不带有的。ContentBundle的含义是外部的，通过GameFeature热插拔的内容
-	TArray<const UActorDescContainerInstance*> ContentBundleContainerInstances;
-	TArray<const UActorDescContainerInstance*> BaseAndEDLContainerInstances;
-	ExtractContentBundleContainerInstances(this, 
-		ContentBundleContainerInstances, BaseAndEDLContainerInstances);
-	/*
-	2.1 UWorldPartitionRuntimeHash 中的静态方法。遍历引擎中的所有UClass，找到继承UWorldPartitionRuntimeHash这个类的UClass，通过UClass的CDO执行PreSetupHLODActors方法
-	2.2 UWorldPartitionRuntimeSpatialHash::PreSetupHLODActors，
-	*/
-	UWorldPartitionRuntimeHash::ExecutePreSetupHLODActors(this, Params);
-	
-	// 3 会对ContentBundleContainerInstances和BaseAndEDLContainerInstances两个集合都执行UWorldPartitionRuntimeSpatialHash::SetupHLODActors方法
-	RuntimeHash
-		->SetupHLODActors(StreamingGenerator.GetStreamingGenerationContext
-			(InContainerInstanceCollection), Params);
-	[[UWorldPartitionRuntimeSpatialHash#]]
-}
-```
 
 
 # 问题
