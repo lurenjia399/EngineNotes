@@ -43,7 +43,7 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 		{
 			return false;
 		}
-		// 2 遍历HLODActor
+		// 2 遍历HLODActor，每个HLODActor都执行BuildHLOD方法
 		for (int32 CurrentActor = ResumeBuildIndex; CurrentActor < HLODActorsToBuild.Num(); ++CurrentActor)
 		{
 			AWorldPartitionHLOD* HLODActor = 
