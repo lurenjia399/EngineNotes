@@ -43,6 +43,11 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 		{
 			return false;
 		}
+		// 2 
+		for (int32 CurrentActor = ResumeBuildIndex; CurrentActor < HLODActorsToBuild.Num(); ++CurrentActor)
+		{
+			
+		}
 	}
 }
 ```
