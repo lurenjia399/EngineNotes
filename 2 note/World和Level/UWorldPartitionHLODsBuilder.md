@@ -75,8 +75,13 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	{
 		return OldHLODHash;
 	}
-	// 4 根据配置，返回HLODBuilder的UClass
+	// 4 根据配置，返回HLODBuilder的UClass并创建出HLODBuilder。
 	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
 	TSubclassOf<UHLODBuilder> HLODBuilderClass = GetHLODBuilderClass(HLODLayer);
+	if (HLODBuilderClass)
+	{
+		UHLODBuilder* HLODBuilder = NewObject<UHLODBuilder>(
+			GetTransientPackage(), HLODBuilderClass);
+	}
 }
 ```
