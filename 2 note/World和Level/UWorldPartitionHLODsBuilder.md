@@ -68,7 +68,7 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	{
 		HLODRelevantComponents = GatherHLODRelevantComponents(LevelStreaming->GetLoadedLevel()->Actors);
 	}
-	// 3 计算老的Hash和新的Hash，没有改变的话就不需要cho
+	// 3 计算老的Hash和新的Hash，没有改变的话就不需要重新构建了
 	uint32 OldHLODHash = bIsDirty ? 0 : InHLODActor->GetHLODHash();
 	uint32 NewHLODHash = ComputeHLODHash(InHLODActor, HLODRelevantComponents);
 	if (OldHLODHash == NewHLODHash)
