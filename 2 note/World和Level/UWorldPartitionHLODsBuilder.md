@@ -29,4 +29,6 @@ bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& 
 ```
 
 ## SetupHLODActors
-can'ka
+参考[[WorldPartition#SetupHLODActors]]
+
+## BuildHLODActors
