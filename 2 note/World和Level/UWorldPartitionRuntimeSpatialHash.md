@@ -123,6 +123,8 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	3 遍历HLODGrids，按照HLODGrids[ 1 ]信息划分出GridCell，按照Level2生成HLODActor。因为HLOD1Actor配置的是nullptr，所以不会生成HLOD2Actor。
 
 总结：
-	1 将场景Actor根据配置的HLODLayer划分出HLOD0Actor。
-	2 将HLOD0Actor根据HLDGrid
+	1 将场景Actor根据RuntimeGrid划分出HLOD0Actor。
+	2 将HLOD0Actor根据HLDGrid划分出HLOD1Actor。
+	3 将HLOD1Actor根据HLODGrid划分出HLOD2Actor。
+	4 以此类推，知道没有HLO
 ```
