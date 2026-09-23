@@ -422,13 +422,6 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 {
 	RuntimeHash->SetupHLODActors(StreamingGenerator.GetStreamingGenerationContext(InContainerInstanceCollection), Params);
 }
-```
-
-
-```cpp
-/*
-1 由 UWorldPartitionHLODsBuilder 的 SetupHLODActors方法调用过来
-*/
 void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 {
 	// 1 把当前WP中所有的ActorDesc都分成两部分。一部分是带有ContentBundle的，另一部分就是不带有的。ContentBundle的含义是外部的，通过GameFeature热插拔的内容
@@ -448,52 +441,9 @@ void UWorldPartition::SetupHLODActors(const FSetupHLODActorsParams& Params)
 			(InContainerInstanceCollection), Params);
 }
 ```
+
  RuntimeHash->SetupHLODActors方法可参考[[UWorldPartitionRuntimeSpatialHash#SetupHLODActors]]
 
-2 对于 UWorldPartitionRuntimeHashSet::SetupHLODActors
-```cpp
-bool UWorldPartitionRuntimeHashSet::SetupHLODActors(...) const
-{
-	// 1 首先用当前map里的ActorSet来生成streamingCell，用的是MainGrid的配置
-	TMap<URuntimePartition*, TArray<URuntimePartition::FCellDescInstance>> RuntimePartitionsStreamingDescs;
-	GenerateRuntimePartitionsStreamingDescs(CurrentHLODStreamingGenerationContext
-		.Get(), RuntimePartitionsStreamingDescs);
-	// 2 拿到其中一个StreamingCel，为每个cell里的Actorset所配置的hlodlayer生成对应的hlodActor
-	TArray<AWorldPartitionHLOD*> CellHLODActors = WPHLODUtilities->CreateHLODActors(HLODCreationContext, HLODCreationParams, ActorInstances);
-	// 3 在第2步生成了level0的hlodActor，如果这些hlodActor配置了自己的hlodlayer，那么就会在第3步继续生成对应的level1的hlodActor，这样的递归循环操作
-	TArray<AWorldPartitionHLOD*> CellHLODActors = WPHLODUtilities->CreateHLODActors(HLODCreationContext, HLODCreationParams, ActorInstances);
-}
-```
-3 对于`UWorldPartitionRuntimeSpatialHash::SetupHLODActors()`:
-```cpp
-bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(...) const
-{
-	// 1 获取map中所有actordesc上配置得HLODLayer
-	TMap<UHLODLayer*, int32> HLODLayersLevels = GatherHLODLayers(StreamingGenerationContext, WorldPartition);
-	TArray<UHLODLayer*> HLODLayers;
-	HLODLayersLevels.GetKeys(HLODLayers);
-	// 2 如果我们的HLODLayer勾上了IsSpatiallyLoaded，就会给对应的hlodlayer创建出对应的FSpatialHashRuntimeGrid
-	TMap<FName, FSpatialHashRuntimeGrid> HLODGrids = CreateHLODGrids(HLODLayersLevels);
-	// 3 将wp中配置的所有grid都赋值到局部变量GridsMapping中
-	TMap<FName, int32> GridsMapping;
-	GridsMapping.Add(NAME_None, 0);
-	for (int32 i = 0; i < Grids.Num(); i++)
-	{
-		const FSpatialHashRuntimeGrid& Grid = Grids[i];
-		check(!GridsMapping.Contains(Grid.GridName));
-		GridsMapping.Add(Grid.GridName, i);
-	}
-	// 4 将map中AWorldPartitionHLOD这个类型的actor添加到局部变量Context中
-	FHLODCreationContext Context;
-	// 5 构建GridActorSetInstances数组。数组索引是map中每个ActorSet所在的grid在Grds中的索引，数组的值是ActorSet数组
-	TArray<TArray<const IStreamingGenerationContext::FActorSetInstance*>> GridActorSetInstances;
-	// 6 生成level0的hlodlayerActor。遍历Grids数组了，为每个grid都走GenerateHLODActors方法，每个grid里会生成很多的cell，每个不同的cell都会生成对应的AWorldPartitionHLod。
-	GenerateHLODActors(Grids[GridIndex], 0, GridActorSetInstances[GridIndex]);
-	// 7 然后对新的AWorldPartitionHLOD创建下一级AWorldPartitionHLOD，只会对勾上IsSpatiallyLoaded这个的hlodlayer创建下一级
-	GenerateHLODActors(HLODGrids[HLODGridName], HLODLayersLevels[HLODGrids[HLODGridName].HLODLayer] + 1, HLODActorSetInstancePtrs);
-}
-```
-总结下就是，如果我们的Actor上的hlodlayer没有勾选空间加载，那么只会在Grid上的cell的里面的actorSet生成对应的AWorldPartitionHLod，是level0级的。反之，还会在HLODGrid上的cell的里面的HLODActor生成下一级的AWorldPartitionHLod。
 ### HLOD_Build
 1 根据命令行的参数来执行不同的操作，下面看下BuildHLODActors方法
 ```cpp
