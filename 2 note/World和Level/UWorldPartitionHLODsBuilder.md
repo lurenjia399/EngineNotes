@@ -103,3 +103,5 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	}
 }
 ```
+
+## DeleteHLODActors
