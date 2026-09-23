@@ -125,7 +125,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 第一步生成HLODLayersLevels的结果为：[HLOD0-0],[HLOD1-1]
 第二步根据HLODLayersLevels生成HLODGrids结果为：[HLOD0_256_512],[HLOD1_512_1024]
 第三步划分流程为:
-	1 遍历RuntimeGrid，按照Grid信息划分出GridCell，按照Level0生成HLODActor。因为场景Actor配置的是HLOD0，所以会生成HLOD0Actor(RuntimeGrid=HLOD0_256_512，HLODLayer=HLOD0.ParentActor)。
-	2 遍历HLODGrids，按照HLODGrids[ 0 ]信息划分出GridCell，按照Level1生成HLODActor。因为HLOD0Actor配置的是HLOD1，所以会生成HLOD1Actor(RuntimeGrid=HLOD1_512_1024，HLODLayer=HLOD1.ParentActor)
+	1 遍历RuntimeGrid，按照Grid信息划分出GridCell，按照Level0生成HLODActor。因为场景Actor配置的是HLOD0，所以会生成HLOD0Actor(RuntimeGrid=HLOD0_256_512，LODLevel=0，HLODLayer=HLOD0.ParentActor)。
+	2 遍历HLODGrids，按照HLODGrids[ 0 ]信息划分出GridCell，按照Level1生成HLODActor。因为HLOD0Actor配置的是HLOD1，所以会生成HLOD1Actor(RuntimeGrid=HLOD1_512_1024，LODLevel=1，HLODLayer=HLOD1.ParentActor)
 	3 遍历HLODGrids，按照HLODGrids[ 1 ]信息划分出GridCell，按照Level2生成HLODActor。因为HLOD1Actor配置的是nullptr，所以不会生成HLOD2Actor。
 ```
