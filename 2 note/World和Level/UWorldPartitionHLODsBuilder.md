@@ -79,7 +79,7 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	4.1 根据配置，找到HLODBuilder的UClass并创建出HLODBuilder。
 	4.2 调用UHLODBuilder::Build方法，自定义重写，然后返回构建出来的Comp
 	4.3 对构建出来的Comp做一些操作，关掉导航，关掉碰撞啥的
-	4.4 
+	4.4 把构建出来的Co
 	*/
 	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
 	TSubclassOf<UHLODBuilder> HLODBuilderClass = GetHLODBuilderClass(HLODLayer);
