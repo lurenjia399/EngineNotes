@@ -117,4 +117,4 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	*/
 }
 ```
-举例说明：
+举例说明：我们有两个HLOD0（CellSize = A，LoadingRange = 512）和HLOD1两个资源，资源中配置是HLOD0.ParentLayer = HLOD1。
