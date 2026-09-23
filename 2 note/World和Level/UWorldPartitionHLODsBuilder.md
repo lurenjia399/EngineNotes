@@ -37,6 +37,7 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 {
 	if (WorldPartition)
 	{
+		// 1 获取需要Build的HLODActor
 		TArray<FGuid> HLODActorsToBuild;
 		if (!GetHLODActorsToBuild(HLODActorsToBuild))
 		{
