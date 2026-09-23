@@ -364,39 +364,7 @@ void UWorldPartitionSubsystem::UpdateStreamingState()
 
 # Hlod创建
 如需生成HLOD代理网格体，需将Actor添加至HLOD层，然后将其 **移动性（Mobility）** 设置为 **静态（Static）**，并告知Actor生成HLOD。方法是使用 **构建（Build） > 构建HLOD（Build HLODs）** 或者使用 **WorldPartitionHLODsBuilder** commandlet。
-## 1 build
-
-```cpp
-// 起始位置
-void FLevelEditorActionCallbacks::BuildHLODs_Execute()
-{
-	// Build HLOD
-	FEditorBuildUtils::EditorBuild(GetWorld(), FBuildOptions::BuildHierarchicalLOD);
-}
-
-// 中间的流程省略了，这里就展示下build过程
-{
-	bDoBuild = GEditor->WarnAboutHiddenLevels( InWorld, false );
-	if ( bDoBuild )
-	{
-		GEditor->ResetTransaction( NSLOCTEXT("UnrealEd", "BuildHLODMeshes", "Building Hierarchical LOD Meshes") );
-
-		// We can't set the busy cursor for all windows, because lighting
-		// needs a cursor for the lighting options dialog.
-		const FScopedBusyCursor BusyCursor;
-
-		if (InWorld->IsPartitionedWorld())
-		{
-			bShouldMapCheck = false;
-			bDirtyPersistentLevel = false;
-		}
-
-		TriggerHierarchicalLODBuilder(InWorld);
-	}
-}
-// 最终走到了FWorldPartitionEditorModule::Build方法里面
-```
-## 2 WorldPartitionHLODsBuilder commandlet
+## 1 WorldPartitionHLODsBuilder commandlet
 
 ```cpp
 bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& InCellInfo, FPackageSourceControlHelper& PackageHelper)
@@ -411,6 +379,7 @@ bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& 
 	}
 }
 ```
+参考 [[UWorldPartitionHLODsBuilder]]
 ### HLOD_Setup
 1 根据命令行的参数来执行不同的操作，下面看下SetupHLODActors方法
 ```cpp
@@ -499,10 +468,6 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 }
 ```
 3 对每个HlodActor都执行以下操作，首先获取其SourceActor，然后通过SourceActor配置的HlodLayer里面配置的build方式创建出对应的Comp，然后将其Attach到HlodActor上。下面看下各种不同的build方式。
-
-
-
-
 
 # 问题
 1 ContentBundleGuid 是什么？
