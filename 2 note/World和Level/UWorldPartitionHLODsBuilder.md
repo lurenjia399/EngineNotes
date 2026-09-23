@@ -43,7 +43,7 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 		{
 			return false;
 		}
-		// 2 遍历HLODActor，每个HLODActor都执行BuildHLOD方法
+		// 2 遍历HLODActor，每个HLODActor都执行BuildHLOD方法，方法最终执行FWorldPartitionHLODUtilities::BuildHLOD方法
 		for (int32 CurrentActor = ResumeBuildIndex; CurrentActor < HLODActorsToBuild.Num(); ++CurrentActor)
 		{
 			AWorldPartitionHLOD* HLODActor = 
@@ -51,5 +51,12 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 			HLODActor->BuildHLOD(bForceBuild);
 		}
 	}
+}
+```
+
+```cpp
+uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
+{
+	
 }
 ```
