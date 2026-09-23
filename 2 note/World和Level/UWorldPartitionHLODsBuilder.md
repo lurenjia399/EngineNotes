@@ -43,10 +43,12 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 		{
 			return false;
 		}
-		// 2 
+		// 2 遍历HLODActor
 		for (int32 CurrentActor = ResumeBuildIndex; CurrentActor < HLODActorsToBuild.Num(); ++CurrentActor)
 		{
-			
+			AWorldPartitionHLOD* HLODActor = 
+				CastChecked<AWorldPartitionHLOD>(ActorRef.GetActor());
+			HLODActor->BuildHLOD(bForceBuild);
 		}
 	}
 }
