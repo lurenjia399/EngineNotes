@@ -75,5 +75,8 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	{
 		return OldHLODHash;
 	}
+	// 4 根据配置，返回HLODBuilder的UClass
+	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
+	TSubclassOf<UHLODBuilder> HLODBuilderClass = GetHLODBuilderClass(HLODLayer);
 }
 ```
