@@ -108,13 +108,6 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 			HLODLayersLevels[HLODGrids[HLODGridName].HLODLayer] + 1, 
 			HLODActorSetInstancePtrs);
 	}
-	/*
-	7.1 经过5和6两个步骤，生成的结果是：
-	7.2 HLOD0Actor：是把RuntimeGrid上所有的ActorSet划分（到根据RuntimeGrid的CellSize计算出的）GridCell中，在遍历GridCell上所有的DataChunk，给每一个生成HLOD0Actor。
-	7.3 HLOD1Actor：是把HLODGrid0上所有的HLOD0Actor划分（到根据HLODGrid0的CellSize计算出的）GridCell中，在遍历GridCell上所有的DataChunk，给每一个生成HLOD1Actor。
-	7.3 HLOD2Actor：是把HLODGrid1上所有的HLOD1Actor划分（到根据HLODGrid1的CellSize计算出的）GridCell中，在遍历GridCell上所有的DataChunk，给每一个生成HLOD2Actor。
-	7.4 以此类推
-	*/
 }
 ```
 
@@ -128,4 +121,8 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 	1 遍历RuntimeGrid，按照Grid信息划分出GridCell，按照Level0生成HLODActor。因为场景Actor配置的是HLOD0，所以会生成HLOD0Actor(RuntimeGrid=HLOD0_256_512，LODLevel=0，HLODLayer=HLOD0.ParentActor)。
 	2 遍历HLODGrids，按照HLODGrids[ 0 ]信息划分出GridCell，按照Level1生成HLODActor。因为HLOD0Actor配置的是HLOD1，所以会生成HLOD1Actor(RuntimeGrid=HLOD1_512_1024，LODLevel=1，HLODLayer=HLOD1.ParentActor)
 	3 遍历HLODGrids，按照HLODGrids[ 1 ]信息划分出GridCell，按照Level2生成HLODActor。因为HLOD1Actor配置的是nullptr，所以不会生成HLOD2Actor。
+
+总结：
+	1 将场景Actor根据配置的HLODLayer划分出HLOD0Actor。
+	2 将HLOD0Actor根据HLDGrid
 ```
