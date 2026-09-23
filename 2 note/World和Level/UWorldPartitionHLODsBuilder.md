@@ -77,7 +77,7 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	}
 	/*
 	4.1 根据配置，找到HLODBuilder的UClass并创建出HLODBuilder。
-	4.2 调用UHLODBuilder::Build方法，
+	4.2 调用UHLODBuilder::Build方法，自定义重写，然后返回构建出来的Comp
 	4.3 
 	*/
 	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
