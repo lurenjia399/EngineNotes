@@ -75,13 +75,23 @@ uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 	{
 		return OldHLODHash;
 	}
-	// 4 根据配置，返回HLODBuilder的UClass并创建出HLODBuilder。
+	// 4 
+	/*
+	4 根据配置，找到HLODBuilder的UClass并创建出HLODBuilder。
+	4.2
+	*/
 	const UHLODLayer* HLODLayer = InHLODActor->GetSourceActors()->GetHLODLayer();
 	TSubclassOf<UHLODBuilder> HLODBuilderClass = GetHLODBuilderClass(HLODLayer);
 	if (HLODBuilderClass)
 	{
 		UHLODBuilder* HLODBuilder = NewObject<UHLODBuilder>(
 			GetTransientPackage(), HLODBuilderClass);
+		FHLODBuildResult BuildResult;
+		{
+			FAutoScopedDurationTimer BuildTimeScope;
+			BuildResult = HLODBuilder->Build(HLODBuildContext);
+			BuildTimeMS = FMath::RoundToInt(BuildTimeScope.GetTime() * 1000);
+		}
 	}
 }
 ```
