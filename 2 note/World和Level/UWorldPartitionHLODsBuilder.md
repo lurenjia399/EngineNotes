@@ -29,6 +29,12 @@ bool UWorldPartitionHLODsBuilder::RunInternal(UWorld* InWorld, const FCellInfo& 
 ```
 
 ## SetupHLODActors
-参考[[WorldPartition#SetupHLODActors]]
+内部实现参考 [[WorldPartition#SetupHLODActors]]
 
 ## BuildHLODActors
+```cpp
+bool UWorldPartitionHLODsBuilder::BuildHLODActors()
+{
+	
+}
+```
