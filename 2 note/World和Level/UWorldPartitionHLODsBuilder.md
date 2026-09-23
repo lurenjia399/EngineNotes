@@ -57,6 +57,10 @@ bool UWorldPartitionHLODsBuilder::BuildHLODActors()
 ```cpp
 uint32 FWorldPartitionHLODUtilities::BuildHLOD(AWorldPartitionHLOD* InHLODActor)
 {
-	
+	// 加载HLODActor上的SourceActor
+	ULevelStreaming* LevelStreaming = nullptr;
+	{
+		LevelStreaming = LoadSourceActors(InHLODActor, bIsDirty);
+	}
 }
 ```
