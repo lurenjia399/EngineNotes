@@ -124,7 +124,7 @@ bool UWorldPartitionRuntimeSpatialHash::SetupHLODActors(
 
 总结：
 	1 将场景Actor根据RuntimeGrid划分出HLOD0Actor。
-	2 将HLOD0Actor根据HLDGrid划分出HLOD1Actor。
+	2 将HLOD0Actor根据HLODGrid划分出HLOD1Actor。
 	3 将HLOD1Actor根据HLODGrid划分出HLOD2Actor。
-	4 以此类推，知道没有HLO
+	4 以此类推，直到没有HLODActor。
 ```
