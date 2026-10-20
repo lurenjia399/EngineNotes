@@ -2,11 +2,11 @@
 ```cpp
 FRunnableThread* FRunnableThread::Create(
 	class FRunnable* InRunnable, // 线程执行任务的实体，具体干活的类，必须传进来
-	const TCHAR* ThreadName,// 线程的名称
-	uint32 InStackSize,// 
-	EThreadPriority InThreadPri, 
-	uint64 InThreadAffinityMask,
-	EThreadCreateFlags InCreateFlags)
+	const TCHAR* ThreadName,// 线程的名称，方便调试和性能分析时识别线程
+	uint32 InStackSize,// 线程的栈空间大小，单位为字节
+	EThreadPriority InThreadPri, // 线程调度优先级
+	uint64 InThreadAffinityMask,//CPU 亲和性掩码，指定线程允许在哪些逻辑处理器上运行
+	EThreadCreateFlags InCreateFlags)// 
 {
 	// 静态方法，返回当前这个平台是否支持多线程
 	bool bCreateRealThread = FPlatformProcess::SupportsMultithreading();
