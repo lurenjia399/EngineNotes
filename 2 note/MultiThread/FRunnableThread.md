@@ -5,7 +5,7 @@ FRunnableThread* FRunnableThread::Create(
 	const TCHAR* ThreadName,// 线程的名称，方便调试和性能分析时识别线程
 	uint32 InStackSize,// 线程的栈空间大小，单位为字节
 	EThreadPriority InThreadPri, // 线程调度优先级
-	uint64 InThreadAffinityMask,//CPU 亲和性掩码，指定线程允许在哪些逻辑处理器上运行
+	uint64 InThreadAffinityMask,//CPU 亲和性掩码，指定线程允许在哪些cpu核上运行
 	EThreadCreateFlags InCreateFlags)// 
 {
 	// 静态方法，返回当前这个平台是否支持多线程
@@ -38,7 +38,7 @@ FRunnableThread* FRunnableThread::Create(
 ```cpp
 class FRunnableThreadWin  : public FRunnableThread
 {
-	// 重写了这个方法，用来通过调用Windows的系统接口创建出Thread
+	// 重写了这个方法，用来通过调用Windows的系统接口创建出Thread，并设置一些线程的属性
 	virtual bool CreateInternal(
 		FRunnable* InRunnable, 
 		const TCHAR* InThreadName,  
