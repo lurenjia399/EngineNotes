@@ -34,7 +34,8 @@ FRunnableThread* FRunnableThread::Create(
 	return NewThread;
 }
 ```
-系统线程的基类，通过Create静态方法创建出FFakeThread并返回，参数中InRunnable承载了具体线程执行的任务。不同的平台通过继承这个FRunnableThread才实现不同的系统线程创建。下面看下FRunnableThreadWin这个实现：
+系统线程的基类，通过Create静态方法创建出FFakeThread并返回，参数中InRunnable承载了具体线程执行的任务。不同的平台通过继承这个FRunnableThread才实现不同的系统线程创建。
+下面看下FRunnableThreadWin这个实现：
 ```cpp
 class FRunnableThreadWin  : public FRunnableThread
 {
@@ -80,15 +81,26 @@ class FRunnableThreadWin  : public FRunnableThread
 	uint32 GuardedRun();
 	
 	// 
-	uint32 Run();
-	
-	// 
-	static ::DWORD STDCALL _ThreadProc(LPVOID pThis)
+	uint32 FRunnableThreadWin::Run()
+{
+	uint32 ExitCode = 1;
+	check(Runnable);
+	if (Runnable->Init() == true)
 	{
-		check(pThis);
-		auto* ThisThread = (FRunnableThreadWin*)pThis;
-		FThreadManager::Get().AddThread(ThisThread->GetThreadID(), ThisThread);
-		return ThisThread->GuardedRun();
+		ThreadInitSyncEvent->Trigger();
+		SetTls();
+		ExitCode = Runnable->Run();
+		Runnable->Exit();
+#if STATS
+		FThreadStats::Shutdown();
+#endif
+		FreeTls();
 	}
+	else
+	{
+		ThreadInitSyncEvent->Trigger();
+	}
+	return ExitCode;
+}
 }
 ```
