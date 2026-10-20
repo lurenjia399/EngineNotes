@@ -49,10 +49,13 @@ class FRunnableThreadWin  : public FRunnableThread
 	    {
 		    Runnable = InRunnable;
 			ThreadAffinityMask = InThreadAffinityMask;
-			// 
+			// 创建一个不同线程间需要手动触发的同步Event
 			ThreadInitSyncEvent = FPlatformProcess::GetSynchEventFromPool(true);
 			ThreadName = InThreadName ? InThreadName : TEXT("Unnamed UE");
 			ThreadPriority = InThreadPri;
+			// 调用系统接口，创建出Thread
+			Thread = CreateThread(NULL, InStackSize, _ThreadProc, this, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (::DWORD*)&ThreadID);
+
 	    }
 	// 
 	uint32 Run();
