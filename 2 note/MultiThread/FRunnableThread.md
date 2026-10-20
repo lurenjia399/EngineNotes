@@ -96,6 +96,7 @@ class FRunnableThreadWin  : public FRunnableThread
 		Runnable->Exit();
 		FreeTls();
 	}
+	// 如果Runnable
 	else
 	{
 		ThreadInitSyncEvent->Trigger();
