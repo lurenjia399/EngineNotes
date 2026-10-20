@@ -107,10 +107,16 @@ class FRunnableThreadWin  : public FRunnableThread
 		}
 		return ExitCode;
 	}
-	// sha'si
+	// 杀死新线程，
 	virtual bool Kill(bool bShouldWait) override
 	{
-		
+		if (Runnable)
+		{
+			Runnable->Stop();
+		}
+		CloseHandle(Thread);
+		Thread = NULL;
+		return bDidExitOK;
 	}
 }
 ```
