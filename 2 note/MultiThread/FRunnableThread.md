@@ -40,32 +40,42 @@ class FRunnableThreadWin  : public FRunnableThread
 {
 	// 重写了这个方法，用来通过调用Windows的系统接口创建出Thread，并设置一些线程的属性，
 	virtual bool CreateInternal(...) override;
-	    {
-		    Runnable = InRunnable;
-			ThreadAffinityMask = InThreadAffinityMask;
-			// 创建一个不同线程间需要手动触发的同步Event
-			ThreadInitSyncEvent = FPlatformProcess::GetSynchEventFromPool(true);
-			ThreadName = InThreadName ? InThreadName : TEXT("Unnamed UE");
-			ThreadPriority = InThreadPri;
-			// 调用系统接口，创建出Thread
-			Thread = CreateThread(NULL, InStackSize, _ThreadProc, this, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (::DWORD*)&ThreadID);
-			if (Thread == NULL)
-			{...}
-			else
-			{
-				// 恢复创建出的线程，就是让新线程执行，但是新线程有可能无法获取cpu
-				ResumeThread(Thread);
-				// 设置同步Event，让当前线程永久等待。这个同步Event会在新线程的Run方法中触发
-				ThreadInitSyncEvent->Wait(INFINITE);
-				
-				// 在同步Event之后说明新线程已经执行了，这里重置新线程的优先级
-				SetThreadPriority(InThreadPri);
-			}
-			// 回收同步Event，并返回创建出的新线程
-			FPlatformProcess::ReturnSynchEventToPool(ThreadInitSyncEvent);
-			ThreadInitSyncEvent = nullptr;
-			return Thread != NULL;
-	    }
+	{
+		Runnable = InRunnable;
+		ThreadAffinityMask = InThreadAffinityMask;
+		// 创建一个不同线程间需要手动触发的同步Event
+		ThreadInitSyncEvent = FPlatformProcess::GetSynchEventFromPool(true);
+		ThreadName = InThreadName ? InThreadName : TEXT("Unnamed UE");
+		ThreadPriority = InThreadPri;
+		// 调用系统接口，创建出Thread
+		Thread = CreateThread(NULL, InStackSize, _ThreadProc, this, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (::DWORD*)&ThreadID);
+		if (Thread == NULL)
+		{...}
+		else
+		{
+			// 恢复创建出的线程，就是让新线程执行，但是新线程有可能无法获取cpu
+			ResumeThread(Thread);
+			// 设置同步Event，让当前线程永久等待。这个同步Event会在新线程的Run方法中触发
+			ThreadInitSyncEvent->Wait(INFINITE);
+			
+			// 在同步Event之后说明新线程已经执行了，这里重置新线程的优先级
+			SetThreadPriority(InThreadPri);
+		}
+		// 回收同步Event，并返回创建出的新线程
+		FPlatformProcess::ReturnSynchEventToPool(ThreadInitSyncEvent);
+		ThreadInitSyncEvent = nullptr;
+		return Thread != NULL;
+	}
+	
+	// 唤醒新线程后，新线程会执行此方法
+	static ::DWORD STDCALL _ThreadProc(LPVOID pThis)
+	{
+		check(pThis);
+		auto* ThisThread = (FRunnableThreadWin*)pThis;
+		FThreadManager::Get().AddThread(ThisThread->GetThreadID(), ThisThread);
+		return ThisThread->GuardedRun();
+	}
+	
 	// 
 	uint32 Run();
 	
