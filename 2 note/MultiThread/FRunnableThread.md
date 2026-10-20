@@ -45,6 +45,7 @@ class FRunnableThreadWin  : public FRunnableThread
 	    uint32 InStackSize = 0,  
 	    EThreadPriority InThreadPri = TPri_Normal, 
 	    uint64 InThreadAffinityMask = 0,  
-	    EThreadCreateFlags InCreateFlags = EThreadCreateFlags::None) override
+	    EThreadCreateFlags InCreateFlags = EThreadCreateFlags::None) override;
+	uint32 Run();
 }
 ```
