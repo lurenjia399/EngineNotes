@@ -91,10 +91,13 @@ class FRunnableThreadWin  : public FRunnableThread
 		{
 			// 触发同步Event，告诉那边不用等待了
 			ThreadInitSyncEvent->Trigger();
+			
 			SetTls();
-			// 执行Runnable干活类的Run方法
+			
+			// 执行Runnable干活类的方法
 			ExitCode = Runnable->Run();
 			Runnable->Exit();
+			
 			FreeTls();
 		}
 		// 如果Runnable
