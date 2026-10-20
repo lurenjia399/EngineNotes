@@ -63,8 +63,11 @@ class FRunnableThreadWin  : public FRunnableThread
 			{
 				// 恢复创建出的线程，就是让新线程执行，但是新线程有可能无法获取cpu
 				ResumeThread(Thread);
-				// 设置同步Event，让当前线程永久等待。这个同步Event会在新线程的
+				// 设置同步Event，让当前线程永久等待。这个同步Event会在新线程的Run方法中触发
 				ThreadInitSyncEvent->Wait(INFINITE);
+				
+				// 在同步Event之后说明新线程已经执行了，这里重置新线程的优先级
+				SetThreadPriority(InThreadPri);
 			}
 	    }
 	// 
