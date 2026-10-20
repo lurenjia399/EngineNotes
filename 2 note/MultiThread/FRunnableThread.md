@@ -77,10 +77,10 @@ class FRunnableThreadWin  : public FRunnableThread
 		return ThisThread->GuardedRun();
 	}
 	
-	// 线程开始执行的方法，执行Run方法
+	// 新线程开始执行的方法，执行Run方法
 	uint32 GuardedRun();
 	
-	// 
+	// 新线程的Run方法
 	uint32 FRunnableThreadWin::Run()
 	{
 		uint32 ExitCode = 1;
@@ -92,6 +92,7 @@ class FRunnableThreadWin  : public FRunnableThread
 			// 触发同步Event，告诉那边不用等待了
 			ThreadInitSyncEvent->Trigger();
 			SetTls();
+			// 执行Runnable干活类的Run方法
 			ExitCode = Runnable->Run();
 			Runnable->Exit();
 			FreeTls();
