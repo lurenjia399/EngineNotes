@@ -2,7 +2,7 @@
 ```cpp
 FRunnableThread* FRunnableThread::Create(
 	class FRunnable* InRunnable, // 线程执行任务的实体，具体干活的类
-	const TCHAR* ThreadName,//
+	const TCHAR* ThreadName,// 线程的名称
 	uint32 InStackSize,
 	EThreadPriority InThreadPri, 
 	uint64 InThreadAffinityMask,
