@@ -38,6 +38,13 @@ FRunnableThread* FRunnableThread::Create(
 ```cpp
 class FRunnableThreadWin  : public FRunnableThread
 {
-	
+	// 重写了这个方法，用来通过调用Windows的系统接口创建出Thread
+	virtual bool CreateInternal(
+		FRunnable* InRunnable, 
+		const TCHAR* InThreadName,  
+	    uint32 InStackSize = 0,  
+	    EThreadPriority InThreadPri = TPri_Normal, 
+	    uint64 InThreadAffinityMask = 0,  
+	    EThreadCreateFlags InCreateFlags = EThreadCreateFlags::None) override
 }
 ```
