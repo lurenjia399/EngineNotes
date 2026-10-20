@@ -84,16 +84,16 @@ class FRunnableThreadWin  : public FRunnableThread
 	uint32 FRunnableThreadWin::Run()
 {
 	uint32 ExitCode = 1;
+	// 必须保证Runnable干活的类存在
 	check(Runnable);
+	
+	// 如果Runnable已经初始化了
 	if (Runnable->Init() == true)
 	{
 		ThreadInitSyncEvent->Trigger();
 		SetTls();
 		ExitCode = Runnable->Run();
 		Runnable->Exit();
-#if STATS
-		FThreadStats::Shutdown();
-#endif
 		FreeTls();
 	}
 	else
