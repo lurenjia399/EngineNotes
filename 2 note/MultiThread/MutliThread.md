@@ -124,3 +124,6 @@ static LockFreeLinkAllocator_TLSCache& GetLockFreeAllocator()
 这个类就是一个LockFree栈的基类。因为本身LockFreeList也要实现一个栈，LockFreeLickAllocator_TLSCache回收池也是一个栈，UE为了复用代码，把公共部分抽到了FLockFreePointerListLIFORoot中
 # 5 FLockFreePointerListLIFOBase
 FLockFreePointerListLIFOBase 是由 FLockFreePointerListLIFORoot组成的
+
+
+# 
