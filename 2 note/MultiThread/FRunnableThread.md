@@ -38,14 +38,8 @@ FRunnableThread* FRunnableThread::Create(
 ```cpp
 class FRunnableThreadWin  : public FRunnableThread
 {
-	// 重写了这个方法，用来通过调用Windows的系统接口创建出Thread，并设置一些线程的属性
-	virtual bool CreateInternal(
-		FRunnable* InRunnable, 
-		const TCHAR* InThreadName,  
-	    uint32 InStackSize = 0,  
-	    EThreadPriority InThreadPri = TPri_Normal, 
-	    uint64 InThreadAffinityMask = 0,  
-	    EThreadCreateFlags InCreateFlags = EThreadCreateFlags::None) override;
+	// 重写了这个方法，用来通过调用Windows的系统接口创建出Thread，并设置一些线程的属性，
+	virtual bool CreateInternal(...) override;
 	    {
 		    Runnable = InRunnable;
 			ThreadAffinityMask = InThreadAffinityMask;
@@ -56,9 +50,7 @@ class FRunnableThreadWin  : public FRunnableThread
 			// 调用系统接口，创建出Thread
 			Thread = CreateThread(NULL, InStackSize, _ThreadProc, this, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (::DWORD*)&ThreadID);
 			if (Thread == NULL)
-			{
-				
-			}
+			{...}
 			else
 			{
 				// 恢复创建出的线程，就是让新线程执行，但是新线程有可能无法获取cpu
@@ -69,6 +61,10 @@ class FRunnableThreadWin  : public FRunnableThread
 				// 在同步Event之后说明新线程已经执行了，这里重置新线程的优先级
 				SetThreadPriority(InThreadPri);
 			}
+			// 回收同步Event，并返回创建出的新线程
+			FPlatformProcess::ReturnSynchEventToPool(ThreadInitSyncEvent);
+			ThreadInitSyncEvent = nullptr;
+			return Thread != NULL;
 	    }
 	// 
 	uint32 Run();
