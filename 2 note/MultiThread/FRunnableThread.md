@@ -92,12 +92,14 @@ class FRunnableThreadWin  : public FRunnableThread
 			// 触发同步Event，告诉那边不用等待了
 			ThreadInitSyncEvent->Trigger();
 			
+			// 将当前线程登记到当前线程的 TLS 中
 			SetTls();
 			
 			// 执行Runnable干活类的方法
 			ExitCode = Runnable->Run();
-			Runnable->Exit();
 			
+			Runnable->Exit();
+			// 清空gan
 			FreeTls();
 		}
 		// 如果Runnable
