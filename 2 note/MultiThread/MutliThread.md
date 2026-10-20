@@ -127,7 +127,7 @@ FLockFreePointerListLIFOBase 是由 FLockFreePointerListLIFORoot组成的
 
 
 # 
-1 代码在哪个线程执行
+1 判断代码在哪个线程执行
 ```cpp
 	FString ThreadName = FThreadManager::GetThreadName(FPlatformTLS::GetCurrentThreadId());
 ```
