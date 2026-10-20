@@ -1,7 +1,7 @@
 1 创建
 ```cpp
 FRunnableThread* FRunnableThread::Create(
-	class FRunnable* InRunnable, // 线程执行任务的实体，具体干活的类
+	class FRunnable* InRunnable, // 线程执行任务的实体，具体干活的类，必须传进来
 	const TCHAR* ThreadName,// 线程的名称
 	uint32 InStackSize,// 
 	EThreadPriority InThreadPri, 
