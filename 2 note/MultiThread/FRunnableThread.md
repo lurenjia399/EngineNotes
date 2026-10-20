@@ -1,8 +1,8 @@
 1 创建
 ```cpp
 FRunnableThread* FRunnableThread::Create(
-	class FRunnable* InRunnable, 
-	const TCHAR* ThreadName,
+	class FRunnable* InRunnable, // 线程执行任务的实体，具体干活的类
+	const TCHAR* ThreadName,//
 	uint32 InStackSize,
 	EThreadPriority InThreadPri, 
 	uint64 InThreadAffinityMask,
