@@ -8,10 +8,12 @@ FRunnableThread* FRunnableThread::Create(
 	uint64 InThreadAffinityMask,
 	EThreadCreateFlags InCreateFlags)
 {
+	// 静态方法，返回当前这个平台是否支持多线程
 	bool bCreateRealThread = FPlatformProcess::SupportsMultithreading();
 
 	FRunnableThread* NewThread = nullptr;
 
+	// 如果zhi'c
 	if (bCreateRealThread)
 	{
 		check(InRunnable);
