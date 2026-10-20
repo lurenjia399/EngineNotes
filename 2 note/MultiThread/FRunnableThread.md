@@ -55,7 +55,17 @@ class FRunnableThreadWin  : public FRunnableThread
 			ThreadPriority = InThreadPri;
 			// 调用系统接口，创建出Thread
 			Thread = CreateThread(NULL, InStackSize, _ThreadProc, this, STACK_SIZE_PARAM_IS_A_RESERVATION | CREATE_SUSPENDED, (::DWORD*)&ThreadID);
-
+			if (Thread == NULL)
+			{
+				
+			}
+			else
+			{
+				// 恢复创建出的线程，就是让新线程执行，但是新线程有可能无法获取cpu
+				ResumeThread(Thread);
+				// 设置同步Event，ran
+				ThreadInitSyncEvent->Wait(INFINITE);
+			}
 	    }
 	// 
 	uint32 Run();
