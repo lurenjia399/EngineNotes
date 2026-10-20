@@ -19,12 +19,13 @@ FRunnableThread* FRunnableThread::Create(
 		check(InRunnable);
 		NewThread = FPlatformProcess::CreateRunnableThread();
 	}
-	// 如果不支持多线程，
+	// 如果不支持多线程，new一个假的用来替代真正的FRunnableThread
 	else if (InRunnable->GetSingleThreadInterface())
 	{
 		NewThread = new FFakeThread();
 	}
 
+	// 执行初始化的逻辑，不同的FRunnableThread会重写初始化的逻辑
 	if (NewThread)
 	{
 		SetupCreatedThread(NewThread, InRunnable, ThreadName, InStackSize, InThreadPri, InThreadAffinityMask, InCreateFlags);
