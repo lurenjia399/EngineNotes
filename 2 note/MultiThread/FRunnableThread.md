@@ -32,4 +32,4 @@ FRunnableThread* FRunnableThread::Create(
 	return NewThread;
 }
 ```
-xi
+系统线程的基类，通过Create静态方法创建出FFakeThread并返回，参数中InRunnable承载了具体线程执行的任务。
