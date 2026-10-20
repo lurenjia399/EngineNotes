@@ -107,7 +107,22 @@ class FRunnableThreadWin  : public FRunnableThread
 		}
 		return ExitCode;
 	}
-	// 杀死新线程，
+	
+	// 挂起新线程
+	virtual void Suspend(bool bShouldPause = true) override
+	{
+		check(Thread);
+		if (bShouldPause == true)
+		{
+			SuspendThread(Thread);
+		}
+		else
+		{
+			ResumeThread(Thread);
+		}
+	}
+	
+	// 杀死新线程
 	virtual bool Kill(bool bShouldWait) override
 	{
 		if (Runnable)
