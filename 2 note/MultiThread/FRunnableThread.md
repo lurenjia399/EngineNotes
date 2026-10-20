@@ -86,28 +86,31 @@ class FRunnableThreadWin  : public FRunnableThread
 		uint32 ExitCode = 1;
 		// 必须保证Runnable干活的类存在
 		check(Runnable);
-		// 如果Runnable已经初始化了
+		// 如果Runnable初始化成功
 		if (Runnable->Init() == true)
 		{
 			// 触发同步Event，告诉那边不用等待了
 			ThreadInitSyncEvent->Trigger();
-			
 			// 将当前线程登记到当前线程的 TLS 中
 			SetTls();
-			
 			// 执行Runnable干活类的方法
 			ExitCode = Runnable->Run();
-			
 			Runnable->Exit();
-			// 清空gan
+			// 清空刚才登记的指针
 			FreeTls();
 		}
-		// 如果Runnable
+		// 如果Runnable初始化失败
 		else
 		{
+			// 触发同步Event，告诉那边不用等待了
 			ThreadInitSyncEvent->Trigger();
 		}
 		return ExitCode;
+	}
+	// sha'si
+	virtual bool Kill(bool bShouldWait) override
+	{
+		
 	}
 }
 ```
