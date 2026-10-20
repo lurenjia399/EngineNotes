@@ -67,7 +67,7 @@ class FRunnableThreadWin  : public FRunnableThread
 		return Thread != NULL;
 	}
 	
-	// 唤醒新线程后，新线程会执行此方法
+	// 唤醒新线程后，新线程会执行此方法。将线程的ID和FRunnableThreadWin执行绑定起来，记录到FThreadManager这个单例里面，然后执行GuardedRun方法
 	static ::DWORD STDCALL _ThreadProc(LPVOID pThis)
 	{
 		check(pThis);
@@ -75,6 +75,9 @@ class FRunnableThreadWin  : public FRunnableThread
 		FThreadManager::Get().AddThread(ThisThread->GetThreadID(), ThisThread);
 		return ThisThread->GuardedRun();
 	}
+	
+	// 线程开始执行的方法，执行Run方法
+	uint32 GuardedRun();
 	
 	// 
 	uint32 Run();
