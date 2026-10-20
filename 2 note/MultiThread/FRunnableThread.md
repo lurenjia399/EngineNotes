@@ -48,5 +48,14 @@ class FRunnableThreadWin  : public FRunnableThread
 	    EThreadCreateFlags InCreateFlags = EThreadCreateFlags::None) override;
 	// 
 	uint32 Run();
+	
+	// 
+	static ::DWORD STDCALL _ThreadProc(LPVOID pThis)
+	{
+		check(pThis);
+		auto* ThisThread = (FRunnableThreadWin*)pThis;
+		FThreadManager::Get().AddThread(ThisThread->GetThreadID(), ThisThread);
+		return ThisThread->GuardedRun();
+	}
 }
 ```
