@@ -46,6 +46,14 @@ class FRunnableThreadWin  : public FRunnableThread
 	    EThreadPriority InThreadPri = TPri_Normal, 
 	    uint64 InThreadAffinityMask = 0,  
 	    EThreadCreateFlags InCreateFlags = EThreadCreateFlags::None) override;
+	    {
+		    Runnable = InRunnable;
+			ThreadAffinityMask = InThreadAffinityMask;
+			// 
+			ThreadInitSyncEvent = FPlatformProcess::GetSynchEventFromPool(true);
+			ThreadName = InThreadName ? InThreadName : TEXT("Unnamed UE");
+			ThreadPriority = InThreadPri;
+	    }
 	// 
 	uint32 Run();
 	
