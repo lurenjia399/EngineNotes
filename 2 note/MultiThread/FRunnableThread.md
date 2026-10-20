@@ -13,16 +13,15 @@ FRunnableThread* FRunnableThread::Create(
 
 	FRunnableThread* NewThread = nullptr;
 
-	// 如果zhi'c
+	// 如果支持多线程，就new一个对应平台的FRunnableThread，参考FRunnableThreadWin
 	if (bCreateRealThread)
 	{
 		check(InRunnable);
-		// Create a new thread object
 		NewThread = FPlatformProcess::CreateRunnableThread();
 	}
+	// 如果不支持多线程，
 	else if (InRunnable->GetSingleThreadInterface())
 	{
-		// Create a fake thread when multithreading is disabled.
 		NewThread = new FFakeThread();
 	}
 
