@@ -36,9 +36,9 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 	bool CreateInternal(
 		bool bForkable, // 
 		uint32 InNumQueuedThreads, // 线程池创建的线程数量
-		uint32 StackSize, // 每个xian'cheng'zhan
-		EThreadPriority ThreadPriority, 
-		const TCHAR* Name)
+		uint32 StackSize, // 每个线程栈的大小
+		EThreadPriority ThreadPriority, // 线程的优先级
+		const TCHAR* Name)// 线程池的名称
 	{
 		
 	}
