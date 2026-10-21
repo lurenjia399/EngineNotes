@@ -8,9 +8,11 @@ class FQueuedThreadPool
 		uint32 StackSize = (32 * 1024), 
 		EThreadPriority ThreadPriority = TPri_Normal, 
 		const TCHAR* Name = TEXT("UnknownThreadPool")) = 0;
-	// 线程池销毁线程d
+		
+	// 线程池销毁线程的方法，不同的线程池重写
 	virtual void Destroy() = 0;
 	
+	// 
 	virtual void AddQueuedWork( 
 		IQueuedWork* InQueuedWork, 
 		EQueuedWorkPriority InQueuedWorkPriority= EQueuedWorkPriority::Normal) = 0;
