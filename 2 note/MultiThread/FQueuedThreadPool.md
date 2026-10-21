@@ -83,7 +83,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 				FScopeLock Lock(SynchQueue);
 				// 标记销毁的标志位
 				TimeToDie = 1;
-				// 添加内存屏障，不让其他线程读取TimeToDie，直到TimeToDie因为缓存一致性更新了新值后，其他线程才能读取
+				// 添加内存屏障，能够保证屏障前的操作让其他线程可见，屏障后的操作才会被其他线程可见。这里就是保证了TimeToDi
 				FPlatformMisc::MemoryBarrier();
 				// Clean up all queued objects
 				while (IQueuedWork * WorkItem = QueuedWork.Dequeue())
