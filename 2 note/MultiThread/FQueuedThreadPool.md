@@ -2,7 +2,7 @@
 ```cpp
 class FQueuedThreadPool
 {
-	//
+	// 
 	virtual bool Create(
 		uint32 InNumQueuedThreads, 
 		uint32 StackSize = (32 * 1024), 
@@ -17,7 +17,7 @@ class FQueuedThreadPool
 
 	virtual bool RetractQueuedWork(IQueuedWork* InQueuedWork) = 0;
 	
-	// 基类默认new一个普通的线程池
+	// 基类的静态分配方法，默认new一个普通的线程池
 	static CORE_API FQueuedThreadPool* Allocate()  
 	{  
 	    return new FQueuedThreadPoolBase;  
