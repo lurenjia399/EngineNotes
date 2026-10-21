@@ -34,7 +34,7 @@ class FQueuedThreadPool
 class FQueuedThreadPoolBase : public FQueuedThreadPool
 {
 	bool CreateInternal(
-		bool bForkable, // 创建子线程，子线程继承父进程当时的内存状态。ue有特殊的处理
+		bool bForkable, // 创建子进程，子进程继承父进程当时的内存状态。ue有特殊的处理，windows平台用不到看上去
 		uint32 InNumQueuedThreads, // 线程池创建的线程数量
 		uint32 StackSize, // 每个线程栈的大小
 		EThreadPriority ThreadPriority, // 线程的优先级
