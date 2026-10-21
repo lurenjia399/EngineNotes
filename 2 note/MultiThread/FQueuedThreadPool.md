@@ -34,7 +34,7 @@ class FQueuedThreadPool
 class FQueuedThreadPoolBase : public FQueuedThreadPool
 {
 	bool CreateInternal(
-		bool bForkable, // 创建的是能够配合 Fork 流程工作的线程。Fork是创建子进程，子进程继承父进程当时的内存状态。
+		bool bForkable, // 创建的是能够配合 Fork 流程工作的线程。Fork是创建子进程，子进程继承父进程当时的内存状态，这种设计常见于 Linux 专用服务器：先在父进程加载资源，再 Fork 出多个服务器子进程，以共享部分内存、降低启动成本。
 		uint32 InNumQueuedThreads, // 线程池创建的线程数量
 		uint32 StackSize, // 每个线程栈的大小
 		EThreadPriority ThreadPriority, // 线程的优先级
