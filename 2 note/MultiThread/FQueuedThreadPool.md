@@ -69,6 +69,8 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		{  
 		    Destroy();  
 		}
+		
+		return bWasSuccessful;
 	}
 }
 ```
