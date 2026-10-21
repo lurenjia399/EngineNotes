@@ -46,7 +46,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 重置线程池中的线程队列和工作队列
 		QueuedThreads.Empty(InNumQueuedThreads);
 		QueuedWork.Reset();
-		// 遍历
+		// 遍历需要创建的x
 		for (uint32 Count = 0; Count < InNumQueuedThreads && bWasSuccessful == true; Count++)
 		{
 			// Create a new queued thread
