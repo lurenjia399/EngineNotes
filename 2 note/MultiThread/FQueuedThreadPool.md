@@ -43,6 +43,31 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 创建新的临界区，并在函数范围内上锁
 		SynchQueue = new FCriticalSection();
 		FScopeLock Lock(SynchQueue);
+		// 重置线程池中的线程队列和工作队列
+		QueuedThreads.Empty(InNumQueuedThreads);
+		QueuedWork.Reset();
+		// 遍历
+		for (uint32 Count = 0; Count < InNumQueuedThreads && bWasSuccessful == true; Count++)
+		{
+			// Create a new queued thread
+			FQueuedThread* pThread = new FQueuedThread();
+			// Now create the thread and add it if ok
+			const FString ThreadName = FString::Printf(TEXT("%s #%d"), Name, Count);
+			const bool bCreateSuccess = bForkable ?
+				pThread->CreateForkable(this, StackSize, ThreadPriority, *ThreadName) :
+				pThread->Create(this, StackSize, ThreadPriority, *ThreadName);
+			if (bCreateSuccess)
+			{
+				QueuedThreads.Add(pThread);
+				AllThreads.Add(pThread);
+			}
+			else
+			{
+				// Failed to fully create so clean up
+				bWasSuccessful = false;
+				delete pThread;
+			}
+		}
 	}
 }
 ```
