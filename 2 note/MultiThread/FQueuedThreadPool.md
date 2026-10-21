@@ -46,7 +46,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 重置线程池中的线程队列和工作队列
 		QueuedThreads.Empty(InNumQueuedThreads);
 		QueuedWork.Reset();
-		// 遍历需要创建的线程，每个线程都new一个新的FRunnable干活的类。如果有一个失败了
+		// 遍历需要创建的线程，每个线程都new一个新的FRunnable干活的类。把成功创建的塞到线程队列中。
 		for (uint32 Count = 0; Count < InNumQueuedThreads && bWasSuccessful == true; Count++)
 		{
 			FQueuedThread* pThread = new FQueuedThread();
@@ -63,6 +63,11 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 				bWasSuccessful = false;
 				delete pThread;
 			}
+		}
+		// 如果有一个失败了就清掉所有的。
+		if (bWasSuccessful == false)  
+		{  
+		    Destroy();  
 		}
 	}
 }
