@@ -40,7 +40,9 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		EThreadPriority ThreadPriority, // 线程的优先级
 		const TCHAR* Name)// 线程池的名称
 	{
-		
+		// 创建新的临界区，并在函数范围内上锁
+		SynchQueue = new FCriticalSection();
+		FScopeLock Lock(SynchQueue);
 	}
 }
 ```
