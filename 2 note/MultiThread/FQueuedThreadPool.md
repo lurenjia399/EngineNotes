@@ -46,13 +46,10 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 重置线程池中的线程队列和工作队列
 		QueuedThreads.Empty(InNumQueuedThreads);
 		QueuedWork.Reset();
-		// 遍历需要创建的x
+		// 遍历需要创建的线程，每个线程都new一个新的FRunnable干活的类。如果有一个失败了
 		for (uint32 Count = 0; Count < InNumQueuedThreads && bWasSuccessful == true; Count++)
 		{
-			// Create a new queued thread
 			FQueuedThread* pThread = new FQueuedThread();
-			// Now create the thread and add it if ok
-			const FString ThreadName = FString::Printf(TEXT("%s #%d"), Name, Count);
 			const bool bCreateSuccess = bForkable ?
 				pThread->CreateForkable(this, StackSize, ThreadPriority, *ThreadName) :
 				pThread->Create(this, StackSize, ThreadPriority, *ThreadName);
@@ -63,7 +60,6 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 			}
 			else
 			{
-				// Failed to fully create so clean up
 				bWasSuccessful = false;
 				delete pThread;
 			}
