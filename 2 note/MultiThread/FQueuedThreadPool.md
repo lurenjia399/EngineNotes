@@ -29,3 +29,18 @@ class FQueuedThreadPool
 ```
 基类的实现，不同的线程池需要继承然后重写方法。
 # FQueuedThreadPoolBase
+
+```cpp
+class FQueuedThreadPoolBase : public FQueuedThreadPool
+{
+	bool CreateInternal(
+		bool bForkable, // 
+		uint32 InNumQueuedThreads, 
+		uint32 StackSize, 
+		EThreadPriority ThreadPriority, 
+		const TCHAR* Name)
+	{
+		
+	}
+}
+```
