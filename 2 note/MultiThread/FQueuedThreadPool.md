@@ -72,5 +72,54 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		
 		return bWasSuccessful;
 	}
+	// 销毁线程池的方法
+	virtual void Destroy() override final
+	{
+		// 临界区存在
+		if (SynchQueue)
+		{
+			{
+				// 上锁临界区
+				FScopeLock Lock(SynchQueue);
+				// 标记销毁的标志位
+				TimeToDie = 1;
+				// 添加内存屏障，
+				FPlatformMisc::MemoryBarrier();
+				// Clean up all queued objects
+				while (IQueuedWork * WorkItem = QueuedWork.Dequeue())
+				{
+					WorkItem->Abandon();
+				}
+				
+				QueuedWork.Reset();
+			}
+			// wait for all threads to finish up
+			while (1)
+			{
+				{
+					FScopeLock Lock(SynchQueue);
+					if (AllThreads.Num() == QueuedThreads.Num())
+					{
+						break;
+					}
+				}
+				FPlatformProcess::Sleep(0.0f);
+			}
+			// Delete all threads
+			{
+				FScopeLock Lock(SynchQueue);
+				// Now tell each thread to die and delete those
+				for (int32 Index = 0; Index < AllThreads.Num(); Index++)
+				{
+					AllThreads[Index]->KillThread();
+					delete AllThreads[Index];
+				}
+				QueuedThreads.Empty();
+				AllThreads.Empty();
+			}
+			delete SynchQueue;
+			SynchQueue = nullptr;
+		}
+	}
 }
 ```
