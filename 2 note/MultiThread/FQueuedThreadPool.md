@@ -86,7 +86,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 				// 添加内存屏障，能够保证屏障前的操作（TimeToDie = 1;）先于屏障后的操作(清掉工作列表中的内容)。
 				FPlatformMisc::MemoryBarrier();
 				
-				// 掉工作列表中的内容
+				// 删掉工作列表中的内容
 				while (IQueuedWork * WorkItem = QueuedWork.Dequeue())
 				{
 					WorkItem->Abandon();
