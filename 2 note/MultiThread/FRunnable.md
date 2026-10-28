@@ -31,7 +31,7 @@ class FQueuedThread: public FRunnable
 				DoWorkEvent->Wait();
 			}
 			
-			// 重新写入QueuedWork，并应用内存屏障，
+			// 重新写入QueuedWork，并应用内存屏障，严格按照先赋值LocalQueuedWork，在赋值QueuedWork的顺序
 			IQueuedWork* LocalQueuedWork = QueuedWork;
 			QueuedWork = nullptr;
 			FPlatformMisc::MemoryBarrier();
