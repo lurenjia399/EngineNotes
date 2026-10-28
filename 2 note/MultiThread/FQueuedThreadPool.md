@@ -33,6 +33,7 @@ class FQueuedThreadPool
 ```cpp
 class FQueuedThreadPoolBase : public FQueuedThreadPool
 {
+	// 创建线程池，游戏中全局线程池是在FEngineLoop::PreInitPreStartupScreen方法中创建的
 	bool CreateInternal(
 		bool bForkable, // 创建的是能够配合 Fork 流程工作的线程。Fork是创建子进程，子进程继承父进程当时的内存状态，这种设计常见于 Linux 专用服务器：先在父进程加载资源，再 Fork 出多个服务器子进程，以共享部分内存、降低启动成本。
 		uint32 InNumQueuedThreads, // 线程池创建的线程数量
@@ -49,6 +50,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 遍历需要创建的线程，每个线程都new一个新的FRunnable干活的类。把成功创建的塞到线程队列中。
 		for (uint32 Count = 0; Count < InNumQueuedThreads && bWasSuccessful == true; Count++)
 		{
+			// 在堆上new出新的FRunnable，所有线程都能读到
 			FQueuedThread* pThread = new FQueuedThread();
 			const bool bCreateSuccess = bForkable ?
 				pThread->CreateForkable(this, StackSize, ThreadPriority, *ThreadName) :
