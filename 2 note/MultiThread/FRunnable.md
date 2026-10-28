@@ -49,7 +49,6 @@ class FQueuedThread: public FRunnable
 	void DoWork(IQueuedWork* InQueuedWork)
 	{
 		QueuedWork = InQueuedWork;
-		FPlatformMisc::MemoryBarrier();
 		DoWorkEvent->Trigger();
 	}
 }
