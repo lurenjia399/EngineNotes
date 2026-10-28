@@ -5,7 +5,7 @@ class FQueuedThread: public FRunnable
 {
 	FEvent* DoWorkEvent = nullptr;// 系统的事件，线程空闲时会等待Event，直到Event触发
 	TAtomic<bool> TimeToDie { false };// 销毁的标志位，原子操作
-	IQueuedWork* volatile QueuedWork = nullptr;// 当前执行的work
+	IQueuedWork* volatile QueuedWork = nullptr;// 唤醒线程需要执行的Work
 	class FQueuedThreadPoolBase* OwningThreadPool = nullptr;//所属的线程池
 	FRunnableThread* Thread = nullptr;//执行的线程
 	
@@ -31,6 +31,7 @@ class FQueuedThread: public FRunnable
 				DoWorkEvent->Wait();
 			}
 			
+			// 重新写入QueuedWork，并应用内存屏障，
 			IQueuedWork* LocalQueuedWork = QueuedWork;
 			QueuedWork = nullptr;
 			FPlatformMisc::MemoryBarrier();
