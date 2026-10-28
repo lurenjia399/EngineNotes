@@ -85,16 +85,14 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 				TimeToDie = 1;
 				// 添加内存屏障，能够保证屏障前的操作（TimeToDie = 1;）先于屏障后的操作(清掉工作列表中的内容)。
 				FPlatformMisc::MemoryBarrier();
-				
-				// 删掉工作列表中的内容
+				// 删掉工作列表中的内容并清空工作列表
 				while (IQueuedWork * WorkItem = QueuedWork.Dequeue())
 				{
 					WorkItem->Abandon();
 				}
-				
 				QueuedWork.Reset();
 			}
-			// wait for all threads to finish up
+			// 通过AllThreads.Num() == QueuedThreads.Num()判断来确定池中的线程都是空闲的，AllThreads数组表示这个池中所有的线程，QueuedThreads数组表示池中空闲的线程
 			while (1)
 			{
 				{
@@ -106,10 +104,9 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 				}
 				FPlatformProcess::Sleep(0.0f);
 			}
-			// Delete all threads
+			// 删掉所有的线程
 			{
 				FScopeLock Lock(SynchQueue);
-				// Now tell each thread to die and delete those
 				for (int32 Index = 0; Index < AllThreads.Num(); Index++)
 				{
 					AllThreads[Index]->KillThread();
@@ -118,9 +115,63 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 				QueuedThreads.Empty();
 				AllThreads.Empty();
 			}
+			// 删掉临界区
 			delete SynchQueue;
 			SynchQueue = nullptr;
 		}
+	}
+	
+	void AddQueuedWork(
+		IQueuedWork* InQueuedWork, // 往工作列表中添加的工作
+		EQueuedWorkPriority InQueuedWorkPriority) override// 工作的优先级
+	{
+		// 池的销毁标记已经为true，就不能往池中新加工作了，直接返回
+		if (TimeToDie)
+		{
+			InQueuedWork->Abandon();
+			return;
+		}
+		
+		{
+			// 临界区上锁
+			FScopeLock sl(SynchQueue);
+			
+			// 如果池中没有空闲的线程，就把工作放到工作队列中
+			const int32 AvailableThreadCount = QueuedThreads.Num();
+			if (AvailableThreadCount == 0)
+			{
+				QueuedWork.Enqueue(InQueuedWork, InQueuedWorkPriority);
+				return;
+			}
+			// 如果池中有空闲的线程，就从空闲队列中取出线程
+			const int32 ThreadIndex = AvailableThreadCount - 1;
+			Thread = QueuedThreads[ThreadIndex];
+			QueuedThreads.RemoveAt(ThreadIndex, EAllowShrinking::No);
+		}
+
+		// 用取出的线程执行工作
+		Thread->DoWork(InQueuedWork);
+	}
+	
+	IQueuedWork* ReturnToPoolOrGetNextJob(FQueuedThread* InQueuedThread)
+	{
+		check(InQueuedThread != nullptr);
+		IQueuedWork* Work = nullptr;
+		// Check to see if there is any work to be done
+		FScopeLock sl(SynchQueue);
+		if (TimeToDie)
+		{
+			check(!QueuedWork.Num());  // we better not have anything if we are dying
+		}
+		
+		Work = QueuedWork.Dequeue();
+
+		if (!Work)
+		{
+			// There was no work to be done, so add the thread to the pool
+			QueuedThreads.Add(InQueuedThread);
+		}
+		return Work;
 	}
 }
 ```
