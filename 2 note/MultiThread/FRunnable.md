@@ -9,6 +9,7 @@ class FQueuedThread: public FRunnable
 	class FQueuedThreadPoolBase* OwningThreadPool = nullptr;
 	FRunnableThread* Thread = nullptr;
 	
+	// 重写父类的方法，线程运行时会执行
 	uint32 FQueuedThread::Run()
 	{
 		/*
@@ -23,6 +24,7 @@ class FQueuedThread: public FRunnable
 		*/
 		while (!TimeToDie.Load(EMemoryOrder::Relaxed))
 		{
+			// 通过DoWorkEvent一直等待，等待Event触发后，才执行后续的代码
 			bool bContinueWaiting = true;
 			if (bContinueWaiting)
 			{
@@ -41,6 +43,14 @@ class FQueuedThread: public FRunnable
 			}
 		}
 		return 0;
-		}
+	}
+	
+	// 唤醒线程的方法，把具体工作当作参数传进来
+	void DoWork(IQueuedWork* InQueuedWork)
+	{
+		QueuedWork = InQueuedWork;
+		FPlatformMisc::MemoryBarrier();
+		DoWorkEvent->Trigger();
+	}
 }
 ```
