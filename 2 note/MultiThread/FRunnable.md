@@ -15,7 +15,7 @@ class FQueuedThread: public FRunnable
 		enum class EMemoryOrder
 		{
 		    Relaxed,// 保证原子性，不额外建立对其他内存访问的同步关系，没有顺序保证
-		    SequentiallyConsistent,// 顺序一致性：提供更强的排序保证，所有采用该内存序的原子操作具有统一的全局顺序
+		    SequentiallyConsistent,// 顺序一致性：提供更强的排序保证，所有采用该内存序的原子操作具有统一的全局顺序。
 		    Count//没用，标记枚举数量
 		};
 		1 这里TimeToDie.Load的操作，只是读取TimeToDie标志位的值，不保证修改标志位之前写入数据的顺序
