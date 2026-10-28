@@ -152,23 +152,21 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 用取出的线程执行工作
 		Thread->DoWork(InQueuedWork);
 	}
-	
+	// 池回收线程，并从工作队列中取出下一个工作
 	IQueuedWork* ReturnToPoolOrGetNextJob(FQueuedThread* InQueuedThread)
 	{
-		check(InQueuedThread != nullptr);
 		IQueuedWork* Work = nullptr;
-		// Check to see if there is any work to be done
+		// 上锁
 		FScopeLock sl(SynchQueue);
+		// 如果已经标记销毁了，工作队列中就不应该有工作了
 		if (TimeToDie)
 		{
-			check(!QueuedWork.Num());  // we better not have anything if we are dying
+			check(!QueuedWork.Num());
 		}
-		
+		// 从工作队列中取出下一个工作
 		Work = QueuedWork.Dequeue();
-
 		if (!Work)
 		{
-			// There was no work to be done, so add the thread to the pool
 			QueuedThreads.Add(InQueuedThread);
 		}
 		return Work;
