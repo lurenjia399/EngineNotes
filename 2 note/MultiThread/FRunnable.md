@@ -57,13 +57,8 @@ class FQueuedThread: public FRunnable
 	    bool bDidExitOK = true;  
 	    // 设置标志位
 	    TimeToDie = true;  
-	    // Trigger the thread so that it will come out of the wait state if  
-	    // it isn't actively doing work    
-	    DoWorkEvent->Trigger();  
-	    // If waiting was specified, wait the amount of time. If that fails,  
-	    // brute force kill that thread. Very bad as that might leak.    
+	    DoWorkEvent->Trigger();    
 	    Thread->WaitForCompletion();  
-	    // Clean up the event  
 	    FPlatformProcess::ReturnSynchEventToPool(DoWorkEvent);  
 	    DoWorkEvent = nullptr;  
 	    delete Thread;  
