@@ -4,7 +4,7 @@
 class FQueuedThread: public FRunnable
 {
 	FEvent* DoWorkEvent = nullptr;
-	TAtomic<bool> TimeToDie { false };// 源自标志位
+	TAtomic<bool> TimeToDie { false };// 销毁的标志位，原子操作
 	IQueuedWork* volatile QueuedWork = nullptr;
 	class FQueuedThreadPoolBase* OwningThreadPool = nullptr;
 	FRunnableThread* Thread = nullptr;
