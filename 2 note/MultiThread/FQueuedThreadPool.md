@@ -50,7 +50,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		// 遍历需要创建的线程，每个线程都new一个新的FRunnable干活的类。把成功创建的塞到线程队列中。
 		for (uint32 Count = 0; Count < InNumQueuedThreads && bWasSuccessful == true; Count++)
 		{
-			// 在堆上new出新的FRunnable，所有线程都能读到
+			// 在堆上new出新的FRunnable，所有线程都能读到。
 			FQueuedThread* pThread = new FQueuedThread();
 			const bool bCreateSuccess = bForkable ?
 				pThread->CreateForkable(this, StackSize, ThreadPriority, *ThreadName) :
