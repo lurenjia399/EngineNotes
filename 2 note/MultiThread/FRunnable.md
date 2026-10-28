@@ -3,9 +3,9 @@
 ```cpp
 class FQueuedThread: public FRunnable
 {
-	FEvent* DoWorkEvent = nullptr;
+	FEvent* DoWorkEvent = nullptr;// 系统的事件，线程空闲时会等待Event，直到Event触发
 	TAtomic<bool> TimeToDie { false };// 销毁的标志位，原子操作
-	IQueuedWork* volatile QueuedWork = nullptr;
+	IQueuedWork* volatile QueuedWork = nullptr;// 当前执行的work
 	class FQueuedThreadPoolBase* OwningThreadPool = nullptr;
 	FRunnableThread* Thread = nullptr;
 	
@@ -56,11 +56,15 @@ class FQueuedThread: public FRunnable
 	{  
 	    bool bDidExitOK = true;  
 	    // 设置标志位
-	    TimeToDie = true;  
-	    DoWorkEvent->Trigger();    
-	    Thread->WaitForCompletion();  
+	    TimeToDie = true; 
+	    // 唤醒线程，防止线程一直开在Run方法中无法退出
+	    DoWorkEvent->Trigger();
+	    // 等待，直到线程退出
+	    Thread->WaitForCompletion();
+	    // 归还事件  
 	    FPlatformProcess::ReturnSynchEventToPool(DoWorkEvent);  
 	    DoWorkEvent = nullptr;  
+	    // 释放包装的线程指针
 	    delete Thread;  
 	    return bDidExitOK;  
 	}

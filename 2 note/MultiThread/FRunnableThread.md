@@ -89,11 +89,11 @@ class FRunnableThreadWin  : public FRunnableThread
 		// 如果Runnable初始化成功
 		if (Runnable->Init() == true)
 		{
-			// 触发同步Event，告诉那边不用等待了
+			// 触发同步Event，告诉CreateInternal那边不用等待了
 			ThreadInitSyncEvent->Trigger();
 			// 将当前线程登记到当前线程的 TLS 中
 			SetTls();
-			// 执行Runnable干活类的方法
+			// 执行Runnable干活类的方法。
 			ExitCode = Runnable->Run();
 			Runnable->Exit();
 			// 清空刚才登记的指针
