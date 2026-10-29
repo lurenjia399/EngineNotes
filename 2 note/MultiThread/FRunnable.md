@@ -35,12 +35,10 @@ class FQueuedThread: public FRunnable
 			IQueuedWork* LocalQueuedWork = QueuedWork;
 			QueuedWork = nullptr;
 			FPlatformMisc::MemoryBarrier();
-			
+			// 如果Work存在，就调用DoThreadedWork方法执行，执行完后从池中取下一个Work循环执行
 			while (LocalQueuedWork)
 			{
-				// Tell the object to do the work
 				LocalQueuedWork->DoThreadedWork();
-				// Let the object cleanup before we remove our ref to it
 				LocalQueuedWork = OwningThreadPool->ReturnToPoolOrGetNextJob(this);
 			}
 		}
