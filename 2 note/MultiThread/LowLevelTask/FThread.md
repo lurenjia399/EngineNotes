@@ -15,13 +15,17 @@ FThread::FThread(
 		MoveTemp(SingleThreadTickFunction), 
 		StackSize, ThreadPriority, ThreadAffinity, IsForkable))
 {
-	// 在构造函数中初始化Impl，Impl是继承FRunable的Share智能指针
+	// 
+	/*
+	1 在构造函数中初始化Impl，Impl是继承FRunable的Share智能指针
+	2 Impl会持有FRunableThread，和ThreadFunction
+	*/
 	Impl->Initialize(Impl);
 }
 
 void FThread::Join()
 {
-	// zhix
+	// 一直等待，直到Impl执行完成
 	Impl->Join();
 	Impl.Reset();
 }

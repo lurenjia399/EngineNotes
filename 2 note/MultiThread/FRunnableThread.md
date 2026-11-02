@@ -134,6 +134,7 @@ class FRunnableThreadWin  : public FRunnableThread
 		return bDidExitOK;
 	}
 	
+	// 一直等待Thread，直到Thread执行完毕
 	virtual void WaitForCompletion() override
 	{
 		WaitForSingleObject(Thread, INFINITE);
