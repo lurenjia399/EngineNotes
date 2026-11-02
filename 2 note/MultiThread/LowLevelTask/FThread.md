@@ -9,6 +9,11 @@ FThread::FThread(
 	FThreadAffinity ThreadAffinity,
 	EForkable IsForkable
 )
+	/*
+	1 在构造函数中初始化Impl，Impl是继承FRunable的Share智能指针
+	2 Impl会持有FRunableThread，和ThreadFunction
+	3 Impl的构造函数中就会创建FRunableThread，然后执行Impl的Run方法执行ThreadFunction了
+	*/
 	: Impl(MakeShared<FThreadImpl, ESPMode::ThreadSafe>(
 		ThreadName, 
 		MoveTemp(ThreadFunction), 
@@ -16,10 +21,7 @@ FThread::FThread(
 		StackSize, ThreadPriority, ThreadAffinity, IsForkable))
 {
 	// 
-	/*
-	1 在构造函数中初始化Impl，Impl是继承FRunable的Share智能指针
-	2 Impl会持有FRunableThread，和ThreadFunction
-	*/
+	
 	Impl->Initialize(Impl);
 }
 
