@@ -1,8 +1,43 @@
 # 基本概念
-1 CAS
-2 ABA
-3 TLS
+## 1 CAS
+## 2 ABA
+## 3 TLS
+## 4 内存顺序
 
+1 memory_order_relaxed ：只关心原子变量本身，保证变量更新不会互相覆盖，但不能利用它证明“其他数据已经准备好”。
+2 memory_order_release：
+```cpp
+// 线程 A
+Data = 123;
+Ready.store(true, std::memory_order_release);
+```
+发布此前写好的数据。把Ready射程true的时候，将此前对Data的写入一起发布出去。其他线程必须通过memory_order_acquire来接受这次发布。
+3 memory_order_acquire：
+```cpp
+// 线程 B
+if (Ready.load(std::memory_order_acquire))
+{
+    Use(Data);
+}
+```
+接收这次发布，如果if判断通过了，就证明Dada的值时123了。因为通过release和acquire建立同步关系。
+4 memory_order_acq_rel：
+```cpp
+State.exchange(NewState, std::memory_order_acq_rel);
+```
+用于同时读取旧值、写入新值的原子操作。用于比较交换等操作，读取值时会acquire，写入新值时会release。
+5 memory_order_seq_cst：
+```cpp
+// 线程 A
+X.store(1, std::memory_order_seq_cst);
+int a = Y.load(std::memory_order_seq_cst);
+
+// 线程 B
+Y.store(1, std::memory_order_seq_cst);
+int b = X.load(std::memory_order_seq_cst);
+```
+即满足acquire和release的机制，还会处在一个统一的全局顺序中。这里a== 0 && b== 0 是不可能的，如果是relaxed类型的就可能出现a和b都等于0的情况
+6 memory_order_consume：根本没用
 
 # 2 TLockFreeAllocOnceIndexedAllocator
 ```cpp
@@ -124,6 +159,27 @@ static LockFreeLinkAllocator_TLSCache& GetLockFreeAllocator()
 这个类就是一个LockFree栈的基类。因为本身LockFreeList也要实现一个栈，LockFreeLickAllocator_TLSCache回收池也是一个栈，UE为了复用代码，把公共部分抽到了FLockFreePointerListLIFORoot中
 # 5 FLockFreePointerListLIFOBase
 FLockFreePointerListLIFOBase 是由 FLockFreePointerListLIFORoot组成的
+
+# atomic
+```cpp
+struct atomic : _Choose_atomic_base_t<_Ty> {
+{
+	/*
+	1 写入值，第二个参数是固定内存顺序
+	2   memory_order_relaxed//最普通的，修改值时保证是原子操作，只关心原子变量本身
+		memory_order_consume
+		memory_order_acquire//按顺序读取，能保证原子变量之前的写入操作都能读到
+		memory_order_release//按照顺序写入，与memory_order_acquire搭配使用
+		memory_order_acq_rel
+		memory_order_seq_cst
+	*/
+	void store(const _Ty _Value, const memory_order _Order) volatile noexcept {
+        static_assert(_Deprecate_non_lock_free_volatile<_Ty>, "Never fails");
+        const_cast<atomic*>(this)->_Base::store(_Value, _Order);
+    }
+}
+
+```
 
 
 # 
