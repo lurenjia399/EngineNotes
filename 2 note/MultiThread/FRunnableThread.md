@@ -133,5 +133,10 @@ class FRunnableThreadWin  : public FRunnableThread
 		Thread = NULL;
 		return bDidExitOK;
 	}
+	
+	virtual void WaitForCompletion() override
+	{
+		WaitForSingleObject(Thread, INFINITE);
+	}
 }
 ```
