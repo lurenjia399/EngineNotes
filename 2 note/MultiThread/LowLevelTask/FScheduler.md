@@ -61,9 +61,9 @@ class TLocalQueue
 	// 
 	/*
 	1 二维数组的任务队列。每个任务优先级都对应一个TWorkStealingQueueBase2
-	2 TWorkStealingQueueBase2是由头，尾双指针和一个数组组成
+	2 TWorkStealingQueueBase2是由头指针，尾指针（原子变量）和一个数组（原子变量）组成
 	3 TWorkStealingQueueBase2会有三个方法，Put,Get,Steal
-	4 Put方法就是添加的方法，往数组里添加一个新的元素，然后头指针往后移动。
+	4 Put方法就是添加的方法，往数组里添加一个新的元素，然后头指针往后移动。不是线程安全的方法，因为移动的是头指针，不是原子变量
 	5 Get方法就是获取元素的方法，头指针往前移动
 	6 Steal方法也是获取元素的方法，但是它只获取尾指针的元素。
 	7 
