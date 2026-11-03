@@ -62,7 +62,10 @@ class TLocalQueue
 	/*
 	1 二维数组的任务队列。每个任务优先级都对应一个TWorkStealingQueueBase2
 	2 TWorkStealingQueueBase2是由头，尾双指针和一个数组组成
-	3 
+	3 TWorkStealingQueueBase2会有三个方法，Put,Get,Steal
+	4 Put方法就是添加的方法，往数组里添加一个新的元素，然后头指针往后移动
+	5 Get方法就是获取元素的方法，头指针往前移动
+	6 Steal方法就是
 	*/
 	FLocalQueueType            LocalQueues[uint32(ETaskPriority::Count)];
 	DequeueHazard              DequeueHazards[uint32(ETaskPriority::Count)];
