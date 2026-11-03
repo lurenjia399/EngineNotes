@@ -52,3 +52,4 @@ private:
 	
 }
 ```
+TLocalQueueRegistry 类似于一个全局的任务管理，里面会有一个LocalQueue的数组，这个数组用来存储所有的LocalQueue。
