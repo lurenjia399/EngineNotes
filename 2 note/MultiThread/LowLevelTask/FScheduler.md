@@ -65,11 +65,11 @@ class TLocalQueue
 	3 TWorkStealingQueueBase2会有三个方法，Put,Get,Steal
 	4 Put方法就是添加的方法，往数组里添加一个新的元素，然后头索引往后移动。不是线程安全的方法，因为移动的是头索引，不是原子变量。
 	5 Get方法就是获取元素的方法，头索引往前移动。
-		6 Steal方法也是获取元素的方法，但是它只获取尾索引的元素。这是线程安全的方法，通过acquire来获取尾指针指向的元素。因为和Get方法可能获取同一个元素，这里用CAS的机制来处理。
-	7 
+	6 Steal方法也是获取元素的方法，但是它只获取尾索引的元素。这是线程安全的方法，通过acquire来获取尾指针指向的元素。因为和Get方法可能获取同一个元素，这里用CAS的方式来处理，用到了memory_order_acq_rel顺序操作，读取时acquire，写入时release。
 	*/
 	FLocalQueueType            LocalQueues[uint32(ETaskPriority::Count)];
 	DequeueHazard              DequeueHazards[uint32(ETaskPriority::Count)];
+	// 这个就是LocalQueueRegistry全局管理，每个LocalQueue都会引用
 	TLocalQueueRegistry*       Registry;
 	uint32                     CachedRandomIndex = InvalidIndex;
 	uint32                     CachedPriorityIndex = 0;
