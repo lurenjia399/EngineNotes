@@ -58,7 +58,6 @@ TLocalQueueRegistry 类似于一个全局的任务管理，里面会有一个Loc
 ```cpp
 class TLocalQueue
 {
-	// 
 	/*
 	1 二维数组的任务队列。每个任务优先级都对应一个TWorkStealingQueueBase2
 	2 TWorkStealingQueueBase2是由头索引，尾索引（原子变量）和一个数组（原子变量）组成
@@ -71,8 +70,35 @@ class TLocalQueue
 	DequeueHazard              DequeueHazards[uint32(ETaskPriority::Count)];
 	// 这个就是LocalQueueRegistry全局管理，每个LocalQueue都会引用
 	TLocalQueueRegistry*       Registry;
+	// 在偷取Registry任务的时候，随机偷取的是哪个LocalQueue上的任务
 	uint32                     CachedRandomIndex = InvalidIndex;
+	// 在偷取Registry任务的时候，偷取的是哪个优先级的任务
 	uint32                     CachedPriorityIndex = 0;
+	// 前台线程还是后台线程。前台和后台只是名称不同，前台线程的任务优先级高于后台线程，两者都是工作线程
 	ELocalQueueType            QueueType;
+	
+	// 构造函数，参数就是Registry全局管理和Type（前台还是后台）
+	TLocalQueue(TLocalQueueRegistry& InRegistry, ELocalQueueType InQueueType) 
+		: Registry(&InRegistry), QueueType(InQueueType)
+	{
+		// 把自己添加到Registry全局管理中
+		Registry->AddLocalQueue(this);
+		
+		// 遍历任务优先级，将Registry全局管理中的溢出队列上的危险指针，存到自己身上
+		for (int32 PriorityIndex = 0; PriorityIndex < int32(ETaskPriority::Count);
+			 ++PriorityIndex)
+		{
+			DequeueHazards[PriorityIndex] = 
+				Registry->OverflowQueues[PriorityIndex].getHeadHazard();
+		}
+	}
+	// 添加任务的方法，如果LocalQueue满了，就会放到Registry全局管理的溢出队列上
+	void Enqueue(FTask* Item, uint32 PriorityIndex)
+	{
+		if (!LocalQueues[PriorityIndex].Put(Item))
+		{
+			Registry->OverflowQueues[PriorityIndex].enqueue(Item);
+		}
+	}
 }
 ```
