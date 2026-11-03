@@ -58,7 +58,12 @@ TLocalQueueRegistry 类似于一个全局的任务管理，里面会有一个Loc
 ```cpp
 class TLocalQueue
 {
-	// 二维数组的任务队列，每个任务优先级都对应一个数组
+	// 
+	/*
+	1 二维数组的任务队列。每个任务优先级都对应一个TWorkStealingQueueBase2
+	2 TWorkStealingQueueBase2是由头，尾双指针和一个数组组成
+	3 
+	*/
 	FLocalQueueType            LocalQueues[uint32(ETaskPriority::Count)];
 	DequeueHazard              DequeueHazards[uint32(ETaskPriority::Count)];
 	TLocalQueueRegistry*       Registry;
