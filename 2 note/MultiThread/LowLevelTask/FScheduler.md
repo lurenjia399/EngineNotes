@@ -56,5 +56,14 @@ TLocalQueueRegistry 类似于一个全局的任务管理，里面会有一个Loc
 
 # TLocalQueue
 ```cpp
-
+class TLocalQueue
+{
+	// 二维数组的任务队列，每个任务优先级都对应一个数组
+	FLocalQueueType            LocalQueues[uint32(ETaskPriority::Count)];
+	DequeueHazard              DequeueHazards[uint32(ETaskPriority::Count)];
+	TLocalQueueRegistry*       Registry;
+	uint32                     CachedRandomIndex = InvalidIndex;
+	uint32                     CachedPriorityIndex = 0;
+	ELocalQueueType            QueueType;
+}
 ```
