@@ -92,13 +92,26 @@ class TLocalQueue
 				Registry->OverflowQueues[PriorityIndex].getHeadHazard();
 		}
 	}
-	// 添加任务的方法，如果LocalQueue满了，就会放到Registry全局管理的溢出队列上
+	// 添加任务的方法，如果LocalQueue满了，就会放到Registry全局管理的溢出队列上。不是线程安全的只能自己线程添加
 	void Enqueue(FTask* Item, uint32 PriorityIndex)
 	{
 		if (!LocalQueues[PriorityIndex].Put(Item))
 		{
 			Registry->OverflowQueues[PriorityIndex].enqueue(Item);
 		}
+	}
+	// 偷取任务，线程安全的。会按优先级顺序偷，直到偷到为止，直接调用LocalQueue的Steal方法。
+	FTask* StealLocal(bool GetBackGroundTasks)
+	{
+		for (int32 PriorityIndex = 0; PriorityIndex < MaxPriority; ++PriorityIndex)
+		{
+			FTask* Item;
+			if (LocalQueues[PriorityIndex].Steal(Item))
+			{
+				return Item;
+			}
+		}
+		return nullptr;
 	}
 }
 ```
