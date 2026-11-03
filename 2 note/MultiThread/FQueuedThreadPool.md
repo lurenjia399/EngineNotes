@@ -135,7 +135,7 @@ class FQueuedThreadPoolBase : public FQueuedThreadPool
 		}
 		
 		{
-			// 临界区上锁
+			// 临界区上锁。通过给线程池上锁来同步工作队列
 			FScopeLock sl(SynchQueue);
 			
 			// 如果池中没有空闲的线程，就把工作放到工作队列中
