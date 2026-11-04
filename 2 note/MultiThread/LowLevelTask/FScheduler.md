@@ -100,7 +100,7 @@ class TLocalQueue
 			Registry->OverflowQueues[PriorityIndex].enqueue(Item);
 		}
 	}
-	// 偷取任务，线程安全的。会按优先级顺序偷，直到偷到为止，直接调用LocalQueue的Steal方法。
+	// 偷取任务，线程安全的。会按优先级顺序偷，直到偷到为止，直接调用TWorkStealingQueueBase2的Steal方法。
 	FTask* StealLocal(bool GetBackGroundTasks)
 	{
 		for (int32 PriorityIndex = 0; PriorityIndex < MaxPriority; ++PriorityIndex)
