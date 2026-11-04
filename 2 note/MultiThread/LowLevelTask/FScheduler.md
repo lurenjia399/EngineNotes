@@ -100,6 +100,26 @@ class TLocalQueue
 			Registry->OverflowQueues[PriorityIndex].enqueue(Item);
 		}
 	}
+	// 取出任务的方法，如果LocalQueue满了，就会从Registry全局管理的溢出队列上取。不是线程安全的
+	FTask* Dequeue(bool GetBackGroundTasks)
+	{
+		for (int32 PriorityIndex = 0; PriorityIndex < MaxPriority; ++PriorityIndex)
+		{
+			FTask* Item;
+			if (LocalQueues[PriorityIndex].Get(Item))
+			{
+				return Item;
+			}
+
+			Item = Registry->OverflowQueues[PriorityIndex].
+				dequeue(DequeueHazards[PriorityIndex]);
+			if (Item)
+			{
+				return Item;
+			}
+		}
+		return nullptr;
+	}
 	// 偷取任务，线程安全的。会按优先级顺序偷，直到偷到为止，直接调用TWorkStealingQueueBase2的Steal方法。
 	FTask* StealLocal(bool GetBackGroundTasks)
 	{
