@@ -22,8 +22,6 @@ private:
 		// 往LocalQueues数组中添加元素。release顺序表示发布，如果其他线程通过acquire捕获了发布，则发布前的操作都能读取
 		LocalQueues[Index].store(QueueToAdd, std::memory_order_release);
 	}
-	
-	
 }
 ```
 TLocalQueueRegistry 类似于一个全局的任务管理，里面会有一个LocalQueue的数组，这个数组用来存储所有的LocalQueue。
