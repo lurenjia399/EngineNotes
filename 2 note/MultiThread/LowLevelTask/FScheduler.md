@@ -22,6 +22,60 @@ private:
 		// 往LocalQueues数组中添加元素。release顺序表示发布，如果其他线程通过acquire捕获了发布，则发布前的操作都能读取
 		LocalQueues[Index].store(QueueToAdd, std::memory_order_release);
 	}
+	// 添加任务，只能在本地线程添加，如果满了加不了了，就会添加到溢出队列上
+	void Enqueue(FTask* Item, uint32 PriorityIndex)
+	{
+		if (!LocalQueues[PriorityIndex].Put(Item))
+		{
+			Registry->OverflowQueues[PriorityIndex].enqueue(Item);
+		}
+	}
+	// 移除任务，只能在本地线程移除，如果本来就没东西了，就会从溢出队列上找一个移除
+	FTask* Dequeue(bool GetBackGroundTasks)
+	{
+		for (int32 PriorityIndex = 0; PriorityIndex < MaxPriority; ++PriorityIndex)
+		{
+			FTask* Item;
+			if (LocalQueues[PriorityIndex].Get(Item))
+			{
+				return Item;
+			}
+			Item = Registry->OverflowQueues[PriorityIndex].dequeue(
+				DequeueHazards[PriorityIndex]);
+			if (Item)
+			{
+				return Item;
+			}
+		}
+		return nullptr;
+	}
+	// 偷取任务，线程安全的，可以由其他线程偷取本地线程上的任务
+	FTask* StealLocal(bool GetBackGroundTasks)
+	{
+		for (int32 PriorityIndex = 0; PriorityIndex < MaxPriority; ++PriorityIndex)
+		{
+			FTask* Item;
+			if (LocalQueues[PriorityIndex].Steal(Item))
+			{
+				return Item;
+			}
+		}
+		return nullptr;
+	}
+	// 通过LocalQueueRegistry偷取任务，可以任意线程间偷取
+	FTask* DequeueSteal(bool GetBackGroundTasks)
+	{
+		if (CachedRandomIndex == InvalidIndex)
+		{
+			CachedRandomIndex = Rand();
+		}
+		FTask* Result = Registry->StealItem(CachedRandomIndex, CachedPriorityIndex, GetBackGroundTasks);
+		if (Result)
+		{
+			return Result;
+		}
+		return nullptr;
+	}
 }
 ```
 TLocalQueueRegistry 类似于一个全局的任务管理，里面会有一个LocalQueue的数组，这个数组用来存储所有的LocalQueue。
@@ -113,7 +167,10 @@ class TLocalQueue
 }
 ```
 
-1 
+1 FLocalQueueType 作为任务队列，其中有头指针和尾指针，头指针支持本地线程添加移除任务，而尾指针支持其他线程偷取任务。
+2 队列没有扩容机制，不会重新分配内存是定长数组，如果数组满了还要添加元素，就会放在Registry全局管理的溢出队列上，溢出队列是链表的形式实现的。
+3 因为有任务的优先级的，所以LocalQueue是一个二维数组，每个优先级都有FLocalQueueType。其中溢出队列也是支持优先级的。
+4 每个线程都会有自己的LocalQueue，每个LocalQueue会按照每个优先级都创建一个任务队列。LocalQueueRegistry也会按照每个优先级都创建一个溢出队列。
 # FScheduler
 
 ```cpp
@@ -122,6 +179,7 @@ class FScheduler final : public FSchedulerTls
 	Private::FWaitingQueue WaitingQueue[2] = { 
 		{ WorkerEvents, OversubscriptionLimitReachedEvent }, 
 		{ WorkerEvents, OversubscriptionLimitReachedEvent } };
+	// LocalQueueRegistry，LocalQueue的全局管理类，用来管理不同线程间LocalQueue
 	FSchedulerTls::FQueueRegistry QueueRegistry;
 	UE::FPlatformRecursiveMutex WorkerCreationCS;
 	UE::FPlatformRecursiveMutex WorkerThreadsCS;
