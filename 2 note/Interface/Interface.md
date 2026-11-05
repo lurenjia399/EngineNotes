@@ -1,4 +1,3 @@
-https://zhuanlan.zhihu.com/p/609360213
 
 一个接口之所以分为 `UInterface`（U 前缀）和 `IInterface`（I 前缀）两个类，是因为它们承担了**完全不同的职责**：**`UInterface` 负责接入引擎的反射系统，而 `IInterface` 负责提供真正的功能接口**。这种巧妙的设计是为了在 C++ 单一继承的限制下，让接口也能获得 UObject 体系的强大能力。
 
