@@ -34,6 +34,10 @@ class FScheduler final : public FSchedulerTls
 class TLocalQueueRegistry
 {
 private:
+	/*
+	1 溢出队列，是以链表的形式实现的
+	2 每个LocalQueue是定长数组，如果LocalQueue满了，依然要存新的就会放在溢出队列上
+	*/
 	FOverflowQueueType        OverflowQueues[uint32(ETaskPriority::Count)];
 	// MaxLocalQueues定长的数组，每个元素都是原子变量，是LocalQueue的指针
 	std::atomic<TLocalQueue*> LocalQueues[MaxLocalQueues] { nullptr };
