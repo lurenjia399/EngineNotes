@@ -67,6 +67,11 @@ class TLocalQueue
 	6 Steal方法也是获取元素的方法，但是它只获取尾索引的元素。这是线程安全的方法，通过acquire来获取尾指针指向的元素。因为和Get方法可能获取同一个元素，这里用CAS的方式来处理，用到了memory_order_acq_rel顺序操作，读取时acquire，写入时release。
 	*/
 	FLocalQueueType            LocalQueues[uint32(ETaskPriority::Count)];
+	/*
+	1 危险指针的队列。每个任务优先级都有对应一个危险指针。在初始化LocalQueue的时候把Registry全局管理上的溢出队列上的危险指针赋值。
+	2 作用类似于引用计数的作用。
+	3 线程A在读取Registry上的溢出队列的元素p，但是线程B移除了队列上的元素p。为了在销毁的时候不真正的删除p，在移除时会放到FHazardPointerCollection的回收队列里，等没有使用的时候在进行回收。
+	*/
 	DequeueHazard              DequeueHazards[uint32(ETaskPriority::Count)];
 	// 这个就是LocalQueueRegistry全局管理，每个LocalQueue都会引用
 	TLocalQueueRegistry*       Registry;
