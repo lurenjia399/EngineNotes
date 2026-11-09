@@ -35,5 +35,42 @@ class FWaitingQueue
 	std::atomic<bool>              bIsShuttingDown{ false };
 	// 广播代理
 	FOversubscriptionLimitReached& OversubscriptionLimitReachedEvent;
+	
+	// 阻塞等待的方法
+	void FWaitingQueue::Park(
+		FWaitEvent* Node, // 等待Event
+		FOutOfWork& OutOfWork, // 
+		int32 SpinCycles, // 自旋的次数
+		int32 WaitCycles) // 每次自旋的时间
+	{
+		// 自旋的循环等待，如果一直是没有信号唤醒的状态，就自旋等待
+		for (int Spin = 0; Spin < SpinCycles; ++Spin)
+		{
+			if (Node->State.load(std::memory_order_relaxed) 
+				== EWaitState::NotSignaled)
+			{
+				FPlatformProcess::YieldCycles(WaitCycles);
+			}
+			else
+			{
+				return;
+			}
+		}
+		
+		Node->Event->Reset();
+		EWaitState Target = EWaitState::NotSignaled;
+		
+		// 在自旋等待结束后，通过CAS的操作把自己的状态改成Waiting，真正的等待状态
+		if (Node->State.compare_exchange_strong(Target, EWaitState::Waiting, 
+			std::memory_order_relaxed, std::memory_order_relaxed))
+		{
+		}
+		else
+		{
+			return;
+		}
+	}
+	EnterWait(Node);
 }
 ```
+
