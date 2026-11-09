@@ -69,6 +69,7 @@ class FWaitingQueue
 		{
 			return;
 		}
+		// 实际让事件等待的方法，就是阻塞线程
 		EnterWait(Node);
 	}
 	// 解除阻塞等待
@@ -77,10 +78,17 @@ class FWaitingQueue
 		int32 UnparkedCount = 0;
 		for (FWaitEvent* Next; Node; Node = Next)
 		{
-			uint64 NextNode = Node->Next.load(std::memory_order_relaxed) & StackMask;
+			// 找WaitEvent链表的下一个Event
+			uint64 NextNode = Node->Next.load(std::memory_order_relaxed) 
+				& StackMask;
 			Next = NextNode == StackMask ? nullptr : &NodesArray[(int)NextNode];
+			
+			// 解除阻塞的计数
 			UnparkedCount++;
-			if (Node->State.exchange(EWaitState::Signaled, std::memory_order_relaxed) == EWaitState::Waiting)
+			
+			// 交换
+			if (Node->State.exchange(EWaitState::Signaled, 
+				std::memory_order_relaxed) == EWaitState::Waiting)
 			{
 				// Always trace this one since signaling cost can be very expensive.
 				WAITINGQUEUE_EVENT_SCOPE_ALWAYS(FWaitingQueue_Unpark_SignalWaitingThread);
