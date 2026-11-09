@@ -69,8 +69,31 @@ class FWaitingQueue
 		{
 			return;
 		}
+		EnterWait(Node);
 	}
-	EnterWait(Node);
+	// 解除阻塞等待
+	int32 FWaitingQueue::Unpark(FWaitEvent* Node)
+	{
+		int32 UnparkedCount = 0;
+		for (FWaitEvent* Next; Node; Node = Next)
+		{
+			uint64 NextNode = Node->Next.load(std::memory_order_relaxed) & StackMask;
+			Next = NextNode == StackMask ? nullptr : &NodesArray[(int)NextNode];
+			UnparkedCount++;
+			if (Node->State.exchange(EWaitState::Signaled, std::memory_order_relaxed) == EWaitState::Waiting)
+			{
+				// Always trace this one since signaling cost can be very expensive.
+				WAITINGQUEUE_EVENT_SCOPE_ALWAYS(FWaitingQueue_Unpark_SignalWaitingThread);
+				Node->Event->Trigger();
+			}
+			else
+			{
+				WAITINGQUEUE_EVENT_SCOPE(FWaitingQueue_Unpark_SignaledSpinningThread);
+			}
+		}
+
+		return UnparkedCount;
+	}
 }
 ```
 
