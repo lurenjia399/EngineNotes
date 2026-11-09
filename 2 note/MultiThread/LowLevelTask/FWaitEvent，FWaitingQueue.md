@@ -85,21 +85,20 @@ class FWaitingQueue
 			
 			// 解除阻塞的计数
 			UnparkedCount++;
-			
-			// 交换
+			/*
+			1 直接赋值Signaled，然后拿旧值和EWaitState::Waiting比较
+			2 如果相等，说明Event已经自旋和CAS都结束了，所以需要Trigger来唤醒Event
+			3 如果不相等，旧值是NotSignaled。如果在自旋，新值Signaled就会退出自旋。如果在CAS操作中，新值Signaled也会退出CAS。
+			*/
 			if (Node->State.exchange(EWaitState::Signaled, 
 				std::memory_order_relaxed) == EWaitState::Waiting)
 			{
-				// Always trace this one since signaling cost can be very expensive.
-				WAITINGQUEUE_EVENT_SCOPE_ALWAYS(FWaitingQueue_Unpark_SignalWaitingThread);
 				Node->Event->Trigger();
 			}
 			else
 			{
-				WAITINGQUEUE_EVENT_SCOPE(FWaitingQueue_Unpark_SignaledSpinningThread);
 			}
 		}
-
 		return UnparkedCount;
 	}
 }
