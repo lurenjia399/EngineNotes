@@ -41,7 +41,7 @@ class FWaitingQueue
 		FWaitEvent* Node, // 等待Event
 		FOutOfWork& OutOfWork, // 
 		int32 SpinCycles, // 自旋的次数
-		int32 WaitCycles) // 每次自旋的时间
+		int32 WaitCycles) // 自旋的时候短暂暂停的时间
 	{
 		// 自旋的循环等待，如果一直是没有信号唤醒的状态，就自旋等待
 		for (int Spin = 0; Spin < SpinCycles; ++Spin)
@@ -49,6 +49,7 @@ class FWaitingQueue
 			if (Node->State.load(std::memory_order_relaxed) 
 				== EWaitState::NotSignaled)
 			{
+				// 短暂暂停的时间
 				FPlatformProcess::YieldCycles(WaitCycles);
 			}
 			else
