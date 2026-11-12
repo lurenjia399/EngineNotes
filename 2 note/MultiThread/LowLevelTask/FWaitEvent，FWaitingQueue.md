@@ -131,9 +131,9 @@ class FWaitingQueue
 					- WaiterInc 
 					// 增加State改变次数，因为改变了就要增加
 					+ EpochInc) 
-					// 添加Node在NodesArray中的索引
+					// 添加Node在NodesArray中的索引，表示把Node放到等待队列的第一个
 				    | (Node - &NodesArray[0]);
-				// 
+				// 把等待队列的第一个挪到Node的下一个
 				Node->Next.store(LocalState & StackMask, 
 					std::memory_order_relaxed);
 			}
@@ -141,7 +141,7 @@ class FWaitingQueue
 			if (State.compare_exchange_weak(LocalState, NewState, 
 				std::memory_order_acq_rel, std::memory_order_relaxed))
 			{
-				// 新状态后，
+				// 新状态后，如果依然没有唤醒信号，就执行Park了
 				if ((LocalState & SignalMask) == 0)
 				{
 				}
