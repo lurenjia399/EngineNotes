@@ -25,9 +25,10 @@ class FWaitingQueue
 	std::atomic<uint32>            Oversubscription{ 0 };
 	/*
 	状态位：
-	1 [0，14] 表示
-	2 [15, 28]位 表示当前有多少个线程PrepareWait
-	3 
+	1 [0, 14]位，StackMask表示
+	2 [15, 28]位 WaiterMask表示当前有多少个线程PrepareWait
+	3 [29, 42]位，SignalMask表示当前有多少唤醒信号
+	4 [43, 56]位，
 	*/
 	std::atomic<uint64>            State;
 	std::atomic<uint64>            StandbyState;
