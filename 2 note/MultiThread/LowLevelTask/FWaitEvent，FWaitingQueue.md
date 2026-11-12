@@ -25,10 +25,10 @@ class FWaitingQueue
 	std::atomic<uint32>            Oversubscription{ 0 };
 	/*
 	状态位：
-	1 [0, 14]位，StackMask表示
+	1 [1, 14]位，StackMask表示
 	2 [15, 28]位 WaiterMask表示当前有多少个线程PrepareWait
 	3 [29, 42]位，SignalMask表示当前有多少唤醒信号
-	4 [43, 56]位，
+	4 [43, 64]位，EpochBits
 	*/
 	std::atomic<uint64>            State;
 	std::atomic<uint64>            StandbyState;
@@ -116,10 +116,18 @@ class FWaitingQueue
 		{
 			// 进入NotSignaled状态，就是自旋等待的状态
 			Node->State.store(EWaitState::NotSignaled, std::memory_order_relaxed);
-			// 
+			// 如果唤醒信号不为0，说明被唤醒了。就需要减少等待计数，减少新号计数，增加状态修改次数。更新新状态
 			if ((LocalState & SignalMask) != 0)
 			{
 				NewState = LocalState - WaiterInc - SignalInc + EpochInc;
+			}
+			// 如果唤醒新号为0，说明依然没有唤醒。
+			else
+			{
+				NewState = ((LocalState & (WaiterMask | EpochMask)) - 
+					WaiterInc + EpochInc) | (Node - &NodesArray[0]);
+				Node->Next.store(LocalState & StackMask, 
+					std::memory_order_relaxed);
 			}
 		}
 		// 阻塞等待，里面会自旋一下，然后真正开始阻塞
