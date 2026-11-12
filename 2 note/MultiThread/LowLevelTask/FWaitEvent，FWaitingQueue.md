@@ -25,7 +25,7 @@ class FWaitingQueue
 	std::atomic<uint32>            Oversubscription{ 0 };
 	/*
 	状态位：
-	1 [1, 14]位，StackMask表示，等待栈栈顶节点在 `NodesArray` 中的索引
+	1 [1, 14]位，StackMask表示等待栈栈顶节点在 `NodesArray` 中的索引
 	2 [15, 28]位 WaiterMask表示当前有多少个线程PrepareWait
 	3 [29, 42]位，SignalMask表示当前有多少唤醒信号
 	4 [43, 64]位，Epoch表示State改变的次数每次改变都会增加，用于ABA问题
@@ -131,8 +131,9 @@ class FWaitingQueue
 					- WaiterInc 
 					// 增加State改变次数，因为改变了就要增加
 					+ EpochInc) 
-					// 
+					// 添加Node在NodesArray中的索引
 				    | (Node - &NodesArray[0]);
+				// 
 				Node->Next.store(LocalState & StackMask, 
 					std::memory_order_relaxed);
 			}
