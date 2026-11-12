@@ -25,10 +25,10 @@ class FWaitingQueue
 	std::atomic<uint32>            Oversubscription{ 0 };
 	/*
 	状态位：
-	1 [1, 14]位，StackMask表示
+	1 [1, 14]位，StackMask表示，等待栈栈顶节点在 `NodesArray` 中的索引
 	2 [15, 28]位 WaiterMask表示当前有多少个线程PrepareWait
 	3 [29, 42]位，SignalMask表示当前有多少唤醒信号
-	4 [43, 64]位，EpochBits
+	4 [43, 64]位，Epoch表示State改变的次数每次改变都会增加，用于ABA问题
 	*/
 	std::atomic<uint64>            State;
 	std::atomic<uint64>            StandbyState;
@@ -124,8 +124,15 @@ class FWaitingQueue
 			// 如果唤醒新号为0，说明依然没有唤醒。
 			else
 			{
-				NewState = ((LocalState & (WaiterMask | EpochMask)) - 
-					WaiterInc + EpochInc) | (Node - &NodesArray[0]);
+				NewState = 
+					// 只保留准备等待计数和State改变次数
+					((LocalState & (WaiterMask | EpochMask))
+					// 减少等待计数，因为要进入真正等待了
+					- WaiterInc 
+					// 增加State改变次数，因为改变了就要增加
+					+ EpochInc) 
+					// 
+				    | (Node - &NodesArray[0]);
 				Node->Next.store(LocalState & StackMask, 
 					std::memory_order_relaxed);
 			}
