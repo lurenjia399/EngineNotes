@@ -99,9 +99,7 @@ class FWaitingQueue
 			{
 				Node->Event->Trigger();
 			}
-			else
-			{
-			}
+			else{}
 		}
 		return UnparkedCount;
 	}
@@ -143,12 +141,10 @@ class FWaitingQueue
 			{
 				// 新状态后，如果依然没有唤醒信号，就执行Park了
 				if ((LocalState & SignalMask) == 0)
-				{
-				}
+				{}
+				// 新状态后，如果有唤醒信号，就不用Park了，直接返回
 				else
 				{
-					WAITINGQUEUE_EVENT_SCOPE(CommitWait_Aborted);
-					OutOfWork.Stop();
 					return true;
 				}
 			}
@@ -156,6 +152,17 @@ class FWaitingQueue
 		// 阻塞等待，里面会自旋一下，然后真正开始阻塞
 		Park(Node, OutOfWork, SpinCycles, WaitCycles);
 		return true;
+	}
+	
+	// 和Commit基本一致，对称着看
+	bool FWaitingQueue::CancelWait(FWaitEvent* Node)
+	{
+		...
+	}
+	// 
+	int32 FWaitingQueue::NotifyInternal(int32 Count)
+	{
+		
 	}
 }
 ```
