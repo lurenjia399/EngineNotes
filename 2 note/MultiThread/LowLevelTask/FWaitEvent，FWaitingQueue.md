@@ -26,6 +26,7 @@ class FWaitingQueue
 	/*
 	状态位：
 	1 [0，14] 表示
+	2 [15, 28] 表示当前有多少个线程PrepareWait
 	*/
 	std::atomic<uint64>            State;
 	std::atomic<uint64>            StandbyState;
@@ -101,6 +102,11 @@ class FWaitingQueue
 			}
 		}
 		return UnparkedCount;
+	}
+	// 当前线程没有工作时，会首先执行，就是将计数器+1
+	void FWaitingQueue::PrepareWait(FWaitEvent* Node)
+	{
+		State.fetch_add(WaiterInc, std::memory_order_relaxed);
 	}
 }
 ```
