@@ -129,6 +129,21 @@ class FWaitingQueue
 				Node->Next.store(LocalState & StackMask, 
 					std::memory_order_relaxed);
 			}
+			// 比较交换的操作，如果比较没有改变，就会设置新状态
+			if (State.compare_exchange_weak(LocalState, NewState, 
+				std::memory_order_acq_rel, std::memory_order_relaxed))
+			{
+				// 新窗台
+				if ((LocalState & SignalMask) == 0)
+				{
+				}
+				else
+				{
+					WAITINGQUEUE_EVENT_SCOPE(CommitWait_Aborted);
+					OutOfWork.Stop();
+					return true;
+				}
+			}
 		}
 		// 阻塞等待，里面会自旋一下，然后真正开始阻塞
 		Park(Node, OutOfWork, SpinCycles, WaitCycles);
