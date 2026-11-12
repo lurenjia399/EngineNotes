@@ -115,6 +115,11 @@ class FWaitingQueue
 		{
 			// 进入NotSignaled状态，就是自旋等待的状态
 			Node->State.store(EWaitState::NotSignaled, std::memory_order_relaxed);
+			// 
+			if ((LocalState & SignalMask) != 0)
+			{
+				NewState = LocalState - WaiterInc - SignalInc + EpochInc;
+			}
 		}
 		// 阻塞等待，里面会自旋一下，然后真正开始阻塞
 		Park(Node, OutOfWork, SpinCycles, WaitCycles);
