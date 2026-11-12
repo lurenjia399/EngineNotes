@@ -168,7 +168,21 @@ class FWaitingQueue
 			uint64 LocalState = State.load(std::memory_order_relaxed);
 			for (;;)
 			{
-				
+				// 等待队列的第一个是0号元素，并且准备等待和唤醒数量一致，单纯增加改变计数就行
+				if ((LocalState & StackMask) == StackMask && Waiters == Signals)
+				{
+					NewState = LocalState + EpochInc;
+				}
+				else if (bNotifyAll)
+				{
+					NewState = 
+						// 当前处于准备等待的有多少个
+						(LocalState & WaiterMask) 
+						// 
+						| (Waiters << SignalShift) 
+						| StackMask 
+						| NewEpoch;
+				}
 			}
 		}
 	}
