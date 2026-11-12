@@ -168,7 +168,7 @@ class FWaitingQueue
 	{
 		...
 	}
-	// 唤醒线程，参数代表数量
+	// 唤醒线程，参数代表数量。如果已经创建的数量不够唤醒的，还会新创建线程出来
 	int32 FWaitingQueue::NotifyInternal(int32 Count)
 	{
 		...
