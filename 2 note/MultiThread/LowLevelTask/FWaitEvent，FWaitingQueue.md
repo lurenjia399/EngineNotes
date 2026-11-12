@@ -162,7 +162,15 @@ class FWaitingQueue
 	// 
 	int32 FWaitingQueue::NotifyInternal(int32 Count)
 	{
-		
+		int32 Notifications = 0;
+		while (Count > Notifications)
+		{
+			uint64 LocalState = State.load(std::memory_order_relaxed);
+			for (;;)
+			{
+				
+			}
+		}
 	}
 }
 ```
