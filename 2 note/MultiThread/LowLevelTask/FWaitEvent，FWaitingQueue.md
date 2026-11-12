@@ -105,12 +105,12 @@ class FWaitingQueue
 		}
 		return UnparkedCount;
 	}
-	// 当前线程没有工作时，会首先执行，就是将计数器+1。表示即将进入等待的线程数量+1。
+	// 设置准备等待状态。当前线程没有工作时，会首先执行，就是将计数器+1。表示即将进入等待的线程数量+1。
 	void FWaitingQueue::PrepareWait(FWaitEvent* Node)
 	{
 		State.fetch_add(WaiterInc, std::memory_order_relaxed);
 	}
-	// 当前线程没有工作时，在PrepareWait执行后的第二个循环里执行，
+	// 设置真正等待状态。当前线程没有工作时，在PrepareWait执行后的第二个循环里执行，
 	bool FWaitingQueue::CommitWait(FWaitEvent* Node, FOutOfWork& OutOfWork, int32 SpinCycles, int32 WaitCycles)
 	{
 		{
@@ -133,7 +133,7 @@ class FWaitingQueue
 			if (State.compare_exchange_weak(LocalState, NewState, 
 				std::memory_order_acq_rel, std::memory_order_relaxed))
 			{
-				// 新窗台
+				// 新状态后，
 				if ((LocalState & SignalMask) == 0)
 				{
 				}
