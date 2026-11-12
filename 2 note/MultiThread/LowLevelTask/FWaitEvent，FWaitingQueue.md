@@ -1,10 +1,19 @@
 # FWaitEvent
 
 ```cpp
+// 封装的等待Event
 struct alignas(64) FWaitEvent
 {
+	// 索引，代表等待队列上的NodesArray数组索引
 	std::atomic<uint64>     Next{ 0 };
+	// 改变次数，是一个计数器，防止ABA问题
 	uint64                  Epoch{ 0 };
+	// 等待Event的状态
+	/*
+	1 NotSignaled 表示自旋等待
+	2 Waiting 表示真正等待
+	3 Signaled 表示唤醒的
+	*/
 	std::atomic<EWaitState> State{ EWaitState::NotSignaled };
 	FEventRef               Event{ EEventMode::ManualReset };
 	bool                    bIsStandby{ false };
@@ -159,32 +168,10 @@ class FWaitingQueue
 	{
 		...
 	}
-	// 
+	// 唤醒线程，参数代表数量
 	int32 FWaitingQueue::NotifyInternal(int32 Count)
 	{
-		int32 Notifications = 0;
-		while (Count > Notifications)
-		{
-			uint64 LocalState = State.load(std::memory_order_relaxed);
-			for (;;)
-			{
-				// 等待队列的第一个是0号元素，并且准备等待和唤醒数量一致，单纯增加改变计数就行
-				if ((LocalState & StackMask) == StackMask && Waiters == Signals)
-				{
-					NewState = LocalState + EpochInc;
-				}
-				else if (bNotifyAll)
-				{
-					NewState = 
-						// 当前处于准备等待的有多少个
-						(LocalState & WaiterMask) 
-						// 
-						| (Waiters << SignalShift) 
-						| StackMask 
-						| NewEpoch;
-				}
-			}
-		}
+		...
 	}
 }
 ```
