@@ -176,3 +176,8 @@ class FWaitingQueue
 }
 ```
 
+# 总结
+1 每个线程都会绑定一个WaitEvent，用来来阻塞和唤醒线程。
+2 WaitEvent中也会记录状态，绑定的线程当前是自旋等待，阻塞还是唤醒。
+3 有一个WaitQueue来统一管理所有的WaitEvent。
+4 WaitQueue中就会有一些方法，类似于Notify来唤醒多个线程，直接通过管理的WaitEvent来执行Park来唤醒。
