@@ -11,8 +11,11 @@ class FScheduler final : public FSchedulerTls
 	FSchedulerTls::FQueueRegistry QueueRegistry;
 	UE::FPlatformRecursiveMutex WorkerCreationCS;
 	UE::FPlatformRecursiveMutex WorkerThreadsCS;
+	// 线程数组，所有创建出来的线程
 	TArray<std::atomic<FThread*>> WorkerThreads;
+	// 线程的工作队列数组，每个线程都有一个对应的LocalQueue
 	TAlignedArray<FSchedulerTls::FLocalQueueType> WorkerLocalQueues;
+	// 线程的等待Event数组，每个线程都一个FWaitEvent，用来唤醒，阻塞
 	TAlignedArray<Private::FWaitEvent> WorkerEvents;
 	TUniquePtr<FSchedulerTls::FLocalQueueType> GameThreadLocalQueue;
 	std::atomic_uint ActiveWorkers { 0 };
