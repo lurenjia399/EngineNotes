@@ -9,6 +9,7 @@ class FScheduler final : public FSchedulerTls
 		{ WorkerEvents, OversubscriptionLimitReachedEvent } };
 	// 全局的工作管理类LocalQueueRegistry，用来管理不同线程的工作队列LocalQueue
 	FSchedulerTls::FQueueRegistry QueueRegistry;
+	// 创建工作线程上的锁。在唤醒线程的时候，线程如果不够了就会创建线程，创建的时候不一定在游戏线程了，在加上创建新的线程要修改FScheduler上的变量，所以就加锁。
 	UE::FPlatformRecursiveMutex WorkerCreationCS;
 	UE::FPlatformRecursiveMutex WorkerThreadsCS;
 	// 线程数组，所有创建出来的线程
