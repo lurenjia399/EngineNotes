@@ -3,10 +3,11 @@
 ```cpp
 class FScheduler final : public FSchedulerTls
 {
+	// 等待队列数组，一个是前台线程的等待队列，一个是后台线程的等待队列
 	Private::FWaitingQueue WaitingQueue[2] = { 
 		{ WorkerEvents, OversubscriptionLimitReachedEvent }, 
 		{ WorkerEvents, OversubscriptionLimitReachedEvent } };
-	// LocalQueueRegistry，LocalQueue的全局管理类，用来管理不同线程间LocalQueue
+	// 全局的工作管理类LocalQueueRegistry，用来管理不同线程的工作队列LocalQueue
 	FSchedulerTls::FQueueRegistry QueueRegistry;
 	UE::FPlatformRecursiveMutex WorkerCreationCS;
 	UE::FPlatformRecursiveMutex WorkerThreadsCS;
