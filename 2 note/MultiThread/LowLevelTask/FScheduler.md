@@ -39,5 +39,9 @@ class FScheduler final : public FSchedulerTls
 1 游戏线程执行StartWorkers这个方法，里面就是做一些初始化的操作，比如工作队列，等待Event队列等等之类的
 2 如果开启了动态创建线程（pc是默认开的）的话，StartWorkers方法就不会创建线程，只做初始化的操作，有任务发到FScheduler结构中后，会判断线程是否够，不够就创建线程。
 3 如果没开启动态创建线程的话，就会在StartWorkers方法里创建，创建两个前台线程和一堆后台线程。
-3 
+```
+
+# FScheduler::CreateWorker
+```cpp
+1 
 ```
