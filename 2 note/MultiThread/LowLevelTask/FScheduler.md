@@ -189,15 +189,26 @@ void FScheduler::WorkerLoop(
 # FScheduler::TryLaunch
 ```cpp
 bool FScheduler::TryLaunch(
-	FTask& Task, 
-	EQueuePreference QueuePreference, 
-	bool bWakeUpWorker)
+	FTask& Task, // 尝试执行的任务
+	EQueuePreference QueuePreference, // 哪个工作队列来接收这个任务
+	bool bWakeUpWorker)// 是否可以唤醒这个工作线程
 {
+	// 改变任务的状态为Scheduler，原子操作并且是Release的
 	if(Task.TryPrepareLaunch())
 	{
 		LaunchInternal(Task, QueuePreference, bWakeUpWorker);
 		return true;
 	}
 	return false;
+}
+```
+
+```cpp
+void FScheduler::LaunchInternal(
+	FTask& Task, 
+	EQueuePreference QueuePreference, 
+	bool bWakeUpWorker)
+{
+	
 }
 ```
