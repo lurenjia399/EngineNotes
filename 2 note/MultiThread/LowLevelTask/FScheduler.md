@@ -240,6 +240,7 @@ void FScheduler::LaunchInternal(
 		{
 			QueueRegistry.Enqueue(&Task, uint32(Task.GetPriority()));
 		}
+		// 唤醒线程
 		if (bWakeUpWorker)
 		{
 			if (!WakeUpWorker(bIsBackgroundTask) && !bIsBackgroundTask)
