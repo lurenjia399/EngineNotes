@@ -18,6 +18,7 @@ class FScheduler final : public FSchedulerTls
 	TAlignedArray<FSchedulerTls::FLocalQueueType> WorkerLocalQueues;
 	// 线程的等待Event数组，每个线程都一个FWaitEvent，用来唤醒，阻塞
 	TAlignedArray<Private::FWaitEvent> WorkerEvents;
+	// 游戏线程的工作队列，在StartWorkers中赋值的
 	TUniquePtr<FSchedulerTls::FLocalQueueType> GameThreadLocalQueue;
 	// 当前Scheduler中有效的工作线程数量
 	std::atomic_uint ActiveWorkers { 0 };
