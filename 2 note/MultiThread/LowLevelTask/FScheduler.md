@@ -215,8 +215,15 @@ void FScheduler::LaunchInternal(
 	if (ActiveWorkers.load(std::memory_order_relaxed) 
 		|| TemporaryShutdown.load(std::memory_order_acquire))
 	{
-		FTlsValues& LocalTlsValues = GetTlsValuesRef();
-		FLocalQueueType* const CachedLocalQueue = LocalTlsValues.LocalQueue;
+		/*
+		1 默认是本地队列接收任务，但如果是非后台线程提交后台任务，或者是备用线程提交的任务，就要改成全局队列接收任务，就是把任务放到LocalQueueRegistry中的溢出队列里面
+		*/
+		if ((bIsBackgroundTask && !bIsBackgroundWorker) || bIsStandbyWorker)
+		{
+			QueuePreference = EQueuePreference::GlobalQueuePreference;
+		}
+		// 备用线程或者是没有本地工作队列的线程，还需要强制唤醒线程
+		bWakeUpWorker |= bIsStandbyWorker || CachedLocalQueue == nullptr;
 	}
 	// 没有工作线程了，都销毁了。直接执行
 	else
