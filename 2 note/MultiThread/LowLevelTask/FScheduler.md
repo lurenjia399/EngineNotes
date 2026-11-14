@@ -72,5 +72,18 @@ void FScheduler::WorkerMain(
 		}
 	*/
 	FTlsValues& LocalTlsValues = GetTlsValuesRef();
+	
+	// 赋值TLS中的Scheduler
+	LocalTlsValues.ActiveScheduler = this;
+	// 申请TLS缓存。TLS缓存可以理解为在堆上取了一块内存区域，如果在线程中new对象，如果满足要求就会放到这块区域中。如果没有TLS缓存，new对象就直接在堆上申请了，那样不同线程间就会竞争，就需要加锁来限制，有了TLS缓存就不用加锁也能减少竞争。
+	FMemory::SetupTLSCachesOnCurrentThread();
+	// 赋值线程TLS中的线程类型，是前台线程还是后台线程
+	LocalTlsValues.WorkerType = bPermitBackgroundWork ? 
+		FSchedulerTls::EWorkerType::Background 
+		: FSchedulerTls::EWorkerType::Foreground;
+	// 赋值线程TLS，线程是否是备用线程
+	LocalTlsValues.SetStandbyWorker(WorkerEvent->bIsStandby);
+	// 赋值线程TLS，线程的工作队列
+	LocalTlsValues.LocalQueue = WorkerLocalQueue;
 }
 ```
