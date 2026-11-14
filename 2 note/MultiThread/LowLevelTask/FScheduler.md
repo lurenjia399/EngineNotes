@@ -19,10 +19,12 @@ class FScheduler final : public FSchedulerTls
 	// 线程的等待Event数组，每个线程都一个FWaitEvent，用来唤醒，阻塞
 	TAlignedArray<Private::FWaitEvent> WorkerEvents;
 	TUniquePtr<FSchedulerTls::FLocalQueueType> GameThreadLocalQueue;
+	// 当前Scheduler中有效的工作线程数量
 	std::atomic_uint ActiveWorkers { 0 };
 	std::atomic_uint NextWorkerId { 0 };
 	std::atomic<int32> ForegroundCreationIndex{ 0 };
 	std::atomic<int32> BackgroundCreationIndex{ 0 };
+	// 线程亲和性
 	uint64 WorkerAffinity = 0;
 	uint64 BackgroundAffinity = 0;
 	// 前台Worker的线程优先级，前台Worker和后台Worker都是工作线程，只有两个线程是前台Worker。区分开的目的就是防止所有的Worker都被后台任务占用。
@@ -119,7 +121,6 @@ void FScheduler::WorkerLoop(
 	while (true)
 	{
 		bool bExecutedSomething = false;
-		//
 		/*
 		1 从队列中找任务，然后执行
 		2 首先从GameThreadLocalQueue队列中StealLocal偷取任务，有任务就执行
@@ -157,8 +158,10 @@ void FScheduler::WorkerLoop(
 		}
 		
 		/*
-		1 如果这一轮循环没有执行过任务
-		2 如果线程没有进入准备等待的状态里，
+		1 如果这一轮循环有执行过任务就返回，如果没有执行过任务才处理
+		2 如果这一轮循环线程没有进入准备等待的状态里，就进入准备等待状态
+		3 如果这一轮循环线程在准备等待状态里，就进入等待状态，等待状态会调用Park方法，里面自旋等待一会，然后真正阻塞线程
+		4 当线程被唤醒后，重置bPreparingWait标志位
 		*/
 		if (bExecutedSomething == false)
 		{
@@ -170,10 +173,15 @@ void FScheduler::WorkerLoop(
 			}
 			else if (WaitingQueue[bPermitBackgroundWork].CommitWait(WorkerEvent, OutOfWork, WorkerSpinCycles, WaitCycles))
 			{
-				// Only reset this when the commit succeeded, otherwise we're backing off the commit and looking at the queue again
 				bPreparingWait = false;
 			}
 		}
 	}
 }
 ```
+1 WorkerLoop方法就是线程工作的主体
+2 首先进入找任务死循环中，从GameThreadLocalQueue队列中偷取任务，如果有就执行
+3 如果GameThreadLocalQueue队列中没有任务，就获取自己工作队列的任务，如果有就执行
+4 如果自己工作队列中也没有任务，就偷取其他线程工作队列中的任务，如果有就执行
+5 如果没有任务执行才会退出找任务死循环，退出找任务死循环后，判断线程是否有效，无效的话直接退出线程循环了，销毁线程
+6 没任务会进入准备等待状态，下一次循环依然没任务就会从准备等待进入等待状态，等待状态就会执行park方法了，里面会自旋等待一会，然后执行阻塞线程的方法
