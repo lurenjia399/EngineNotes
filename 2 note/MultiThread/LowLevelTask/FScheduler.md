@@ -224,6 +224,44 @@ void FScheduler::LaunchInternal(
 		}
 		// 备用线程或者是没有本地工作队列的线程，还需要强制唤醒线程
 		bWakeUpWorker |= bIsStandbyWorker || CachedLocalQueue == nullptr;
+		// 如果是游戏线程，任务必须放到游戏线程的工作队列中，并且必须唤醒其他线程，来让其他线程来执行游戏线程工作队列中的任务
+		if (CachedLocalQueue && CachedLocalQueue == GameThreadLocalQueue.Get())
+		{
+			QueuePreference = EQueuePreference::LocalQueuePreference;
+			bWakeUpWorker = true;
+		}
+		// 把任务塞进队列中的方法，按照判断是塞进本地队列还是全局队列
+		if (CachedLocalQueue 
+			&& QueuePreference != EQueuePreference::GlobalQueuePreference)
+		{
+			CachedLocalQueue->Enqueue(&Task, uint32(Task.GetPriority()));
+		}
+		else
+		{
+			QueueRegistry.Enqueue(&Task, uint32(Task.GetPriority()));
+		}
+		if (bWakeUpWorker)
+		{
+			const bool bExternalThread = LocalTlsValues.ActiveScheduler != this 
+				|| LocalTlsValues.WorkerType == EWorkerType::None;
+			if (bExternalThread)
+			{
+				LocalTlsValues.bPendingWakeUp.store(true, MemoryOrder);
+				if (TemporaryShutdown.load(std::memory_order_acquire))
+				{
+					LocalTlsValues.bPendingWakeUp.store(false, MemoryOrder);
+					return;
+				}
+			}
+			if (!WakeUpWorker(bIsBackgroundTask) && !bIsBackgroundTask)
+			{
+				WakeUpWorker(true);
+			}
+			if (bExternalThread)
+			{
+				LocalTlsValues.bPendingWakeUp.store(false, MemoryOrder);
+			}
+		}
 	}
 	// 没有工作线程了，都销毁了。直接执行
 	else
