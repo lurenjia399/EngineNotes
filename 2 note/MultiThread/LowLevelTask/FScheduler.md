@@ -106,3 +106,32 @@ void FScheduler::WorkerMain(
 ```
 1 WorkerMain就是线程执行的主方法，里面会填充TLS的数据，并申请TLS缓存。
 2 主方法中会执行WorkerLoop的死循环，如果有工作就唤醒，没工作就阻塞，只有StopWorker才会退出死循环，结束这个线程
+
+# FScheduler::WorkerLoop
+```cpp
+void FScheduler::WorkerLoop(
+	Private::FWaitEvent* WorkerEvent, 
+	FSchedulerTls::FLocalQueueType* WorkerLocalQueue, 
+	uint32 WaitCycles, 
+	bool bPermitBackgroundWork)
+{
+	Private::FOutOfWork OutOfWork;
+	while (true)
+	{
+		bool bExecutedSomething = false;
+		while (TryExecuteTaskFrom<FSchedulerTls::FLocalQueueType, 
+				&FSchedulerTls::FLocalQueueType::StealLocal, false>(WorkerEvent, 
+					GameThreadLocalQueue.Get(), OutOfWork, bPermitBackgroundWork)
+			|| TryExecuteTaskFrom<FSchedulerTls::FLocalQueueType, 
+				&FSchedulerTls::FLocalQueueType::Dequeue, false>(WorkerEvent, 
+					WorkerLocalQueue, OutOfWork, bPermitBackgroundWork)
+			|| TryExecuteTaskFrom<FSchedulerTls::FLocalQueueType, 
+				&FSchedulerTls::FLocalQueueType::DequeueSteal, false>(WorkerEvent,
+					 WorkerLocalQueue, OutOfWork, bPermitBackgroundWork))
+		{
+			bPreparingWait = false;
+			bExecutedSomething = true;
+		}
+	}
+}
+```
