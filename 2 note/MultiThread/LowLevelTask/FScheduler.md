@@ -62,18 +62,18 @@ void FScheduler::WorkerMain(
 	/*
 	1 拿到当前线程的TLS
 	2 struct FTlsValues : public TIntrusiveLinkedList<FTlsValues>
-		{
-			// 当前线程为哪个Scheduler工作
-			FSchedulerTls* ActiveScheduler = nullptr;
-			// 缓存线程的工作队列指针
-			FLocalQueueType* LocalQueue = nullptr;
-			// 线程的类型，前台线程还是后台线程
-			EWorkerType WorkerType = EWorkerType::None;
-			// 是否正在唤醒线程
-			std::atomic<bool> bPendingWakeUp = false;
-			// 是否是备用线程
-			bool        bIsStandbyWorker = false;
-		}
+	{
+		// 当前线程为哪个Scheduler工作。游戏线程的Tls这个值是nullptr
+		FSchedulerTls* ActiveScheduler = nullptr;
+		// 缓存线程的工作队列指针。游戏线程的Tls为GameThreadLocalQueue.Get()
+		FLocalQueueType* LocalQueue = nullptr;
+		// 线程的类型，前台线程还是后台线程。游戏线程的Tls为None
+		EWorkerType WorkerType = EWorkerType::None;
+		// 是否正在唤醒线程。游戏线程的Tls在TryLaunch时可能唤醒其他线程，短暂为true
+		std::atomic<bool> bPendingWakeUp = false;
+		// 是否是备用线程。游戏线程的Tls为false
+		bool        bIsStandbyWorker = false;
+	}
 	*/
 	FTlsValues& LocalTlsValues = GetTlsValuesRef();
 	
@@ -242,24 +242,9 @@ void FScheduler::LaunchInternal(
 		}
 		if (bWakeUpWorker)
 		{
-			const bool bExternalThread = LocalTlsValues.ActiveScheduler != this 
-				|| LocalTlsValues.WorkerType == EWorkerType::None;
-			if (bExternalThread)
-			{
-				LocalTlsValues.bPendingWakeUp.store(true, MemoryOrder);
-				if (TemporaryShutdown.load(std::memory_order_acquire))
-				{
-					LocalTlsValues.bPendingWakeUp.store(false, MemoryOrder);
-					return;
-				}
-			}
 			if (!WakeUpWorker(bIsBackgroundTask) && !bIsBackgroundTask)
 			{
 				WakeUpWorker(true);
-			}
-			if (bExternalThread)
-			{
-				LocalTlsValues.bPendingWakeUp.store(false, MemoryOrder);
 			}
 		}
 	}
