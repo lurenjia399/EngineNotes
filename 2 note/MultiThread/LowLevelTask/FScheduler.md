@@ -85,7 +85,6 @@ void FScheduler::WorkerMain(
 	LocalTlsValues.SetStandbyWorker(WorkerEvent->bIsStandby);
 	// 赋值线程TLS，线程的工作队列
 	LocalTlsValues.LocalQueue = WorkerLocalQueue;
-	
 	// 如果是备用线程，就走StandbyLoop循环，如果是普通工作线程就走WorkerLoop
 	if (WorkerEvent->bIsStandby)
 	{
@@ -97,7 +96,7 @@ void FScheduler::WorkerMain(
 		WorkerLoop(WorkerEvent, WorkerLocalQueue, 
 			WaitCycles, bPermitBackgroundWork);
 	}
-	
+	// 在线程销毁后，WorkerLoop才会退出循环，执行到后边的方法，这里就是清除数据的操作
 	LocalTlsValues.LocalQueue = nullptr;
 	LocalTlsValues.ActiveScheduler = nullptr;
 	LocalTlsValues.SetStandbyWorker(false);
@@ -105,3 +104,5 @@ void FScheduler::WorkerMain(
 	FMemory::ClearAndDisableTLSCachesOnCurrentThread();
 }
 ```
+1 WorkerMain就是线程执行的主方法，里面会填充TLS的数据，并申请TLS缓存。
+2 主方法中会执行WorkerLoop的死循环，如果有工作就唤醒，没工作就阻塞，只有StopWorker才会退出死循环，结束这个线程
