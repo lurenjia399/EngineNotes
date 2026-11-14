@@ -214,7 +214,8 @@ void FScheduler::LaunchInternal(
 	if (ActiveWorkers.load(std::memory_order_relaxed) 
 		|| TemporaryShutdown.load(std::memory_order_acquire))
 	{
-		
+		FTlsValues& LocalTlsValues = GetTlsValuesRef();
+		FLocalQueueType* const CachedLocalQueue = LocalTlsValues.LocalQueue;
 	}
 	// 没有工作线程了，都销毁了。直接执行
 	else
