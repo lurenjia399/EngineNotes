@@ -85,5 +85,23 @@ void FScheduler::WorkerMain(
 	LocalTlsValues.SetStandbyWorker(WorkerEvent->bIsStandby);
 	// 赋值线程TLS，线程的工作队列
 	LocalTlsValues.LocalQueue = WorkerLocalQueue;
+	
+	// 如果是备用线程，就走StandbyLoop循环，如果是普通工作线程就走WorkerLoop
+	if (WorkerEvent->bIsStandby)
+	{
+		StandbyLoop(WorkerEvent, WorkerLocalQueue, 
+			WaitCycles, bPermitBackgroundWork);
+	}
+	else
+	{
+		WorkerLoop(WorkerEvent, WorkerLocalQueue, 
+			WaitCycles, bPermitBackgroundWork);
+	}
+	
+	LocalTlsValues.LocalQueue = nullptr;
+	LocalTlsValues.ActiveScheduler = nullptr;
+	LocalTlsValues.SetStandbyWorker(false);
+	LocalTlsValues.WorkerType = FSchedulerTls::EWorkerType::None;
+	FMemory::ClearAndDisableTLSCachesOnCurrentThread();
 }
 ```
