@@ -119,6 +119,15 @@ void FScheduler::WorkerLoop(
 	while (true)
 	{
 		bool bExecutedSomething = false;
+		//
+		/*
+		1 从队列中找任务，然后执行
+		2 首先从GameThreadLocalQueue队列中StealLocal偷取任务，有任务就执行
+		3 GameThreadLocalQueue里没任务就找自己的工作队列获取任务，有任务就执行
+		4 如果自己的工作队列也没有任务，就从LocalQueueRegistry中偷其他线程工作队列中的任务，有任务就执行
+		5 如果有任务，就更新bPreparingWait，bExecutedSomething标志位。
+		6 等任务执行完，就进入下一次找任务的循环中
+		*/
 		while (TryExecuteTaskFrom<FSchedulerTls::FLocalQueueType, 
 				&FSchedulerTls::FLocalQueueType::StealLocal, false>(WorkerEvent, 
 					GameThreadLocalQueue.Get(), OutOfWork, bPermitBackgroundWork)
@@ -131,6 +140,20 @@ void FScheduler::WorkerLoop(
 		{
 			bPreparingWait = false;
 			bExecutedSomething = true;
+		}
+		
+		/*
+		1 这里已经退出找任务的循环了，所以是找不到任务
+		2 如果此时ActiveWorkers原子变量为0，说明这个FScheduler中没有有效的工作线程
+		3 所以
+		*/
+		if (ActiveWorkers.load(std::memory_order_relaxed) == 0)
+		{
+			if (OutOfWork.Stop())
+			{
+				WaitingQueue[bPermitBackgroundWork].CancelWait(WorkerEvent);
+			}
+			break;
 		}
 	}
 }
