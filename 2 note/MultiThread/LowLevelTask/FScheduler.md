@@ -31,6 +31,7 @@ class FScheduler final : public FSchedulerTls
 	EThreadPriority WorkerPriority = EThreadPriority::TPri_Normal;
 	// 后台Worker的线程优先级
 	EThreadPriority BackgroundPriority = EThreadPriority::TPri_BelowNormal;
+	// RestartWorkers的时候会使用，就是在重置过程中的标志位
 	std::atomic_bool TemporaryShutdown{ false };
 	FOversubscriptionLimitReached OversubscriptionLimitReachedEvent;
 }
@@ -209,6 +210,23 @@ void FScheduler::LaunchInternal(
 	EQueuePreference QueuePreference, 
 	bool bWakeUpWorker)
 {
-	
+	// 如果有工作线程或者是在重置工作线程的过程中，都会为true
+	if (ActiveWorkers.load(std::memory_order_relaxed) 
+		|| TemporaryShutdown.load(std::memory_order_acquire))
+	{
+		
+	}
+	// 没有工作线程了，都销毁了。直接执行
+	else
+	{
+		FTask* TaskPtr = &Task;
+		while (TaskPtr)
+		{
+			if ((TaskPtr = ExecuteTask(TaskPtr)) != nullptr)
+			{
+				verifySlow(TaskPtr->TryPrepareLaunch());
+			}
+		}
+	}
 }
 ```
