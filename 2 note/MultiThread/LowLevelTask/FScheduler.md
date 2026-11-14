@@ -144,8 +144,8 @@ void FScheduler::WorkerLoop(
 		
 		/*
 		1 这里已经退出找任务的循环了，所以是找不到任务
-		2 如果此时ActiveWorkers原子变量为0，说明这个FScheduler中没有有效的工作线程
-		3 所以
+		2 如果此时ActiveWorkers原子变量为0，说明这个FScheduler执行了StopWorkers，正在关闭
+		3 所以需要撤销准备等待的标记，然后执行break，退出WorkerLoop的循环，结束线程循环
 		*/
 		if (ActiveWorkers.load(std::memory_order_relaxed) == 0)
 		{
@@ -154,6 +154,25 @@ void FScheduler::WorkerLoop(
 				WaitingQueue[bPermitBackgroundWork].CancelWait(WorkerEvent);
 			}
 			break;
+		}
+		
+		/*
+		1 如果这一轮循环没有执行过任务
+		2 如果线程没有进入准备等待的状态里，
+		*/
+		if (bExecutedSomething == false)
+		{
+			if (!bPreparingWait)
+			{
+				OutOfWork.Start();
+				WaitingQueue[bPermitBackgroundWork].PrepareWait(WorkerEvent);
+				bPreparingWait = true;
+			}
+			else if (WaitingQueue[bPermitBackgroundWork].CommitWait(WorkerEvent, OutOfWork, WorkerSpinCycles, WaitCycles))
+			{
+				// Only reset this when the commit succeeded, otherwise we're backing off the commit and looking at the queue again
+				bPreparingWait = false;
+			}
 		}
 	}
 }
