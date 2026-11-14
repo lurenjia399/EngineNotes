@@ -49,5 +49,28 @@ class FScheduler final : public FSchedulerTls
 
 # FScheduler::WorkerMain
 ```cpp
-
+void FScheduler::WorkerMain(
+	Private::FWaitEvent* WorkerEvent, // FScheduler上等待Event队列中的一个，外部传进来
+	FSchedulerTls::FLocalQueueType* WorkerLocalQueue, // FScheduler上工作队列中的一个
+	uint32 WaitCycles, // 线程自旋等待的次数
+	bool bPermitBackgroundWork) // 前台线程还是后台线程
+{
+	/*
+	1 拿到当前线程的TLS
+	2 struct FTlsValues : public TIntrusiveLinkedList<FTlsValues>
+		{
+			// 当前线程为哪个Scheduler工作
+			FSchedulerTls* ActiveScheduler = nullptr;
+			// 缓存线程的工作队列指针
+			FLocalQueueType* LocalQueue = nullptr;
+			// 线程的类型，前台线程还是后台线程
+			EWorkerType WorkerType = EWorkerType::None;
+			// 是否正在唤醒线程
+			std::atomic<bool> bPendingWakeUp = false;
+			// 是否是备用线程
+			bool        bIsStandbyWorker = false;
+		}
+	*/
+	FTlsValues& LocalTlsValues = GetTlsValuesRef();
+}
 ```
