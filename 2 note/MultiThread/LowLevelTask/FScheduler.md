@@ -43,5 +43,11 @@ class FScheduler final : public FSchedulerTls
 
 # FScheduler::CreateWorker
 ```cpp
-1 创建工作线程的方法，
+1 创建工作线程的方法，会返回TUniquePtr<FThread>
+2 线程的主循环就是WorkerMain方法
+```
+
+# FScheduler::WorkerMain
+```cpp
+
 ```
