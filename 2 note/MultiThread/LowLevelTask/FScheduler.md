@@ -188,5 +188,16 @@ void FScheduler::WorkerLoop(
 
 # FScheduler::TryLaunch
 ```cpp
-
+bool FScheduler::TryLaunch(
+	FTask& Task, 
+	EQueuePreference QueuePreference, 
+	bool bWakeUpWorker)
+{
+	if(Task.TryPrepareLaunch())
+	{
+		LaunchInternal(Task, QueuePreference, bWakeUpWorker);
+		return true;
+	}
+	return false;
+}
 ```
