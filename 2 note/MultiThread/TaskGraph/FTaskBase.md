@@ -26,15 +26,16 @@ class FTaskBase : private UE::FInheritedContextBase
 bool AddPrerequisites(FTaskBase& Prerequisite)
 {
 	uint32 PrevNumLocks = NumLocks.fetch_add(1, std::memory_order_relaxed);
-	// 把自己添加到先决Task的Subsequent数组中
+	// 把自己添加到先决Task的Subsequent数组中。线程安全的，会上锁
 	if (!Prerequisite.AddSubsequent(*this))
 	{
+		// 
 		NumLocks.fetch_sub(1, std::memory_order_relaxed);
 		return false;
 	}
 	// 增加先决Task的引用。线程安全的，原子操作
 	Prerequisite.AddRef();
-	// 把先决Task添加到数组中。线程安全的，添加之前会上锁
+	// 把先决Task添加到数组中。线程安全的，会上锁
 	Prerequisites.Push(&Prerequisite);
 	
 	return true;
