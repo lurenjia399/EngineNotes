@@ -15,6 +15,7 @@ class FTaskBase : private UE::FInheritedContextBase
 	
 	FSubsequents<TInlineAllocator<1>> Subsequents;
 	
+	// 一个计数器，表示有多少个Task依赖自己
 	std::atomic<uint32> RefCount;
 }
 ```
@@ -30,6 +31,7 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 		NumLocks.fetch_sub(1, std::memory_order_relaxed);
 		return false;
 	}
+	// 增加先决Task的引用
 	Prerequisite.AddRef();
 	Prerequisites.Push(&Prerequisite);
 	return true;
