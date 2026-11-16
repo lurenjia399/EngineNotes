@@ -31,9 +31,11 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 		NumLocks.fetch_sub(1, std::memory_order_relaxed);
 		return false;
 	}
-	// 增加先决Task的引用
+	// 增加先决Task的引用。线程安全的，原子操作
 	Prerequisite.AddRef();
+	// 把先决Task添加到数组中。线程安全的，添加之前会上锁
 	Prerequisites.Push(&Prerequisite);
+	
 	return true;
 }
 ```
