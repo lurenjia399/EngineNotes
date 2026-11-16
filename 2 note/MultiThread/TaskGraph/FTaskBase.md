@@ -26,6 +26,7 @@ class FTaskBase : private UE::FInheritedContextBase
 bool AddPrerequisites(FTaskBase& Prerequisite)
 {
 	uint32 PrevNumLocks = NumLocks.fetch_add(1, std::memory_order_relaxed);
+	// 把自己添加到先决Task的Subsequent数组中
 	if (!Prerequisite.AddSubsequent(*this))
 	{
 		NumLocks.fetch_sub(1, std::memory_order_relaxed);
