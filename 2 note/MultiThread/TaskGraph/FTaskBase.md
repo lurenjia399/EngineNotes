@@ -14,6 +14,8 @@ class FTaskBase : private UE::FInheritedContextBase
 	std::atomic<uint32> ExecutingThreadId = FThread::InvalidThreadId;
 	
 	FSubsequents<TInlineAllocator<1>> Subsequents;
+	
+	std::atomic<uint32> RefCount;
 }
 ```
 
