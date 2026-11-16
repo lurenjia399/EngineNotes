@@ -25,6 +25,7 @@ class FTaskBase : private UE::FInheritedContextBase
 ```cpp
 bool AddPrerequisites(FTaskBase& Prerequisite)
 {
+	// 增加锁定计数，自己每有一个先决Task旧需要增加一个锁定计数
 	uint32 PrevNumLocks = NumLocks.fetch_add(1, std::memory_order_relaxed);
 	// 把自己添加到先决Task的Subsequent数组中。线程安全的，会上锁
 	if (!Prerequisite.AddSubsequent(*this))
