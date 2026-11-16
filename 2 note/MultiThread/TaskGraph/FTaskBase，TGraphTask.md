@@ -12,5 +12,7 @@ class FTaskBase : private UE::FInheritedContextBase
 	EExtendedTaskPriority ExtendedPriority; // internal priorities, if any
 
 	std::atomic<uint32> ExecutingThreadId = FThread::InvalidThreadId;
+	
+	FSubsequents<TInlineAllocator<1>> Subsequents;
 }
 ```
