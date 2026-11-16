@@ -2,8 +2,11 @@
 ```cpp
 class FTaskBase : private UE::FInheritedContextBase
 {
+	// 一个计数器，表示自己有多少个先决Task
 	static constexpr uint32 NumInitialLocks = 1;
 	std::atomic<uint32> NumLocks{ NumInitialLocks };
+	// 一个计数器，表示自己是多少个Task的先决Task。
+	std::atomic<uint32> RefCount;
 
 	FPipe* Pipe{ nullptr };
 
@@ -14,9 +17,6 @@ class FTaskBase : private UE::FInheritedContextBase
 	std::atomic<uint32> ExecutingThreadId = FThread::InvalidThreadId;
 	
 	FSubsequents<TInlineAllocator<1>> Subsequents;
-	
-	// 一个计数器，表示有多少个Task依赖自己
-	std::atomic<uint32> RefCount;
 }
 ```
 
