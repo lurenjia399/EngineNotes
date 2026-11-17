@@ -103,11 +103,13 @@ bool TryUnlock(bool& bWakeUpWorker)
 			    }
 	          NumLocks.store(0, std::memory_order_release); // release pipe's lock 
 			}  
-	    }  
+	    }
+	    // 如果是InLine，说明可以在当前线程执行，就立刻开始执行
 	    if (ExtendedPriority == EExtendedTaskPriority::Inline)  
 	    { 
 	       TryExecuteTask();
-	    }  
+	    }
+	    // 如果是TaskEvent，说明是空实现，空任务只是用来占位的，这里就直接修改相关标志位
 	    else if (ExtendedPriority == EExtendedTaskPriority::TaskEvent)  
 	    {
 	       if (TrySetExecutionFlag())  
@@ -116,7 +118,8 @@ bool TryUnlock(bool& bWakeUpWorker)
 	          Close();  
 	          ReleaseInternalReference();  
 	       }  
-	    }    
+	    }
+	    // 如果都不是，就调度执行，把任务放到FScheduler中调度执行
 	    else  
 	    {  
 	       Schedule(bWakeUpWorker);  
