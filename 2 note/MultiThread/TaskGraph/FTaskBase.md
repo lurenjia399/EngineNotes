@@ -69,6 +69,14 @@ void AddNested(FTaskBase& Nested)
 ```
 
 ```cpp
+
+// 外部的调用接口，尝试执行这个任务
+bool TryLaunch(uint64 TaskSize)
+{
+	bool bWakeUpWorker = true;
+	return TryUnlock(bWakeUpWorker);
+}
+
 bool TryUnlock(bool& bWakeUpWorker)
 {
 	FPipe* LocalPipe = GetPipe();
@@ -78,7 +86,6 @@ bool TryUnlock(bool& bWakeUpWorker)
 	// 如果小于ExecutionFlag，说明现在任务还没执行
 	if (PrevNumLocks < ExecutionFlag)  
 	{
-		// 
 		/*
 		1 如果Pipe为空，NumLocks为0说明没有先决Task了。
 		2 如果Pipe不为空，NumLocks<=1说明没有先决Task了。
