@@ -123,9 +123,18 @@ bool TryUnlock(bool& bWakeUpWorker)
 	    else  
 	    {  
 	       Schedule(bWakeUpWorker);  
-	    }  
-	  
+	    }
+	    // 如果执行了就返回true
 	    return true;  
 	}
+	
+	if (LocalNumLocks != ExecutionFlag) // still locked
+	{
+		return false;
+	}
+	
+	Close();
+	Release();
+	return true;
 }
 ```
