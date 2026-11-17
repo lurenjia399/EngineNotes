@@ -20,7 +20,7 @@ class FTaskBase : private UE::FInheritedContextBase
 }
 ```
 
-# 依赖实现，AddPrerequisites
+# 依赖实现
 
 ```cpp
 bool AddPrerequisites(FTaskBase& Prerequisite)
