@@ -2,7 +2,7 @@
 ```cpp
 class FTaskBase : private UE::FInheritedContextBase
 {
-	// 执行的标记
+	// 执行的标记，如果任务开始执行了，会将ExecutionFlag + 1设置到NumLocks上
 	static constexpr uint32 ExecutionFlag = 0x80000000;
 	// 一个计数器，表示自己有多少个先决Task
 	static constexpr uint32 NumInitialLocks = 1;
@@ -72,17 +72,25 @@ void AddNested(FTaskBase& Nested)
 bool TryUnlock(bool& bWakeUpWorker)
 {
 	FPipe* LocalPipe = GetPipe();
-	// LockNum减一，
+	// LockNum减一，每一次尝试解锁都会减少计数
 	uint32 PrevNumLocks = NumLocks.fetch_sub(1, std::memory_order_acq_rel);
 	uint32 LocalNumLocks = PrevNumLocks - 1;
+	// 如果小于ExecutionFlag，说明现在任务还没执行
 	if (PrevNumLocks < ExecutionFlag)  
-	{  
+	{
+		// 
+		/*
+		1 如果Pipe为空，NumLocks为0说明没有先决Task了。
+		2 如果Pipe不为空，NumLocks<=1说明没有先决Task了。
+		3 没有先决Task就意味着可以执行任务了
+		*/
 	    bool bPrerequisitesCompleted = LocalPipe == nullptr 
 		    ? LocalNumLocks == 0 : LocalNumLocks <= 1;
 	    if (!bPrerequisitesCompleted)  
 	    {       
 		    return false;  
-	    }  
+	    }
+	    
 	    if (LocalPipe != nullptr)  
 	    {  
 			bool bFirstPipingAttempt = LocalNumLocks == 1;  
