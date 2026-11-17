@@ -23,6 +23,7 @@ class FTaskBase : private UE::FInheritedContextBase
 # 依赖实现
 
 ```cpp
+// 添加先决Task，先决Task执行完自己才能执行
 bool AddPrerequisites(FTaskBase& Prerequisite)
 {
 	// 增加锁定计数，自己每有一个先决Task旧需要增加一个锁定计数
@@ -40,5 +41,27 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 	Prerequisites.Push(&Prerequisite);
 	
 	return true;
+}
+```
+
+```cpp
+// 添加嵌套Task，嵌套Task执行完自己才能执行
+void AddNested(FTaskBase& Nested)
+{
+	// 增加锁定计数，等待执行完的Task数量
+	uint32 PrevNumLocks = NumLocks.fetch_add(1, std::memory_order_relaxed);
+	// 把自己添加到嵌套Task的后续数组中
+	if (Nested.AddSubsequent(*this))
+	{
+		// 增加嵌套Task的引用计数。表示排在嵌套Task之后的数量
+		Nested.AddRef();
+		// 把嵌套Task添加到先决数组中
+		Prerequisites.Push(&Nested);
+	}
+	else
+	{
+		// 如果添加后续数组失败了，就回退锁定数量
+		NumLocks.fetch_sub(1, std::memory_order_relaxed);
+	}
 }
 ```
