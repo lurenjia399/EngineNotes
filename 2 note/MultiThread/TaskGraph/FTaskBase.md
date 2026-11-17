@@ -116,7 +116,7 @@ bool TryUnlock(bool& bWakeUpWorker)
 	    {
 		    // 尝试执行Task任务
 			TryExecuteTask();
-			// Task任务执行完了就需要手动释放引用
+			// Task任务执行完了就需要手动释放引用。如果把Task交给FScheduler执行就不需要手动释放，FScheduler在执行的时候会把Task右移到局部变量上，局部变量析构的时候自动释放引用。通过Task的Init方法中的deleter实现的。
 			ReleaseInternalReference();
 	    }
 	    // 如果是TaskEvent，说明是空实现，空任务只是用来占位的，这里就直接修改相关标志位
