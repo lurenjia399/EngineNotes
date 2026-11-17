@@ -2,6 +2,8 @@
 ```cpp
 class FTaskBase : private UE::FInheritedContextBase
 {
+	// 执行的标记
+	static constexpr uint32 ExecutionFlag = 0x80000000;
 	// 一个计数器，表示自己有多少个先决Task
 	static constexpr uint32 NumInitialLocks = 1;
 	std::atomic<uint32> NumLocks{ NumInitialLocks };
