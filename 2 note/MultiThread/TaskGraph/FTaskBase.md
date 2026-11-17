@@ -33,7 +33,7 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 	// 把自己添加到先决Task的Subsequent数组中。线程安全的，会上锁
 	if (!Prerequisite.AddSubsequent(*this))
 	{
-		// 
+		// 添加后续失败了，回退
 		NumLocks.fetch_sub(1, std::memory_order_relaxed);
 		return false;
 	}
@@ -112,12 +112,15 @@ bool TryUnlock(bool& bWakeUpWorker)
 	    // 如果是TaskEvent，说明是空实现，空任务只是用来占位的，这里就直接修改相关标志位
 	    else if (ExtendedPriority == EExtendedTaskPriority::TaskEvent)  
 	    {
-	       if (TrySetExecutionFlag())  
-	       {
-	          ReleasePrerequisites();  
-	          Close();  
-	          ReleaseInternalReference();  
-	       }  
+			// 每次执行Task都需要设置LockNum为ExecutionFlag+1
+			if (TrySetExecutionFlag())  
+			{
+				// 释放先决Task记录的RefCount
+				ReleasePrerequisites();
+				// 结束自己，让后续Task执行TryUnlock
+				Close();  
+				ReleaseInternalReference();  
+			}  
 	    }
 	    // 如果都不是，就调度执行，把任务放到FScheduler中调度执行
 	    else  
