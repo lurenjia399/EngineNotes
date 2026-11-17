@@ -268,7 +268,7 @@ void FScheduler::LaunchInternal(
 
 # FScheduler::ExecuteTask
 ```cpp
-inline FTask* FScheduler::ExecuteTask(FTask* InTask)
+FTask* FScheduler::ExecuteTask(FTask* InTask)
 {
 	// 如果Task不是后台任务，就立刻执行
 	if (!InTask->IsBackgroundTask())
@@ -277,27 +277,36 @@ inline FTask* FScheduler::ExecuteTask(FTask* InTask)
 	}
 	else
 	{
-		const bool bSkipPriorityChange = ParentTask || !GTaskGraphUseDynamicPrioritization || !FSchedulerTls::IsWorkerThread() || InTask->WasCanceledOrIsExpediting();
-
-		FRunnableThread* RunnableThread = nullptr;
-		if (!bSkipPriorityChange)
 		{
-			RunnableThread = FRunnableThread::GetRunnableThread();
-			checkSlow(RunnableThread && RunnableThread->GetThreadPriority() == WorkerPriority);
-			TRACE_CPUPROFILER_EVENT_SCOPE(LowerThreadPriority);
-			RunnableThread->SetThreadPriority(BackgroundPriority);
-		}
-		{
-			TRACE_CPUPROFILER_EVENT_SCOPE(ExecuteBackgroundTask);
 			OutTask = InTask->ExecuteTask();
 		}
-		if (!bSkipPriorityChange)
-		{
-			TRACE_CPUPROFILER_EVENT_SCOPE(RaiseThreadPriority);
-			RunnableThread->SetThreadPriority(WorkerPriority);
-		}
+
 	}
 	FTask::ActiveTask = ParentTask;
 	return OutTask;
+}
+
+FTask* FTask::ExecuteTask()
+{
+	// 设置运行时的状态，返回设置前的状态
+	ETaskState PreviousState = PackedData.fetch_or(ETaskState::RunningFlag,
+		std::memory_order_acquire);
+	FTask* Continuation = nullptr;
+	// 执行时，Task的装填是不是运行态，如果不是就运行
+	if(!EnumHasAnyFlags(PreviousState, ETaskState::RunningFlag))
+	{
+		FTaskDelegate LocalRunnable;
+		// Runnable是Task里面的任务了，这里就调用执行并将Runnable右移到LocalRunnable局部变量中。目的是局部变量销毁的时候会执行Runnable用lambda捕获的Deleter方法，释放自己的引用
+		Continuation = Runnable.CallAndMove(LocalRunnable,
+			!EnumHasAnyFlags(PreviousState, ETaskState::CanceledFlag));
+		// 设置完成状态
+		PreviousState = PackedData.fetch_or(ETaskState::CompletedFlag, std::memory_order_seq_cst);
+	}
+	else 
+	{
+		// 尝试结束，这里也要把Runnable右移到局部变量中，也是为了释放自己的引用
+		TryFinish<false>();
+	}
+	return Continuation;
 }
 ```
