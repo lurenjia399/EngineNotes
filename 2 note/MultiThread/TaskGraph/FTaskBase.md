@@ -111,28 +111,31 @@ bool TryUnlock(bool& bWakeUpWorker)
 	          NumLocks.store(0, std::memory_order_release); // release pipe's lock 
 			}  
 	    }
-	    // 如果是InLine，说明可以在当前线程执行，就立刻开始执行
+	    // 如果是InLine，说明在当前线程执行
 	    if (ExtendedPriority == EExtendedTaskPriority::Inline)  
-	    { 
-	       TryExecuteTask();
+	    {
+		    // 尝试执行Task任务
+			TryExecuteTask();
+			// Task任务执行完了就需要手动释放引用
+			ReleaseInternalReference();
 	    }
 	    // 如果是TaskEvent，说明是空实现，空任务只是用来占位的，这里就直接修改相关标志位
 	    else if (ExtendedPriority == EExtendedTaskPriority::TaskEvent)  
 	    {
 			// 每次执行Task都需要设置LockNum为ExecutionFlag+1
-			if (TrySetExecutionFlag())  
+			if (TrySetExecutionFlag())
 			{
 				// 释放先决Task记录的RefCount
 				ReleasePrerequisites();
 				// 结束自己，让后续Task执行TryUnlock
-				Close();  
-				ReleaseInternalReference();  
+				Close();
+				ReleaseInternalReference();
 			}  
 	    }
 	    // 如果都不是，就调度执行，把任务放到FScheduler中调度执行
 	    else  
 	    {  
-	       Schedule(bWakeUpWorker);  
+	       Schedule(bWakeUpWorker);
 	    }
 	    // 如果执行了就返回true
 	    return true;  
