@@ -67,3 +67,54 @@ void AddNested(FTaskBase& Nested)
 	}
 }
 ```
+
+```cpp
+bool TryUnlock(bool& bWakeUpWorker)
+{
+	FPipe* LocalPipe = GetPipe();
+	// LockNum减一，
+	uint32 PrevNumLocks = NumLocks.fetch_sub(1, std::memory_order_acq_rel);
+	uint32 LocalNumLocks = PrevNumLocks - 1;
+	if (PrevNumLocks < ExecutionFlag)  
+	{  
+	    bool bPrerequisitesCompleted = LocalPipe == nullptr 
+		    ? LocalNumLocks == 0 : LocalNumLocks <= 1;
+	    if (!bPrerequisitesCompleted)  
+	    {       
+		    return false;  
+	    }  
+	    if (LocalPipe != nullptr)  
+	    {  
+			bool bFirstPipingAttempt = LocalNumLocks == 1;  
+		    if (bFirstPipingAttempt)  
+			{          
+				FTaskBase* PrevPipedTask = TryPushIntoPipe();  
+			    if (PrevPipedTask != nullptr) // the pipe is blocked  
+				{
+			        return false;  
+			    }
+	          NumLocks.store(0, std::memory_order_release); // release pipe's lock 
+			}  
+	    }  
+	    if (ExtendedPriority == EExtendedTaskPriority::Inline)  
+	    { 
+	       TryExecuteTask();
+	    }  
+	    else if (ExtendedPriority == EExtendedTaskPriority::TaskEvent)  
+	    {
+	       if (TrySetExecutionFlag())  
+	       {
+	          ReleasePrerequisites();  
+	          Close();  
+	          ReleaseInternalReference();  
+	       }  
+	    }    
+	    else  
+	    {  
+	       Schedule(bWakeUpWorker);  
+	    }  
+	  
+	    return true;  
+	}
+}
+```
