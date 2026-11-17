@@ -4,10 +4,10 @@ class FTaskBase : private UE::FInheritedContextBase
 {
 	// 执行的标记，如果任务开始执行了，会将ExecutionFlag + 1设置到NumLocks上
 	static constexpr uint32 ExecutionFlag = 0x80000000;
-	// 一个计数器，表示自己有多少个先决Task
+	// 一个计数器，表示自己有多少个先决Task。为0说明自己可以执行了，为ExecutionFlag说明已经执行完了
 	static constexpr uint32 NumInitialLocks = 1;
 	std::atomic<uint32> NumLocks{ NumInitialLocks };
-	// 一个计数器，表示自己是多少个Task的先决Task。
+	// 一个计数器，表示自己是多少个Task的先决Task。为0了说明自己可以销毁了
 	std::atomic<uint32> RefCount;
 
 	FPipe* Pipe{ nullptr };
