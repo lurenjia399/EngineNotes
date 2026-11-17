@@ -265,3 +265,39 @@ void FScheduler::LaunchInternal(
 ```
 1 这就是外部来向FScheduler添加任务的方法，首先确定是把任务添加到哪个队列中，游戏线程的本地队列，每个工作线程的本地队列，还是全局Registry的全局溢出队列
 2 然后判断是否需要唤醒线程，唤醒后的线程会在WorkerLoop的主循环中依次从游戏线程本地队列偷取，自己的本队队列获取，其他线程工作队列偷取任务，然后执行。
+
+# FScheduler::ExecuteTask
+```cpp
+inline FTask* FScheduler::ExecuteTask(FTask* InTask)
+{
+	if (!InTask->IsBackgroundTask())
+	{
+		TRACE_CPUPROFILER_EVENT_SCOPE(ExecuteForegroundTask);
+		OutTask = InTask->ExecuteTask();
+	}
+	else
+	{
+		const bool bSkipPriorityChange = ParentTask || !GTaskGraphUseDynamicPrioritization || !FSchedulerTls::IsWorkerThread() || InTask->WasCanceledOrIsExpediting();
+
+		FRunnableThread* RunnableThread = nullptr;
+		if (!bSkipPriorityChange)
+		{
+			RunnableThread = FRunnableThread::GetRunnableThread();
+			checkSlow(RunnableThread && RunnableThread->GetThreadPriority() == WorkerPriority);
+			TRACE_CPUPROFILER_EVENT_SCOPE(LowerThreadPriority);
+			RunnableThread->SetThreadPriority(BackgroundPriority);
+		}
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(ExecuteBackgroundTask);
+			OutTask = InTask->ExecuteTask();
+		}
+		if (!bSkipPriorityChange)
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(RaiseThreadPriority);
+			RunnableThread->SetThreadPriority(WorkerPriority);
+		}
+	}
+	FTask::ActiveTask = ParentTask;
+	return OutTask;
+}
+```
