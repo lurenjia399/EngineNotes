@@ -270,9 +270,9 @@ void FScheduler::LaunchInternal(
 ```cpp
 inline FTask* FScheduler::ExecuteTask(FTask* InTask)
 {
+	// 如果Task不是后台任务，就立刻执行
 	if (!InTask->IsBackgroundTask())
 	{
-		TRACE_CPUPROFILER_EVENT_SCOPE(ExecuteForegroundTask);
 		OutTask = InTask->ExecuteTask();
 	}
 	else
