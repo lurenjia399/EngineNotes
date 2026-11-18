@@ -9,16 +9,19 @@ class FTaskBase : private UE::FInheritedContextBase
 	std::atomic<uint32> NumLocks{ NumInitialLocks };
 	// 一个计数器，表示自己是多少个Task的先决Task。为0了说明自己可以销毁了
 	std::atomic<uint32> RefCount;
+	// 后续数组
+	FSubsequents<TInlineAllocator<1>> Subsequents;
 
 	FPipe* Pipe{ nullptr };
 
 	FEventCount StateChangeEvent;
 
-	EExtendedTaskPriority ExtendedPriority; // internal priorities, if any
-
+	EExtendedTaskPriority ExtendedPriority;
+	
+	// 执行自己的线程
 	std::atomic<uint32> ExecutingThreadId = FThread::InvalidThreadId;
 	
-	FSubsequents<TInlineAllocator<1>> Subsequents;
+	
 }
 ```
 
@@ -149,6 +152,57 @@ bool TryUnlock(bool& bWakeUpWorker)
 	
 	Close();
 	Release();
+	return true;
+}
+```
+
+# TryExecuteTask
+```cpp
+bool TryExecuteTask()
+{
+	// 抢占执行权，通过CAS的操作，抢占成功了就设置NumLocks为ExecutionFlag+1。抢占失败了就说明被其他线程抢占了
+	if (!TrySetExecutionFlag())
+	{
+		return false;
+	}
+	
+	// 增加引用计数，防止任务销毁。原子操作
+	AddRef();
+	// 释放先决Task的引用计数
+	ReleasePrerequisites();
+	// 设置当前要执行的Task为自己
+	FTaskBase* PrevTask = ExchangeCurrentTask(this);
+	// 保存执行this->Task的线程
+	ExecutingThreadId.store(FPlatformTLS::GetCurrentThreadId(), 
+		std::memory_order_relaxed);
+	// 如果是Pipe的task，就开始执行Pipe
+	if (GetPipe() != nullptr)
+	{
+		StartPipeExecution();
+	}
+	// 执行任务的方法
+	ExecuteTask();
+	// 结束执行Pipe
+	if (GetPipe() != nullptr)
+	{
+		FinishPipeExecution();
+	}
+	// 清掉执行this->Task的线程
+	ExecutingThreadId.store(FThread::InvalidThreadId, std::memory_order_relaxed);
+	// 设置当前要执行的Task为空
+	ExchangeCurrentTask(PrevTask);
+	// 减少Numlocks。如果减少后为ExecutionFlag，或
+	/*
+	1 减少Numlocks
+	2 如果减少后等于ExecutionFlag，说明this正常执行完成了，就执行Close通知后续Task执行TryUnlock，然后刚才释放AddRef添加的引用
+	3 如果减少后不等于ExecutionFlag，说明在执行的过程中this添加了NestedTask，如果有NestedTask就不算执行完，需要等NestedTask执行完
+	*/
+	uint32 LocalNumLocks = NumLocks.fetch_sub(1, std::memory_order_acq_rel) - 1; 
+	if (LocalNumLocks == ExecutionFlag)
+	{
+		Close();
+		Release();
+	}
 	return true;
 }
 ```
