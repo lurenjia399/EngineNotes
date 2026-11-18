@@ -144,7 +144,7 @@ bool TryUnlock(bool& bWakeUpWorker)
 	    // 如果执行了就返回true
 	    return true;  
 	}
-	
+	// 如果小于ExecutionFlag，说明现在任务还没执行
 	if (LocalNumLocks != ExecutionFlag) // still locked
 	{
 		return false;
@@ -166,7 +166,7 @@ bool TryExecuteTask()
 		return false;
 	}
 	
-	// 增加引用计数，防止任务销毁。原子操作
+	// 增加引用计数，如果在执行的过程中添加了NestedTask，为了让自己存活到NestedTask执行完成才销毁，所以这里增加了这个AddRef操作。原子操作
 	AddRef();
 	// 释放先决Task的引用计数
 	ReleasePrerequisites();
@@ -194,8 +194,8 @@ bool TryExecuteTask()
 	// 减少Numlocks。如果减少后为ExecutionFlag，或
 	/*
 	1 减少Numlocks
-	2 如果减少后等于ExecutionFlag，说明this正常执行完成了，就执行Close通知后续Task执行TryUnlock，然后刚才释放AddRef添加的引用
-	3 如果减少后不等于ExecutionFlag，说明在执行的过程中this添加了NestedTask，如果有NestedTask就不算执行完，需要等NestedTask执行完
+	2 如果减少后等于ExecutionFlag，说明this正常执行完成了，就执行Close通知后续Task执行TryUnlock，然后释放刚才AddRef添加的引用
+	3 如果减少后不等于ExecutionFlag，说明在执行的过程中this添加了NestedTask，如果有NestedTask就不算执行完，需要等NestedTask执行完，NestedTask执行完后会执行自己的Tryunlock方法，在里面释放刚才AddRef添加的引用
 	*/
 	uint32 LocalNumLocks = NumLocks.fetch_sub(1, std::memory_order_acq_rel) - 1; 
 	if (LocalNumLocks == ExecutionFlag)
