@@ -6,3 +6,4 @@
 *.json
 /.obsidian
 .obsidian/plugins/obsidian-git/data.json
+/.htwork
