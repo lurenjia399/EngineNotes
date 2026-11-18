@@ -22,8 +22,7 @@ class FTaskBase : private UE::FInheritedContextBase
 }
 ```
 
-# 依赖实现
-
+# AddPrerequisites
 ```cpp
 // 添加先决Task，先决Task执行完自己才能执行
 bool AddPrerequisites(FTaskBase& Prerequisite)
@@ -46,6 +45,7 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 }
 ```
 
+# AddNested
 ```cpp
 // 添加嵌套Task，嵌套Task执行完自己才能执行
 void AddNested(FTaskBase& Nested)
@@ -68,6 +68,7 @@ void AddNested(FTaskBase& Nested)
 }
 ```
 
+# TryLaunch
 ```cpp
 
 // 外部的调用接口，尝试执行这个任务
