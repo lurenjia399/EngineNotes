@@ -144,13 +144,19 @@ bool TryUnlock(bool& bWakeUpWorker)
 	    // 如果执行了就返回true
 	    return true;  
 	}
-	// 如果小于ExecutionFlag，说明现在任务还没执行
-	if (LocalNumLocks != ExecutionFlag) // still locked
+	// 
+	
+	/*
+	1 如果PrevNumLocks>=ExecutionFlag，说明现在任务已经执行完了，但是没有释放资源，因为在执行任务的过程中添加了NestedTask，必须等NestedTask执行完了才能释放资源
+	2 如果LocalNumLocks != ExecutionFlag，说明有多个NestedTask，有的NestedTask还没执行完，执行完了才能Close，Release
+	*/
+	if (LocalNumLocks != ExecutionFlag) 
 	{
 		return false;
 	}
-	
+	// 自己执行完了，尝试执行后续Task
 	Close();
+	// 释放自己的引用计数
 	Release();
 	return true;
 }
