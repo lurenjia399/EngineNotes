@@ -60,6 +60,10 @@ void AddNested(FTaskBase& Nested)
 {
 	// 增加锁定计数，等待执行完的Task数量
 	uint32 PrevNumLocks = NumLocks.fetch_add(1, std::memory_order_relaxed);
+	// NumLocks必须大于ExecutionFlag，因为只能在任务执行过程中添加内嵌任务
+	checkf(PrevNumLocks > ExecutionFlag, 
+		TEXT("Internal error: nested tasks can be added only during parent's execution (%u)"), PrevNumLocks);
+
 	// 把自己添加到嵌套Task的后续数组中
 	if (Nested.AddSubsequent(*this))
 	{
