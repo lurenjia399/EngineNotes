@@ -34,3 +34,26 @@ class TGraphTask final
 ```
 1 FGraphTask是继承Task的类
 2 外部我们使用，就是创建GraphTask然后TryLunch尝试执行，在先决Task都执行结束后，会把Task传到FScheduler系统中，被放入到工作队列里面，等工作线程取任务执行。
+
+# ConstructAndHoldImpl
+```cpp
+template<typename...T>
+TGraphTask* ConstructAndHoldImpl(T&&... Args)
+{
+	// 根据先决Task，new出GraphTask
+	TGraphTask* Task = new TGraphTask(Prerequisites);
+	// new出Task执行对象，就是我们自己定义的任务对象
+	TTask* TaskObject = new(&Task->TaskStorage) TTask(Forward<T>(Args)...);
+
+	// 根据自己定义的GetDesiredThread，转换出实际的TaskPriority和ExtendedTaskPriority
+	UE::Tasks::ETaskPriority Pri;
+	UE::Tasks::EExtendedTaskPriority ExtPri;
+	UE::Tasks::Private::TranslatePriority(TaskObject->GetDesiredThread(), 
+		Pri, ExtPri);
+	
+	// 初始化GraphTask
+	Task->Init(Pri, ExtPri);
+
+	return Task;
+}
+```
