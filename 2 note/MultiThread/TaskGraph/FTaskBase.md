@@ -54,7 +54,7 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 
 # AddNested
 ```cpp
-// 添加嵌套Task，嵌套Task执行完自己才能执行
+// 添加嵌套Task，嵌套Task执行完自己才能完成。详情可见
 void AddNested(FTaskBase& Nested)
 {
 	// 增加锁定计数，等待执行完的Task数量
@@ -126,7 +126,7 @@ bool TryUnlock(bool& bWakeUpWorker)
 			// Task任务手动执行完了就需要手动释放引用。如果把Task交给FScheduler执行就不需要手动释放，FScheduler在执行的时候会把Task右移到局部变量上，局部变量析构的时候自动释放引用。通过Task的Init方法中的deleter实现的。ReleaseInternalReference方法执行的和FShceduler执行的是一个方法，区别在于ReleaseInternalReference不会执行任务，只会右移到局部变量上，因为Cancel标志位。
 			ReleaseInternalReference();
 	    }
-	    // 如果是TaskEvent，说明是空实现，空任务只是用来占位的，这里就直接修改相关标志位
+	    // 如果是TaskEvent，说明是空实现，空任务只是用来占位的，这里就直接修改相关标志位。详情可以看FGraphEventImpl
 	    else if (ExtendedPriority == EExtendedTaskPriority::TaskEvent)  
 	    {
 			// 每次执行Task都需要设置LockNum为ExecutionFlag+1
