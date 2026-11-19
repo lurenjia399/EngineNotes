@@ -32,6 +32,10 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 {
 	// 增加锁定计数，自己每有一个先决Task旧需要增加一个锁定计数
 	uint32 PrevNumLocks = NumLocks.fetch_add(1, std::memory_order_relaxed);
+	// 如果Task已经执行了，说明PrevNumLocks等于ExecutionFlag，如果PrevNumLocks + 1 > ExecutionFlag说明执行过程中添加了新的依赖，不允许直接崩掉
+	checkf(PrevNumLocks + 1 < ExecutionFlag, 
+		TEXT("Max number of task prerequisites reached: %d"), ExecutionFlag);
+
 	// 把自己添加到先决Task的Subsequent数组中。线程安全的，会上锁
 	if (!Prerequisite.AddSubsequent(*this))
 	{
