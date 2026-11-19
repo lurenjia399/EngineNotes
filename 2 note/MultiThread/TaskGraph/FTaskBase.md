@@ -16,6 +16,7 @@ class FTaskBase : private UE::FInheritedContextBase
 
 	FEventCount StateChangeEvent;
 
+	// 标识Task，是TaskEvent还是普通Task，还是Inline，还是NamedTask
 	EExtendedTaskPriority ExtendedPriority;
 	
 	// 执行自己的线程
