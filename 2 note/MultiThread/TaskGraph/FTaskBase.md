@@ -218,3 +218,24 @@ bool TryExecuteTask()
 1 任务执行的方法，没有通过FScheduler调度执行，在当前线程主动执行
 2 首先第一步抢占执行权，设置NumLocks为ExecutionFlag+1，在执行完后会减一
 3 然后就是AddRef，目的是延长自己的生命周期，如果在执行的过程中给自己添加了NestedTask，自己的销毁就得在所有的NestedTask执行完成后才能销毁，所以这里添加引用
+
+# Schedule
+
+```cpp
+void FTaskBase::Schedule(bool& bWakeUpWorker)
+{
+	if (IsNamedThreadTask())
+	{
+		FTaskGraphInterface::Get().QueueTask(static_cast<FBaseGraphTask*>(this), true, TranslatePriority(ExtendedPriority));
+		return;
+	}
+	
+	StateChangeEvent.Notify();
+	bWakeUpWorker |= 
+		LowLevelTasks::FScheduler::Get().TryLaunch(LowLevelTask, 
+		bWakeUpWorker ? LowLevelTasks::EQueuePreference::GlobalQueuePreference 
+		: LowLevelTasks::EQueuePreference::LocalQueuePreference, bWakeUpWorker);
+}
+```
+
+1 NamedThreadTask和普通Task执行路径不一样，NamedTask就包括GameThread，Render，RHI这些线程的任务，
