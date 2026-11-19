@@ -58,3 +58,25 @@ TGraphTask* ConstructAndHoldImpl(T&&... Args)
 }
 ```
 1 创建出GraphTask，GraphTask是继承FBaseGraphTask，FBaseGraphTask是继承UE::Tasks::Private::FTaskBase的。
+
+# DontCompleteUntil
+```cpp
+void DontCompleteUntil(FGraphEventRef NestedTask)
+{
+	if (!NestedTask)
+	{
+		return;
+	}
+
+	// 如果是TaskEvent，说明是个空实现，占位用的，这里直接给空Task添加先决Task
+	if (IsTaskEvent())
+	{
+		AddPrerequisites(*NestedTask);
+	}
+	// 如果不是TaskEvent，说明是普通Task，不能直接添加先决Task，因为执行的时候不能建立依赖。这里直接添加嵌套Task。
+	else
+	{
+		AddNested(*NestedTask);
+	}
+}
+```

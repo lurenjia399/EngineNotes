@@ -54,7 +54,7 @@ bool AddPrerequisites(FTaskBase& Prerequisite)
 
 # AddNested
 ```cpp
-// 添加嵌套Task，嵌套Task执行完自己才能完成。详情可见
+// 添加嵌套Task，嵌套Task执行完自己才能完成。详情可见DontCompleteUntil方法
 void AddNested(FTaskBase& Nested)
 {
 	// 增加锁定计数，等待执行完的Task数量
