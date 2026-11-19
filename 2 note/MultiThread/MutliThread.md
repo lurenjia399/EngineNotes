@@ -181,6 +181,59 @@ struct atomic : _Choose_atomic_base_t<_Ty> {
 
 ```
 
+# 线程池
+
+```cpp
+int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
+{
+	// 创建线程池，TaskGraph系统
+	bool bCreateTaskGraphAndThreadPools = true;
+	if (bCreateTaskGraphAndThreadPools)
+	{
+		FTaskGraphInterface::Startup(
+			FPlatformMisc::NumberOfWorkerThreadsToSpawn());
+		FTaskGraphInterface::Get().AttachToThread(ENamedThreads::GameThread);
+	}
+	
+	
+	if (FPlatformProcess::SupportsMultithreading() 
+		&& bCreateTaskGraphAndThreadPools)
+	{
+#if WITH_EDITOR
+		{
+			int32 NumThreadsInThreadPool = 
+				FPlatformMisc::NumberOfWorkerThreadsToSpawn();
+			GLargeThreadPool = new FQueuedLowLevelThreadPool();
+			if (FPlatformProperties::IsServerOnly())
+			{
+				NumThreadsInThreadPool = 1;
+			}
+			GThreadPool = new FQueuedThreadPoolWrapper(GLargeThreadPool, NumThreadsInThreadPool);
+		}
+#else
+		{
+			GThreadPool = new FQueuedLowLevelThreadPool();
+		}
+#endif
+		{
+			GBackgroundPriorityThreadPool = FQueuedThreadPool::Allocate();
+			int32 NumThreadsInThreadPool = 2;
+			if (FPlatformProperties::IsServerOnly())
+			{
+				NumThreadsInThreadPool = 1;
+			}
+			verify(GBackgroundPriorityThreadPool->Create(
+				NumThreadsInThreadPool, StackSize, TPri_Lowest, 
+				TEXT("BackgroundThreadPool")));
+		}
+	}
+}
+
+```
+
+1 GThreadPool 全局线程池，是FQueuedLowLevelThreadPool对象，里面通过FScheduler调度实现的任务派发执行
+2 GLargeThreadPool 只在编辑器存在的线程池，也是FQueuedLowLevelThreadPool对象
+3 GBackgroundPriorityThreadPool 全局线程池，是FQueuedThreadPoolBase对象，池中最多只有两个线程
 
 # 
 1 判断代码在哪个线程执行
