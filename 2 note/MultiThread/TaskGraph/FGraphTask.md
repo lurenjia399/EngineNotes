@@ -76,6 +76,8 @@ void DontCompleteUntil(FGraphEventRef NestedTask)
 	// 如果不是TaskEvent，说明是普通Task，不能直接添加先决Task，因为执行的时候不能建立依赖。这里直接添加嵌套Task。
 	else
 	{
+		// 只能给当前正在执行的Task添加嵌套任务
+		checkSlow(UE::Tasks::Private::GetCurrentTask() == this);
 		AddNested(*NestedTask);
 	}
 }
