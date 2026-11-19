@@ -57,3 +57,4 @@ TGraphTask* ConstructAndHoldImpl(T&&... Args)
 	return Task;
 }
 ```
+1 创建出GraphTask，GraphTask是继承FBaseGraphTask，FBaseGraphTask是继承UE::Tasks::Private::FTaskBase的。
