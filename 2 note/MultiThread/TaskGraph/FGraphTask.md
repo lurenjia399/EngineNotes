@@ -13,7 +13,7 @@ class TGraphTask final
 	
 	class FConstructor
 	{
-		// 构造Task并且尝试执行
+		// 构造Task并且尝试执行。返回值FGraphEventRef就是增加了GraphTask的引用计数
 		template<typename...T>
 		FGraphEventRef ConstructAndDispatchWhenReady(T&&... Args)
 		{
