@@ -186,7 +186,7 @@ struct atomic : _Choose_atomic_base_t<_Ty> {
 ```cpp
 int32 FEngineLoop::PreInitPreStartupScreen(const TCHAR* CmdLine)
 {
-	// 创建线程池，TaskGraph系统
+	// 创建线程池，TaskGraph系统。把当前线程作为游戏线程Attach到
 	bool bCreateTaskGraphAndThreadPools = true;
 	if (bCreateTaskGraphAndThreadPools)
 	{
