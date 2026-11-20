@@ -33,7 +33,7 @@ void QueueTask(
 		// 拆出是哪个线程，这三个Game,Render,RHI其中一个
 		InThreadToExecuteOn = ENamedThreads::GetThreadIndex(InThreadToExecuteOn);
 		FTaskThreadBase* Target = &Thread(InThreadToExecuteOn);
-		// 判断是否跨线程，通过不同方法，把任务添加到队列中
+		// 判断是否跨线程，通过不同方法，把任务添加到队列中。两个方法的添加队列没区别，区别在于唤醒线程，如果不跨线程说明线程在运行不用唤醒
 		if (InThreadToExecuteOn == 
 			ENamedThreads::GetThreadIndex(CurrentThreadIfKnown))
 		{
