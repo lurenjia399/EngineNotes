@@ -1,7 +1,7 @@
 ```cpp
 class FTaskThreadBase : public FRunnable, FSingleThreadRunnable
 {
-	// 这个NamedThread是什么线程
+	// 标记这个NamedThread是什么线程
 	ENamedThreads::Type									ThreadId;
 	/** TLS SLot that we store the FTaskThread* this pointer in. **/
 	uint32												PerThreadIDTLSSlot;
