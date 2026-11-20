@@ -28,12 +28,12 @@ void QueueTask(
 	}
 	
 	{
-		// 需要执行任务的线程
+		// 拆除执行线程的哪个队列，MainQueue还是LocalQueue
 		int32 QueueToExecuteOn = ENamedThreads::GetQueueIndex(InThreadToExecuteOn);
+		// 拆出是哪个线程，这三个Game,Render,RHI其中一个
 		InThreadToExecuteOn = ENamedThreads::GetThreadIndex(InThreadToExecuteOn);
-		// 拿到执行任务的线程Target
 		FTaskThreadBase* Target = &Thread(InThreadToExecuteOn);
-		// 如果如果执行线程等于当前线程，就把任务添加到
+		// 判断是否跨线程，通过不同方法，把任务添加到队列中
 		if (InThreadToExecuteOn == 
 			ENamedThreads::GetThreadIndex(CurrentThreadIfKnown))
 		{
