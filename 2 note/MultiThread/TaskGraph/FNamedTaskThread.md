@@ -7,9 +7,9 @@ class FTaskThreadBase : public FRunnable, FSingleThreadRunnable
 	uint32												PerThreadIDTLSSlot;
 	/** Used to signal stalling. Not safe for synchronization in most cases. **/
 	FThreadSafeCounter									IsStalled;
-	/** Array of tasks for this task thread. */
+	// 当前线程上的任务数组
 	TArray<FBaseGraphTask*> NewTasks;
-	// 
+	// 指向FNamedTaskThread
 	FWorkerThread* OwnerWorker;
 }
 
