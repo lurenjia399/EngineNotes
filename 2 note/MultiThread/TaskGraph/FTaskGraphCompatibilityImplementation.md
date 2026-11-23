@@ -144,3 +144,15 @@ void WaitOnNamedThreadForTasks(const FGraphEventArray& Tasks, ENamedThreads::Typ
 	TriggerEventWhenTasksComplete(Event.Get(), Tasks, BaseNamedThread);
 }
 ```
+
+```cpp
+void TriggerEventWhenTasksComplete(
+	FEvent* InEvent, // 系统事件，用来等待，唤醒
+	const FGraphEventArray& Tasks, // 需要等待的Task
+	ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread,//当前线程
+	ENamedThreads::Type TriggerThread = ENamedThreads::AnyHiPriThreadHiPriTask)
+{
+	
+}
+
+```
