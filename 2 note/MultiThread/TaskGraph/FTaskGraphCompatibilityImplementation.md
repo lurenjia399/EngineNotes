@@ -46,3 +46,40 @@ void QueueTask(
 	}
 }
 ```
+
+# ProcessThreadUntilIdle
+```cpp
+uint64 ProcessThreadUntilIdle(ENamedThreads::Type CurrentThread) final override
+{
+	int32 QueueIndex = ENamedThreads::GetQueueIndex(CurrentThread);
+	CurrentThread = ENamedThreads::GetThreadIndex(CurrentThread);
+	return Thread(CurrentThread).ProcessTasksUntilIdle(QueueIndex);
+}
+```
+1 执行一次任务，从QueueIndex工作队列中取任务执行
+
+# ProcessThreadUntilRequestReturn
+```cpp
+void ProcessThreadUntilRequestReturn(
+	ENamedThreads::Type CurrentThread) final override
+{
+	int32 QueueIndex = ENamedThreads::GetQueueIndex(CurrentThread);
+	CurrentThread = ENamedThreads::GetThreadIndex(CurrentThread);
+	check(CurrentThread >= 0 && CurrentThread < NumNamedThreads);
+	check(CurrentThread == GetCurrentThread());
+	Thread(CurrentThread).ProcessTasksUntilQuit(QueueIndex);
+}
+```
+1 死循环一直执行任务，取不到任务就等待
+
+# RequestReturn
+```cpp
+void RequestReturn(ENamedThreads::Type CurrentThread) final override
+{
+	int32 QueueIndex = ENamedThreads::GetQueueIndex(CurrentThread);
+	CurrentThread = ENamedThreads::GetThreadIndex(CurrentThread);
+	check(CurrentThread != ENamedThreads::AnyThread);
+	Thread(CurrentThread).RequestQuit(QueueIndex);
+}
+```
+1 请求退出执行任务的死循环
