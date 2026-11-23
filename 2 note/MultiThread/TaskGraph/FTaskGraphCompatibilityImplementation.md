@@ -86,8 +86,39 @@ void RequestReturn(ENamedThreads::Type CurrentThread) final override
 
 # WaitUntilTasksComplete
 ```cpp
-void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread) final override
+void WaitUntilTasksComplete(
+	const FGraphEventArray& Tasks, 
+		ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread)
 {
+	// 首先执行一遍需要执行的Task，如果全部执行完了，就返回
+	bool bAllTasksCompleted = true;
+	for (const FGraphEventRef& Task : Tasks)
+	{
+		if (Task.IsValid())
+		{
+			Task->TryRetractAndExecute(NeverTimeout);
+
+			bAllTasksCompleted &= Task->IsCompleted();
+		}
+	}
+	if (bAllTasksCompleted)
+	{
+		return;
+	}
 	
+	if (ENamedThreads::GetThreadIndex(CurrentThreadIfKnown) 
+		== ENamedThreads::AnyThread)
+	{
+		bool bIsHiPri = !!ENamedThreads::GetTaskPriority(CurrentThreadIfKnown);
+		int32 Priority = ENamedThreads::GetThreadPriorityIndex(CurrentThreadIfKnown);
+		check(!ENamedThreads::GetQueueIndex(CurrentThreadIfKnown));
+		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(GetCurrentThread());
+		NamedThreadWithFlags = ENamedThreads::SetPriorities(CurrentThreadIfKnown, Priority, bIsHiPri);
+	}
+	else
+	{
+		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(CurrentThreadIfKnown);
+		check(CurrentThreadIfKnown == ENamedThreads::GetThreadIndex(GetCurrentThread()));
+	}
 }
 ```
