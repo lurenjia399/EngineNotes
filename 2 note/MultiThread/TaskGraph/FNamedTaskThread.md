@@ -9,6 +9,7 @@ struct FThreadTaskQueue
 {
 	// 每个工作队列有一个个StallQueue
 	FStallingTaskQueue<FBaseGraphTask, PLATFORM_CACHE_LINE_SIZE, 2> StallQueue;
+	// 计数器，每次执行ProcessTasksNamedThread取任务方法，就会增加
 	uint32 RecursionGuard;
 	// 标志位，我们在退出执行的循环
 	bool QuitForReturn;
@@ -92,8 +93,12 @@ virtual uint64 ProcessTasksUntilIdle(int32 QueueIndex) override
 {
 	// 重置标志位，让取任务的死循环能执行
 	Queue(QueueIndex).QuitForReturn = false;
+	// 增加计数，表示正在执行取任务
+	verify(++Queue(QueueIndex).RecursionGuard == 1);
 	// 调用取任务的方法，第一个参数是工作队列的索引，第二个参数是取不到任务时是否可以通过系统事件暂停线程
 	uint64 ProcessedTasks = ProcessTasksNamedThread(QueueIndex, false);
+	// 减少计数，表示结束取任务了
+	verify(!--Queue(QueueIndex).RecursionGuard);
 	return ProcessedTasks;
 }
 ```
