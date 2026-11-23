@@ -26,6 +26,56 @@ class FStallingTaskQueue
 1 每个NamedTaskThread中有两个工作队列，一个MainQueue，一个LocalQueue
 2 每个工作队列有一个StallQueue，并且带有事件等待唤醒机制
 3 每个StallQueue带有两个优先级队列，一个高优先级，一个低优先级
+
+# ProcessTasksNamedThread
+```cpp
+uint64 ProcessTasksNamedThread(
+	int32 QueueIndex, // 工作队列的索引
+	bool bAllowStall) // 
+{
+	// 是否是渲染线程的MainQueue
+	const bool bIsRenderThreadMainQueue = 
+		(ENamedThreads::GetThreadIndex(ThreadId) == 
+			ENamedThreads::ActualRenderingThread) 
+			&& (QueueIndex == 0);
+	// 
+	while (!Queue(QueueIndex).QuitForReturn)
+	{
+		const bool bIsRenderThreadAndPolling = bIsRenderThreadMainQueue && (GRenderThreadPollPeriodMs >= 0);
+		const bool bStallQueueAllowStall = bAllowStall && !bIsRenderThreadAndPolling;
+		FBaseGraphTask* Task = Queue(QueueIndex).StallQueue.Pop(0, bStallQueueAllowStall);
+		TestRandomizedThreads();
+		if (!Task)
+		{
+			if (bAllowStall)
+			{
+				TRACE_CPUPROFILER_EVENT_SCOPE(WaitForTasks);
+				{
+					FScopeCycleCounter Scope(StallStatId, EStatFlags::Verbose);
+					Queue(QueueIndex).StallRestartEvent->Wait(bIsRenderThreadAndPolling ? GRenderThreadPollPeriodMs : MAX_uint32, bCountAsStall);
+					if (Queue(QueueIndex).QuitForShutdown)
+					{
+						return ProcessedTasks;
+					}
+					TestRandomizedThreads();
+				}
+				continue;
+			}
+			else
+			{
+				break; // we were asked to quit
+			}
+		}
+		else
+		{
+			Task->Execute(NewTasks, ENamedThreads::Type(ThreadId | (QueueIndex << ENamedThreads::QueueIndexShift)), true);
+			ProcessedTasks++;
+			TestRandomizedThreads();
+		}
+	}
+	return ProcessedTasks;
+}
+```
 # ProcessThreadUntilIdle
 
 ```cpp
@@ -38,3 +88,4 @@ virtual uint64 ProcessTasksUntilIdle(int32 QueueIndex) override
 	return ProcessedTasks;
 }
 ```
+
