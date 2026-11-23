@@ -128,13 +128,14 @@ void WaitUntilTasksComplete(
 void WaitOnNamedThreadForTasks(const FGraphEventArray& Tasks, ENamedThreads::Type BaseNamedThread, ENamedThreads::Type NamedThreadWithFlags)
 {
 	if (
-		BaseNamedThread != ENamedThreads::AnyThread // 不是工作线程
-		&& BaseNamedThread < NumNamedThreads // 是NamedThread
+		BaseNamedThread != ENamedThreads::AnyThread // 当前不是工作线程
+		&& BaseNamedThread < NumNamedThreads // 当前是NamedThread
 		&& !IsThreadProcessingTasks(NamedThreadWithFlags)) // 当前线程没有在处理任务
 	{
-		// 
+		// 创建一个依赖所需任务执行完成的Task，直接尝试TryLaunch
 		TGraphTask<FReturnGraphTask>::CreateTask(&Tasks, NamedThreadWithFlags)
 			.ConstructAndDispatchWhenReady(NamedThreadWithFlags);
+		// 
 		ProcessThreadUntilRequestReturn(NamedThreadWithFlags);
 		return;
 	}
