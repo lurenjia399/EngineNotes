@@ -140,6 +140,7 @@ void WaitOnNamedThreadForTasks(const FGraphEventArray& Tasks, ENamedThreads::Typ
 		return;
 	}
 	
+	// 创建系统Event，在FScopedEvent析构的时候开始Wait
 	FScopedEvent Event;
 	TriggerEventWhenTasksComplete(Event.Get(), Tasks, BaseNamedThread);
 }
@@ -152,7 +153,40 @@ void TriggerEventWhenTasksComplete(
 	ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread,//当前线程
 	ENamedThreads::Type TriggerThread = ENamedThreads::AnyHiPriThreadHiPriTask)
 {
+	// 需要等待Task是否全部完成，true是没有，false是全部完成了
+	bool bAnyPending = true;
+	if (Tasks.Num() < 8)
+	{
+		bAnyPending = false;
+		for (int32 Index = 0; Index < Tasks.Num(); Index++)
+		{
+			FGraphEvent* Task = Tasks[Index].GetReference();
+			if (Task && !Task->IsComplete())
+			{
+				bAnyPending = true;
+				break;
+			}
+		}
+	}
+	// 如果全部完成了，就触发系统事件，唤醒线程
+	if (!bAnyPending)
+	{
+		TestRandomizedThreads();
+		InEvent->Trigger();
+		return;
+	}
 	
+	// 如果没有全部完成，就Launch
+	UE::Tasks::Launch(
+			TEXT("TriggerEventWhenTaskComplete"),
+			[InEvent]()
+			{
+				InEvent->Trigger();
+			},
+			Tasks,
+			LowLevelTasks::ETaskPriority::Normal,
+			UE::Tasks::EExtendedTaskPriority::Inline
+		);
 }
 
 ```
