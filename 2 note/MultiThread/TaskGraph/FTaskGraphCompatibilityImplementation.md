@@ -135,9 +135,11 @@ void WaitOnNamedThreadForTasks(const FGraphEventArray& Tasks, ENamedThreads::Typ
 		// 创建一个依赖所需任务执行完成的Task，直接尝试TryLaunch
 		TGraphTask<FReturnGraphTask>::CreateTask(&Tasks, NamedThreadWithFlags)
 			.ConstructAndDispatchWhenReady(NamedThreadWithFlags);
-		// 
+		// 当前NamedThread一直死循环执行任务，直到FReturnGraphTask执行时退出死循环
 		ProcessThreadUntilRequestReturn(NamedThreadWithFlags);
 		return;
 	}
+	
+	
 }
 ```
