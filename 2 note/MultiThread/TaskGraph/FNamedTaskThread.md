@@ -10,7 +10,9 @@ struct FThreadTaskQueue
 	// 每个工作队列有一个个StallQueue
 	FStallingTaskQueue<FBaseGraphTask, PLATFORM_CACHE_LINE_SIZE, 2> StallQueue;
 	uint32 RecursionGuard;
+	// 标志位，我们在退出执行的循环
 	bool QuitForReturn;
+	// 标志位，我们在退出执行的循环
 	bool QuitForShutdown;
 	// 系统事件，等待和唤醒功能
 	FEvent*	StallRestartEvent;
@@ -38,15 +40,8 @@ uint64 ProcessTasksNamedThread(
 		(ENamedThreads::GetThreadIndex(ThreadId) == 
 			ENamedThreads::ActualRenderingThread) 
 			&& (QueueIndex == 0);
-	// 
 	while (!Queue(QueueIndex).QuitForReturn)
 	{
-		const bool bIsRenderThreadAndPolling = 
-			bIsRenderThreadMainQueue && (GRenderThreadPollPeriodMs >= 0);
-		const bool bStallQueueAllowStall = 
-			bAllowStall && !bIsRenderThreadAndPolling;
-		FBaseGraphTask* Task = Queue(QueueIndex).StallQueue
-			.Pop(0, bStallQueueAllowStall);
 		// 从StallQueue中取任务，但是取不到
 		if (!Task)
 		{
@@ -87,15 +82,18 @@ uint64 ProcessTasksNamedThread(
 	return ProcessedTasks;
 }
 ```
+1 有一个While死循环一直从工作队列中取任务
+2 如果取到任务，就执行，然后下一次循环
+3 如果没有取到任务，就判断参数是否可以暂停，如果可以就Wait，如果不能暂停就退出While系循环
 # ProcessThreadUntilIdle
 
 ```cpp
 virtual uint64 ProcessTasksUntilIdle(int32 QueueIndex) override
 {
+	// 重置标志位，让取任务的死循环能执行
 	Queue(QueueIndex).QuitForReturn = false;
-	verify(++Queue(QueueIndex).RecursionGuard == 1);
+	// 调用取任务的方法，第一个参数是工作队列的索引，第二个参数是取不到任务时是否可以通过系统事件暂停线程
 	uint64 ProcessedTasks = ProcessTasksNamedThread(QueueIndex, false);
-	verify(!--Queue(QueueIndex).RecursionGuard);
 	return ProcessedTasks;
 }
 ```
