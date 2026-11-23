@@ -176,7 +176,8 @@ void TriggerEventWhenTasksComplete(
 		return;
 	}
 	
-	// 如果没有全部完成，就Launch
+	// 如果没有全部完成，就创建一个Inline的任务TryUnlock，这个任务只用来唤醒Event
+	// 为什么这里创建Inline的Task
 	UE::Tasks::Launch(
 			TEXT("TriggerEventWhenTaskComplete"),
 			[InEvent]()
@@ -190,3 +191,7 @@ void TriggerEventWhenTasksComplete(
 }
 
 ```
+1 每次执行WaitUntilTasksComplete方法后，先尝试执行一遍需要等待的Task，如果Task完成了就结束
+2 如果Task完不成，就判断当前执行的是哪种线程
+3 如果是NamedThread，就创建一个新的FReturnGraphTask，其前置Task就是这些需要等待的Task，然后死循环从工作队列中取任务执行，没有任务执行就阻塞等待。最后一个前置Task执行完了就会把FReturnGraphTask塞到NamedThread工作队列中进而唤醒，唤醒完执行FReturnGraphTask的时候就会改变标志位进而退出死循环
+4 如果不是NamedThread，就创建一个系统Event阻塞等待，然后创建一个Inline的新Task，新Task的前置Task也是这些需要等待的Task，等待新Task执行的时候在唤醒
