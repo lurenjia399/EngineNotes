@@ -106,19 +106,37 @@ void WaitUntilTasksComplete(
 		return;
 	}
 	
+	// 确定当前线程是哪个，是NamedTask还是工作线程
 	if (ENamedThreads::GetThreadIndex(CurrentThreadIfKnown) 
 		== ENamedThreads::AnyThread)
 	{
-		bool bIsHiPri = !!ENamedThreads::GetTaskPriority(CurrentThreadIfKnown);
-		int32 Priority = ENamedThreads::GetThreadPriorityIndex(CurrentThreadIfKnown);
-		check(!ENamedThreads::GetQueueIndex(CurrentThreadIfKnown));
 		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(GetCurrentThread());
-		NamedThreadWithFlags = ENamedThreads::SetPriorities(CurrentThreadIfKnown, Priority, bIsHiPri);
+		NamedThreadWithFlags = ENamedThreads::SetPriorities(
+			CurrentThreadIfKnown, Priority, bIsHiPri);
 	}
 	else
 	{
 		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(CurrentThreadIfKnown);
-		check(CurrentThreadIfKnown == ENamedThreads::GetThreadIndex(GetCurrentThread()));
+	}
+	
+	WaitOnNamedThreadForTasks(Tasks, CurrentThreadIfKnown, NamedThreadWithFlags);
+
+}
+```
+
+```cpp
+void WaitOnNamedThreadForTasks(const FGraphEventArray& Tasks, ENamedThreads::Type BaseNamedThread, ENamedThreads::Type NamedThreadWithFlags)
+{
+	if (
+		BaseNamedThread != ENamedThreads::AnyThread // 不是工作线程
+		&& BaseNamedThread < NumNamedThreads // 是NamedThread
+		&& !IsThreadProcessingTasks(NamedThreadWithFlags)) // 当前线程没有在处理任务
+	{
+		// 
+		TGraphTask<FReturnGraphTask>::CreateTask(&Tasks, NamedThreadWithFlags)
+			.ConstructAndDispatchWhenReady(NamedThreadWithFlags);
+		ProcessThreadUntilRequestReturn(NamedThreadWithFlags);
+		return;
 	}
 }
 ```
