@@ -41,38 +41,49 @@ uint64 ProcessTasksNamedThread(
 	// 
 	while (!Queue(QueueIndex).QuitForReturn)
 	{
-		const bool bIsRenderThreadAndPolling = bIsRenderThreadMainQueue && (GRenderThreadPollPeriodMs >= 0);
-		const bool bStallQueueAllowStall = bAllowStall && !bIsRenderThreadAndPolling;
-		FBaseGraphTask* Task = Queue(QueueIndex).StallQueue.Pop(0, bStallQueueAllowStall);
-		TestRandomizedThreads();
+		const bool bIsRenderThreadAndPolling = 
+			bIsRenderThreadMainQueue && (GRenderThreadPollPeriodMs >= 0);
+		const bool bStallQueueAllowStall = 
+			bAllowStall && !bIsRenderThreadAndPolling;
+		FBaseGraphTask* Task = Queue(QueueIndex).StallQueue
+			.Pop(0, bStallQueueAllowStall);
+		// 从StallQueue中取任务，但是取不到
 		if (!Task)
 		{
+			// 如果没有任务但是允许暂停
 			if (bAllowStall)
 			{
-				TRACE_CPUPROFILER_EVENT_SCOPE(WaitForTasks);
 				{
-					FScopeCycleCounter Scope(StallStatId, EStatFlags::Verbose);
-					Queue(QueueIndex).StallRestartEvent->Wait(bIsRenderThreadAndPolling ? GRenderThreadPollPeriodMs : MAX_uint32, bCountAsStall);
+					// 执行StallQueue里的系统事件，开启等待
+					Queue(QueueIndex).StallRestartEvent->Wait(
+						bIsRenderThreadAndPolling ? 
+							GRenderThreadPollPeriodMs : MAX_uint32, bCountAsStall);
+					// 如果StallQueue里的QuitForShutdown标记为true，就return
 					if (Queue(QueueIndex).QuitForShutdown)
 					{
 						return ProcessedTasks;
 					}
-					TestRandomizedThreads();
 				}
 				continue;
 			}
+			// 如果没有任务还不允许暂停，就退出While循环，执行return了
 			else
 			{
-				break; // we were asked to quit
+				break;
 			}
 		}
+		// 从StallQueue中取出任务，任务有效就执行任务
 		else
 		{
-			Task->Execute(NewTasks, ENamedThreads::Type(ThreadId | (QueueIndex << ENamedThreads::QueueIndexShift)), true);
+			// 任务执行
+			Task->Execute(NewTasks, 
+				ENamedThreads::Type(ThreadId | 
+				(QueueIndex << ENamedThreads::QueueIndexShift)), true);
+			// 每次执行了一个任务就增加的计数器
 			ProcessedTasks++;
-			TestRandomizedThreads();
 		}
 	}
+	// 返回任务执行计数器
 	return ProcessedTasks;
 }
 ```
