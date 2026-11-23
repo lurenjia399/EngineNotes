@@ -83,3 +83,11 @@ void RequestReturn(ENamedThreads::Type CurrentThread) final override
 }
 ```
 1 请求退出执行任务的死循环
+
+# WaitUntilTasksComplete
+```cpp
+void WaitUntilTasksComplete(const FGraphEventArray& Tasks, ENamedThreads::Type CurrentThreadIfKnown = ENamedThreads::AnyThread) final override
+{
+	
+}
+```
