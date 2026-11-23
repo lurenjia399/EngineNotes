@@ -9,6 +9,9 @@ struct FThreadTaskQueue
 {
 	// 每个工作队列有一个个StallQueue
 	FStallingTaskQueue<FBaseGraphTask, PLATFORM_CACHE_LINE_SIZE, 2> StallQueue;
+	uint32 RecursionGuard;
+	bool QuitForReturn;
+	bool QuitForShutdown;
 	// 系统事件，等待和唤醒功能
 	FEvent*	StallRestartEvent;
 }
@@ -26,5 +29,12 @@ class FStallingTaskQueue
 # ProcessThreadUntilIdle
 
 ```cpp
-
+virtual uint64 ProcessTasksUntilIdle(int32 QueueIndex) override
+{
+	Queue(QueueIndex).QuitForReturn = false;
+	verify(++Queue(QueueIndex).RecursionGuard == 1);
+	uint64 ProcessedTasks = ProcessTasksNamedThread(QueueIndex, false);
+	verify(!--Queue(QueueIndex).RecursionGuard);
+	return ProcessedTasks;
+}
 ```
