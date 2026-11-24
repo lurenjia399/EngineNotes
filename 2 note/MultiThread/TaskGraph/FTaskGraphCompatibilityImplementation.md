@@ -303,4 +303,4 @@ bool ProcessUntilTasksComplete(
 2 ProcessNamedThreadTasks，通过ProcessThreadUntilIdle方法，从NamedThread的工作队列中取任务，取不到任务就返回
 3 ProcessAllOtherTasks/ProcessOneOtherTask，直接尝试执行其他线程的任务，先执行前置任务，在执行自己。在执行时如果抢到了执行权，就执行任务，如果其他线程的任务被NamedThread执行，其他线程也会从工作队列中取出任务清掉引用，但是不会再次执行任务。
 4 WaitUntilComplete，进入这个状态，说明等待完成的任务是NamedTask，通过WaitOnNamedThreadForTasks方法，创建一个新Task，新Task的前置任务是等待完成的任务
-5 IdleWorkUpdate，这个参数是TFunction，我们可以重写这个参数，来执行当前的状态
+5 IdleWorkUpdate，这个参数是TFunction，我们可以重写这个参数，来改变当前的状态
