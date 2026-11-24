@@ -229,17 +229,22 @@ bool ProcessUntilTasksComplete(
 		{
 			ProcessThreadUntilIdle(NamedThreadWithFlags);
 		}
-		else if (CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks || CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
+		// 
+		else if (CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks
+			 || CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
 		{
 			bHasOtherTasks = false;
-			for (int32 TaskIndex = 0; TaskIndex < RemainingTasks.Num(); TaskIndex++)
+			for (int32 TaskIndex = 0; TaskIndex < RemainingTasks.Num(); 
+				TaskIndex++)
 			{
 				FGraphEvent* Task = RemainingTasks[TaskIndex];
 				// Don't process any named thread tasks here
 				if (!Task->IsNamedThreadTask())
 				{
 					bHasOtherTasks = true;
-					if (Task->TryRetractAndExecute(NeverTimeout) && CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
+					if (Task->TryRetractAndExecute(NeverTimeout)&&
+						CurrentOperation == 
+							EProcessTasksOperation::ProcessOneOtherTask)
 					{
 						break; // Completed a task, check logic again
 					}
@@ -275,18 +280,18 @@ bool ProcessUntilTasksComplete(
 			return true;
 		}
 
-		// Run callback function if it exists, otherwise default to ProcessAllOtherTasks
+		// 根据传进来的参数，确定操作类型。默认的是ProcessAllOtherTasks
 		if (IdleWorkUpdate)
 		{
 			CurrentOperation = IdleWorkUpdate(RemainingTasks.Num());
-			check(CurrentOperation >= EProcessTasksOperation::ProcessAllOtherTasks && CurrentOperation <= EProcessTasksOperation::StopProcessing);
 		}
 		else
 		{
 			CurrentOperation = EProcessTasksOperation::ProcessAllOtherTasks;
 		}
 
-		if ((CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks || CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
+		if ((CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks 
+			|| CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
 			&& !bHasOtherTasks)
 		{
 			// If we have no more tasks to try and retract, just wait which will handle processing named thread tasks as well
