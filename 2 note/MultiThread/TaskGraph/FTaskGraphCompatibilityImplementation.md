@@ -301,4 +301,4 @@ bool ProcessUntilTasksComplete(
 
 1 必须在NamedThread中执行此方法，方法中通过死循环来等待任务完成，内部切换不同的状态
 2 ProcessNamedThreadTasks，通过ProcessThreadUntilIdle方法，从NamedThread的工作队列中取任务，取不到任务就返回
-3 ProcessAllOtherTasks/ProcessOneOtherTask，直接尝试执行其他线程的任务，
+3 ProcessAllOtherTasks/ProcessOneOtherTask，直接尝试执行其他线程的任务，先执行前置任务，在执行自己
