@@ -229,7 +229,7 @@ bool ProcessUntilTasksComplete(
 		{
 			ProcessThreadUntilIdle(NamedThreadWithFlags);
 		}
-		// 
+		// 如果当前操作是ProcessAllOtherTasks或者ProcessOneOtherTask，就立即执行那些需要完成的任务
 		else if (CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks
 			 || CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
 		{
@@ -238,7 +238,6 @@ bool ProcessUntilTasksComplete(
 				TaskIndex++)
 			{
 				FGraphEvent* Task = RemainingTasks[TaskIndex];
-				// Don't process any named thread tasks here
 				if (!Task->IsNamedThreadTask())
 				{
 					bHasOtherTasks = true;
@@ -246,7 +245,7 @@ bool ProcessUntilTasksComplete(
 						CurrentOperation == 
 							EProcessTasksOperation::ProcessOneOtherTask)
 					{
-						break; // Completed a task, check logic again
+						break;
 					}
 				}
 			}
