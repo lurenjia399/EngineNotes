@@ -195,3 +195,26 @@ void TriggerEventWhenTasksComplete(
 2 如果Task完不成，就判断当前执行的是哪种线程
 3 如果是NamedThread，就创建一个新的FReturnGraphTask，其前置Task就是这些需要等待的Task，然后死循环从工作队列中取任务执行，没有任务执行就阻塞等待。最后一个前置Task执行完了就会把FReturnGraphTask塞到NamedThread工作队列中进而唤醒，唤醒完执行FReturnGraphTask的时候就会改变标志位进而退出死循环
 4 如果不是NamedThread，就创建一个系统Event阻塞等待，然后创建一个Inline的新Task，新Task的前置Task也是这些需要等待的Task，等待新Task执行的时候在唤醒
+
+# ProcessUntilTasksComplete
+```cpp
+bool ProcessUntilTasksComplete(
+	const FGraphEventArray& Tasks, // 需要完成的Tasks
+	ENamedThreads::Type CurrentThreadIfKnown, // 当前所在的线程
+	const FProcessTasksUpdateCallback& IdleWorkUpdate) final override
+{
+	// 确认当前执行的线程是哪个，NamedThread还是工作线程，
+	ENamedThreads::Type NamedThreadWithFlags = CurrentThreadIfKnown;
+	if (ENamedThreads::GetThreadIndex(CurrentThreadIfKnown) 
+		== ENamedThreads::AnyThread)
+	{
+		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(GetCurrentThread());
+		NamedThreadWithFlags = ENamedThreads::SetPriorities(CurrentThreadIfKnown,
+			 Priority, bIsHiPri);
+	}
+	else
+	{
+		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(CurrentThreadIfKnown);
+	}
+}
+```
