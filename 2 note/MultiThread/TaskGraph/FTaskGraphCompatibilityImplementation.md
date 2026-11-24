@@ -250,6 +250,7 @@ bool ProcessUntilTasksComplete(
 				}
 			}
 		}
+		// 如果是WaitUntilComplete类型，说明需要等待完成的任务是NamedTask，这里
 		else if (CurrentOperation == EProcessTasksOperation::WaitUntilComplete)
 		{
 			FGraphEventArray TasksToWaitOn;
@@ -260,8 +261,6 @@ bool ProcessUntilTasksComplete(
 
 			TaskTrace::FWaitingScope WaitingScope(GetTraceIds(TasksToWaitOn));
 			WaitOnNamedThreadForTasks(TasksToWaitOn, CurrentThreadIfKnown, NamedThreadWithFlags);
-
-			// All tasks must have succeeded
 			return true;
 		}
 
@@ -288,15 +287,16 @@ bool ProcessUntilTasksComplete(
 		{
 			CurrentOperation = EProcessTasksOperation::ProcessAllOtherTasks;
 		}
-
+		// 如果当前是没有其他线程执行的任务，只有NamedTask，就切换操作类型为WaitUntilComplete
 		if ((CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks 
 			|| CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
 			&& !bHasOtherTasks)
 		{
-			// If we have no more tasks to try and retract, just wait which will handle processing named thread tasks as well
 			CurrentOperation = EProcessTasksOperation::WaitUntilComplete;
 		}
 	}
 	return false;
 }
 ```
+
+1 死循环来等待任务完成，内部切换不同的状态
