@@ -56,7 +56,7 @@ uint64 ProcessThreadUntilIdle(ENamedThreads::Type CurrentThread) final override
 	return Thread(CurrentThread).ProcessTasksUntilIdle(QueueIndex);
 }
 ```
-1 执行一次任务，从QueueIndex工作队列中取任务执行
+1 执行一次任务，从QueueIndex工作队列中取任务执行，取不到任务就返回不取了
 
 # ProcessThreadUntilRequestReturn
 ```cpp
@@ -224,7 +224,7 @@ bool ProcessUntilTasksComplete(
 	// 只要操作类型不是停止，就一直死循环
 	while (CurrentOperation != EProcessTasksOperation::StopProcessing)
 	{
-		// 如果当前操作是处理NamedThreadTask，就执行ProcessThreadUntilIdle。从NamedThread的工作队列中取任务，取不到任务就阻塞等待
+		// 如果当前操作是处理NamedThreadTask，就执行ProcessThreadUntilIdle。从NamedThread的工作队列中取任务，取不到任务就返回
 		if (CurrentOperation == EProcessTasksOperation::ProcessNamedThreadTasks)
 		{
 			ProcessThreadUntilIdle(NamedThreadWithFlags);
@@ -261,18 +261,17 @@ bool ProcessUntilTasksComplete(
 			return true;
 		}
 
-		// Update remaining tasks list
-		for (int32 TaskIndex = RemainingTasks.Num() - 1; TaskIndex >= 0; TaskIndex--)
+		// 更新需要完成任务数组，完成了一个任务就从数组中移除一个
+		for (int32 TaskIndex = RemainingTasks.Num() - 1;TaskIndex >= 0;TaskIndex--)
 		{
 			if (RemainingTasks[TaskIndex]->IsCompleted())
 			{
 				RemainingTasks.RemoveAtSwap(TaskIndex, EAllowShrinking::No);
 			}
 		}
-
+		// 如果所有需要完成的任务都完成了，就返回
 		if (RemainingTasks.Num() == 0)
 		{
-			// All complete
 			return true;
 		}
 
