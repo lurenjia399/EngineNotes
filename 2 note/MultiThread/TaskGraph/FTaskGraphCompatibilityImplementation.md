@@ -216,5 +216,84 @@ bool ProcessUntilTasksComplete(
 	{
 		CurrentThreadIfKnown = ENamedThreads::GetThreadIndex(CurrentThreadIfKnown);
 	}
+	
+	// 初始化当前的操作类型为ProcessNamedThreadTasks，处理NamedThreadTask
+	EProcessTasksOperation CurrentOperation = 
+		EProcessTasksOperation::ProcessNamedThreadTasks;
+	
+	// 只要操作类型不是停止，就一直死循环
+	while (CurrentOperation != EProcessTasksOperation::StopProcessing)
+	{
+		// 如果当前操作是处理NamedThreadTask，就执行ProcessThreadUntilIdle。从NamedThread的工作队列中取任务，取不到任务就阻塞等待
+		if (CurrentOperation == EProcessTasksOperation::ProcessNamedThreadTasks)
+		{
+			ProcessThreadUntilIdle(NamedThreadWithFlags);
+		}
+		else if (CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks || CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
+		{
+			bHasOtherTasks = false;
+			for (int32 TaskIndex = 0; TaskIndex < RemainingTasks.Num(); TaskIndex++)
+			{
+				FGraphEvent* Task = RemainingTasks[TaskIndex];
+				// Don't process any named thread tasks here
+				if (!Task->IsNamedThreadTask())
+				{
+					bHasOtherTasks = true;
+					if (Task->TryRetractAndExecute(NeverTimeout) && CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
+					{
+						break; // Completed a task, check logic again
+					}
+				}
+			}
+		}
+		else if (CurrentOperation == EProcessTasksOperation::WaitUntilComplete)
+		{
+			FGraphEventArray TasksToWaitOn;
+			for (FGraphEvent* TaskEvent : RemainingTasks)
+			{
+				TasksToWaitOn.Add(TaskEvent->GetCompletionEvent());
+			}
+
+			TaskTrace::FWaitingScope WaitingScope(GetTraceIds(TasksToWaitOn));
+			WaitOnNamedThreadForTasks(TasksToWaitOn, CurrentThreadIfKnown, NamedThreadWithFlags);
+
+			// All tasks must have succeeded
+			return true;
+		}
+
+		// Update remaining tasks list
+		for (int32 TaskIndex = RemainingTasks.Num() - 1; TaskIndex >= 0; TaskIndex--)
+		{
+			if (RemainingTasks[TaskIndex]->IsCompleted())
+			{
+				RemainingTasks.RemoveAtSwap(TaskIndex, EAllowShrinking::No);
+			}
+		}
+
+		if (RemainingTasks.Num() == 0)
+		{
+			// All complete
+			return true;
+		}
+
+		// Run callback function if it exists, otherwise default to ProcessAllOtherTasks
+		if (IdleWorkUpdate)
+		{
+			CurrentOperation = IdleWorkUpdate(RemainingTasks.Num());
+			check(CurrentOperation >= EProcessTasksOperation::ProcessAllOtherTasks && CurrentOperation <= EProcessTasksOperation::StopProcessing);
+		}
+		else
+		{
+			CurrentOperation = EProcessTasksOperation::ProcessAllOtherTasks;
+		}
+
+		if ((CurrentOperation == EProcessTasksOperation::ProcessAllOtherTasks || CurrentOperation == EProcessTasksOperation::ProcessOneOtherTask)
+			&& !bHasOtherTasks)
+		{
+			// If we have no more tasks to try and retract, just wait which will handle processing named thread tasks as well
+			CurrentOperation = EProcessTasksOperation::WaitUntilComplete;
+		}
+	}
+	return false;
 }
 ```
