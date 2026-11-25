@@ -33,7 +33,8 @@ class TGraphTask final
 }
 ```
 1 FGraphTask是继承Task的类
-2 外部我们使用，就是创建GraphTask然后TryLunch尝试执行，在先决Task都执行结束后，会把Task传到FScheduler系统中，被放入到工作队列里面，等工作线程取任务执行。
+2 外部我们使用，就是创建GraphTask然后TryLunch尝试执行，在先决Task都执行结束后，才会执行我们创建的GraphTask的TryLunch方法。
+3 
 
 # ConstructAndHoldImpl
 ```cpp
