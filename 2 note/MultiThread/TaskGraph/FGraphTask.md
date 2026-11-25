@@ -60,7 +60,7 @@ TGraphTask* ConstructAndHoldImpl(T&&... Args)
 	return Task;
 }
 ```
-1 创建出GraphTask，GraphTask是继承FBaseGraphTask，FBaseGraphTask是继承UE::Tasks::Private::FTaskBase的。
+1 创建出GraphTask，不去TryLaunch，由我们手动取调用TryLaunch
 
 # DontCompleteUntil
 ```cpp
@@ -85,3 +85,6 @@ void DontCompleteUntil(FGraphEventRef NestedTask)
 	}
 }
 ```
+1 Task正在执行的时候，才能执行这个方法。
+2 Task如果是TaskEvent，就直接添加前置任务就行了，TaskEvent就是干这个用的。
+3 Task如果不是TaskEvent，就需要添加嵌套任务，Task也会等到嵌套任务执行完才会完成。
