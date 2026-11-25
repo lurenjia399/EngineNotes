@@ -191,10 +191,9 @@ void TriggerEventWhenTasksComplete(
 }
 
 ```
-1 每次执行WaitUntilTasksComplete方法后，先尝试执行一遍需要等待的Task，如果Task完成了就结束
-2 如果Task完不成，就判断当前执行的是哪种线程
-3 如果是NamedThread，就创建一个新的FReturnGraphTask，其前置Task就是这些需要等待的Task，然后死循环从工作队列中取任务执行，没有任务执行就阻塞等待。最后一个前置Task执行完了就会把FReturnGraphTask塞到NamedThread工作队列中进而唤醒，唤醒完执行FReturnGraphTask的时候就会改变标志位进而退出死循环
-4 如果不是NamedThread，就创建一个系统Event阻塞等待，然后创建一个Inline的新Task，新Task的前置Task也是这些需要等待的Task
+
+1 如果当前线程是NamedThread，无论需要等待Task是哪种类型，都会创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，直到FReturnGraphTask执行才会退出
+2 如果当前线程是WorkerThread，无论需要等待Task是哪种类型，都会创建一个新的InlineTask和新的系统事件，直接执行新Task，如果没执行完就让系统事件用来阻塞等待WorkerThread，直到新Task执行完了在重新唤醒
 # ProcessUntilTasksComplete
 ```cpp
 bool ProcessUntilTasksComplete(
@@ -303,3 +302,7 @@ bool ProcessUntilTasksComplete(
 3 ProcessAllOtherTasks/ProcessOneOtherTask，直接尝试执行其他线程的任务，先执行前置任务，在执行自己。在执行时如果抢到了执行权，就执行任务，如果其他线程的任务被NamedThread执行，其他线程也会从工作队列中取出任务清掉引用，但是不会再次执行任务。
 4 WaitUntilComplete，进入这个状态，说明等待完成的任务是NamedTask，通过WaitOnNamedThreadForTasks方法，创建一个新Task，新Task的前置任务是等待完成的任务
 5 IdleWorkUpdate，这个参数是TFunction，我们可以重写这个参数，来改变当前的状态
+
+1 此方法必须在NamedThread上执行，因为状态的初始值是ProcessNamedThreadTasks
+2 直接执行NamedThread上的任务，把NamedThread上的任务执行完
+3 如果需要等待的任务的NamedTask，就采取WaitOnNamedThreadForTasks的操作。创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，直到FReturnGraphTask执行才会退出
