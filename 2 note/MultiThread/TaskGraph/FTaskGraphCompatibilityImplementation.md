@@ -70,7 +70,7 @@ void ProcessThreadUntilRequestReturn(
 	Thread(CurrentThread).ProcessTasksUntilQuit(QueueIndex);
 }
 ```
-1 死循环一直执行任务，取不到任务就等待
+1 死循环一直从QueueIndex工作队列中取任务执行，取不到任务就阻塞等待
 
 # RequestReturn
 ```cpp
@@ -82,7 +82,7 @@ void RequestReturn(ENamedThreads::Type CurrentThread) final override
 	Thread(CurrentThread).RequestQuit(QueueIndex);
 }
 ```
-1 请求退出执行任务的死循环
+1 请求退出找任务执行的死循环
 
 # WaitUntilTasksComplete
 ```cpp
@@ -296,13 +296,7 @@ bool ProcessUntilTasksComplete(
 	return false;
 }
 ```
-
-1 必须在NamedThread中执行此方法，方法中通过死循环来等待任务完成，内部切换不同的状态
-2 ProcessNamedThreadTasks，通过ProcessThreadUntilIdle方法，从NamedThread的工作队列中取任务，取不到任务就返回
-3 ProcessAllOtherTasks/ProcessOneOtherTask，直接尝试执行其他线程的任务，先执行前置任务，在执行自己。在执行时如果抢到了执行权，就执行任务，如果其他线程的任务被NamedThread执行，其他线程也会从工作队列中取出任务清掉引用，但是不会再次执行任务。
-4 WaitUntilComplete，进入这个状态，说明等待完成的任务是NamedTask，通过WaitOnNamedThreadForTasks方法，创建一个新Task，新Task的前置任务是等待完成的任务
-5 IdleWorkUpdate，这个参数是TFunction，我们可以重写这个参数，来改变当前的状态
-
-1 此方法必须在NamedThread上执行，因为状态的初始值是ProcessNamedThreadTasks
+1 此方法必须在NamedThread上执行，因为状态的初始值是ProcessNamedThreadTasks。用死循环来阻塞等待需要等待的任务执行完
 2 直接执行NamedThread上的任务，把NamedThread上的任务执行完
 3 如果需要等待的任务的NamedTask，就采取WaitOnNamedThreadForTasks的操作。创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，直到FReturnGraphTask执行才会退出
+4 如果需要等待的任务的WorkerTask，就直接在NamedThread上抢需要等待任务的执行权，抢到了就直接执行，没抢到说明其正在被其他线程执行
