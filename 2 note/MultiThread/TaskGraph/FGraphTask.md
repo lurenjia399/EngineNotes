@@ -37,7 +37,6 @@ class TGraphTask final
 3 在任何线程都能创建GraphTask。
 4 GraphTask在哪个线程执行，取决于GetDesiredThread方法的返回值
 5 NamedTask只能在NamedThread上执行，不会被其他工作线程偷出来执行
-6 
 
 # ConstructAndHoldImpl
 ```cpp
