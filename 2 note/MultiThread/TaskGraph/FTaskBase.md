@@ -243,6 +243,6 @@ void FTaskBase::Schedule(bool& bWakeUpWorker)
 }
 ```
 
-1 NamedThreadTask执行路径不一样，NamedTask就包括GameThread，Render，RHI这些线程的任务，他们是直接把任务塞到FTaskGraphCompatibilityImplementation类中执行，这个类里面缓存了这三个NamedThread，把任务放到他们的任务队列中
+1 NamedThreadTask执行路径不一样，NamedTask就包括GameThread，Render，RHI这些线程的任务，他们是直接把任务塞到FTaskGraphCompatibilityImplementation类中执行，这个类里面缓存了这三个NamedThread，把任务放到他们的任务队列中。
 2 普通Task执行就是通过Scheduler系统了，把任务放到对应的工作队列中，等线程去取或者偷，然后执行
 
