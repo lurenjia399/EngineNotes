@@ -243,6 +243,7 @@ void FTaskBase::Schedule(bool& bWakeUpWorker)
 }
 ```
 
-1 NamedThreadTask执行路径不一样，NamedTask就包括GameThread，Render，RHI这些线程的任务，他们是直接把任务塞到FTaskGraphCompatibilityImplementation类中执行，这个类里面缓存了这三个NamedThread，把任务放到他们的任务队列中。
-2 普通Task执行就是通过Scheduler系统了，把任务放到对应的工作队列中，等线程去取或者偷，然后执行
+1 有两个分支，NamedThreadTask和普通任务。
+2 如果是NamedThreadTask就必须是由NamedThread执行，所以会把任务放到NamedThread里面的工作队列。
+3 在普通任务情况下，如果当前是GameThread，就会把普通任务放到FScheduler的GameThreadLocalQueue工作队列中，等待其他工作线程从这个队列取任务执行。如果当前是工作线程，就会把普通任务放到自己线程的LocalQueue中，等待工作线程从这个队列取任务执行。
 
