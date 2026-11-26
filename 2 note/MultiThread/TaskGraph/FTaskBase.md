@@ -4,7 +4,7 @@ class FTaskBase : private UE::FInheritedContextBase
 {
 	// 执行的标记，如果任务开始执行了，会将ExecutionFlag + 1设置到NumLocks上
 	static constexpr uint32 ExecutionFlag = 0x80000000;
-	// 一个计数器，表示自己有多少个先决Task。为0说明自己可以执行了，为ExecutionFlag说明已经执行完了
+	// 一个计数器，表示自己有多少个先决Task。为0说明自己可以执行了，为ExecutionFlag说明已经执行完了。 初始值为1, 每个前置任务使其+1; `TryLaunch`时-1, 每个前置任务完成时-1; 归零时任务开始执行并设为`ExecutionFlag+1`; 任务结束时-1变为`ExecutionFlag`。
 	static constexpr uint32 NumInitialLocks = 1;
 	std::atomic<uint32> NumLocks{ NumInitialLocks };
 	// 一个计数器，表示自己是多少个Task的先决Task。为0了说明自己可以销毁了
@@ -13,13 +13,12 @@ class FTaskBase : private UE::FInheritedContextBase
 	FSubsequents<TInlineAllocator<1>> Subsequents;
 
 	FPipe* Pipe{ nullptr };
-
 	FEventCount StateChangeEvent;
 
 	// 标识Task，是TaskEvent还是普通Task，还是Inline，还是NamedTask
 	EExtendedTaskPriority ExtendedPriority;
 	
-	// 执行自己的线程
+	// 执行任务的线程是哪个
 	std::atomic<uint32> ExecutingThreadId = FThread::InvalidThreadId;
 	
 	
