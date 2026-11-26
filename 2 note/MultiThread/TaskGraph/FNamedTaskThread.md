@@ -26,7 +26,7 @@ class FStallingTaskQueue
 		PriorityQueues[NumPriorities];
 }
 ```
-1 每个NamedTaskThread中有两个工作队列，一个MainQueue，一个LocalQueue
+1 每个NamedTaskThread中有两个工作队列，一个MainQueue，一个LocalQueue。LocalQueue基本不用，在RenderThread中有用
 2 每个工作队列有一个StallQueue，并且带有事件等待唤醒机制
 3 每个StallQueue带有两个优先级队列，一个高优先级，一个低优先级
 
