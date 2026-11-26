@@ -46,6 +46,10 @@ void QueueTask(
 	}
 }
 ```
+1 把任务放到NamedThread的工作队列中。
+2 执行这个方法的可以是工作线程或者NamedThread。
+3 如果是工作线程执行的，就是工作线程创建NamedThread执行的任务，跨线程就需要唤醒NamedThread，防止NamedThread在等待状态一直无法执行任务。
+4 如果是NamedThread执行的，就是NamedThread创建NamedThread执行的任务，不需要唤醒，NamedThread肯定在执行。
 
 # ProcessThreadUntilIdle
 ```cpp
