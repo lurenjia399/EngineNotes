@@ -139,7 +139,7 @@ void WaitOnNamedThreadForTasks(const FGraphEventArray& Tasks, ENamedThreads::Typ
 		// 创建一个依赖所需任务执行完成的Task，直接尝试TryLaunch
 		TGraphTask<FReturnGraphTask>::CreateTask(&Tasks, NamedThreadWithFlags)
 			.ConstructAndDispatchWhenReady(NamedThreadWithFlags);
-		// 当前NamedThread一直死循环执行任务，直到FReturnGraphTask执行完成，才会执行RequestReturn方法退出死循环。
+		// 当前NamedThread一直死循环执行任务，取不到任务就阻塞等待，直到FReturnGraphTask执行完成，才会执行RequestReturn方法退出死循环。
 		ProcessThreadUntilRequestReturn(NamedThreadWithFlags);
 		return;
 	}
@@ -196,7 +196,7 @@ void TriggerEventWhenTasksComplete(
 
 ```
 
-1 如果当前线程是NamedThread，无论需要等待Task是哪种类型，都会创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，直到FReturnGraphTask执行才会退出
+1 如果当前线程是NamedThread，无论需要等待Task是哪种类型，都会创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，取不到任务就阻塞等待，直到FReturnGraphTask执行才会退出
 2 如果当前线程是WorkerThread，无论需要等待Task是哪种类型，都会创建一个新的InlineTask和新的系统事件，直接执行新Task，如果没执行完就让系统事件用来阻塞等待WorkerThread，直到新Task执行完了在重新唤醒
 # ProcessUntilTasksComplete
 ```cpp
@@ -302,5 +302,5 @@ bool ProcessUntilTasksComplete(
 ```
 1 此方法必须在NamedThread上执行，因为状态的初始值是ProcessNamedThreadTasks。用死循环来阻塞等待需要等待的任务执行完
 2 直接执行NamedThread上的任务，把NamedThread上的任务执行完
-3 如果需要等待的任务是NamedTask，就采取WaitOnNamedThreadForTasks的操作。创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，直到FReturnGraphTask执行才会退出
+3 如果需要等待的任务是NamedTask，就采取WaitOnNamedThreadForTasks的操作。创建一个FReturnGraphTask，把需要等待Task作为前置。然后NamedThread死循环执行任务，取不到任务就阻塞等待，直到FReturnGraphTask执行才会退出
 4 如果需要等待的任务的WorkerTask，就直接在NamedThread上抢需要等待任务的执行权，抢到了就直接执行，没抢到说明其正在被其他线程执行
