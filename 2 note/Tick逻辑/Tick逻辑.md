@@ -1,5 +1,4 @@
 # 1 TickFunction注册
-贴个文章，写的很多很详细 https://www.cnblogs.com/kekec/p/14781454.html
 流程图
 ![image.png](https://gitee.com/lurenjia399/image/raw/master/image/202403231611686.png)
 1 从AActor::Beginplay开始注册的
@@ -238,43 +237,43 @@ int32 WINAPI WinMain(...)
 ```cpp
 // FTickTaskManager中的方法
 virtual void StartFrame(UWorld* InWorld, float InDeltaSeconds, ELevelTick InTickType, const TArray<ULevel*>& LevelsToTick) override
+{
+	//省略了无关的
+	
+	// 这些就是设置Tick上下文的一些参数
+	Context.TickGroup = ETickingGroup(0); // reset this to the start tick group
+	Context.DeltaSeconds = InDeltaSeconds;
+	Context.TickType = InTickType;
+	Context.Thread = ENamedThreads::GameThread;
+	Context.World = InWorld;
+
+	bTickNewlySpawned = true;
+	TickTaskSequencer.StartFrame();//初始化TickTaskSequencer的一些参数
+	FillLevelList(LevelsToTick);//这个方法是将Level中的TickTaskLevel保存起来
+
+	int32 NumWorkerThread = 0;
+	bool bConcurrentQueue = false;
+	// 这里省略了对bConcurrentQueue的赋值，在windows就是false
+	if (!bConcurrentQueue)
 	{
-		//省略了无关的
-		
-		// 这些就是设置Tick上下文的一些参数
-		Context.TickGroup = ETickingGroup(0); // reset this to the start tick group
-		Context.DeltaSeconds = InDeltaSeconds;
-		Context.TickType = InTickType;
-		Context.Thread = ENamedThreads::GameThread;
-		Context.World = InWorld;
-
-		bTickNewlySpawned = true;
-		TickTaskSequencer.StartFrame();//初始化TickTaskSequencer的一些参数
-		FillLevelList(LevelsToTick);//这个方法是将Level中的TickTaskLevel保存起来
-
-		int32 NumWorkerThread = 0;
-		bool bConcurrentQueue = false;
-		// 这里省略了对bConcurrentQueue的赋值，在windows就是false
-		if (!bConcurrentQueue)
+		int32 TotalTickFunctions = 0;
+		for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
 		{
-			int32 TotalTickFunctions = 0;
-			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
-			{
-				// 这里是执行保存的TickTaskLevel中的StartFrame，也是执行写初始化吧
-				TotalTickFunctions += LevelList[LevelIndex]->StartFrame(Context);
-			}
-			// 省略了两个有关统计的宏
-			for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
-			{
-				// 这里是执行保存的TickTaskLevel中的QueueAllTicks，下面介绍下
-				LevelList[LevelIndex]->QueueAllTicks();
-			}
+			// 这里是执行保存的TickTaskLevel中的StartFrame，也是执行写初始化吧
+			TotalTickFunctions += LevelList[LevelIndex]->StartFrame(Context);
 		}
-		else
+		// 省略了两个有关统计的宏
+		for( int32 LevelIndex = 0; LevelIndex < LevelList.Num(); LevelIndex++ )
 		{
-			// 这个else就不看了，反正windows平台肯定会走上边
+			// 这里是执行保存的TickTaskLevel中的QueueAllTicks，下面介绍下
+			LevelList[LevelIndex]->QueueAllTicks();
 		}
 	}
+	else
+	{
+		// 这个else就不看了，反正windows平台肯定会走上边
+	}
+}
 ```
 3 首先会对Context进行个赋值，初始化TickTaskSequencer这个变量，然后将参数中的Level中TickTaskLevel保存到LevelList变量中，然后对其执行StartFrame和QueueAllTicks方法。
 ```cpp
